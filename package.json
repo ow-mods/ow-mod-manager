@@ -1,6 +1,6 @@
 {
-  "name": "mod-installer",
-  "version": "1.0.0",
+  "name": "ow-mod-installer",
+  "version": "0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
