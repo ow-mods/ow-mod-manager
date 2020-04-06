@@ -11,6 +11,7 @@ import fs from 'fs';
 
 import modList from '../mod-list.json';
 import Mod from './Mod';
+import ModList from './ModList';
 import Typography from '@material-ui/core/Typography';
 
 // TODO: find correct mod directory.
@@ -20,6 +21,7 @@ const installedMods = fs.readdirSync(MODS_DIR);
 
 const App = () => (
   <div>
+    <ModList />
     <TableContainer>
       <Table>
         <TableHead>
