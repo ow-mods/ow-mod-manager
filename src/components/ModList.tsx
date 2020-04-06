@@ -16,32 +16,16 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
-
-interface Data {
-  name: string;
-  author: string;
-  version: string;
-  downloads: number;
-}
+import useLocalMods from '../hooks/use-local-mods';
 
 function createData(
   name: string,
   author: string,
   version: string,
   downloads: number,
-): Data {
+): Mod {
   return { name, author, version, downloads };
 }
-
-const rows = [
-  createData('SomeMod1', "Autho4r", "v0.15", 25),
-  createData('SomeMod2', "Author1", "v0.15", 10),
-  createData('SomeMod3', "Author3", "v0.15", 1),
-  createData('SomeMod4', "Author", "v0.15", 0),
-  createData('SomeMod5', "Aut4hor", "v0.15", 210),
-  createData('SomeMod6', "Autthor", "v0.15", 10),
-  createData('SomeMod7', "Authhor", "v0.15", 58),
-];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -76,7 +60,7 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
 
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof Data;
+  id: keyof Mod;
   label: string;
   numeric: boolean;
 }
@@ -91,7 +75,7 @@ const headCells: HeadCell[] = [
 interface EnhancedTableProps {
   classes: ReturnType<typeof useStyles>;
   numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Mod) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   order: Order;
   orderBy: string;
@@ -100,7 +84,7 @@ interface EnhancedTableProps {
 
 function EnhancedTableHead(props: EnhancedTableProps) {
   const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
-  const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+  const createSortHandler = (property: keyof Mod) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
 
@@ -183,7 +167,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          Available Mods
+          Installed Mods
         </Typography>
       )}
       {numSelected > 0 ? (
@@ -239,12 +223,13 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function EnhancedTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('version');
+  const [orderBy, setOrderBy] = React.useState<keyof Mod>('version');
   const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const rows = useLocalMods();
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Mod) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
