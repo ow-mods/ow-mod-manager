@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -59,4 +60,4 @@ const App = () => (
   </div>
 );
 
-export default App;
+export default hot(App);

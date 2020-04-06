@@ -4,27 +4,39 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config ./webpack.config.js",
-    "start": "npm run build && electron ./dist/electron.js"
+    "start": "electron main.js",
+    "watch": "rm -rf ./dist && mkdir ./dist && cp ./src/index.html ./dist/index.html && NODE_ENV=development webpack-dev-server --hot",
+    "build": "rm -rf ./dist && mkdir ./dist && cp ./src/production.html ./dist/index.html && NODE_ENV=development webpack"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/preset-typescript": "^7.9.0",
+    "@hot-loader/react-dom": "^16.13.0",
+    "@material-ui/core": "^4.9.9",
     "@types/node": "^13.11.0",
     "@types/react": "^16.9.32",
     "@types/react-dom": "^16.9.6",
+    "axios": "^0.19.2",
+    "babel-loader": "^8.1.0",
     "electron": "^8.2.0",
+    "fork-ts-checker-webpack-plugin": "^4.1.2",
     "html-webpack-plugin": "^4.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-domerino": "npm:@hot-loader/react-dom@^16.13.0",
+    "react-hot-loader": "^4.12.20",
     "ts-loader": "^6.2.2",
     "typescript": "^3.8.3",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
-  },
-  "dependencies": {
-    "@material-ui/core": "^4.9.9",
-    "axios": "^0.19.2"
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3",
+    "webpack-merge": "^4.2.2"
   }
 }
