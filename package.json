@@ -24,6 +24,7 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "@material-ui/core": "^4.9.9",
     "axios": "^0.19.2"
   }
 }
