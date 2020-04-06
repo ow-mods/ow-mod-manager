@@ -6,11 +6,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
 
 import modList from '../mod-list.json';
-import Mod from './Mod';
+import ModItem from './ModItem';
 import ModList from './ModList';
-import Typography from '@material-ui/core/Typography';
 
 const App = () => (
   <div>
@@ -26,10 +26,9 @@ const App = () => (
         </TableHead>
         <TableBody>
           { modList.map(repo => (
-            <TableRow>
+            <TableRow key={repo}>
               <TableCell>
-                <Mod
-                  key={repo}
+                <ModItem
                   repo={repo}
                 />
               </TableCell>

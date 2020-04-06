@@ -16,7 +16,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
-import useLocalMods from '../hooks/use-local-mods';
+import useModList from '../hooks/use-mod-list';
 
 function createData(
   name: string,
@@ -227,7 +227,7 @@ export default function EnhancedTable() {
   const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const rows = useLocalMods();
+  const rows = useModList();
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Mod) => {
     const isAsc = orderBy === property && order === 'asc';
