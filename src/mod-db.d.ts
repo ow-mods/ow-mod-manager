@@ -1,4 +1,4 @@
-declare module 'mod-list.json' {
+declare module 'mod-db.json' {
   const value: ModDbItem[];
   export default value;
 }
