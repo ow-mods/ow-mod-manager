@@ -17,6 +17,6 @@ export class Mod {
   get isOutdated(): boolean {
     return this.localManifest != null &&
            this.remoteManifest != null &&
-           this.localManifest.version < this.remoteManifest.version;
+           this.localManifest.version < this.remoteManifest.version; // i know this doesn't work
   }
 }
