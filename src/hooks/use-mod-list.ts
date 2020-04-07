@@ -14,17 +14,10 @@ function useModList() {
   useEffect(() => {
     const getMod = async (modDbItem: ModDbItem) => {
       const remoteMod = await getRemoteMod(modDbItem);
-
-      var existingMod = modList.find(mod => mod.uniqueName == remoteMod.uniqueName);
-      if (!existingMod) {
         setModList(mods => ([
           ...mods,
           remoteMod,
-        ]))
-      }
-      else {
-        existingMod.downloadCount = remoteMod.downloadCount;
-      }
+        ]));
     };
 
     modDB.map(getMod);
