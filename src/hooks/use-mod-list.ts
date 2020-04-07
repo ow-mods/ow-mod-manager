@@ -12,15 +12,15 @@ function useModList() {
   }, [])
 
   useEffect(() => {
-    const getMod = async (repo: string) => {
-      const remoteMod = await getRemoteMod(repo);
+    const getMod = async (modDbItem: ModDbItem) => {
+      const remoteMod = await getRemoteMod(modDbItem);
       setModList(mods => ([
         ...mods,
         remoteMod,
       ]))
     };
 
-    modDB.map(modDbItem => getMod(modDbItem.repo));
+    modDB.map(modDbItem => getMod(modDbItem));
 
   }, []);
 
