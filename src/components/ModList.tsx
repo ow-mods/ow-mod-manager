@@ -96,7 +96,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell>
         {headCells.map((headCell) => (
@@ -112,11 +111,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
-              {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </span>
-              ) : null}
             </TableSortLabel>
           </TableCell>
         ))}
@@ -173,19 +167,19 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       {numSelected > 0 ? (
         <ButtonGroup variant="outlined" color="primary" >
           <Tooltip title="Delete">
-            <Button aria-label="update">
+            <Button>
               Update
             </Button>
           </Tooltip>
           <Tooltip title="Delete">
-            <Button aria-label="uninstall">
+            <Button>
               Uninstall
             </Button>
           </Tooltip>
         </ButtonGroup>
       ) : (
         <Tooltip title="Filter list">
-          <Button fullWidth color="primary" variant="contained" aria-label="filter list">
+          <Button fullWidth color="primary" variant="contained">
             Update all
           </Button>
         </Tooltip>
@@ -204,7 +198,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(2),
     },
     table: {
-      minWidth: 750,
+      minWidth: 500,
     },
     visuallyHidden: {
       border: 0,
@@ -284,9 +278,7 @@ export default function EnhancedTable() {
         <TableContainer>
           <Table
             className={classes.table}
-            aria-labelledby="tableTitle"
             size="medium"
-            aria-label="enhanced table"
           >
             <EnhancedTableHead
               classes={classes}
@@ -309,7 +301,6 @@ export default function EnhancedTable() {
                       hover
                       onClick={(event) => handleClick(event, row.name.toString())}
                       role="checkbox"
-                      aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.name}
                       selected={isItemSelected}
@@ -317,7 +308,6 @@ export default function EnhancedTable() {
                       <TableCell padding="checkbox">
                         <Checkbox
                           checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
@@ -331,7 +321,7 @@ export default function EnhancedTable() {
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={4} />
                 </TableRow>
               )}
             </TableBody>
