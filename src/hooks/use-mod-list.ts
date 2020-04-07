@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import modUrlList from '../mod-list.json';
+import modDB from '../mod-db.json';
 import getLocalMods from '../services/get-local-mods';
 import getRemoteMod from '../services/get-remote-mod';
 
@@ -12,15 +12,15 @@ function useModList() {
   }, [])
 
   useEffect(() => {
-    const getMod = async (url: string) => {
-      const remoteMod = await getRemoteMod(url);
+    const getMod = async (repo: string) => {
+      const remoteMod = await getRemoteMod(repo);
       setModList(mods => ([
         ...mods,
         remoteMod,
       ]))
     };
 
-    modUrlList.map(getMod);
+    modDB.map(modDbItem => getMod(modDbItem.repo));
 
   }, []);
 
