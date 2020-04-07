@@ -18,15 +18,6 @@ import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
 import useModList from '../hooks/use-mod-list';
 
-function createData(
-  name: string,
-  author: string,
-  version: string,
-  downloads: number,
-): Mod {
-  return { name, author, version, downloads };
-}
-
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -39,10 +30,10 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 
 type Order = 'asc' | 'desc';
 
-function getComparator<Key extends keyof any>(
+function getComparator<Key extends keyof Mod>(
   order: Order,
   orderBy: Key,
-): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
+): (a: Mod, b: Mod) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -69,7 +60,7 @@ const headCells: HeadCell[] = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
   { id: 'author', numeric: false, disablePadding: false, label: 'Author' },
   { id: 'version', numeric: false, disablePadding: false, label: 'Version' },
-  { id: 'downloads', numeric: true, disablePadding: false, label: 'Downloads' },
+  { id: 'downloadCount', numeric: true, disablePadding: false, label: 'Downloads' },
 ];
 
 interface EnhancedTableProps {
@@ -315,7 +306,7 @@ export default function EnhancedTable() {
                       </TableCell>
                       <TableCell>{row.author}</TableCell>
                       <TableCell>{row.version}</TableCell>
-                      <TableCell align="right">{row.downloads}</TableCell>
+                      <TableCell align="right">{row.downloadCount}</TableCell>
                     </TableRow>
                   );
                 })}
