@@ -17,7 +17,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
 import useModList from '../hooks/use-mod-list';
-import { Mod } from '../mod';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -60,7 +59,8 @@ interface HeadCell {
 const headCells: HeadCell[] = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
   { id: 'author', numeric: false, disablePadding: false, label: 'Author' },
-  { id: 'version', numeric: false, disablePadding: false, label: 'Version' },
+  { id: 'localVersion', numeric: false, disablePadding: false, label: 'Local Version' },
+  { id: 'remoteVersion', numeric: false, disablePadding: false, label: 'Remote Version' },
   { id: 'downloadCount', numeric: true, disablePadding: false, label: 'Downloads' },
 ];
 
@@ -209,7 +209,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function EnhancedTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Mod>('version');
+  const [orderBy, setOrderBy] = React.useState<keyof Mod>('localVersion');
   const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -223,7 +223,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.manifest.name);
+      const newSelecteds = rows.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -285,16 +285,16 @@ export default function EnhancedTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.manifest.name.toString());
+                  const isItemSelected = isSelected(row.name.toString());
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.manifest.name.toString())}
+                      onClick={(event) => handleClick(event, row.name.toString())}
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.manifest.uniqueName}
+                      key={row.uniqueName}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -303,11 +303,12 @@ export default function EnhancedTable() {
                         />
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.manifest.name}
+                        {row.name}
                       </TableCell>
-                      <TableCell>{row.manifest.author}</TableCell>
-                      <TableCell>{row.manifest.version}</TableCell>
-                      <TableCell align="right">{row.release.downloadCount}</TableCell>
+                      <TableCell>{row.author}</TableCell>
+                      <TableCell>{row.localVersion}</TableCell>
+                      <TableCell>{row.remoteVersion}</TableCell>
+                      <TableCell align="right">{row.downloadCount}</TableCell>
                     </TableRow>
                   );
                 })}

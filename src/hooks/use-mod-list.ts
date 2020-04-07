@@ -1,29 +1,23 @@
 import { useState, useEffect } from 'react';
 
 import modDB from '../mod-db.json';
-import getLocalManifests from '../services/get-local-manifests';
+import getLocalMods from '../services/get-local-mods';
 import getRemoteMod from '../services/get-remote-mod';
-import { Mod } from '../mod';
 
 function useModList() {
   const [modList, setModList] = useState<Mod[]>([]);
 
   useEffect(() => {
-    const localMods: Mod[] = getLocalManifests().map<Mod>(manifest => {
-      const mod = new Mod();
-      mod.localManifest = manifest;
-      return mod;
-    });
-    setModList(localMods);
+    setModList(getLocalMods);
   }, [])
 
   useEffect(() => {
     const getMod = async (modDbItem: ModDbItem) => {
       const remoteMod = await getRemoteMod(modDbItem);
-        setModList(mods => ([
-          ...mods,
-          remoteMod,
-        ]));
+      setModList(mods => ([
+        ...mods,
+        remoteMod,
+      ]));
     };
 
     modDB.map(getMod);
