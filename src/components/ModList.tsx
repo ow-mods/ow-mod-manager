@@ -17,6 +17,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
 import useModList from '../hooks/use-mod-list';
+import { Mod } from '../models/mod';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -222,7 +223,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = rows.map((n) => n.manifest.name);
       setSelected(newSelecteds);
       return;
     }
@@ -284,16 +285,16 @@ export default function EnhancedTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name.toString());
+                  const isItemSelected = isSelected(row.manifest.name.toString());
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name.toString())}
+                      onClick={(event) => handleClick(event, row.manifest.name.toString())}
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.uniqueName}
+                      key={row.manifest.uniqueName}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -302,11 +303,11 @@ export default function EnhancedTable() {
                         />
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.name}
+                        {row.manifest.name}
                       </TableCell>
-                      <TableCell>{row.author}</TableCell>
-                      <TableCell>{row.version}</TableCell>
-                      <TableCell align="right">{row.downloadCount}</TableCell>
+                      <TableCell>{row.manifest.author}</TableCell>
+                      <TableCell>{row.manifest.version}</TableCell>
+                      <TableCell align="right">{row.release.downloadCount}</TableCell>
                     </TableRow>
                   );
                 })}
