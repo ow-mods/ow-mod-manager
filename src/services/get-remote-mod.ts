@@ -9,7 +9,8 @@ async function getRemoteMod(repo: string): Promise<Mod> {
       const mod: Mod = {
         name: data.name,
         author: data.author.login,
-        version: data.tag_name,
+        // Adding this "remote" string j ust so I can distinguish remote from local mods.
+        version: data.tag_name + ' (remote)',
         downloads: 0,
       };
 

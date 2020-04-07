@@ -15,28 +15,6 @@ import ModList from './ModList';
 const App = () => (
   <div>
     <ModList />
-    <TableContainer>
-      <Table>
-        <TableHead>
-        <TableRow>
-            <TableCell>
-              <Typography variant="h5">Available Mods:</Typography>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          { modList.map(repo => (
-            <TableRow key={repo}>
-              <TableCell>
-                <ModItem
-                  repo={repo}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
   </div>
 )
 
