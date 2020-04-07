@@ -1,19 +1,18 @@
 
 import axios from 'axios';
 
-async function getRemoteManifest(modDbItem: ModDbItem): Promise<Mod> {
+async function getRemoteManifest(modDbItem: ModDbItem): Promise<Manifest> {
   return axios.get(`https://raw.githubusercontent.com/${modDbItem.repo}/master/${modDbItem.manifest}`)
     .then(response => {
       const { data } = response;
 
-      const mod: Mod = {
+      const manifest: Manifest = {
         name: data.name,
         author: data.author,
         version: data.version,
-        downloads: 0,
       };
 
-      return mod;
+      return manifest;
     });
 };
 

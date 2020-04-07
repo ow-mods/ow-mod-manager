@@ -1,5 +1,4 @@
 
-import axios from 'axios';
 import getRemoteRelease from './get-remote-release';
 import getRemoteManifest from './get-remote-manifest';
 
@@ -10,7 +9,7 @@ async function getRemoteMod(modDbItem: ModDbItem): Promise<Mod> {
     name: manifest.name,
     author: manifest.author,
     version: manifest.version,
-    downloads: release.downloads
+    downloads: release.downloadCount
   }
   return remoteMod;
 };

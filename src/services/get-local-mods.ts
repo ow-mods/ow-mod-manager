@@ -3,7 +3,7 @@ import fs from 'fs';
 // TODO: find correct mod directory.
 const MODS_DIR = 'C:/Program Files/Epic Games/OuterWilds/OWML/Mods';
 
-function getLocalMods() {
+function getLocalMods(): Mod[] {
   const installedModFolders = fs.readdirSync(MODS_DIR);
   const modManifestPaths = installedModFolders.map(folder => `${MODS_DIR}/${folder}/manifest.json`);
   const manifestJsons = modManifestPaths.map(path => fs.readFileSync(path, { encoding: 'UTF-8'}));
@@ -13,7 +13,6 @@ function getLocalMods() {
     name: manifest.name,
     author: manifest.author,
     version: manifest.version,
-    downloads: 0,
   }))
 
   return mods;
