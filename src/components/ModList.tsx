@@ -293,7 +293,7 @@ export default function EnhancedTable() {
                       onClick={(event) => handleClick(event, row.name.toString())}
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.uniqueName}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
