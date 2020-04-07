@@ -161,7 +161,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          Installed Mods
+          Grab ya mods, bois
         </Typography>
       )}
       {numSelected > 0 ? (
