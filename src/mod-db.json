@@ -1,0 +1,10 @@
+[
+  {
+    "repo": "Raicuparta/NomaiVR",
+    "manifest": "NomaiVR/ModConfig/manifest.json"
+  },
+  {
+    "repo": "Raicuparta/outer-wilds-spawn-points",
+    "manifest": "OWSpawnPoints/manifest.json"
+  }
+]

@@ -3,18 +3,18 @@ import React, { useEffect, useState } from 'react';
 import getRemoteMod from '../services/get-remote-mod';
 
 type Props = {
-  repo: string;
+  modDbItem: ModDbItem;
 }
 
-const ModItem: React.FunctionComponent<Props> = ({ repo }) => {
+const ModItem: React.FunctionComponent<Props> = ({ modDbItem }) => {
   const [mod, setMod] = useState<Mod>();
 
   useEffect(() => {
     const getMod = async () => {
-      setMod(await getRemoteMod(repo));
+      setMod(await getRemoteMod(modDbItem));
     };
     getMod();
-  }, [repo]);
+  }, [modDbItem]);
     return <div>{mod ? mod.name : 'loading'}</div>;
 };
 
