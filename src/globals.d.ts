@@ -4,3 +4,8 @@ type Mod = {
   version: string;
   downloads: number;
 }
+
+type ModDbItem = {
+  repo: string;
+  manifest: string;
+}
