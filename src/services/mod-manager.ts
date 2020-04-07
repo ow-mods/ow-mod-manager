@@ -13,33 +13,31 @@ export class ModManager {
     }
 
     get isOutdated(): boolean {
-        return this.mod.localVersion != null &&
+        return this.isInstalled &&
             this.mod.remoteVersion != null &&
             semver.lt(this.mod.localVersion, this.mod.remoteVersion);
     }
 
-    update(): boolean {
-        if (!this.isInstalled || !this.isOutdated ) {
-            return false;
-        }
-        // todo
-        return true;
-    }
-
-    install(): boolean {
+    async install(): Promise<void> {
         if (this.isInstalled) {
-            return false;
+            throw "Already installed";
         }
-        // todo
-        return true;
+        // download zip from mod.downloadUrl
+        // unzip to Mods folder
     }
 
-    uninstall(): boolean {
-        if (!this.isInstalled) {
-            return false;
+    async update(): Promise<void> {
+        if (!this.isOutdated) {
+            throw "Not outdated";
         }
-        // todo
-        return true;
+        // same as install, but unzip into existing mod folder and overwrite files
+    }
+
+    async delete(): Promise<void> {
+        if (!this.isInstalled) {
+            throw "Not installed";
+        }
+        // delete mod folder
     }
 
 }
