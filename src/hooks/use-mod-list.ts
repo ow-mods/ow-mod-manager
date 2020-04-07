@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import modDB from '../mod-db.json';
 import getLocalManifests from '../services/get-local-manifests';
 import getRemoteMod from '../services/get-remote-mod';
-import { Mod } from '../models/mod';
-import { ModDbItem } from '../models/mod-db-item';
+import { Mod } from '../mod';
 
 function useModList() {
   const [modList, setModList] = useState<Mod[]>([]);

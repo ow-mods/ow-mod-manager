@@ -1,6 +1,3 @@
-import { Manifest } from "./manifest";
-import { Release } from "./release";
-
 export class Mod {
   localManifest?: Manifest;
   remoteManifest?: Manifest;

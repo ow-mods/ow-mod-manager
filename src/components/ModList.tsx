@@ -17,7 +17,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
 import useModList from '../hooks/use-mod-list';
-import { Mod } from '../models/mod';
+import { Mod } from '../mod';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {

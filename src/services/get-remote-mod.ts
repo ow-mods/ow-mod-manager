@@ -1,8 +1,7 @@
 
 import getRemoteRelease from './get-remote-release';
 import getRemoteManifest from './get-remote-manifest';
-import { ModDbItem } from '../models/mod-db-item';
-import { Mod } from '../models/mod';
+import { Mod } from '../mod';
 
 async function getRemoteMod(modDbItem: ModDbItem): Promise<Mod> {
   const release = await getRemoteRelease(modDbItem.repo);

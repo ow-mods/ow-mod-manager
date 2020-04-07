@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import getRemoteMod from '../services/get-remote-mod';
-import { ModDbItem } from '../models/mod-db-item';
-import { Mod } from '../models/mod';
+import { Mod } from '../mod';
 
 type Props = {
   modDbItem: ModDbItem;
