@@ -3,7 +3,7 @@ type Mod = {
   author: string;
   uniqueName: string;
   version: string;
-  downloads?: number;
+  downloadCount?: number;
 }
 
 type ModDbItem = {

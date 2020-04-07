@@ -23,7 +23,7 @@ function useModList() {
         ]))
       }
       else {
-        existingMod.downloads = remoteMod.downloads;
+        existingMod.downloadCount = remoteMod.downloadCount;
       }
     };
 
