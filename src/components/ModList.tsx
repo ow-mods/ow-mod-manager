@@ -18,15 +18,6 @@ import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
 import useModList from '../hooks/use-mod-list';
 
-function createData(
-  name: string,
-  author: string,
-  version: string,
-  downloads: number,
-): Mod {
-  return { name, author, version, downloads };
-}
-
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
     return -1;

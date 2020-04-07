@@ -12,6 +12,7 @@ function getLocalMods(): Mod[] {
   const mods: Mod[] = manifests.map(manifest => ({
     name: manifest.name,
     author: manifest.author,
+    uniqueName: manifest.uniqueName,
     version: manifest.version,
   }))
 

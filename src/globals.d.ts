@@ -1,6 +1,7 @@
 type Mod = {
   name: string;
   author: string;
+  uniqueName: string;
   version: string;
   downloads?: number;
 }
@@ -18,5 +19,6 @@ type Release = {
 type Manifest = {
   name: string;
   author: string;
+  uniqueName: string;
   version: string;
 }

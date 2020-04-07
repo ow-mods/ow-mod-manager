@@ -8,6 +8,7 @@ async function getRemoteMod(modDbItem: ModDbItem): Promise<Mod> {
   const remoteMod: Mod = {
     name: manifest.name,
     author: manifest.author,
+    uniqueName: manifest.uniqueName,
     version: manifest.version,
     downloads: release.downloadCount
   }
