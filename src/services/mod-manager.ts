@@ -1,7 +1,8 @@
 import semver from 'semver'
 import unzip from 'unzipper';
-import axios from 'axios';
+import request from 'request'
 import fs from 'fs-extra';
+import path from 'path'
 
 export class ModManager {
 
@@ -50,32 +51,32 @@ export class ModManager {
     }
 
     private async upstall() {
-        const tempPath = `temp/${this.mod.name}-${Date.now}`;
+        const tempPath = `temp/${this.mod.name}-${new Date().getTime()}`;
         const zipPath = `${tempPath}/${this.mod.name}.zip`
         const unzipPath = `${tempPath}/${this.mod.name}`
 
+        await this.createFolders(unzipPath);
         await this.downloadFile(this.mod.downloadUrl, zipPath);
         await this.unzip(zipPath, unzipPath);
         await this.copyFolder(unzipPath, this.modFolder);
         await this.deleteFolder(tempPath);
     }
 
+    private async createFolders(path: string) {
+        await fs.mkdirs(path);
+    }
+
     private async downloadFile(url: string, path: string) {
-        var writeStream = fs.createWriteStream(path);
-        axios({
-            url,
-            method: 'get',
-            responseType: "stream"
-        }).then(response => {
-            response.data.pipe(writeStream);
-        });
-        await new Promise(resolve => {
-            writeStream.on('finish', resolve);
+        const writer = fs.createWriteStream(path);
+        request(url).pipe(writer);
+        return new Promise(resolve => {
+            writer.on('finish', resolve);
         });
     }
 
     private async unzip(zipPath: string, unzipPath: string) {
-        const extract = unzip.Extract({ path: unzipPath });
+        const absUnzipPath = path.resolve(unzipPath);
+        const extract = unzip.Extract({ path: absUnzipPath });
         fs.createReadStream(zipPath)
             .pipe(extract);
         await new Promise(resolve => {
