@@ -56,7 +56,7 @@ export class ModManager {
 
         await this.downloadFile(this.mod.downloadUrl, zipPath);
         await this.unzip(zipPath, unzipPath);
-        await this.copyFiles(unzipPath, this.modFolder);
+        await this.copyFolder(unzipPath, this.modFolder);
         await this.deleteFolder(tempPath);
     }
 
@@ -83,7 +83,7 @@ export class ModManager {
         });
     }
 
-    private async copyFiles(sourcePath: string, targetPath: string) {
+    private async copyFolder(sourcePath: string, targetPath: string) {
         await fs.copy(sourcePath, targetPath, {
             errorOnExist: false,
             overwrite: true,
