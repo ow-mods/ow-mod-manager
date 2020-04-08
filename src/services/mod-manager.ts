@@ -1,7 +1,7 @@
 import semver from 'semver'
-import unzip from 'unzip';
+import unzip from 'unzipper';
 import axios from 'axios';
-import fs from 'fs';
+import fs from 'fs-extra';
 
 export class ModManager {
 
@@ -24,42 +24,75 @@ export class ModManager {
             semver.lt(this.mod.localVersion, this.mod.remoteVersion);
     }
 
-    async install(): Promise<void> {
+    get modFolder(): string {
+        return `${this.MODS_DIR}/${this.mod.name}`;
+    }
+
+    public async install() {
         if (this.isInstalled) {
-            throw "Already installed";
+            throw "Can't install mod because it's already installed";
         }
-        const modFolder = `${this.MODS_DIR}/${this.mod.name}`;
-        await this.downloadAndUnzip(this.mod.downloadUrl, modFolder);
+        await this.installOrUpdate();
     }
 
-    async update(): Promise<void> {
+    public async update() {
         if (!this.isOutdated) {
-            throw "Not outdated";
+            throw "Can't update mod because it's not out of date";
         }
-        this.install(); // i guess?
+        await this.installOrUpdate();
     }
 
-    async delete(): Promise<void> {
+    public async delete() {
         if (!this.isInstalled) {
-            throw "Not installed";
+            throw "Can't delete mod because it's not installed";
         }
-        // todo: delete mod folder
+        await this.deleteFolder(this.modFolder);
     }
 
-    private async downloadAndUnzip(url: string, path: string): Promise<void> {
+    private async installOrUpdate() {
+        const tempPath = `temp/${this.mod.name}-${Date.now}`;
+        const zipPath = `${tempPath}/${this.mod.name}.zip`
+        const unzipPath = `${tempPath}/${this.mod.name}`
+
+        await this.downloadFile(this.mod.downloadUrl, zipPath);
+        await this.unzip(zipPath, unzipPath);
+        await this.copyFiles(unzipPath, this.modFolder);
+        await this.deleteFolder(tempPath);
+    }
+
+    private async downloadFile(url: string, path: string) {
         var writeStream = fs.createWriteStream(path);
         axios({
             url,
             method: 'get',
             responseType: "stream"
         }).then(response => {
-            response.data
-                .pipe(unzip.Parse())
-                .pipe(writeStream);
+            response.data.pipe(writeStream);
         });
-        return new Promise(resolve => {
+        await new Promise(resolve => {
             writeStream.on('finish', resolve);
         });
+    }
+
+    private async unzip(zipPath: string, unzipPath: string) {
+        const extract = unzip.Extract({ path: unzipPath });
+        fs.createReadStream(zipPath)
+            .pipe(extract);
+        await new Promise(resolve => {
+            extract.on('close', resolve);
+        });
+    }
+
+    private async copyFiles(sourcePath: string, targetPath: string) {
+        await fs.copy(sourcePath, targetPath, {
+            errorOnExist: false,
+            overwrite: true,
+            recursive: true
+        });
+    }
+
+    private async deleteFolder(folderPath: string) {
+        await fs.remove(folderPath);
     }
 
 }
