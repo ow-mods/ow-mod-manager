@@ -32,24 +32,24 @@ export class ModManager {
         if (this.isInstalled) {
             throw "Can't install mod because it's already installed";
         }
-        await this.installOrUpdate();
+        await this.upstall();
     }
 
     public async update() {
         if (!this.isOutdated) {
             throw "Can't update mod because it's not out of date";
         }
-        await this.installOrUpdate();
+        await this.upstall();
     }
 
-    public async delete() {
+    public async uninstall() {
         if (!this.isInstalled) {
-            throw "Can't delete mod because it's not installed";
+            throw "Can't uninstall mod because it's not installed";
         }
         await this.deleteFolder(this.modFolder);
     }
 
-    private async installOrUpdate() {
+    private async upstall() {
         const tempPath = `temp/${this.mod.name}-${Date.now}`;
         const zipPath = `${tempPath}/${this.mod.name}.zip`
         const unzipPath = `${tempPath}/${this.mod.name}`
