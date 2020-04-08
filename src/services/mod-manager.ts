@@ -15,12 +15,12 @@ export class ModManager {
     }
 
     get isInstalled(): boolean {
-        return this.mod.localVersion != null;
+        return !!this.mod.localVersion;
     }
 
     get isOutdated(): boolean {
         return this.isInstalled &&
-            this.mod.remoteVersion != null &&
+            this.mod.remoteVersion &&
             semver.lt(this.mod.localVersion, this.mod.remoteVersion);
     }
 
