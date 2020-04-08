@@ -1,6 +1,12 @@
 import semver from 'semver'
+import unzip from 'unzip';
+import axios from 'axios';
+import fs from 'fs';
 
 export class ModManager {
+
+    // TODO: find correct mod directory.
+    private MODS_DIR = 'C:/Program Files/Epic Games/OuterWilds/OWML/Mods';
 
     private mod: Mod;
 
@@ -22,22 +28,38 @@ export class ModManager {
         if (this.isInstalled) {
             throw "Already installed";
         }
-        // download zip from mod.downloadUrl
-        // unzip to Mods folder
+        const modFolder = `${this.MODS_DIR}/${this.mod.name}`;
+        await this.downloadAndUnzip(this.mod.downloadUrl, modFolder);
     }
 
     async update(): Promise<void> {
         if (!this.isOutdated) {
             throw "Not outdated";
         }
-        // same as install, but unzip into existing mod folder and overwrite files
+        this.install(); // i guess?
     }
 
     async delete(): Promise<void> {
         if (!this.isInstalled) {
             throw "Not installed";
         }
-        // delete mod folder
+        // todo: delete mod folder
+    }
+
+    private async downloadAndUnzip(url: string, path: string): Promise<void> {
+        var writeStream = fs.createWriteStream(path);
+        axios({
+            url,
+            method: 'get',
+            responseType: "stream"
+        }).then(response => {
+            response.data
+                .pipe(unzip.Parse())
+                .pipe(writeStream);
+        });
+        return new Promise(resolve => {
+            writeStream.on('finish', resolve);
+        });
     }
 
 }
