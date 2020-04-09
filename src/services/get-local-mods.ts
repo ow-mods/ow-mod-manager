@@ -8,13 +8,13 @@ async function getLocalMods(): Promise<ModMap> {
 
   const manifests: Manifest[] = manifestJsons.map(json => JSON.parse(json));
 
-  const modMap: ModMap = manifests.reduce((accumulator, manifest) => ({
+  const modMap: ModMap = manifests.reduce<ModMap>((accumulator, manifest) => ({
     ...accumulator,
     [manifest.uniqueName]: {
       name: manifest.name,
       author: manifest.author,
       uniqueName: manifest.uniqueName,
-      version: manifest.version,
+      localVersion: manifest.version,
     },
   }), {})
 
