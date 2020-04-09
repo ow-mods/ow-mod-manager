@@ -8,7 +8,11 @@ function useModList() {
   const [modList, setModList] = useState<Mod[]>([]);
 
   useEffect(() => {
-    setModList(getLocalMods);
+    const getMods = async () => {
+      const localMods = await getLocalMods();
+      setModList(localMods);
+    }
+    getMods();
   }, [])
 
   useEffect(() => {
@@ -19,9 +23,7 @@ function useModList() {
         remoteMod,
       ]))
     };
-
-    modDB.map(modDbItem => getMod(modDbItem));
-
+    modDB.map(getMod);
   }, []);
 
   return modList;
