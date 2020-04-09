@@ -3,11 +3,9 @@ import unzip from 'unzipper';
 import request from 'request'
 import fs from 'fs-extra';
 import path from 'path'
+import config from '../config.json';
 
 export class ModManager {
-
-    // TODO: find correct mod directory.
-    private MODS_DIR = 'C:/Program Files/Epic Games/OuterWilds/OWML/Mods';
 
     private mod: Mod;
 
@@ -26,7 +24,7 @@ export class ModManager {
     }
 
     get modFolder(): string {
-        return `${this.MODS_DIR}/${this.mod.name}`;
+        return `${config.owmlPath}/Mods/${this.mod.name}`;
     }
 
     public async install() {
