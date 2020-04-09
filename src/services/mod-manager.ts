@@ -77,9 +77,9 @@ export class ModManager {
     private async unzip(zipPath: string, unzipPath: string) {
         const absUnzipPath = path.resolve(unzipPath);
         const extract = unzip.Extract({ path: absUnzipPath });
-        fs.createReadStream(zipPath)
-            .pipe(extract);
-        await new Promise(resolve => {
+        const reader = fs.createReadStream(zipPath);
+        reader.pipe(extract);
+        return new Promise(resolve => {
             extract.on('close', resolve);
         });
     }
