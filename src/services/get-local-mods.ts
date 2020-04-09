@@ -1,5 +1,4 @@
 import fs from 'fs';
-
 import glob from 'glob-promise'
 import config from '../config.json';
 
