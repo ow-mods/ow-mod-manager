@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  createStyles, lighten, makeStyles, Theme,
+  createStyles, makeStyles, Theme,
 } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,14 +10,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import Tooltip from '@material-ui/core/Tooltip';
-import Button from '@material-ui/core/Button';
-import { ButtonGroup } from '@material-ui/core';
-import useModMap from '../hooks/use-mod-map';
+
+import useModMap from '../../hooks/use-mod-map';
+import TableToolbar from './TableToolbar';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -153,88 +150,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   );
 }
 
-const useToolbarStyles = makeStyles((theme: Theme) => createStyles({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-      theme.palette.type === 'light'
-        ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-        : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: '1 1 100%',
-  },
-}));
-
-interface EnhancedTableToolbarProps {
-  numSelected: number;
-}
-
-const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const classes = useToolbarStyles();
-  const { numSelected } = props;
-
-  return (
-    <Toolbar className={`${classes.root} ${numSelected > 0 ? classes.highlight : ''}`}>
-      {numSelected > 0 ? (
-        <Typography
-          className={classes.title}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected}
-          {' '}
-          selected
-        </Typography>
-      ) : (
-        <Typography
-          className={classes.title}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Grab ya mods, bois
-        </Typography>
-      )}
-      {numSelected > 0 ? (
-        <ButtonGroup
-          variant="outlined"
-          color="primary"
-        >
-          <Tooltip title="Delete">
-            <Button>
-              Update
-            </Button>
-          </Tooltip>
-          <Tooltip title="Delete">
-            <Button>
-              Uninstall
-            </Button>
-          </Tooltip>
-        </ButtonGroup>
-      ) : (
-        <Tooltip title="Filter list">
-          <Button
-            fullWidth
-            color="primary"
-            variant="contained"
-          >
-            Update all
-          </Button>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-};
-
 export default function EnhancedTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>('asc');
@@ -297,7 +212,7 @@ export default function EnhancedTable() {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <TableToolbar selected={selected} />
         <TableContainer>
           <Table
             className={classes.table}
