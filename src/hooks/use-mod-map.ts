@@ -4,13 +4,16 @@ import modDB from '../mod-db.json';
 import getLocalMods from '../services/get-local-mods';
 import getRemoteMod from '../services/get-remote-mod';
 
-function useModList() {
-  const [modList, setModList] = useState<Mod[]>([]);
+function useModMap() {
+  const [modList, setModList] = useState<ModMap>({});
 
   useEffect(() => {
     const getMods = async () => {
       const localMods = await getLocalMods();
-      setModList(localMods);
+      setModList(mods =>({
+        ...mods,
+        ...localMods
+      }));
     }
     getMods();
   }, [])
@@ -18,10 +21,13 @@ function useModList() {
   useEffect(() => {
     const getMod = async (modDbItem: ModDbItem) => {
       const remoteMod = await getRemoteMod(modDbItem);
-      setModList(mods => ([
+      setModList(mods => ({
         ...mods,
-        remoteMod,
-      ]));
+        [remoteMod.uniqueName]: {
+          ...remoteMod,
+          ...mods[remoteMod.uniqueName],
+        },
+      }));
     };
     modDB.map(getMod);
   }, []);
@@ -29,4 +35,4 @@ function useModList() {
   return modList;
 }
 
-export default useModList;
+export default useModMap;

@@ -16,7 +16,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
-import useModList from '../hooks/use-mod-list';
+import useModMap from '../hooks/use-mod-map';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -213,7 +213,9 @@ export default function EnhancedTable() {
   const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const rows = useModList();
+  const modMap = useModMap();
+
+  const rows = Object.values(modMap);
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Mod) => {
     const isAsc = orderBy === property && order === 'asc';
