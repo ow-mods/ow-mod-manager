@@ -7,7 +7,8 @@
     "target": "es6",
     "jsx": "react",
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "strict": true
   },
   "include": ["./src/**/*"]
 }

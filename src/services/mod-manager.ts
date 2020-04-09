@@ -19,7 +19,8 @@ export class ModManager {
 
     get isOutdated(): boolean {
         return this.isInstalled &&
-            this.mod.remoteVersion &&
+            this.mod.remoteVersion !== undefined &&
+            this.mod.localVersion !== undefined &&
             semver.lt(this.mod.localVersion, this.mod.remoteVersion);
     }
 
@@ -49,6 +50,10 @@ export class ModManager {
     }
 
     private async upstall() {
+        if (!this.mod.downloadUrl) {
+            return;
+        }
+
         const tempPath = `temp/${this.mod.name}-${new Date().getTime()}`;
         const zipPath = `${tempPath}/${this.mod.name}.zip`
         const unzipPath = `${tempPath}/${this.mod.name}`
