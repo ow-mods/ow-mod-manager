@@ -8,6 +8,8 @@ type Mod = {
   downloadCount?: number;
 }
 
+type ModMap = { [uniqueName: string]: Mod };
+
 type ModDbItem = {
   repo: string;
   manifest: string;

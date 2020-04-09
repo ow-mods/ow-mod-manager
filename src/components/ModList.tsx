@@ -213,7 +213,9 @@ export default function EnhancedTable() {
   const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const rows = useModList();
+  const modMap = useModList();
+
+  const rows = Object.values(modMap);
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Mod) => {
     const isAsc = orderBy === property && order === 'asc';
