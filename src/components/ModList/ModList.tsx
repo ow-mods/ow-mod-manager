@@ -6,15 +6,14 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import useModMap from '../../hooks/use-mod-map';
 import TableToolbar from './TableToolbar';
+import ModTableHead from './ModTableHead';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -26,10 +25,8 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   return 0;
 }
 
-type Order = 'asc' | 'desc';
-
 function getComparator<Key extends keyof Mod>(
-  order: Order,
+  order: SortOrder,
   orderBy: Key,
 ): (a: Mod, b: Mod) => number {
   return order === 'desc'
@@ -46,31 +43,6 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   });
   return stabilizedThis.map((element) => element[0]);
 }
-
-interface HeadCell {
-  disablePadding: boolean;
-  id: keyof Mod;
-  label: string;
-  numeric: boolean;
-}
-
-const headCells: HeadCell[] = [
-  {
-    id: 'name', numeric: false, disablePadding: true, label: 'Name',
-  },
-  {
-    id: 'author', numeric: false, disablePadding: false, label: 'Author',
-  },
-  {
-    id: 'localVersion', numeric: false, disablePadding: false, label: 'Local Version',
-  },
-  {
-    id: 'remoteVersion', numeric: false, disablePadding: false, label: 'Remote Version',
-  },
-  {
-    id: 'downloadCount', numeric: true, disablePadding: false, label: 'Downloads',
-  },
-];
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -96,63 +68,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-interface EnhancedTableProps {
-  classes: ReturnType<typeof useStyles>;
-  numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Mod) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
-}
-
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
-  const createSortHandler = (property: keyof Mod) => (event: React.MouseEvent<unknown>) => {
-    onRequestSort(event, property);
-  };
-
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'default'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-export default function EnhancedTable() {
+export default function ModList() {
   const classes = useStyles();
-  const [order, setOrder] = React.useState<Order>('asc');
+  const [order, setOrder] = React.useState<SortOrder>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Mod>('localVersion');
   const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
@@ -218,8 +136,7 @@ export default function EnhancedTable() {
             className={classes.table}
             size="medium"
           >
-            <EnhancedTableHead
-              classes={classes}
+            <ModTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
