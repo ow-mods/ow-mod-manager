@@ -32,6 +32,8 @@
     "electron": "^8.2.0",
     "fork-ts-checker-webpack-plugin": "^4.1.2",
     "fs-extra": "^9.0.0",
+    "glob": "^7.1.6",
+    "glob-promise": "^3.4.0",
     "html-webpack-plugin": "^4.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
