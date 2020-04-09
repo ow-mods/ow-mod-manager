@@ -4,7 +4,7 @@ import modDB from '../mod-db.json';
 import getLocalMods from '../services/get-local-mods';
 import getRemoteMod from '../services/get-remote-mod';
 
-function useModList() {
+function useModMap() {
   const [modList, setModList] = useState<ModMap>({});
 
   useEffect(() => {
@@ -35,4 +35,4 @@ function useModList() {
   return modList;
 }
 
-export default useModList;
+export default useModMap;
