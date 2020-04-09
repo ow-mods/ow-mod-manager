@@ -59,7 +59,8 @@ interface HeadCell {
 const headCells: HeadCell[] = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
   { id: 'author', numeric: false, disablePadding: false, label: 'Author' },
-  { id: 'version', numeric: false, disablePadding: false, label: 'Version' },
+  { id: 'localVersion', numeric: false, disablePadding: false, label: 'Local Version' },
+  { id: 'remoteVersion', numeric: false, disablePadding: false, label: 'Remote Version' },
   { id: 'downloadCount', numeric: true, disablePadding: false, label: 'Downloads' },
 ];
 
@@ -208,7 +209,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function EnhancedTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Mod>('version');
+  const [orderBy, setOrderBy] = React.useState<keyof Mod>('localVersion');
   const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -305,7 +306,8 @@ export default function EnhancedTable() {
                         {row.name}
                       </TableCell>
                       <TableCell>{row.author}</TableCell>
-                      <TableCell>{row.version}</TableCell>
+                      <TableCell>{row.localVersion}</TableCell>
+                      <TableCell>{row.remoteVersion}</TableCell>
                       <TableCell align="right">{row.downloadCount}</TableCell>
                     </TableRow>
                   );

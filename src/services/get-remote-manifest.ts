@@ -9,6 +9,7 @@ async function getRemoteManifest(modDbItem: ModDbItem): Promise<Manifest> {
       const manifest: Manifest = {
         name: data.name,
         author: data.author,
+        uniqueName: data.uniqueName,
         version: data.version,
       };
 

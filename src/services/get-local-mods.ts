@@ -1,12 +1,12 @@
 import fs from 'fs';
+import glob from 'glob-promise'
+import config from '../config.json';
 
-// TODO: find correct mod directory.
-const MODS_DIR = 'C:/Program Files/Epic Games/OuterWilds/OWML/Mods';
+async function getLocalMods(): Promise<Mod[]> {
+  
+  const manifestPaths = await glob(`${config.owmlPath}/Mods/**/manifest.json`);
+  const manifestJsons = manifestPaths.map(path => fs.readFileSync(path, { encoding: 'UTF-8'}));
 
-function getLocalMods(): Mod[] {
-  const installedModFolders = fs.readdirSync(MODS_DIR);
-  const modManifestPaths = installedModFolders.map(folder => `${MODS_DIR}/${folder}/manifest.json`);
-  const manifestJsons = modManifestPaths.map(path => fs.readFileSync(path, { encoding: 'UTF-8'}));
   const manifests = manifestJsons.map(json => JSON.parse(json));
 
   const mods: Mod[] = manifests.map(manifest => ({
@@ -14,7 +14,7 @@ function getLocalMods(): Mod[] {
     author: manifest.author,
     uniqueName: manifest.uniqueName,
     version: manifest.version,
-  }))
+  }));
 
   return mods;
 }

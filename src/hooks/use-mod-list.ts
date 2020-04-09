@@ -8,27 +8,22 @@ function useModList() {
   const [modList, setModList] = useState<Mod[]>([]);
 
   useEffect(() => {
-    setModList(getLocalMods);
+    const getMods = async () => {
+      const localMods = await getLocalMods();
+      setModList(localMods);
+    }
+    getMods();
   }, [])
 
   useEffect(() => {
     const getMod = async (modDbItem: ModDbItem) => {
       const remoteMod = await getRemoteMod(modDbItem);
-
-      var existingMod = modList.find(mod => mod.uniqueName == remoteMod.uniqueName);
-      if (!existingMod) {
-        setModList(mods => ([
-          ...mods,
-          remoteMod,
-        ]))
-      }
-      else {
-        existingMod.downloadCount = remoteMod.downloadCount;
-      }
+      setModList(mods => ([
+        ...mods,
+        remoteMod,
+      ]));
     };
-
     modDB.map(getMod);
-
   }, []);
 
   return modList;
