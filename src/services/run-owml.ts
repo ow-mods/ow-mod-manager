@@ -7,7 +7,7 @@ function runOwml() {
     exec.execFile(EXE_FILE, {
         shell: true,
         cwd: config.owmlPath
-    }, (error, stdout, stderr) => {
+    }, (error) => {
         if (error) {
             throw error;
         }
