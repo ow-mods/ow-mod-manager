@@ -1,13 +1,12 @@
 import exec from 'child_process';
+import config from '../config.json';
 
-// TODO: find correct OWML directory.
-const OWML_DIR = 'C:/Program Files/Epic Games/OuterWilds/OWML';
 const EXE_FILE = 'OWML.Launcher.exe';
 
 function runOwml() {
     exec.execFile(EXE_FILE, {
         shell: true,
-        cwd: OWML_DIR
+        cwd: config.owmlPath
     }, (error, stdout, stderr) => {
         if (error) {
             throw error;
