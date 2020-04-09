@@ -1,7 +1,10 @@
 type Mod = {
   name: string;
   author: string;
-  version: string;
+  uniqueName: string;
+  localVersion?: string;
+  remoteVersion?: string;
+  downloadUrl?: string;
   downloadCount?: number;
 }
 
@@ -11,12 +14,13 @@ type ModDbItem = {
 }
 
 type Release = {
-  downloadUrl: string,
-  downloadCount: number
+  downloadUrl: string;
+  downloadCount: number;
 }
 
 type Manifest = {
   name: string;
   author: string;
+  uniqueName: string;
   version: string;
 }

@@ -21,7 +21,7 @@ function useModList() {
       setModList(mods => ([
         ...mods,
         remoteMod,
-      ]))
+      ]));
     };
     modDB.map(getMod);
   }, []);

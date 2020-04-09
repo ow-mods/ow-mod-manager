@@ -6,5 +6,9 @@
   {
     "repo": "Raicuparta/outer-wilds-spawn-points",
     "manifest": "OWSpawnPoints/manifest.json"
+  },
+  {
+    "repo": "Raicuparta/quantum-space-buddies",
+    "manifest": "QSB/manifest.json"
   }
 ]
