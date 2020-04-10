@@ -9,11 +9,11 @@ import config from '../config.json';
 
 const callbacks: Function[] = [];
 
-export function addCallback(callback: Function) {
+export function addLocalModsCallback(callback: Function) {
   callbacks.push(callback);
 }
 
-export function removeCallback(callback: Function) {
+export function removeLocalModsCallback(callback: Function) {
   remove(callbacks, (item) => item === callback);
 }
 

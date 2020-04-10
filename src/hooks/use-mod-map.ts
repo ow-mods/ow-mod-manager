@@ -4,7 +4,7 @@ import { merge } from 'lodash';
 import modDB from '../mod-db.json';
 import getLocalMods from '../services/get-local-mods';
 import getRemoteMod from '../services/get-remote-mod';
-import { addCallback, removeCallback } from '../services/mod-manager';
+import { addLocalModsCallback, removeLocalModsCallback } from '../services/mod-manager';
 
 function useModMap() {
   const [modList, setModList] = useState<ModMap>({});
@@ -17,10 +17,10 @@ function useModMap() {
       setIsLocalDirty(true);
     };
 
-    addCallback(callback);
+    addLocalModsCallback(callback);
 
     return () => {
-      removeCallback(callback);
+      removeLocalModsCallback(callback);
     };
   }, []);
 
