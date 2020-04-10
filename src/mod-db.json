@@ -10,5 +10,17 @@
   {
     "repo": "Raicuparta/quantum-space-buddies",
     "manifest": "QSB/manifest.json"
+  },
+  {
+    "repo": "misternebula/ObjectSpawner",
+    "manifest": "manifest.json"
+  },
+  {
+    "repo": "misternebula/InputHandler",
+    "manifest": "manifest.json"
+  },
+  {
+    "repo": "misternebula/FreeCam",
+    "manifest": "manifest.json"
   }
 ]
