@@ -1,9 +1,8 @@
 
 import axios from 'axios';
-import { Dictionary } from 'lodash';
 
 const timeout = 60000;
-const cachedData: Dictionary<Release> = {};
+const cachedData: CachedData = {};
 let cachedTime: Date;
 
 async function getRemoteRelease(repo: string): Promise<Release> {
@@ -37,4 +36,8 @@ type Rel = {
   assets: {
     download_count: number;
   }[];
+};
+
+type CachedData = {
+  [repo: string]: Release;
 };
