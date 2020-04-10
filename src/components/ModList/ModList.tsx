@@ -11,7 +11,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 
-import useModMap from '../../hooks/use-mod-map';
 import TableToolbar from './TableToolbar';
 import ModTableHead from './ModTableHead';
 import { useAppState } from '../AppState';
@@ -77,7 +76,6 @@ export default function ModList() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { modMap } = useAppState();
-  useModMap();
 
   const rows = Object.values(modMap);
 

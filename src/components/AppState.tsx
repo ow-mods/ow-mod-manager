@@ -1,4 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { merge } from 'lodash';
+
+import getLocalMods from '../services/get-local-mods';
+import getRemoteMod from '../services/get-remote-mod';
+import modDB from '../mod-db.json';
 
 type ContextState = {
   isLocalModsDirty: boolean;
@@ -25,12 +30,51 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     modMap: {},
   });
 
+  const {
+    isLocalModsDirty,
+  } = appState;
+
+  const [remoteModList, setRemoteModList] = useState<ModMap>({});
+  const [localModList, setLocalModList] = useState<ModMap>({});
+
+
   const setAppState = (state: Partial<ContextState>) => {
     setState({
       ...appState,
       ...state,
     });
   };
+
+  useEffect(() => {
+    if (!isLocalModsDirty) {
+      return;
+    }
+    const getMods = async () => {
+      const localMods = await getLocalMods();
+      setLocalModList(localMods);
+      setAppState({ isLocalModsDirty: false });
+    };
+    getMods();
+  }, [isLocalModsDirty]);
+
+  useEffect(() => {
+    const getMod = async (modDbItem: ModDbItem) => {
+      const remoteMod = await getRemoteMod(modDbItem);
+      setRemoteModList((remoteMods) => ({
+        ...remoteMods,
+        [remoteMod.uniqueName]: remoteMod,
+      }));
+    };
+    modDB.map(getMod);
+  }, []);
+
+  useEffect(() => {
+    const mods = merge({}, remoteModList, localModList);
+    setAppState({
+      isLocalModsDirty,
+      modMap: mods,
+    });
+  }, [remoteModList, localModList]);
 
   return (
     <AppState.Provider

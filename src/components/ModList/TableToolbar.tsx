@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import {
   createStyles, lighten, makeStyles, Theme,
 } from '@material-ui/core/styles';
