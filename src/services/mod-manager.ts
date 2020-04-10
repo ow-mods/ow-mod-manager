@@ -39,7 +39,7 @@ export function isOutdated(mod: Mod): boolean {
   return false;
 }
 
-export function modFolder(mod: Mod): string {
+function modFolder(mod: Mod): string {
   return `${config.owmlPath}/Mods/${mod.folderName}`;
 }
 
