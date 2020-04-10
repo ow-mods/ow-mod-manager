@@ -6,9 +6,7 @@ const cachedData: CachedData = {};
 let cachedTime: Date;
 
 async function getRemoteRelease(repo: string): Promise<Release> {
-  if (cachedData
-    && cachedData[repo]
-    && cachedTime
+  if (cachedData[repo]
     && (new Date().getTime() - cachedTime.getTime()) < timeout) {
     return cachedData[repo];
   }
