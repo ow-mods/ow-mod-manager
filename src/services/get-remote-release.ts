@@ -7,7 +7,6 @@ const cachedData: Dictionary<Release> = {};
 let cachedTime: Date;
 
 async function getRemoteRelease(repo: string): Promise<Release> {
-
   if (cachedData
     && Object.keys(cachedData).includes(repo)
     && cachedTime
