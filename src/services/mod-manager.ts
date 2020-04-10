@@ -24,7 +24,7 @@ export class ModManager {
   }
 
   get modFolder(): string {
-    return `${config.owmlPath}/Mods/${this.mod.name}`;
+    return `${config.owmlPath}/Mods/${this.mod.folderName}`;
   }
 
   public async install() {

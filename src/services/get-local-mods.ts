@@ -4,17 +4,19 @@ import config from '../config.json';
 
 async function getLocalMods(): Promise<ModMap> {
   const manifestPaths = await glob(`${config.owmlPath}/Mods/**/manifest.json`);
-  const manifestJsons = manifestPaths.map((path) => fs.readFileSync(path, { encoding: 'UTF-8' }));
+  const manifestFiles = manifestPaths.map((manifestPath) => ({
+    path: manifestPath,
+    manifest: JSON.parse(fs.readFileSync(manifestPath, { encoding: 'UTF-8' })),
+  }));
 
-  const manifests: Manifest[] = manifestJsons.map((json) => JSON.parse(json));
-
-  const modMap: ModMap = manifests.reduce<ModMap>((accumulator, manifest): ModMap => ({
+  const modMap: ModMap = manifestFiles.reduce<ModMap>((accumulator, manifestFile): ModMap => ({
     ...accumulator,
-    [manifest.uniqueName]: {
-      name: manifest.name,
-      author: manifest.author,
-      uniqueName: manifest.uniqueName,
-      localVersion: manifest.version,
+    [manifestFile.manifest.uniqueName]: {
+      name: manifestFile.manifest.name,
+      author: manifestFile.manifest.author,
+      uniqueName: manifestFile.manifest.uniqueName,
+      folderName: manifestFile.path.replace(`${config.owmlPath}/Mods/`, '').split('/')[0],
+      localVersion: manifestFile.manifest.version,
     },
   }), {});
 
