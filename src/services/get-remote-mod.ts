@@ -11,9 +11,9 @@ async function getRemoteMod(modDbItem: ModDbItem): Promise<Mod> {
     uniqueName: manifest.uniqueName,
     remoteVersion: manifest.version,
     downloadUrl: release.downloadUrl,
-    downloadCount: release.downloadCount
+    downloadCount: release.downloadCount,
   };
   return remoteMod;
-};
+}
 
 export default getRemoteMod;

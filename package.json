@@ -6,11 +6,53 @@
   "scripts": {
     "start": "electron main.js",
     "watch": "rm -rf ./dist && mkdir ./dist && cp ./src/index.html ./dist/index.html && NODE_ENV=development webpack-dev-server --hot",
-    "build": "rm -rf ./dist && mkdir ./dist && cp ./src/production.html ./dist/index.html && NODE_ENV=development webpack"
+    "build": "rm -rf ./dist && mkdir ./dist && cp ./src/production.html ./dist/index.html && NODE_ENV=development webpack",
+    "lint:scripts": "eslint --plugin tsc --rule \"tsc/config:[2,{configFile: './tsconfig.json'}]\" '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "eslint-comments",
+      "promise",
+      "import"
+    ],
+    "extends": [
+      "airbnb-typescript",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:eslint-comments/recommended",
+      "plugin:promise/recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    ],
+    "settings": {
+      "import/resolver": {
+        "typescript": {}
+      }
+    },
+    "parserOptions": {
+      "project": "./tsconfig.json",
+      "tsconfigRootDir": "./"
+    },
+    "rules": {
+      "import/prefer-default-export": "off",
+      "react/prop-types": "off",
+      "jsx-a11y/anchor-is-valid": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "class-methods-use-this": "off"
+    },
+    "env": {
+      "node": true,
+      "browser": true
+    }
+  },
+  "eslintIgnore": [
+    "dist/**/*",
+    "temp/**/*"
+  ],
   "dependencies": {
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
@@ -27,9 +69,22 @@
     "@types/request": "^2.48.4",
     "@types/semver": "^7.1.0",
     "@types/unzipper": "^0.10.3",
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
     "axios": "^0.19.2",
     "babel-loader": "^8.1.0",
     "electron": "^8.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-typescript": "^7.2.0",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-import-resolver-typescript": "^2.0.0",
+    "eslint-loader": "^4.0.0",
+    "eslint-plugin-eslint-comments": "^3.1.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "eslint-plugin-tsc": "^1.2.0",
     "fork-ts-checker-webpack-plugin": "^4.1.2",
     "fs-extra": "^9.0.0",
     "glob": "^7.1.6",
@@ -39,6 +94,7 @@
     "react-dom": "^16.13.1",
     "react-domerino": "npm:@hot-loader/react-dom@^16.13.0",
     "react-hot-loader": "^4.12.20",
+    "regenerator-runtime": "^0.13.5",
     "request": "^2.88.2",
     "semver": "^7.2.1",
     "ts-loader": "^6.2.2",

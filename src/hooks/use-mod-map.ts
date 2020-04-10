@@ -10,18 +10,18 @@ function useModMap() {
   useEffect(() => {
     const getMods = async () => {
       const localMods = await getLocalMods();
-      setModList(mods =>({
+      setModList((mods) => ({
         ...mods,
-        ...localMods
+        ...localMods,
       }));
-    }
+    };
     getMods();
-  }, [])
+  }, []);
 
   useEffect(() => {
     const getMod = async (modDbItem: ModDbItem) => {
       const remoteMod = await getRemoteMod(modDbItem);
-      setModList(mods => ({
+      setModList((mods) => ({
         ...mods,
         [remoteMod.uniqueName]: {
           ...remoteMod,

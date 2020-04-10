@@ -1,6 +1,7 @@
 import React from 'react';
-import clsx from 'clsx';
-import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
+import {
+  createStyles, lighten, makeStyles, Theme,
+} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -40,13 +41,13 @@ function getComparator<Key extends keyof Mod>(
 }
 
 function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
+  const stabilizedThis = array.map((element, index) => [element, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
-  return stabilizedThis.map((el) => el[0]);
+  return stabilizedThis.map((element) => element[0]);
 }
 
 interface HeadCell {
@@ -57,12 +58,46 @@ interface HeadCell {
 }
 
 const headCells: HeadCell[] = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
-  { id: 'author', numeric: false, disablePadding: false, label: 'Author' },
-  { id: 'localVersion', numeric: false, disablePadding: false, label: 'Local Version' },
-  { id: 'remoteVersion', numeric: false, disablePadding: false, label: 'Remote Version' },
-  { id: 'downloadCount', numeric: true, disablePadding: false, label: 'Downloads' },
+  {
+    id: 'name', numeric: false, disablePadding: true, label: 'Name',
+  },
+  {
+    id: 'author', numeric: false, disablePadding: false, label: 'Author',
+  },
+  {
+    id: 'localVersion', numeric: false, disablePadding: false, label: 'Local Version',
+  },
+  {
+    id: 'remoteVersion', numeric: false, disablePadding: false, label: 'Remote Version',
+  },
+  {
+    id: 'downloadCount', numeric: true, disablePadding: false, label: 'Downloads',
+  },
 ];
+
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  root: {
+    width: '100%',
+  },
+  paper: {
+    width: '100%',
+    marginBottom: theme.spacing(2),
+  },
+  table: {
+    minWidth: 500,
+  },
+  visuallyHidden: {
+    border: 0,
+    clip: 'rect(0 0 0 0)',
+    height: 1,
+    margin: -1,
+    overflow: 'hidden',
+    padding: 0,
+    position: 'absolute',
+    top: 20,
+    width: 1,
+  },
+}));
 
 interface EnhancedTableProps {
   classes: ReturnType<typeof useStyles>;
@@ -75,7 +110,14 @@ interface EnhancedTableProps {
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const {
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+  } = props;
   const createSortHandler = (property: keyof Mod) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
@@ -111,27 +153,25 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   );
 }
 
-const useToolbarStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(1),
-    },
-    highlight:
+const useToolbarStyles = makeStyles((theme: Theme) => createStyles({
+  root: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+  },
+  highlight:
       theme.palette.type === 'light'
         ? {
-            color: theme.palette.secondary.main,
-            backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-          }
+          color: theme.palette.secondary.main,
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+        }
         : {
-            color: theme.palette.text.primary,
-            backgroundColor: theme.palette.secondary.dark,
-          },
-    title: {
-      flex: '1 1 100%',
-    },
-  }),
-);
+          color: theme.palette.text.primary,
+          backgroundColor: theme.palette.secondary.dark,
+        },
+  title: {
+    flex: '1 1 100%',
+  },
+}));
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -142,22 +182,33 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const { numSelected } = props;
 
   return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-    >
+    <Toolbar className={`${classes.root} ${numSelected > 0 ? classes.highlight : ''}`}>
       {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-          {numSelected} selected
+        <Typography
+          className={classes.title}
+          color="inherit"
+          variant="subtitle1"
+          component="div"
+        >
+          {numSelected}
+          {' '}
+          selected
         </Typography>
       ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+        <Typography
+          className={classes.title}
+          variant="h6"
+          id="tableTitle"
+          component="div"
+        >
           Grab ya mods, bois
         </Typography>
       )}
       {numSelected > 0 ? (
-        <ButtonGroup variant="outlined" color="primary" >
+        <ButtonGroup
+          variant="outlined"
+          color="primary"
+        >
           <Tooltip title="Delete">
             <Button>
               Update
@@ -171,7 +222,11 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
         </ButtonGroup>
       ) : (
         <Tooltip title="Filter list">
-          <Button fullWidth color="primary" variant="contained">
+          <Button
+            fullWidth
+            color="primary"
+            variant="contained"
+          >
             Update all
           </Button>
         </Tooltip>
@@ -179,32 +234,6 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     </Toolbar>
   );
 };
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-    },
-    paper: {
-      width: '100%',
-      marginBottom: theme.spacing(2),
-    },
-    table: {
-      minWidth: 500,
-    },
-    visuallyHidden: {
-      border: 0,
-      clip: 'rect(0 0 0 0)',
-      height: 1,
-      margin: -1,
-      overflow: 'hidden',
-      padding: 0,
-      position: 'absolute',
-      top: 20,
-      width: 1,
-    },
-  }),
-);
 
 export default function EnhancedTable() {
   const classes = useStyles();
@@ -257,11 +286,11 @@ export default function EnhancedTable() {
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(Number.parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const isSelected = (name: string) => selected.indexOf(name) !== -1;
+  const isSelected = (name: string) => selected.includes(name);
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 

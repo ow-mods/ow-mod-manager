@@ -6,6 +6,6 @@ const App = () => (
   <div>
     <ModList />
   </div>
-)
+);
 
 export default hot(App);
