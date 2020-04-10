@@ -5,33 +5,33 @@ type ContextState = {
 };
 
 type ContextMethods = {
-  setIsLocalModsDirty: (isDirty: boolean) => void;
+  setAppState: (state: Partial<ContextState>) => void;
 };
 
 type AppContext = ContextState & ContextMethods;
 
 const AppState = React.createContext<AppContext>({
   isLocalModsDirty: true,
-  setIsLocalModsDirty: () => {},
+  setAppState: () => {},
 });
 
 export const AppStateProvider: React.FunctionComponent = ({ children }) => {
-  const [context, setContext] = useState<ContextState>({
+  const [appState, setState] = useState<ContextState>({
     isLocalModsDirty: true,
   });
 
-  const setIsLocalModsDirty = (isDirty: boolean) => {
-    setContext({
-      ...context,
-      isLocalModsDirty: isDirty,
+  const setAppState = (state: Partial<ContextState>) => {
+    setState({
+      ...appState,
+      ...state,
     });
   };
 
   return (
     <AppState.Provider
       value={{
-        ...context,
-        setIsLocalModsDirty,
+        ...appState,
+        setAppState,
       }}
     >
       {children}

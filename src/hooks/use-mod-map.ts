@@ -10,7 +10,7 @@ function useModMap() {
   const [modList, setModList] = useState<ModMap>({});
   const [remoteModList, setRemoteModList] = useState<ModMap>({});
   const [localModList, setLocalModList] = useState<ModMap>({});
-  const { setIsLocalModsDirty, isLocalModsDirty } = useContext(AppState);
+  const { setAppState, isLocalModsDirty } = useContext(AppState);
 
   useEffect(() => {
     if (!isLocalModsDirty) {
@@ -19,7 +19,7 @@ function useModMap() {
     const getMods = async () => {
       const localMods = await getLocalMods();
       setLocalModList(localMods);
-      setIsLocalModsDirty(false);
+      setAppState({ isLocalModsDirty: false });
     };
     getMods();
   }, [isLocalModsDirty]);
