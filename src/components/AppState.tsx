@@ -12,6 +12,7 @@ type ContextState = {
 
 type ContextMethods = {
   setAppState: (state: Partial<ContextState>) => void;
+  addMod: (mod: Mod) => void;
 };
 
 type AppContext = ContextState & ContextMethods;
@@ -20,6 +21,7 @@ const AppState = React.createContext<AppContext>({
   isLocalModsDirty: true,
   modMap: {},
   setAppState: () => {},
+  addMod: () => {},
 });
 
 export const useAppState = () => useContext(AppState);
@@ -37,11 +39,21 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   const [remoteModList, setRemoteModList] = useState<ModMap>({});
   const [localModList, setLocalModList] = useState<ModMap>({});
 
-
   const setAppState = (state: Partial<ContextState>) => {
     setState((prevState) => ({
       ...prevState,
       ...state,
+    }));
+  };
+
+  const addMod = (mod: Mod) => {
+    setState((prevState) => ({
+      ...prevState,
+      modMap: {
+        ...prevState.modMap,
+        [mod.uniqueName]: mod,
+      },
+      isLocalModsDirty: !mod.isLoading,
     }));
   };
 
@@ -81,6 +93,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
       value={{
         ...appState,
         setAppState,
+        addMod,
       }}
     >
       {children}

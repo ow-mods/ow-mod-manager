@@ -38,7 +38,7 @@ const useToolbarStyles = makeStyles((theme: Theme) => createStyles({
 }));
 
 const TableToolbar = (props: Props) => {
-  const { setAppState } = useAppState();
+  const { setAppState, addMod } = useAppState();
   const classes = useToolbarStyles();
   const { selectedMod: selected } = props;
 
@@ -46,8 +46,15 @@ const TableToolbar = (props: Props) => {
 
   const modActionHandler = useCallback((handler: ModActionHandler) => async () => {
     if (selected !== undefined) {
+      addMod({
+        ...selected,
+        isLoading: true,
+      });
       await handler(selected);
-      setAppState({ isLocalModsDirty: true });
+      addMod({
+        ...selected,
+        isLoading: false,
+      });
     }
   }, [selected, setAppState]);
 

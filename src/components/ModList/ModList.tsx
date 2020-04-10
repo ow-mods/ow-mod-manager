@@ -143,7 +143,7 @@ export default function ModList() {
                         {mod.name}
                       </TableCell>
                       <TableCell>{mod.author}</TableCell>
-                      <TableCell>{mod.localVersion}</TableCell>
+                      <TableCell>{mod.isLoading ? 'Loading...' : mod.localVersion}</TableCell>
                       <TableCell>{mod.remoteVersion}</TableCell>
                       <TableCell align="right">{mod.downloadCount}</TableCell>
                     </TableRow>

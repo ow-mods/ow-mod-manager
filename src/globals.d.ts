@@ -7,6 +7,7 @@ type Mod = {
   remoteVersion?: string;
   downloadUrl?: string;
   downloadCount?: number;
+  isLoading: boolean;
 };
 
 type ModMap = { [uniqueName: string]: Mod };
