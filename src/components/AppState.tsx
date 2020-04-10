@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 type ContextState = {
   isLocalModsDirty: boolean;
@@ -16,6 +16,8 @@ const AppState = React.createContext<AppContext>({
   modMap: {},
   setAppState: () => {},
 });
+
+export const useAppState = () => useContext(AppState);
 
 export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   const [appState, setState] = useState<ContextState>({
@@ -41,5 +43,3 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     </AppState.Provider>
   );
 };
-
-export default AppState;
