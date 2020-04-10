@@ -10,5 +10,25 @@
   {
     "repo": "Raicuparta/quantum-space-buddies",
     "manifest": "QSB/manifest.json"
+  },
+  {
+    "repo": "Raicuparta/outer-wilds-auto-resume",
+    "manifest": "manifest.json"
+  },
+  {
+    "repo": "amazingalek/owml-light-bramble",
+    "manifest": "OWML.LightBramble/manifest.json"
+  },
+  {
+    "repo": "misternebula/ObjectSpawner",
+    "manifest": "manifest.json"
+  },
+  {
+    "repo": "misternebula/FreeCam",
+    "manifest": "manifest.json"
+  },
+  {
+    "repo": "misternebula/InputHandler",
+    "manifest": "manifest.json"
   }
 ]
