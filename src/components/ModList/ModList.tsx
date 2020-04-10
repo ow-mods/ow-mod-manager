@@ -107,7 +107,7 @@ export default function ModList() {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <TableToolbar selected={selected} />
+        <TableToolbar selectedMod={selected} />
         <TableContainer>
           <Table
             className={classes.table}

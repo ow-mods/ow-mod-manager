@@ -3,12 +3,15 @@ import {
   createStyles, lighten, makeStyles, Theme,
 } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
 
+import {
+  isInstalled, isOutdated, install, uninstall, update,
+} from '../../services/mod-manager';
+
 interface Props {
-  selected?: Mod;
+  selectedMod?: Mod;
 }
 
 const useToolbarStyles = makeStyles((theme: Theme) => createStyles({
@@ -33,7 +36,9 @@ const useToolbarStyles = makeStyles((theme: Theme) => createStyles({
 
 const TableToolbar = (props: Props) => {
   const classes = useToolbarStyles();
-  const { selected } = props;
+  const { selectedMod: selected } = props;
+
+  const isModInstalled = selected !== undefined && isInstalled(selected);
 
   return (
     <Toolbar className={`${classes.root} ${selected !== undefined ? classes.highlight : ''}`}>
@@ -42,27 +47,30 @@ const TableToolbar = (props: Props) => {
           variant="outlined"
           color="primary"
         >
-          <Tooltip title="Delete">
-            <Button>
-              Update
-            </Button>
-          </Tooltip>
-          <Tooltip title="Delete">
-            <Button>
-              Uninstall
-            </Button>
-          </Tooltip>
+          {isModInstalled && (
+          <Button onClick={() => uninstall(selected)}>
+            Uninstall
+          </Button>
+          )}
+          {!isModInstalled && (
+          <Button onClick={() => install(selected)}>
+            Install
+          </Button>
+          )}
+          {isOutdated(selected) && (
+          <Button onClick={() => update(selected)}>
+            Update
+          </Button>
+          )}
         </ButtonGroup>
       ) : (
-        <Tooltip title="Filter list">
-          <Button
-            fullWidth
-            color="primary"
-            variant="contained"
-          >
-            Update all
-          </Button>
-        </Tooltip>
+        <Button
+          fullWidth
+          color="primary"
+          variant="contained"
+        >
+          Update all
+        </Button>
       )}
     </Toolbar>
   );
