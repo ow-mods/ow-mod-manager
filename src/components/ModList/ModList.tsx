@@ -14,6 +14,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import useModMap from '../../hooks/use-mod-map';
 import TableToolbar from './TableToolbar';
 import ModTableHead from './ModTableHead';
+import AppState from '../AppState';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -75,9 +76,10 @@ export default function ModList() {
   const [selected, setSelected] = React.useState<string>('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const modMap = useModMap();
+  const appState = React.useContext(AppState);
+  useModMap();
 
-  const rows = Object.values(modMap);
+  const rows = Object.values(appState.modMap);
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Mod) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -107,7 +109,7 @@ export default function ModList() {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <TableToolbar selectedMod={modMap[selected]} />
+        <TableToolbar selectedMod={appState.modMap[selected]} />
         <TableContainer>
           <Table
             className={classes.table}

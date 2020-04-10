@@ -7,10 +7,10 @@ import getRemoteMod from '../services/get-remote-mod';
 import AppState from '../components/AppState';
 
 function useModMap() {
-  const [modList, setModList] = useState<ModMap>({});
   const [remoteModList, setRemoteModList] = useState<ModMap>({});
   const [localModList, setLocalModList] = useState<ModMap>({});
-  const { setAppState, isLocalModsDirty } = useContext(AppState);
+  const appState = useContext(AppState);
+  const { isLocalModsDirty, setAppState } = appState;
 
   useEffect(() => {
     if (!isLocalModsDirty) {
@@ -36,10 +36,12 @@ function useModMap() {
   }, []);
 
   useEffect(() => {
-    setModList(merge({}, remoteModList, localModList));
+    const modMap = merge({}, remoteModList, localModList);
+    setAppState({
+      isLocalModsDirty,
+      modMap,
+    });
   }, [remoteModList, localModList]);
-
-  return modList;
 }
 
 export default useModMap;
