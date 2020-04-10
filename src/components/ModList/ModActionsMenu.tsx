@@ -2,7 +2,11 @@ import React, { useCallback } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { IconButton } from '@material-ui/core';
-import SettingsIcon from '@material-ui/icons/MoreVert';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import RemoveIcon from '@material-ui/icons/Delete';
+
+import { shell } from 'electron';
 
 import { useAppState } from '../AppState';
 import {
@@ -44,10 +48,21 @@ const TableToolbar: React.FunctionComponent<Props> = ({ mod }) => {
     }
   }, [mod, setAppState]);
 
+  const handleOpenRepoClick = () => {
+    handleClose();
+    shell.openExternal(`https://github.com/${mod.repo}`);
+  };
+
   return (
     <>
+      <IconButton onClick={modActionHandler(install)}>
+        <SaveAltIcon />
+      </IconButton>
+      <IconButton onClick={modActionHandler(uninstall)}>
+        <RemoveIcon />
+      </IconButton>
       <IconButton onClick={handleModActionsClick}>
-        <SettingsIcon />
+        <MoreIcon />
       </IconButton>
       <Menu
         id="simple-menu"
@@ -59,15 +74,22 @@ const TableToolbar: React.FunctionComponent<Props> = ({ mod }) => {
         transitionDuration={0}
       >
         {!isModInstalled && (
-          <>
-            <MenuItem onClick={modActionHandler(install)}>Install</MenuItem>
-          </>
+          <MenuItem onClick={modActionHandler(install)}>
+            Install
+          </MenuItem>
         )}
         {isModInstalled && (
-          <>
-            <MenuItem onClick={modActionHandler(uninstall)}>Uninstall</MenuItem>
-            <MenuItem onClick={modActionHandler(update)}>{isOutdated(mod) ? 'Update' : 'Force Update'}</MenuItem>
-          </>
+          <MenuItem onClick={modActionHandler(uninstall)}>
+            Uninstall
+          </MenuItem>
+        )}
+        {isModInstalled && (
+          <MenuItem onClick={modActionHandler(update)}>{isOutdated(mod) ? 'Update' : 'Force Update'}</MenuItem>
+        )}
+        {mod.repo && (
+          <MenuItem onClick={handleOpenRepoClick}>
+            Open Repository
+          </MenuItem>
         )}
       </Menu>
     </>

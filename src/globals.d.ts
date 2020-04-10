@@ -8,6 +8,7 @@ type Mod = {
   downloadUrl?: string;
   downloadCount?: number;
   isLoading: boolean;
+  repo?: string;
 };
 
 type ModMap = { [uniqueName: string]: Mod };

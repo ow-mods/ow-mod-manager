@@ -14,6 +14,7 @@ async function getRemoteMod(modDbItem: ModDbItem): Promise<Mod> {
     downloadUrl: release.downloadUrl,
     downloadCount: release.downloadCount,
     isLoading: false,
+    repo: modDbItem.repo,
   };
   return remoteMod;
 }
