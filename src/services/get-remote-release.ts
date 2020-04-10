@@ -8,14 +8,12 @@ let cachedTime: Date;
 
 async function getRemoteRelease(repo: string): Promise<Release> {
   if (cachedData
-    && Object.keys(cachedData).includes(repo)
+    && Object.keys(cachedData.keys).includes(repo)
     && cachedTime
     && (new Date().getTime() - cachedTime.getTime()) < timeout) {
-    console.log('using cache');
     return cachedData[repo];
   }
 
-  console.log('NOT using cache');
   return axios.get(`https://api.github.com/repos/${repo}/releases/latest`)
     .then((response) => {
       const { data } = response;
