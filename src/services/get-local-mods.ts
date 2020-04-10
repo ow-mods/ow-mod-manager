@@ -17,6 +17,7 @@ async function getLocalMods(): Promise<ModMap> {
       uniqueName: manifestFile.manifest.uniqueName,
       folderName: manifestFile.path.replace(`${config.owmlPath}/Mods/`, '').split('/')[0],
       localVersion: manifestFile.manifest.version,
+      isLoading: false,
     },
   }), {});
 

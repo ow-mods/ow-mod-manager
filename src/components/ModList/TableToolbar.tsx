@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import {
   createStyles, lighten, makeStyles, Theme,
 } from '@material-ui/core/styles';
@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
 
-import AppState from '../AppState';
+import { useAppState } from '../AppState';
 import {
   isInstalled, isOutdated, install, uninstall, update,
 } from '../../services/mod-manager';
@@ -38,7 +38,7 @@ const useToolbarStyles = makeStyles((theme: Theme) => createStyles({
 }));
 
 const TableToolbar = (props: Props) => {
-  const { setAppState } = useContext(AppState);
+  const { setAppState, addMod } = useAppState();
   const classes = useToolbarStyles();
   const { selectedMod: selected } = props;
 
@@ -46,8 +46,15 @@ const TableToolbar = (props: Props) => {
 
   const modActionHandler = useCallback((handler: ModActionHandler) => async () => {
     if (selected !== undefined) {
+      addMod({
+        ...selected,
+        isLoading: true,
+      });
       await handler(selected);
-      setAppState({ isLocalModsDirty: true });
+      addMod({
+        ...selected,
+        isLoading: false,
+      });
     }
   }, [selected, setAppState]);
 

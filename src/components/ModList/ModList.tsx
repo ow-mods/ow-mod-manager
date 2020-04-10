@@ -11,9 +11,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 
-import useModMap from '../../hooks/use-mod-map';
 import TableToolbar from './TableToolbar';
 import ModTableHead from './ModTableHead';
+import { useAppState } from '../AppState';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -70,12 +70,12 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 export default function ModList() {
   const classes = useStyles();
-  const [order, setOrder] = React.useState<SortOrder>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Mod>('localVersion');
+  const [order, setOrder] = React.useState<SortOrder>('desc');
+  const [orderBy, setOrderBy] = React.useState<keyof Mod>('downloadCount');
   const [selected, setSelected] = React.useState<string>('');
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const modMap = useModMap();
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const { modMap } = useAppState();
 
   const rows = Object.values(modMap);
 
@@ -143,7 +143,7 @@ export default function ModList() {
                         {mod.name}
                       </TableCell>
                       <TableCell>{mod.author}</TableCell>
-                      <TableCell>{mod.localVersion}</TableCell>
+                      <TableCell>{mod.isLoading ? 'Loading...' : mod.localVersion}</TableCell>
                       <TableCell>{mod.remoteVersion}</TableCell>
                       <TableCell align="right">{mod.downloadCount}</TableCell>
                     </TableRow>
