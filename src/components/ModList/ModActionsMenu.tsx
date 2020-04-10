@@ -56,7 +56,10 @@ const TableToolbar: React.FunctionComponent<Props> = ({ mod }) => {
   return (
     <>
       <Tooltip title={isModInstalled ? 'Update' : 'Install'}>
-        <IconButton onClick={modActionHandler(isModInstalled ? update : install)}>
+        <IconButton
+          onClick={modActionHandler(isModInstalled ? update : install)}
+          disabled={mod.downloadUrl === undefined}
+        >
           <SaveAltIcon />
         </IconButton>
       </Tooltip>
@@ -77,11 +80,9 @@ const TableToolbar: React.FunctionComponent<Props> = ({ mod }) => {
         TransitionComponent={undefined}
         transitionDuration={0}
       >
-        {mod.repo && (
-          <MenuItem onClick={handleOpenRepoClick}>
-            Open Repository
-          </MenuItem>
-        )}
+        <MenuItem disabled={mod.repo === undefined} onClick={handleOpenRepoClick}>
+          {mod.repo ? 'Open repository' : 'No repository available'}
+        </MenuItem>
       </Menu>
     </>
   );
