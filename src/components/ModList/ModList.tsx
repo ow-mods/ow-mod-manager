@@ -70,11 +70,11 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 export default function ModList() {
   const classes = useStyles();
-  const [order, setOrder] = React.useState<SortOrder>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Mod>('localVersion');
+  const [order, setOrder] = React.useState<SortOrder>('desc');
+  const [orderBy, setOrderBy] = React.useState<keyof Mod>('downloadCount');
   const [selected, setSelected] = React.useState<string>('');
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { modMap } = useAppState();
 
   const rows = Object.values(modMap);
