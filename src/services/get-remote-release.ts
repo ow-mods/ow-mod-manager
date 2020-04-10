@@ -1,7 +1,17 @@
 
 import axios from 'axios';
 
+const timeout = 60000;
+const cachedData: CachedData = {};
+let cachedTime: Date;
+
 async function getRemoteRelease(repo: string): Promise<Release> {
+  if (cachedData[repo]
+    && cachedTime
+    && (new Date().getTime() - cachedTime.getTime()) < timeout) {
+    return cachedData[repo];
+  }
+
   return axios.get(`https://api.github.com/repos/${repo}/releases`)
     .then((response) => {
       const { data } = response;
@@ -13,6 +23,8 @@ async function getRemoteRelease(repo: string): Promise<Release> {
           .reduce((a: number, b: number) => a + b, 0),
       };
 
+      cachedData[repo] = release;
+      cachedTime = new Date();
       return release;
     });
 }
@@ -23,4 +35,8 @@ type Rel = {
   assets: {
     download_count: number;
   }[];
+};
+
+type CachedData = {
+  [repo: string]: Release;
 };
