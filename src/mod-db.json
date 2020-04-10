@@ -24,11 +24,11 @@
     "manifest": "manifest.json"
   },
   {
-    "repo": "misternebula/FreeCam",
+    "repo": "misternebula/InputHandler",
     "manifest": "manifest.json"
   },
   {
-    "repo": "misternebula/InputHandler",
+    "repo": "misternebula/FreeCam",
     "manifest": "manifest.json"
   }
 ]
