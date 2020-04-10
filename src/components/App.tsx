@@ -1,11 +1,13 @@
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
+
+import { AppStateProvider } from './AppState';
 import ModList from './ModList';
 
 const App = () => (
-  <div>
+  <AppStateProvider>
     <ModList />
-  </div>
+  </AppStateProvider>
 );
 
 export default hot(App);
