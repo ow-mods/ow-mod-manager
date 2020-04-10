@@ -1,12 +1,16 @@
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
 
+import Container from '@material-ui/core/Container';
+
 import { AppStateProvider } from './AppState';
 import ModList from './ModList';
 
 const App = () => (
   <AppStateProvider>
-    <ModList />
+    <Container>
+      <ModList />
+    </Container>
   </AppStateProvider>
 );
 
