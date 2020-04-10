@@ -1,4 +1,3 @@
-import semver from 'semver';
 import unzip from 'unzipper';
 import request from 'request';
 import fs from 'fs-extra';
@@ -10,10 +9,33 @@ export function isInstalled(mod: Mod): boolean {
 }
 
 export function isOutdated(mod: Mod): boolean {
-  return isInstalled(mod)
-    && mod.remoteVersion !== undefined
-    && mod.localVersion !== undefined
-    && semver.lt(mod.localVersion, mod.remoteVersion);
+  if (!isInstalled(mod) || mod.remoteVersion === undefined || mod.localVersion === undefined) {
+    return false;
+  }
+
+  const remoteVersionNumbers = mod.remoteVersion.split('.');
+  const localVersionNumbers = mod.localVersion.split('.');
+
+  const length = Math.max(remoteVersionNumbers.length, localVersionNumbers.length);
+
+  for (let i = 0; i < length; i += 1) {
+    const remoteVersionChunk = remoteVersionNumbers[i];
+    const localVersionChunk = localVersionNumbers[i];
+
+    if (remoteVersionChunk === undefined && localVersionChunk !== undefined) {
+      return false;
+    }
+
+    if (remoteVersionChunk !== undefined && localVersionChunk === undefined) {
+      return true;
+    }
+
+    if (remoteVersionNumbers[i] > localVersionNumbers[i]) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 export function modFolder(mod: Mod): string {
