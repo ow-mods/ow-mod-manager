@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Tooltip } from '@material-ui/core';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import RemoveIcon from '@material-ui/icons/Delete';
@@ -55,12 +55,16 @@ const TableToolbar: React.FunctionComponent<Props> = ({ mod }) => {
 
   return (
     <>
-      <IconButton onClick={modActionHandler(install)}>
-        <SaveAltIcon />
-      </IconButton>
-      <IconButton onClick={modActionHandler(uninstall)}>
-        <RemoveIcon />
-      </IconButton>
+      <Tooltip title={isModInstalled ? 'Update' : 'Install'}>
+        <IconButton onClick={modActionHandler(isModInstalled ? update : install)}>
+          <SaveAltIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Uninstall">
+        <IconButton disabled={!isModInstalled} onClick={modActionHandler(uninstall)}>
+          <RemoveIcon />
+        </IconButton>
+      </Tooltip>
       <IconButton onClick={handleModActionsClick}>
         <MoreIcon />
       </IconButton>
@@ -73,19 +77,6 @@ const TableToolbar: React.FunctionComponent<Props> = ({ mod }) => {
         TransitionComponent={undefined}
         transitionDuration={0}
       >
-        {!isModInstalled && (
-          <MenuItem onClick={modActionHandler(install)}>
-            Install
-          </MenuItem>
-        )}
-        {isModInstalled && (
-          <MenuItem onClick={modActionHandler(uninstall)}>
-            Uninstall
-          </MenuItem>
-        )}
-        {isModInstalled && (
-          <MenuItem onClick={modActionHandler(update)}>{isOutdated(mod) ? 'Update' : 'Force Update'}</MenuItem>
-        )}
         {mod.repo && (
           <MenuItem onClick={handleOpenRepoClick}>
             Open Repository

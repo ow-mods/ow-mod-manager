@@ -94,7 +94,11 @@ export default function ModList() {
     setPage(0);
   };
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const emptyRows = page === 0 ? (
+    0
+  ) : (
+    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
+  );
 
   return (
     <Paper className={classes.paper}>
