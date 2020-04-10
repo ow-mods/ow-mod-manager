@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { Dictionary } from 'lodash';
 
-const timeout = 6000;
+const timeout = 60000;
 const cachedData: Dictionary<Release> = {};
 let cachedTime: Date;
 
