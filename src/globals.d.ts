@@ -26,3 +26,5 @@ type Manifest = {
   uniqueName: string;
   version: string;
 };
+
+type SortOrder = 'asc' | 'desc';

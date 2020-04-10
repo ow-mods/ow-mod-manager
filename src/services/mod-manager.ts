@@ -1,100 +1,115 @@
-import semver from 'semver';
 import unzip from 'unzipper';
 import request from 'request';
 import fs from 'fs-extra';
 import path from 'path';
+
 import config from '../config.json';
 
-export class ModManager {
-  private mod: Mod;
+export function isInstalled(mod: Mod): boolean {
+  return !!mod.localVersion;
+}
 
-  constructor(mod: Mod) {
-    this.mod = mod;
+export function isOutdated(mod: Mod): boolean {
+  if (!isInstalled(mod) || mod.remoteVersion === undefined || mod.localVersion === undefined) {
+    return false;
   }
 
-  get isInstalled(): boolean {
-    return !!this.mod.localVersion;
-  }
+  const remoteVersionNumbers = mod.remoteVersion.split('.');
+  const localVersionNumbers = mod.localVersion.split('.');
 
-  get isOutdated(): boolean {
-    return this.isInstalled
-            && this.mod.remoteVersion !== undefined
-            && this.mod.localVersion !== undefined
-            && semver.lt(this.mod.localVersion, this.mod.remoteVersion);
-  }
+  const length = Math.max(remoteVersionNumbers.length, localVersionNumbers.length);
 
-  get modFolder(): string {
-    return `${config.owmlPath}/Mods/${this.mod.name}`;
-  }
+  for (let i = 0; i < length; i += 1) {
+    const remoteVersionChunk = remoteVersionNumbers[i];
+    const localVersionChunk = localVersionNumbers[i];
 
-  public async install() {
-    if (this.isInstalled) {
-      throw new Error("Can't install mod because it's already installed");
-    }
-    await this.upstall();
-  }
-
-  public async update() {
-    if (!this.isOutdated) {
-      throw new Error("Can't update mod because it's not out of date");
-    }
-    await this.upstall();
-  }
-
-  public async uninstall() {
-    if (!this.isInstalled) {
-      throw new Error("Can't uninstall mod because it's not installed");
-    }
-    await this.deleteFolder(this.modFolder);
-  }
-
-  private async upstall() {
-    if (!this.mod.downloadUrl) {
-      return;
+    if (remoteVersionChunk === undefined && localVersionChunk !== undefined) {
+      return false;
     }
 
-    const temporaryPath = `temp/${this.mod.name}-${new Date().getTime()}`;
-    const zipPath = `${temporaryPath}/${this.mod.name}.zip`;
-    const unzipPath = `${temporaryPath}/${this.mod.name}`;
+    if (remoteVersionChunk !== undefined && localVersionChunk === undefined) {
+      return true;
+    }
 
-    await this.createFolders(unzipPath);
-    await this.downloadFile(this.mod.downloadUrl, zipPath);
-    await this.unzip(zipPath, unzipPath);
-    await this.copyFolder(unzipPath, this.modFolder);
-    await this.deleteFolder(temporaryPath);
+    if (remoteVersionNumbers[i] > localVersionNumbers[i]) {
+      return true;
+    }
   }
 
-  private async createFolders(dir: string) {
-    await fs.mkdirs(dir);
+  return false;
+}
+
+export function modFolder(mod: Mod): string {
+  return `${config.owmlPath}/Mods/${mod.name}`;
+}
+
+async function createFolders(dir: string) {
+  await fs.mkdirs(dir);
+}
+
+async function downloadFile(url: string, filePath: string) {
+  const writer = fs.createWriteStream(filePath);
+  request(url).pipe(writer);
+  return new Promise((resolve) => {
+    writer.on('finish', resolve);
+  });
+}
+
+async function unzipFile(zipPath: string, unzipPath: string) {
+  const absUnzipPath = path.resolve(unzipPath);
+  const extract = unzip.Extract({ path: absUnzipPath });
+  const reader = fs.createReadStream(zipPath);
+  reader.pipe(extract);
+  return new Promise((resolve) => {
+    extract.on('close', resolve);
+  });
+}
+
+async function copyFolder(sourcePath: string, targetPath: string) {
+  await fs.copy(sourcePath, targetPath, {
+    errorOnExist: false,
+    overwrite: true,
+    recursive: true,
+  });
+}
+
+async function deleteFolder(folderPath: string) {
+  await fs.remove(folderPath);
+}
+
+async function upstall(mod: Mod) {
+  if (!mod.downloadUrl) {
+    return;
   }
 
-  private async downloadFile(url: string, filePath: string) {
-    const writer = fs.createWriteStream(filePath);
-    request(url).pipe(writer);
-    return new Promise((resolve) => {
-      writer.on('finish', resolve);
-    });
-  }
+  const temporaryPath = `temp/${mod.name}-${new Date().getTime()}`;
+  const zipPath = `${temporaryPath}/${mod.name}.zip`;
+  const unzipPath = `${temporaryPath}/${mod.name}`;
 
-  private async unzip(zipPath: string, unzipPath: string) {
-    const absUnzipPath = path.resolve(unzipPath);
-    const extract = unzip.Extract({ path: absUnzipPath });
-    const reader = fs.createReadStream(zipPath);
-    reader.pipe(extract);
-    return new Promise((resolve) => {
-      extract.on('close', resolve);
-    });
-  }
+  await createFolders(unzipPath);
+  await downloadFile(mod.downloadUrl, zipPath);
+  await unzipFile(zipPath, unzipPath);
+  await copyFolder(unzipPath, modFolder(mod));
+  await deleteFolder(temporaryPath);
+}
 
-  private async copyFolder(sourcePath: string, targetPath: string) {
-    await fs.copy(sourcePath, targetPath, {
-      errorOnExist: false,
-      overwrite: true,
-      recursive: true,
-    });
+export async function install(mod: Mod) {
+  if (isInstalled(mod)) {
+    throw new Error("Can't install mod because it's already installed");
   }
+  await upstall(mod);
+}
 
-  private async deleteFolder(folderPath: string) {
-    await fs.remove(folderPath);
+export async function update(mod: Mod) {
+  if (!isOutdated) {
+    throw new Error("Can't update mod because it's not out of date");
   }
+  await upstall(mod);
+}
+
+export async function uninstall(mod: Mod) {
+  if (!isInstalled(mod)) {
+    throw new Error("Can't uninstall mod because it's not installed");
+  }
+  await deleteFolder(modFolder(mod));
 }
