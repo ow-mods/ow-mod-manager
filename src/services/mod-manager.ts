@@ -2,7 +2,20 @@ import unzip from 'unzipper';
 import request from 'request';
 import fs from 'fs-extra';
 import path from 'path';
+import { remove } from 'lodash';
+
 import config from '../config.json';
+
+
+const callbacks: Function[] = [];
+
+export function addCallback(callback: Function) {
+  callbacks.push(callback);
+}
+
+export function removeCallback(callback: Function) {
+  remove(callbacks, (item) => item === callback);
+}
 
 export function isInstalled(mod: Mod): boolean {
   return !!mod.localVersion;
@@ -92,11 +105,16 @@ async function upstall(mod: Mod) {
   await deleteFolder(temporaryPath);
 }
 
+function invokeCallbacks() {
+  callbacks.forEach((callback) => callback());
+}
+
 export async function install(mod: Mod) {
   if (isInstalled(mod)) {
     throw new Error("Can't install mod because it's already installed");
   }
   await upstall(mod);
+  invokeCallbacks();
 }
 
 export async function update(mod: Mod) {
@@ -104,6 +122,7 @@ export async function update(mod: Mod) {
     throw new Error("Can't update mod because it's not out of date");
   }
   await upstall(mod);
+  invokeCallbacks();
 }
 
 export async function uninstall(mod: Mod) {
@@ -111,4 +130,5 @@ export async function uninstall(mod: Mod) {
     throw new Error("Can't uninstall mod because it's not installed");
   }
   await deleteFolder(modFolder(mod));
+  invokeCallbacks();
 }

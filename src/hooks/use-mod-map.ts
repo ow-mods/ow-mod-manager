@@ -4,27 +4,54 @@ import { merge } from 'lodash';
 import modDB from '../mod-db.json';
 import getLocalMods from '../services/get-local-mods';
 import getRemoteMod from '../services/get-remote-mod';
+import { addCallback, removeCallback } from '../services/mod-manager';
 
 function useModMap() {
   const [modList, setModList] = useState<ModMap>({});
+  const [remoteModList, setRemoteModList] = useState<ModMap>({});
+  const [localModList, setLocalModList] = useState<ModMap>({});
+  const [isLocalDirty, setIsLocalDirty] = useState<boolean>(true);
 
   useEffect(() => {
+    const callback = () => {
+      setIsLocalDirty(true);
+    };
+
+    addCallback(callback);
+
+    return () => {
+      removeCallback(callback);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isLocalDirty) {
+      return;
+    }
+
     const getMods = async () => {
       const localMods = await getLocalMods();
-      setModList((mods) => merge({}, mods, localMods));
+      setLocalModList(localMods);
     };
     getMods();
-  }, []);
+
+    setIsLocalDirty(false);
+  }, [isLocalDirty]);
 
   useEffect(() => {
     const getMod = async (modDbItem: ModDbItem) => {
       const remoteMod = await getRemoteMod(modDbItem);
-      setModList((mods) => merge({}, mods, {
-        [remoteMod.uniqueName]: merge({}, remoteMod, mods[remoteMod.uniqueName]),
+      setRemoteModList((remoteMods) => ({
+        ...remoteMods,
+        [remoteMod.uniqueName]: remoteMod,
       }));
     };
     modDB.map(getMod);
   }, []);
+
+  useEffect(() => {
+    setModList(merge({}, remoteModList, localModList));
+  }, [remoteModList, localModList]);
 
   return modList;
 }
