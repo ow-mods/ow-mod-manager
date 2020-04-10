@@ -39,10 +39,10 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
 
 
   const setAppState = (state: Partial<ContextState>) => {
-    setState({
-      ...appState,
+    setState((prevState) => ({
+      ...prevState,
       ...state,
-    });
+    }));
   };
 
   useEffect(() => {
@@ -70,10 +70,10 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
 
   useEffect(() => {
     const mods = merge({}, remoteModList, localModList);
-    setAppState({
-      isLocalModsDirty,
+    setState((prevState) => ({
+      ...prevState,
       modMap: mods,
-    });
+    }));
   }, [remoteModList, localModList]);
 
   return (
