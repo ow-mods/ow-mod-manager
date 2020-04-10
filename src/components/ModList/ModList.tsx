@@ -72,7 +72,7 @@ export default function ModList() {
   const classes = useStyles();
   const [order, setOrder] = React.useState<SortOrder>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Mod>('localVersion');
-  const [selected, setSelected] = React.useState<string[]>([]);
+  const [selected, setSelected] = React.useState<Mod>();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const modMap = useModMap();
@@ -85,33 +85,12 @@ export default function ModList() {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
+  const handleClick = (mod: Mod) => {
+    if (selected === mod) {
+      setSelected(undefined);
+    } else {
+      setSelected(mod);
     }
-    setSelected([]);
-  };
-
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: string[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -122,8 +101,6 @@ export default function ModList() {
     setRowsPerPage(Number.parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  const isSelected = (name: string) => selected.includes(name);
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -137,27 +114,24 @@ export default function ModList() {
             size="medium"
           >
             <ModTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.name.toString());
+                .map((mod: Mod, index: number) => {
+                  const isItemSelected = mod === selected;
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name.toString())}
+                      onClick={() => handleClick(mod)}
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.uniqueName}
+                      key={mod.uniqueName}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -166,12 +140,12 @@ export default function ModList() {
                         />
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.name}
+                        {mod.name}
                       </TableCell>
-                      <TableCell>{row.author}</TableCell>
-                      <TableCell>{row.localVersion}</TableCell>
-                      <TableCell>{row.remoteVersion}</TableCell>
-                      <TableCell align="right">{row.downloadCount}</TableCell>
+                      <TableCell>{mod.author}</TableCell>
+                      <TableCell>{mod.localVersion}</TableCell>
+                      <TableCell>{mod.remoteVersion}</TableCell>
+                      <TableCell align="right">{mod.downloadCount}</TableCell>
                     </TableRow>
                   );
                 })}

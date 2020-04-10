@@ -3,15 +3,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 
 interface Props {
-  numSelected: number;
   onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Mod) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   order: SortOrder;
   orderBy: string;
-  rowCount: number;
 }
 
 type HeadCell = {
@@ -41,11 +37,8 @@ const headCells: HeadCell[] = [
 
 function ModTableHead(props: Props) {
   const {
-    onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort,
   } = props;
   const createSortHandler = (property: keyof Mod) => (event: React.MouseEvent<unknown>) => {
@@ -55,13 +48,7 @@ function ModTableHead(props: Props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-          />
-        </TableCell>
+        <TableCell />
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}

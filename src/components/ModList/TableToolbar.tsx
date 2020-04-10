@@ -3,13 +3,12 @@ import {
   createStyles, lighten, makeStyles, Theme,
 } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
 
 interface Props {
-  selected: string[];
+  selected?: Mod;
 }
 
 const useToolbarStyles = makeStyles((theme: Theme) => createStyles({
@@ -35,32 +34,10 @@ const useToolbarStyles = makeStyles((theme: Theme) => createStyles({
 const TableToolbar = (props: Props) => {
   const classes = useToolbarStyles();
   const { selected } = props;
-  const numSelected = selected.length;
 
   return (
-    <Toolbar className={`${classes.root} ${numSelected > 0 ? classes.highlight : ''}`}>
-      {numSelected > 0 ? (
-        <Typography
-          className={classes.title}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected}
-          {' '}
-          selected
-        </Typography>
-      ) : (
-        <Typography
-          className={classes.title}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Grab ya mods, bois
-        </Typography>
-      )}
-      {numSelected > 0 ? (
+    <Toolbar className={`${classes.root} ${selected !== undefined ? classes.highlight : ''}`}>
+      {selected !== undefined ? (
         <ButtonGroup
           variant="outlined"
           color="primary"
