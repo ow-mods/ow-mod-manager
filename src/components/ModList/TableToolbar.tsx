@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
 
-import { Context } from '../App';
+import AppState from '../AppState';
 import {
   isInstalled, isOutdated, install, uninstall, update,
 } from '../../services/mod-manager';
@@ -38,7 +38,7 @@ const useToolbarStyles = makeStyles((theme: Theme) => createStyles({
 }));
 
 const TableToolbar = (props: Props) => {
-  const { setIsLocalModsDirty } = useContext(Context);
+  const { setIsLocalModsDirty } = useContext(AppState);
   const classes = useToolbarStyles();
   const { selectedMod: selected } = props;
 
