@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useCallback } from 'react';
 import {
   createStyles, lighten, makeStyles, Theme,
 } from '@material-ui/core/styles';
@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { ButtonGroup } from '@material-ui/core';
 
+import { Context } from '../App';
 import {
   isInstalled, isOutdated, install, uninstall, update,
 } from '../../services/mod-manager';
@@ -13,6 +14,8 @@ import {
 interface Props {
   selectedMod?: Mod;
 }
+
+type ModActionHandler = (mod: Mod) => Promise<void>;
 
 const useToolbarStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -35,10 +38,18 @@ const useToolbarStyles = makeStyles((theme: Theme) => createStyles({
 }));
 
 const TableToolbar = (props: Props) => {
+  const { setIsLocalModsDirty } = useContext(Context);
   const classes = useToolbarStyles();
   const { selectedMod: selected } = props;
 
   const isModInstalled = selected !== undefined && isInstalled(selected);
+
+  const modActionHandler = useCallback((handler: ModActionHandler) => async () => {
+    if (selected !== undefined) {
+      await handler(selected);
+      setIsLocalModsDirty(true);
+    }
+  }, [selected, setIsLocalModsDirty]);
 
   return (
     <Toolbar className={`${classes.root} ${selected !== undefined ? classes.highlight : ''}`}>
@@ -48,17 +59,17 @@ const TableToolbar = (props: Props) => {
           color="primary"
         >
           {isModInstalled && (
-          <Button onClick={() => uninstall(selected)}>
+          <Button onClick={modActionHandler(uninstall)}>
             Uninstall
           </Button>
           )}
           {!isModInstalled && (
-          <Button onClick={() => install(selected)}>
+          <Button onClick={modActionHandler(install)}>
             Install
           </Button>
           )}
           {isOutdated(selected) && (
-          <Button onClick={() => update(selected)}>
+          <Button onClick={modActionHandler(update)}>
             Update
           </Button>
           )}
