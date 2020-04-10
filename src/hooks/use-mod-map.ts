@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { merge } from 'lodash';
 
 import modDB from '../mod-db.json';
 import getLocalMods from '../services/get-local-mods';
@@ -10,10 +11,7 @@ function useModMap() {
   useEffect(() => {
     const getMods = async () => {
       const localMods = await getLocalMods();
-      setModList((mods) => ({
-        ...mods,
-        ...localMods,
-      }));
+      setModList((mods) => merge({}, mods, localMods));
     };
     getMods();
   }, []);
@@ -21,12 +19,8 @@ function useModMap() {
   useEffect(() => {
     const getMod = async (modDbItem: ModDbItem) => {
       const remoteMod = await getRemoteMod(modDbItem);
-      setModList((mods) => ({
-        ...mods,
-        [remoteMod.uniqueName]: {
-          ...remoteMod,
-          ...mods[remoteMod.uniqueName],
-        },
+      setModList((mods) => merge({}, mods, {
+        [remoteMod.uniqueName]: merge({}, remoteMod, mods[remoteMod.uniqueName]),
       }));
     };
     modDB.map(getMod);
