@@ -72,7 +72,7 @@ export default function ModList() {
   const classes = useStyles();
   const [order, setOrder] = React.useState<SortOrder>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Mod>('localVersion');
-  const [selected, setSelected] = React.useState<Mod>();
+  const [selected, setSelected] = React.useState<string>('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const modMap = useModMap();
@@ -86,10 +86,10 @@ export default function ModList() {
   };
 
   const handleClick = (mod: Mod) => {
-    if (selected === mod) {
-      setSelected(undefined);
+    if (selected === mod.uniqueName) {
+      setSelected('');
     } else {
-      setSelected(mod);
+      setSelected(mod.uniqueName);
     }
   };
 
@@ -107,7 +107,7 @@ export default function ModList() {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <TableToolbar selectedMod={selected} />
+        <TableToolbar selectedMod={modMap[selected]} />
         <TableContainer>
           <Table
             className={classes.table}
@@ -122,7 +122,7 @@ export default function ModList() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((mod: Mod, index: number) => {
-                  const isItemSelected = mod === selected;
+                  const isItemSelected = mod.uniqueName === selected;
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
