@@ -4,13 +4,13 @@ import { merge } from 'lodash';
 import modDB from '../mod-db.json';
 import getLocalMods from '../services/get-local-mods';
 import getRemoteMod from '../services/get-remote-mod';
-import { Context } from '../components/App';
+import AppState from '../components/AppState';
 
 function useModMap() {
   const [modList, setModList] = useState<ModMap>({});
   const [remoteModList, setRemoteModList] = useState<ModMap>({});
   const [localModList, setLocalModList] = useState<ModMap>({});
-  const { setIsLocalModsDirty, isLocalModsDirty } = useContext(Context);
+  const { setIsLocalModsDirty, isLocalModsDirty } = useContext(AppState);
 
   useEffect(() => {
     if (!isLocalModsDirty) {

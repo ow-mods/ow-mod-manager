@@ -42,7 +42,8 @@
       "react/prop-types": "off",
       "jsx-a11y/anchor-is-valid": "off",
       "@typescript-eslint/explicit-function-return-type": "off",
-      "class-methods-use-this": "off"
+      "class-methods-use-this": "off",
+      "linebreak-style": "off"
     },
     "env": {
       "node": true,
