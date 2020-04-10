@@ -10,7 +10,7 @@ import { shell } from 'electron';
 
 import { useAppState } from '../AppState';
 import {
-  isInstalled, isOutdated, install, uninstall, update,
+  isInstalled, install, uninstall, update,
 } from '../../services/mod-manager';
 
 interface Props {
