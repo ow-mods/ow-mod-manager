@@ -19,19 +19,19 @@ type HeadCell = {
 
 const headCells: HeadCell[] = [
   {
-    id: 'name', numeric: false, disablePadding: true, label: 'Name',
+    id: 'name', numeric: false, disablePadding: false, label: 'Name',
   },
   {
     id: 'author', numeric: false, disablePadding: false, label: 'Author',
   },
   {
-    id: 'localVersion', numeric: false, disablePadding: false, label: 'Local Version',
+    id: 'localVersion', numeric: false, disablePadding: false, label: 'Local',
   },
   {
-    id: 'remoteVersion', numeric: false, disablePadding: false, label: 'Remote Version',
+    id: 'remoteVersion', numeric: false, disablePadding: false, label: 'Remote',
   },
   {
-    id: 'downloadCount', numeric: true, disablePadding: false, label: 'Downloads',
+    id: 'downloadCount', numeric: false, disablePadding: false, label: 'Downloads',
   },
 ];
 
@@ -48,7 +48,6 @@ function ModTableHead(props: Props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell />
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -65,6 +64,7 @@ function ModTableHead(props: Props) {
             </TableSortLabel>
           </TableCell>
         ))}
+        <TableCell />
       </TableRow>
     </TableHead>
   );
