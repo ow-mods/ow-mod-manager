@@ -9,7 +9,7 @@ function isConfigExisting(mod: Mod) {
 }
 
 function saveConfig(mod: Mod, config: ModConfig) {
-  fs.writeJSONSync(getConfigPath(mod), config, {});
+  fs.writeJSONSync(getConfigPath(mod), config);
 }
 
 function getConfig(mod: Mod): ModConfig {
