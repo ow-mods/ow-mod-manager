@@ -1,17 +1,23 @@
 import React, { useCallback } from 'react';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import { IconButton, Tooltip } from '@material-ui/core';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import RemoveIcon from '@material-ui/icons/Delete';
-import Checkbox from '@material-ui/core/Checkbox';
+import {
+  Button,
+  Tooltip,
+  Menu,
+  MenuItem,
+} from '@material-ui/core';
+import {
+  MoreVert,
+  SaveAlt,
+  Delete,
+  CheckBox,
+  CheckBoxOutlineBlank,
+} from '@material-ui/icons';
 
 import { shell } from 'electron';
 
 import { useAppState } from '../AppState';
 import {
-  isInstalled, install, uninstall, update,
+  isInstalled, install, uninstall, update, isOutdated,
 } from '../../services/mod-manager';
 
 interface Props {
@@ -33,6 +39,9 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   };
 
   const isModInstalled = mod !== undefined && isInstalled(mod);
+  const isModOutdated = isOutdated(mod);
+  const isModInstallable = mod.downloadUrl !== undefined;
+  const isModDownloadable = isModInstalled ? isModOutdated : isModInstallable;
 
   const modActionHandler = useCallback((handler: ModActionHandler) => async () => {
     handleClose();
@@ -56,33 +65,44 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
 
   return (
     <>
-      <Tooltip title="Enable">
+      <Tooltip title={isModInstalled ? 'Disable' : 'Enable'}>
         <span>
-          <Checkbox disabled={!isModInstalled} />
+          <Button>
+            {isModInstalled ? (
+              <CheckBox />
+            ) : (
+              <CheckBoxOutlineBlank />
+            )}
+          </Button>
         </span>
       </Tooltip>
-      <Tooltip title={isModInstalled ? 'Update' : 'Install'}>
+      <Tooltip title={isModOutdated ? 'Update' : 'Install'}>
         <span>
-          <IconButton
-            onClick={modActionHandler(isModInstalled ? update : install)}
-            disabled={mod.downloadUrl === undefined}
+          <Button
+            onClick={modActionHandler(isModOutdated ? update : install)}
+            disabled={mod.downloadUrl === undefined || !isModDownloadable}
+            variant={isModOutdated ? 'contained' : 'text'}
+            color={isModOutdated ? 'primary' : 'default'}
           >
-            <SaveAltIcon />
-          </IconButton>
+            <SaveAlt />
+          </Button>
         </span>
       </Tooltip>
       <Tooltip title="Uninstall">
         <span>
-          <IconButton disabled={!isModInstalled} onClick={modActionHandler(uninstall)}>
-            <RemoveIcon />
-          </IconButton>
+          <Button
+            disabled={!isModInstalled}
+            onClick={modActionHandler(uninstall)}
+          >
+            <Delete />
+          </Button>
         </span>
       </Tooltip>
       <Tooltip title="More...">
         <span>
-          <IconButton onClick={handleModActionsClick}>
-            <MoreIcon />
-          </IconButton>
+          <Button onClick={handleModActionsClick}>
+            <MoreVert />
+          </Button>
         </span>
       </Tooltip>
       <Menu
