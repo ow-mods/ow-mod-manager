@@ -15,7 +15,7 @@ const createWindow = () => {
     backgroundColor: '#212121',
   });
 
-  mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
+  mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
 
   mainWindow.on('closed', () => {
     mainWindow = null;
