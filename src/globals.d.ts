@@ -2,7 +2,7 @@ type Mod = {
   name: string;
   author: string;
   uniqueName: string;
-  folderName: string;
+  modPath: string;
   localVersion?: string;
   remoteVersion?: string;
   downloadUrl?: string;

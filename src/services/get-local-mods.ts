@@ -1,10 +1,10 @@
 import fs from 'fs';
 import glob from 'glob-promise';
+import path from 'path';
 import config from '../config.json';
 
 async function getLocalMods(): Promise<ModMap> {
   const manifestPaths = await glob(`${config.owmlPath}/Mods/**/manifest.json`);
-  manifestPaths.push(`${config.owmlPath}/OWML.Manifest.json`);
   const manifestFiles = manifestPaths.map((manifestPath) => ({
     path: manifestPath,
     manifest: JSON.parse(fs.readFileSync(manifestPath, { encoding: 'UTF-8' })),
@@ -16,11 +16,25 @@ async function getLocalMods(): Promise<ModMap> {
       name: manifestFile.manifest.name,
       author: manifestFile.manifest.author,
       uniqueName: manifestFile.manifest.uniqueName,
-      folderName: manifestFile.path.replace(`${config.owmlPath}/Mods/`, '').split('/')[0],
+      modPath: path.dirname(manifestFile.path),
       localVersion: manifestFile.manifest.version,
       isLoading: false,
     },
   }), {});
+
+  const owmlManifestPath = `${config.owmlPath}/OWML.Manifest.json`;
+  const owmlManifest: Manifest = fs.existsSync(owmlManifestPath)
+    ? JSON.parse(fs.readFileSync(owmlManifestPath, { encoding: 'UTF-8' }))
+    : null;
+  const owml: Mod = {
+    name: owmlManifest?.name ?? 'OWML',
+    author: owmlManifest?.author ?? 'Alek',
+    uniqueName: owmlManifest?.uniqueName ?? 'Alek.OWML',
+    modPath: config.owmlPath,
+    localVersion: owmlManifest?.version ?? '< 0.3.43',
+    isLoading: false,
+  };
+  modMap[owml.uniqueName] = owml;
 
   return modMap;
 }
