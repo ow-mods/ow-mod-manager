@@ -7,13 +7,15 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 600,
+    minWidth: 970,
+    minHeight: 400,
     webPreferences: {
       nodeIntegration: true,
     },
     backgroundColor: '#212121',
   });
 
-  mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
+  mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
 
   mainWindow.on('closed', () => {
     mainWindow = null;
