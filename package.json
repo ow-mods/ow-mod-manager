@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "electron src/main.js",
+    "start": "electron main.js",
     "watch": "rm -rf ./dist && mkdir ./dist && cp ./src/index.html ./dist/index.html && NODE_ENV=development webpack-dev-server --hot",
     "build": "rm -rf ./dist && mkdir ./dist && cp ./src/production.html ./dist/index.html && NODE_ENV=development webpack",
     "lint:scripts": "eslint --plugin tsc --rule \"tsc/config:[2,{configFile: './tsconfig.json'}]\" '*/**/*.{js,ts,tsx}' --quiet --fix"
@@ -66,7 +66,6 @@
     "@material-ui/icons": "^4.9.1",
     "@types/fs-extra": "^8.1.0",
     "@types/lodash": "^4.14.149",
-    "@types/node": "^13.11.0",
     "@types/react": "^16.9.32",
     "@types/react-dom": "^16.9.6",
     "@types/request": "^2.48.4",
