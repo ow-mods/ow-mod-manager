@@ -5,15 +5,13 @@ import {
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
 
-import TableToolbar from './TableToolbar';
 import ModTableHead from './ModTableHead';
 import { useAppState } from '../AppState';
+import ModTableRow from './ModTableRow';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -55,6 +53,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   table: {
     minWidth: 500,
   },
+  noPadding: {
+    padding: 0,
+  },
   visuallyHidden: {
     border: 0,
     clip: 'rect(0 0 0 0)',
@@ -72,7 +73,6 @@ export default function ModList() {
   const classes = useStyles();
   const [order, setOrder] = React.useState<SortOrder>('desc');
   const [orderBy, setOrderBy] = React.useState<keyof Mod>('downloadCount');
-  const [selected, setSelected] = React.useState<string>('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { modMap } = useAppState();
@@ -85,14 +85,6 @@ export default function ModList() {
     setOrderBy(property);
   };
 
-  const handleClick = (mod: Mod) => {
-    if (selected === mod.uniqueName) {
-      setSelected('');
-    } else {
-      setSelected(mod.uniqueName);
-    }
-  };
-
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -102,71 +94,42 @@ export default function ModList() {
     setPage(0);
   };
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const emptyRows = page === 0 ? (
+    0
+  ) : (
+    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
+  );
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <TableToolbar selectedMod={modMap[selected]} />
-        <TableContainer>
-          <Table
-            className={classes.table}
-            size="medium"
-          >
-            <ModTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((mod: Mod, index: number) => {
-                  const isItemSelected = mod.uniqueName === selected;
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
-                    <TableRow
-                      hover
-                      onClick={() => handleClick(mod)}
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={mod.uniqueName}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                        />
-                      </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {mod.name}
-                      </TableCell>
-                      <TableCell>{mod.author}</TableCell>
-                      <TableCell>{mod.isLoading ? 'Loading...' : mod.localVersion}</TableCell>
-                      <TableCell>{mod.remoteVersion}</TableCell>
-                      <TableCell align="right">{mod.downloadCount}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={4} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+    <Paper className={classes.paper}>
+      <Table className={classes.table}>
+        <ModTableHead
+          order={order}
+          orderBy={orderBy}
+          onRequestSort={handleRequestSort}
         />
-      </Paper>
-    </div>
+        <TableBody>
+          {stableSort(rows, getComparator(order, orderBy))
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((mod: Mod) => (
+              <ModTableRow mod={mod} key={mod.uniqueName} />
+            ))}
+          {emptyRows > 0 && (
+            <TableRow style={{ height: 53 * emptyRows }}>
+              <TableCell colSpan={4} />
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 }
