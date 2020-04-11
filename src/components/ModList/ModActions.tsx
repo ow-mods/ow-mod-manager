@@ -21,12 +21,13 @@ import { useAppState } from '../AppState';
 import {
   isInstalled, install, uninstall, update, isOutdated,
 } from '../../services/mod-manager';
+import { isEnabled, toggleEnabled } from '../../services/mod-enabler';
 
 interface Props {
   mod: Mod;
 }
 
-type ModActionHandler = (mod: Mod) => Promise<void>;
+type ModActionHandler = (mod: Mod) => Promise<void> | void;
 
 const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -44,6 +45,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const isModOutdated = isOutdated(mod);
   const isModInstallable = mod.downloadUrl !== undefined;
   const isModDownloadable = isModInstalled ? isModOutdated : isModInstallable;
+  const isModEnabled = isModInstalled && isEnabled(mod);
 
   const modActionHandler = useCallback((handler: ModActionHandler) => async () => {
     handleClose();
@@ -67,10 +69,13 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
 
   return (
     <>
-      <Tooltip title={isModInstalled ? 'Disable' : 'Enable'}>
+      <Tooltip title={isModEnabled ? 'Disable' : 'Enable'}>
         <span>
-          <Button>
-            {isModInstalled ? (
+          <Button
+            disabled={!isModInstalled}
+            onClick={modActionHandler(toggleEnabled)}
+          >
+            {isModEnabled ? (
               <CheckBox />
             ) : (
               <CheckBoxOutlineBlank />

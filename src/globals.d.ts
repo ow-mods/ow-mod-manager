@@ -30,4 +30,8 @@ type Manifest = {
   version: string;
 };
 
+type ModConfig = {
+  enabled: boolean;
+};
+
 type SortOrder = 'asc' | 'desc';

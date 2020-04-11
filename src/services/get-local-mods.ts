@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import glob from 'glob-promise';
 import path from 'path';
 import config from '../config.json';
@@ -6,7 +6,7 @@ import config from '../config.json';
 function getOwml() {
   const owmlManifestPath = `${config.owmlPath}/OWML.Manifest.json`;
   const owmlManifest: Manifest = fs.existsSync(owmlManifestPath)
-    ? JSON.parse(fs.readFileSync(owmlManifestPath, { encoding: 'UTF-8' }))
+    ? fs.readJSONSync(owmlManifestPath)
     : null;
   const owml: Mod = {
     name: owmlManifest?.name ?? 'OWML',
@@ -23,7 +23,7 @@ async function getLocalMods(): Promise<ModMap> {
   const manifestPaths = await glob(`${config.owmlPath}/Mods/**/manifest.json`);
   const manifestFiles = manifestPaths.map((manifestPath) => ({
     path: manifestPath,
-    manifest: JSON.parse(fs.readFileSync(manifestPath, { encoding: 'UTF-8' })),
+    manifest: fs.readJSONSync(manifestPath),
   }));
 
   const modMap: ModMap = manifestFiles.reduce<ModMap>((accumulator, manifestFile): ModMap => ({
