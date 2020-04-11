@@ -27,7 +27,7 @@ interface Props {
   mod: Mod;
 }
 
-type ModActionHandler = (mod: Mod) => Promise<void>;
+type ModActionHandler = (mod: Mod) => Promise<void> | void;
 
 const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -45,6 +45,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const isModOutdated = isOutdated(mod);
   const isModInstallable = mod.downloadUrl !== undefined;
   const isModDownloadable = isModInstalled ? isModOutdated : isModInstallable;
+  const isModEnabled = isModInstalled && isEnabled(mod);
 
   const modActionHandler = useCallback((handler: ModActionHandler) => async () => {
     handleClose();
@@ -66,20 +67,15 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     shell.openExternal(`https://github.com/${mod.repo}`);
   };
 
-  const handleEnableClick = () => {
-    if (isEnabled(mod)) {
-      disable(mod);
-    } else {
-      enable(mod);
-    }
-  };
-
   return (
     <>
-      <Tooltip title={isEnabled(mod) ? 'Disable' : 'Enable'}>
+      <Tooltip title={isModEnabled ? 'Disable' : 'Enable'}>
         <span>
-          <Button onClick={handleEnableClick}>
-            {isEnabled(mod) ? (
+          <Button
+            disabled={!isModInstalled}
+            onClick={modActionHandler(isModEnabled ? disable : enable)}
+          >
+            {isModEnabled ? (
               <CheckBox />
             ) : (
               <CheckBoxOutlineBlank />
