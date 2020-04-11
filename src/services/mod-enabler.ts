@@ -27,20 +27,8 @@ export function isEnabled(mod: Mod): boolean {
   return config.enabled;
 }
 
-export function enable(mod: Mod) {
-  if (isEnabled(mod)) {
-    throw new Error("Can't enable mod because it's already enabled");
-  }
+export function toggleEnabled(mod: Mod) {
   const config = getConfig(mod);
-  config.enabled = true;
-  saveConfig(mod, config);
-}
-
-export function disable(mod: Mod) {
-  if (!isEnabled(mod)) {
-    throw new Error("Can't disable mod because it's already disabled");
-  }
-  const config = getConfig(mod);
-  config.enabled = false;
+  config.enabled = !isEnabled(mod);
   saveConfig(mod, config);
 }

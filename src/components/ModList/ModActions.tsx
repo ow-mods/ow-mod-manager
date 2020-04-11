@@ -21,7 +21,7 @@ import { useAppState } from '../AppState';
 import {
   isInstalled, install, uninstall, update, isOutdated,
 } from '../../services/mod-manager';
-import { isEnabled, enable, disable } from '../../services/mod-enabler';
+import { isEnabled, toggleEnabled } from '../../services/mod-enabler';
 
 interface Props {
   mod: Mod;
@@ -73,7 +73,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         <span>
           <Button
             disabled={!isModInstalled}
-            onClick={modActionHandler(isModEnabled ? disable : enable)}
+            onClick={modActionHandler(toggleEnabled)}
           >
             {isModEnabled ? (
               <CheckBox />
