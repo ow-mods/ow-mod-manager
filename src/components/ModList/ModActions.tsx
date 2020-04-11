@@ -4,6 +4,7 @@ import {
   Tooltip,
   Menu,
   MenuItem,
+  ListItemIcon,
 } from '@material-ui/core';
 import {
   MoreVert,
@@ -11,6 +12,7 @@ import {
   Delete,
   CheckBox,
   CheckBoxOutlineBlank,
+  GitHub,
 } from '@material-ui/icons';
 
 import { shell } from 'electron';
@@ -88,16 +90,6 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
           </Button>
         </span>
       </Tooltip>
-      <Tooltip title="Uninstall">
-        <span>
-          <Button
-            disabled={!isModInstalled}
-            onClick={modActionHandler(uninstall)}
-          >
-            <Delete />
-          </Button>
-        </span>
-      </Tooltip>
       <Tooltip title="More...">
         <span>
           <Button onClick={handleModActionsClick}>
@@ -114,8 +106,23 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         TransitionComponent={undefined}
         transitionDuration={0}
       >
-        <MenuItem disabled={mod.repo === undefined} onClick={handleOpenRepoClick}>
-          {mod.repo ? 'Open repository' : 'No repository available'}
+        <MenuItem
+          disabled={mod.repo === undefined}
+          onClick={handleOpenRepoClick}
+        >
+          <ListItemIcon>
+            <GitHub />
+          </ListItemIcon>
+          {mod.repo ? 'More info on GitHub' : 'No repository available'}
+        </MenuItem>
+        <MenuItem
+          disabled={!isModInstalled}
+          onClick={modActionHandler(uninstall)}
+        >
+          <ListItemIcon>
+            <Delete />
+          </ListItemIcon>
+          Unistall
         </MenuItem>
       </Menu>
     </>

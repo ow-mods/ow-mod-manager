@@ -112,7 +112,7 @@ export default function ModList() {
           {stableSort(rows, getComparator(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((mod: Mod) => (
-              <ModTableRow mod={mod} />
+              <ModTableRow mod={mod} key={mod.uniqueName} />
             ))}
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
