@@ -5,6 +5,7 @@ import { IconButton, Tooltip } from '@material-ui/core';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import RemoveIcon from '@material-ui/icons/Delete';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import { shell } from 'electron';
 
@@ -19,7 +20,7 @@ interface Props {
 
 type ModActionHandler = (mod: Mod) => Promise<void>;
 
-const TableToolbar: React.FunctionComponent<Props> = ({ mod }) => {
+const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { setAppState, addMod } = useAppState();
 
@@ -55,6 +56,9 @@ const TableToolbar: React.FunctionComponent<Props> = ({ mod }) => {
 
   return (
     <>
+      <Tooltip title="Enable">
+        <Checkbox disabled={!isModInstalled} />
+      </Tooltip>
       <Tooltip title={isModInstalled ? 'Update' : 'Install'}>
         <IconButton
           onClick={modActionHandler(isModInstalled ? update : install)}
@@ -88,4 +92,4 @@ const TableToolbar: React.FunctionComponent<Props> = ({ mod }) => {
   );
 };
 
-export default TableToolbar;
+export default ModActions;

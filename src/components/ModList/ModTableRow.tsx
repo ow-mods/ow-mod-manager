@@ -1,9 +1,8 @@
 import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
-import ModActionsMenu from './ModActionsMenu';
+import ModActionsMenu from './ModActions';
 import { isOutdated } from '../../services/mod-manager';
 
 type Props = {
@@ -11,16 +10,7 @@ type Props = {
 };
 
 const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => (
-  <TableRow
-    hover
-      // onClick={() => handleClick(mod)}
-    role="checkbox"
-    tabIndex={-1}
-    key={mod.uniqueName}
-  >
-    <TableCell padding="checkbox">
-      <Checkbox />
-    </TableCell>
+  <TableRow key={mod.uniqueName}>
     <TableCell>
       {mod.name}
     </TableCell>

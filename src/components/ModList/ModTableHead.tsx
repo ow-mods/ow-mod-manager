@@ -48,7 +48,6 @@ function ModTableHead(props: Props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell />
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
