@@ -4,6 +4,7 @@ import config from '../config.json';
 
 async function getLocalMods(): Promise<ModMap> {
   const manifestPaths = await glob(`${config.owmlPath}/Mods/**/manifest.json`);
+  manifestPaths.push(`${config.owmlPath}/OWML.Manifest.json`);
   const manifestFiles = manifestPaths.map((manifestPath) => ({
     path: manifestPath,
     manifest: JSON.parse(fs.readFileSync(manifestPath, { encoding: 'UTF-8' })),
