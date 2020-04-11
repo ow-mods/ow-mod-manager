@@ -57,24 +57,34 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   return (
     <>
       <Tooltip title="Enable">
-        <Checkbox disabled={!isModInstalled} />
+        <span>
+          <Checkbox disabled={!isModInstalled} />
+        </span>
       </Tooltip>
       <Tooltip title={isModInstalled ? 'Update' : 'Install'}>
-        <IconButton
-          onClick={modActionHandler(isModInstalled ? update : install)}
-          disabled={mod.downloadUrl === undefined}
-        >
-          <SaveAltIcon />
-        </IconButton>
+        <span>
+          <IconButton
+            onClick={modActionHandler(isModInstalled ? update : install)}
+            disabled={mod.downloadUrl === undefined}
+          >
+            <SaveAltIcon />
+          </IconButton>
+        </span>
       </Tooltip>
       <Tooltip title="Uninstall">
-        <IconButton disabled={!isModInstalled} onClick={modActionHandler(uninstall)}>
-          <RemoveIcon />
-        </IconButton>
+        <span>
+          <IconButton disabled={!isModInstalled} onClick={modActionHandler(uninstall)}>
+            <RemoveIcon />
+          </IconButton>
+        </span>
       </Tooltip>
-      <IconButton onClick={handleModActionsClick}>
-        <MoreIcon />
-      </IconButton>
+      <Tooltip title="More...">
+        <span>
+          <IconButton onClick={handleModActionsClick}>
+            <MoreIcon />
+          </IconButton>
+        </span>
+      </Tooltip>
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}

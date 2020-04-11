@@ -2,7 +2,7 @@ import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
-import ModActionsMenu from './ModActions';
+import ModActions from './ModActions';
 import { isOutdated } from '../../services/mod-manager';
 
 type Props = {
@@ -30,7 +30,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => (
     </TableCell>
     <TableCell>{mod.downloadCount}</TableCell>
     <TableCell padding="none">
-      <ModActionsMenu mod={mod} />
+      <ModActions mod={mod} />
     </TableCell>
   </TableRow>
 );
