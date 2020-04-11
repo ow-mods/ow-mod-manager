@@ -21,6 +21,7 @@ import { useAppState } from '../AppState';
 import {
   isInstalled, install, uninstall, update, isOutdated,
 } from '../../services/mod-manager';
+import { isEnabled, enable, disable } from '../../services/mod-enabler';
 
 interface Props {
   mod: Mod;
@@ -65,12 +66,20 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     shell.openExternal(`https://github.com/${mod.repo}`);
   };
 
+  const handleEnableClick = () => {
+    if (isEnabled(mod)) {
+      disable(mod);
+    } else {
+      enable(mod);
+    }
+  };
+
   return (
     <>
-      <Tooltip title={isModInstalled ? 'Disable' : 'Enable'}>
+      <Tooltip title={isEnabled(mod) ? 'Disable' : 'Enable'}>
         <span>
-          <Button>
-            {isModInstalled ? (
+          <Button onClick={handleEnableClick}>
+            {isEnabled(mod) ? (
               <CheckBox />
             ) : (
               <CheckBoxOutlineBlank />
