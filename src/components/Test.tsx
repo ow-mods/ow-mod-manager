@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { enable, isEnabled, disable } from '../services/mod-manager';
+import { enable, isEnabled, disable } from '../services/mod-enabler';
 
 export class Test extends React.Component<{}, {}> {
-
   test() {
     console.log('test');
     const mod: Mod = {
