@@ -1,6 +1,7 @@
 
 import getRemoteRelease from './get-remote-release';
 import getRemoteManifest from './get-remote-manifest';
+import config from '../config.json';
 
 async function getRemoteMod(modDbItem: ModDbItem): Promise<Mod> {
   const release = await getRemoteRelease(modDbItem.repo);
@@ -9,7 +10,7 @@ async function getRemoteMod(modDbItem: ModDbItem): Promise<Mod> {
     name: manifest.name,
     author: manifest.author,
     uniqueName: manifest.uniqueName,
-    folderName: manifest.name,
+    modPath: `${config.owmlPath}/Mods/${manifest.name}`,
     remoteVersion: manifest.version,
     downloadUrl: release.downloadUrl,
     downloadCount: release.downloadCount,

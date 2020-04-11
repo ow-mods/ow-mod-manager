@@ -3,8 +3,6 @@ import request from 'request';
 import fs from 'fs-extra';
 import path from 'path';
 
-import config from '../config.json';
-
 export function isInstalled(mod: Mod): boolean {
   return !!mod.localVersion;
 }
@@ -12,6 +10,10 @@ export function isInstalled(mod: Mod): boolean {
 export function isOutdated(mod: Mod): boolean {
   if (!isInstalled(mod) || mod.remoteVersion === undefined || mod.localVersion === undefined) {
     return false;
+  }
+
+  if (mod.localVersion.startsWith('<')) {
+    return true;
   }
 
   const remoteVersionNumbers = mod.remoteVersion.split('.');
@@ -39,10 +41,6 @@ export function isOutdated(mod: Mod): boolean {
   return false;
 }
 
-function modFolder(mod: Mod): string {
-  return `${config.owmlPath}/Mods/${mod.folderName}`;
-}
-
 async function createFolders(dir: string) {
   await fs.mkdirs(dir);
 }
@@ -66,7 +64,11 @@ async function unzipFile(zipPath: string, unzipPath: string) {
 }
 
 async function copyFolder(sourcePath: string, targetPath: string) {
-  await fs.copy(sourcePath, targetPath, {
+  const sourceContents = fs.readdirSync(sourcePath);
+  const innerPath = sourceContents.length === 1 && fs.lstatSync(`${sourcePath}/${sourceContents[0]}`).isDirectory()
+    ? `${sourcePath}/${sourceContents[0]}`
+    : sourcePath;
+  await fs.copy(innerPath, targetPath, {
     errorOnExist: false,
     overwrite: true,
     recursive: true,
@@ -89,7 +91,7 @@ async function upstall(mod: Mod) {
   await createFolders(unzipPath);
   await downloadFile(mod.downloadUrl, zipPath);
   await unzipFile(zipPath, unzipPath);
-  await copyFolder(unzipPath, modFolder(mod));
+  await copyFolder(unzipPath, mod.modPath);
   await deleteFolder(temporaryPath);
 }
 
@@ -111,5 +113,5 @@ export async function uninstall(mod: Mod) {
   if (!isInstalled(mod)) {
     throw new Error("Can't uninstall mod because it's not installed");
   }
-  await deleteFolder(modFolder(mod));
+  await deleteFolder(mod.modPath);
 }
