@@ -5,6 +5,7 @@ import Container from '@material-ui/core/Container';
 
 import { AppStateProvider } from './AppState';
 import ModList from './ModList';
+import TopBar from './TopBar';
 
 const theme = createMuiTheme({
   palette: {
@@ -16,6 +17,7 @@ const App = () => (
   <AppStateProvider>
     <ThemeProvider theme={theme}>
       <Container>
+        <TopBar />
         <ModList />
       </Container>
     </ThemeProvider>
