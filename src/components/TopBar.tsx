@@ -13,10 +13,7 @@ const style = {
 export default function TopBar() {
   return (
     <div>
-      <Button
-        onClick={runOwml}
-        style={style}
-      >
+      <Button onClick={runOwml} style={style}>
         Start Game
       </Button>
     </div>

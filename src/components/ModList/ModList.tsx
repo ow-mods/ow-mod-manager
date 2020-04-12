@@ -77,7 +77,7 @@ export default function ModList() {
   const [orderBy, setOrderBy] = React.useState<keyof Mod>('downloadCount');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const { modMap } = useAppState();
+  const { modMap, owml } = useAppState();
 
   const rows = Object.values(modMap);
 
@@ -115,6 +115,7 @@ export default function ModList() {
           onRequestSort={handleRequestSort}
         />
         <TableBody>
+          {owml !== undefined && <ModTableRow mod={owml} isRequired />}
           {stableSort(rows, getComparator(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((mod: Mod) => (
