@@ -1,15 +1,43 @@
-
 import axios from 'axios';
+import fs from 'fs-extra';
 
+const cachePath = 'releases-cache.json';
 const timeout = 60000;
-const cachedData: CachedData = {};
-let cachedTime: Date;
+let cachedData: CachedData;
+
+function loadCache() {
+  if (!fs.existsSync(cachePath)) {
+    cachedData = {
+      releases: {},
+      time: new Date(),
+    };
+    fs.writeJSONSync(cachePath, cachedData);
+    return;
+  }
+  cachedData = fs.readJSONSync(cachePath);
+}
+
+function getCachedRelease(repo: string) {
+  loadCache();
+  if (cachedData
+    && cachedData.releases[repo]
+    && cachedData.time
+    && (new Date().getTime() - new Date(cachedData.time).getTime()) < timeout) {
+    return cachedData.releases[repo];
+  }
+  return null;
+}
+
+function saveCache(repo: string, release: Release) {
+  cachedData.releases[repo] = release;
+  cachedData.time = new Date();
+  fs.writeJSONSync(cachePath, cachedData);
+}
 
 async function getRemoteRelease(repo: string): Promise<Release> {
-  if (cachedData[repo]
-    && cachedTime
-    && (new Date().getTime() - cachedTime.getTime()) < timeout) {
-    return cachedData[repo];
+  const cachedRelease = getCachedRelease(repo);
+  if (cachedRelease) {
+    return cachedRelease;
   }
 
   return axios.get(`https://api.github.com/repos/${repo}/releases`)
@@ -23,8 +51,7 @@ async function getRemoteRelease(repo: string): Promise<Release> {
           .reduce((a: number, b: number) => a + b, 0),
       };
 
-      cachedData[repo] = release;
-      cachedTime = new Date();
+      saveCache(repo, release);
       return release;
     });
 }
@@ -38,5 +65,8 @@ type Rel = {
 };
 
 type CachedData = {
-  [repo: string]: Release;
+  time: Date;
+  releases: {
+    [repo: string]: Release;
+  };
 };
