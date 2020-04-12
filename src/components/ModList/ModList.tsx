@@ -108,7 +108,7 @@ export default function ModList() {
 
   return (
     <Paper className={classes.paper}>
-      <Table className={classes.table}>
+      <Table size="small" className={classes.table}>
         <ModTableHead
           order={order}
           orderBy={orderBy}
