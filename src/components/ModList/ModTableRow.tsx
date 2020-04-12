@@ -11,21 +11,18 @@ type Props = {
 
 const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => (
   <TableRow key={mod.uniqueName}>
-    <TableCell>
-      {mod.name}
-    </TableCell>
+    <TableCell>{mod.name}</TableCell>
     <TableCell>{mod.author}</TableCell>
     <TableCell>
-      {mod.isLoading && (
-        'Loading...'
-      )}
-      {!mod.isLoading && mod.localVersion && (
-        <Chip label={mod.localVersion} />
-      )}
+      {mod.isLoading && 'Loading...'}
+      {!mod.isLoading && mod.localVersion && <Chip label={mod.localVersion} />}
     </TableCell>
     <TableCell>
       {mod.remoteVersion && (
-        <Chip color={isOutdated(mod) ? 'primary' : 'default'} label={mod.remoteVersion} />
+        <Chip
+          color={isOutdated(mod) ? 'primary' : 'default'}
+          label={mod.remoteVersion}
+        />
       )}
     </TableCell>
     <TableCell>{mod.downloadCount}</TableCell>

@@ -26,17 +26,20 @@ async function getLocalMods(): Promise<ModMap> {
     manifest: fs.readJSONSync(manifestPath),
   }));
 
-  const modMap: ModMap = manifestFiles.reduce<ModMap>((accumulator, manifestFile): ModMap => ({
-    ...accumulator,
-    [manifestFile.manifest.uniqueName]: {
-      name: manifestFile.manifest.name,
-      author: manifestFile.manifest.author,
-      uniqueName: manifestFile.manifest.uniqueName,
-      modPath: path.dirname(manifestFile.path),
-      localVersion: manifestFile.manifest.version,
-      isLoading: false,
-    },
-  }), {});
+  const modMap: ModMap = manifestFiles.reduce<ModMap>(
+    (accumulator, manifestFile): ModMap => ({
+      ...accumulator,
+      [manifestFile.manifest.uniqueName]: {
+        name: manifestFile.manifest.name,
+        author: manifestFile.manifest.author,
+        uniqueName: manifestFile.manifest.uniqueName,
+        modPath: path.dirname(manifestFile.path),
+        localVersion: manifestFile.manifest.version,
+        isLoading: false,
+      },
+    }),
+    {},
+  );
 
   const owml = getOwml();
   modMap[owml.uniqueName] = owml;

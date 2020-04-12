@@ -32,9 +32,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     modMap: {},
   });
 
-  const {
-    isLocalModsDirty,
-  } = appState;
+  const { isLocalModsDirty } = appState;
 
   const [remoteModList, setRemoteModList] = useState<ModMap>({});
   const [localModList, setLocalModList] = useState<ModMap>({});

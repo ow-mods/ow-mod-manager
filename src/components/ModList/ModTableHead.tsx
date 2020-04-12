@@ -5,7 +5,10 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 interface Props {
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Mod) => void;
+  onRequestSort: (
+    event: React.MouseEvent<unknown>,
+    property: keyof Mod,
+  ) => void;
   order: SortOrder;
   orderBy: string;
 }
@@ -19,29 +22,42 @@ type HeadCell = {
 
 const headCells: HeadCell[] = [
   {
-    id: 'name', numeric: false, disablePadding: false, label: 'Name',
+    id: 'name',
+    numeric: false,
+    disablePadding: false,
+    label: 'Name',
   },
   {
-    id: 'author', numeric: false, disablePadding: false, label: 'Author',
+    id: 'author',
+    numeric: false,
+    disablePadding: false,
+    label: 'Author',
   },
   {
-    id: 'localVersion', numeric: false, disablePadding: false, label: 'Local',
+    id: 'localVersion',
+    numeric: false,
+    disablePadding: false,
+    label: 'Local',
   },
   {
-    id: 'remoteVersion', numeric: false, disablePadding: false, label: 'Remote',
+    id: 'remoteVersion',
+    numeric: false,
+    disablePadding: false,
+    label: 'Remote',
   },
   {
-    id: 'downloadCount', numeric: false, disablePadding: false, label: 'Downloads',
+    id: 'downloadCount',
+    numeric: false,
+    disablePadding: false,
+    label: 'Downloads',
   },
 ];
 
 function ModTableHead(props: Props) {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
-  const createSortHandler = (property: keyof Mod) => (event: React.MouseEvent<unknown>) => {
+  const { order, orderBy, onRequestSort } = props;
+  const createSortHandler = (property: keyof Mod) => (
+    event: React.MouseEvent<unknown>,
+  ) => {
     onRequestSort(event, property);
   };
 

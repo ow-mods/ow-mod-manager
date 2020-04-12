@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  createStyles, makeStyles, Theme,
-} from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -33,7 +31,9 @@ function getComparator<Key extends keyof Mod>(
 }
 
 function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((element, index) => [element, index] as [T, number]);
+  const stabilizedThis = array.map(
+    (element, index) => [element, index] as [T, number],
+  );
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
@@ -42,32 +42,34 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   return stabilizedThis.map((element) => element[0]);
 }
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  root: {
-    width: '100%',
-  },
-  paper: {
-    width: '100%',
-    marginBottom: theme.spacing(2),
-  },
-  table: {
-    minWidth: 500,
-  },
-  noPadding: {
-    padding: 0,
-  },
-  visuallyHidden: {
-    border: 0,
-    clip: 'rect(0 0 0 0)',
-    height: 1,
-    margin: -1,
-    overflow: 'hidden',
-    padding: 0,
-    position: 'absolute',
-    top: 20,
-    width: 1,
-  },
-}));
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+    },
+    paper: {
+      width: '100%',
+      marginBottom: theme.spacing(2),
+    },
+    table: {
+      minWidth: 500,
+    },
+    noPadding: {
+      padding: 0,
+    },
+    visuallyHidden: {
+      border: 0,
+      clip: 'rect(0 0 0 0)',
+      height: 1,
+      margin: -1,
+      overflow: 'hidden',
+      padding: 0,
+      position: 'absolute',
+      top: 20,
+      width: 1,
+    },
+  }),
+);
 
 export default function ModList() {
   const classes = useStyles();
@@ -79,7 +81,10 @@ export default function ModList() {
 
   const rows = Object.values(modMap);
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Mod) => {
+  const handleRequestSort = (
+    event: React.MouseEvent<unknown>,
+    property: keyof Mod,
+  ) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -89,16 +94,17 @@ export default function ModList() {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setRowsPerPage(Number.parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const emptyRows = page === 0 ? (
-    0
-  ) : (
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
-  );
+  const emptyRows =
+    page === 0
+      ? 0
+      : rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
     <Paper className={classes.paper}>

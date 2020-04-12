@@ -19,7 +19,11 @@ import { shell } from 'electron';
 
 import { useAppState } from '../AppState';
 import {
-  isInstalled, install, uninstall, update, isOutdated,
+  isInstalled,
+  install,
+  uninstall,
+  update,
+  isOutdated,
 } from '../../services/mod-manager';
 import { isEnabled, toggleEnabled } from '../../services/mod-enabler';
 
@@ -33,7 +37,9 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { setAppState, addMod } = useAppState();
 
-  const handleModActionsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleModActionsClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -47,20 +53,23 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const isModDownloadable = isModInstalled ? isModOutdated : isModInstallable;
   const isModEnabled = isModInstalled && isEnabled(mod);
 
-  const modActionHandler = useCallback((handler: ModActionHandler) => async () => {
-    handleClose();
-    if (mod !== undefined) {
-      addMod({
-        ...mod,
-        isLoading: true,
-      });
-      await handler(mod);
-      addMod({
-        ...mod,
-        isLoading: false,
-      });
-    }
-  }, [mod, setAppState]);
+  const modActionHandler = useCallback(
+    (handler: ModActionHandler) => async () => {
+      handleClose();
+      if (mod !== undefined) {
+        addMod({
+          ...mod,
+          isLoading: true,
+        });
+        await handler(mod);
+        addMod({
+          ...mod,
+          isLoading: false,
+        });
+      }
+    },
+    [mod, setAppState],
+  );
 
   const handleOpenRepoClick = () => {
     handleClose();
@@ -75,11 +84,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
             disabled={!isModInstalled}
             onClick={modActionHandler(toggleEnabled)}
           >
-            {isModEnabled ? (
-              <CheckBox />
-            ) : (
-              <CheckBoxOutlineBlank />
-            )}
+            {isModEnabled ? <CheckBox /> : <CheckBoxOutlineBlank />}
           </Button>
         </span>
       </Tooltip>

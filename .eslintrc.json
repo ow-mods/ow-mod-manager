@@ -1,0 +1,41 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,
+        "trailingComma": "all"
+      }
+    ],
+    "import/no-unresolved": [
+      2, 
+      { "caseSensitive": false }
+    ],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "react/prop-types": "off",
+    "@typescript-eslint/no-empty-function": [
+      2,
+      { "allow": ["arrowFunctions"] }
+    ]
+  }
+}
