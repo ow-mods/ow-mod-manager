@@ -3,7 +3,7 @@ import { Button } from '@material-ui/core';
 import runOwml from '../services/run-owml';
 
 const style = {
-  padding: '5px 25px',
+  padding: '5px 15px',
   margin: '5px 15px 15px 0',
   color: 'white',
   backgroundColor: '#33cc33',
@@ -12,13 +12,13 @@ const style = {
 
 export default function TopBar() {
   return (
-    <span>
+    <div>
       <Button
         onClick={runOwml}
         style={style}
       >
-        Play
+        Start Game
       </Button>
-    </span>
+    </div>
   );
 }
