@@ -1,9 +1,9 @@
 {
-  "owml": {
-    "repo": "amazingalek/owml",
-    "manifest": "OWML.Launcher/OWML.Manifest.json"
-  },
   "mods": [
+    {
+      "repo": "amazingalek/owml",
+      "manifest": "OWML.Launcher/OWML.Manifest.json"
+    },
     {
       "repo": "Raicuparta/NomaiVR",
       "manifest": "NomaiVR/ModConfig/manifest.json"

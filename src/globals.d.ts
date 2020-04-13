@@ -10,6 +10,7 @@ type Mod = {
   repo?: string;
   isLoading: boolean;
   isEnabled?: boolean;
+  isRequired?: boolean;
 };
 
 type ModMap = { [uniqueName: string]: Mod };

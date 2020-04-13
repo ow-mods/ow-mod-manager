@@ -1,18 +1,27 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
-import runOwml from '../services/run-owml';
+import { AppBar, Toolbar, Container, makeStyles } from '@material-ui/core';
 
-export default function TopBar() {
+const useStyles = makeStyles((theme) => ({
+  offset: theme.mixins.toolbar,
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+}));
+
+const TopBar: React.FunctionComponent = ({ children }) => {
+  const classes = useStyles();
   return (
-    <div>
-      <Button
-        onClick={runOwml}
-        size="large"
-        variant="contained"
-        color="primary"
-      >
-        Start Game
-      </Button>
-    </div>
+    <>
+      <AppBar color="default">
+        <Toolbar>
+          <Container className={classes.container}>{children}</Container>
+        </Toolbar>
+      </AppBar>
+      <div className={classes.offset} />
+    </>
   );
-}
+};
+
+export default TopBar;

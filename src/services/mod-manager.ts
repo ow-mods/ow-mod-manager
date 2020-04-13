@@ -85,8 +85,8 @@ async function copyFolder(sourcePath: string, targetPath: string) {
   });
 }
 
-async function deleteFolder(folderPath: string) {
-  await fs.remove(folderPath);
+function deleteFolder(folderPath: string) {
+  fs.removeSync(folderPath);
 }
 
 async function upstall(mod: Mod) {
@@ -119,9 +119,9 @@ export async function update(mod: Mod) {
   await upstall(mod);
 }
 
-export async function uninstall(mod: Mod) {
+export function uninstall(mod: Mod) {
   if (!isInstalled(mod)) {
     throw new Error("Can't uninstall mod because it's not installed");
   }
-  await deleteFolder(mod.modPath);
+  deleteFolder(mod.modPath);
 }
