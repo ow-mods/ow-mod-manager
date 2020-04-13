@@ -29,13 +29,15 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   const [loadingCount, setLoadingCount] = useState(0);
 
   const setModIsLoading = (uniqueName: string, isLoading: boolean) => {
-    setModMap((prevState) => ({
-      ...prevState,
-      [uniqueName]: {
-        ...prevState[uniqueName],
-        isLoading,
-      },
-    }));
+    setModMap((prevState) => {
+      return {
+        ...prevState,
+        [uniqueName]: {
+          ...prevState[uniqueName],
+          isLoading,
+        },
+      };
+    });
     setIsLocalModsDirty(true);
   };
 
