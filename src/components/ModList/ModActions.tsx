@@ -30,15 +30,11 @@ import { toggleEnabled } from '../../services/mod-enabler';
 
 interface Props {
   mod: Mod;
-  isRequired?: boolean;
 }
 
 type ModActionHandler = (mod: Mod) => Promise<void> | void;
 
-const ModActions: React.FunctionComponent<Props> = ({
-  mod,
-  isRequired = false,
-}) => {
+const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { addMod } = useAppState();
 
@@ -79,7 +75,7 @@ const ModActions: React.FunctionComponent<Props> = ({
   };
 
   const getEnableTooltip = () => {
-    if (isRequired) {
+    if (mod.isRequired) {
       return 'Required, can\'t disable';
     } else if (mod.isEnabled) {
       return 'Disable';
@@ -103,7 +99,7 @@ const ModActions: React.FunctionComponent<Props> = ({
       <Tooltip title={getEnableTooltip()}>
         <span>
           <Button
-            disabled={!isModInstalled || isRequired}
+            disabled={!isModInstalled || mod.isRequired}
             onClick={modActionHandler(toggleEnabled)}
           >
             {mod.isEnabled ? <CheckBox /> : <CheckBoxOutlineBlank />}
@@ -147,7 +143,7 @@ const ModActions: React.FunctionComponent<Props> = ({
           </ListItemIcon>
           {mod.repo ? 'More info on GitHub' : 'No repository available'}
         </MenuItem>
-        {!isRequired && (
+        {!mod.isRequired && (
           <MenuItem
             disabled={!isModInstalled}
             onClick={modActionHandler(uninstall)}

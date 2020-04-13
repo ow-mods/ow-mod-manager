@@ -3,13 +3,11 @@ import { merge } from 'lodash';
 
 import getLocalMods from '../services/get-local-mods';
 import getRemoteMod from '../services/get-remote-mod';
-import getLocalOwml from '../services/get-local-owml';
 import modDb from '../mod-db.json';
 
 type ContextState = {
   isLocalModsDirty: boolean;
   modMap: ModMap;
-  owml?: Mod;
 };
 
 type ContextMethods = {
@@ -36,7 +34,6 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
 
   const [remoteModList, setRemoteModList] = useState<ModMap>({});
   const [localModList, setLocalModList] = useState<ModMap>({});
-  const [owml, setOwml] = useState<Mod>();
 
   const setAppState = (state: Partial<ContextState>) => {
     setState((prevState) => ({
@@ -61,33 +58,16 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
       return;
     }
 
-    const getOwml = async () => {
-      const localOwml = await getLocalOwml();
-      setOwml((prevOwml) => ({
-        ...prevOwml,
-        ...localOwml,
-      }));
-    };
-
     const getMods = async () => {
       const localMods = await getLocalMods();
       setLocalModList(localMods);
       setAppState({ isLocalModsDirty: false });
     };
 
-    getOwml();
     getMods();
   }, [isLocalModsDirty]);
 
   useEffect(() => {
-    const getOwml = async () => {
-      const remoteOwml = await getRemoteMod(modDb.owml);
-      setOwml((prevOwml) => ({
-        ...prevOwml,
-        ...remoteOwml,
-      }));
-    };
-
     const getMod = async (modDbItem: ModDbItem) => {
       const remoteMod = await getRemoteMod(modDbItem);
       setRemoteModList((remoteMods) => ({
@@ -96,7 +76,6 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
       }));
     };
 
-    getOwml();
     modDb.mods.map(getMod);
   }, []);
 
@@ -105,9 +84,8 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     setState((prevState) => ({
       ...prevState,
       modMap: mods,
-      owml,
     }));
-  }, [remoteModList, localModList, owml]);
+  }, [remoteModList, localModList]);
 
   return (
     <AppState.Provider

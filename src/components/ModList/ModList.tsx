@@ -46,7 +46,7 @@ type Props = {
 const ModList: React.FunctionComponent<Props> = ({ filter }) => {
   const [order, setOrder] = React.useState<SortOrder>('desc');
   const [orderBy, setOrderBy] = React.useState<keyof Mod>('downloadCount');
-  const { modMap, owml } = useAppState();
+  const { modMap } = useAppState();
 
   const rows = Object.values(modMap);
 
@@ -68,9 +68,6 @@ const ModList: React.FunctionComponent<Props> = ({ filter }) => {
           onRequestSort={handleRequestSort}
         />
         <TableBody>
-          {owml !== undefined && filter(owml) && (
-            <ModTableRow mod={owml} isRequired />
-          )}
           {stableSort(
             filter ? rows.filter(filter) : rows,
             getComparator(order, orderBy),

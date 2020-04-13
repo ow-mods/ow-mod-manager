@@ -5,6 +5,24 @@ import path from 'path';
 import config from '../config.json';
 import { isEnabled } from './mod-enabler';
 
+function getOwml() {
+  const owmlManifestPath = `${config.owmlPath}/OWML.Manifest.json`;
+  const owmlManifest: Manifest = fs.existsSync(owmlManifestPath)
+    ? fs.readJSONSync(owmlManifestPath)
+    : null;
+  const owml: Mod = {
+    name: owmlManifest?.name ?? 'OWML',
+    author: owmlManifest?.author ?? 'Alek',
+    uniqueName: owmlManifest?.uniqueName ?? 'Alek.OWML',
+    modPath: config.owmlPath,
+    localVersion: owmlManifest?.version ?? '< 0.3.43',
+    isLoading: false,
+    isEnabled: true,
+    isRequired: true,
+  };
+  return owml;
+}
+
 async function getLocalMods(): Promise<ModMap> {
   const manifestPaths = await glob(`${config.owmlPath}/Mods/**/manifest.json`);
   const manifestFiles = manifestPaths.map((manifestPath) => ({
@@ -32,6 +50,9 @@ async function getLocalMods(): Promise<ModMap> {
     },
     {},
   );
+
+  const owml = getOwml();
+  modMap[owml.uniqueName] = owml;
 
   return modMap;
 }

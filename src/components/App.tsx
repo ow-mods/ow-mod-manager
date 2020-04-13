@@ -15,12 +15,12 @@ const theme = createMuiTheme({
   },
 });
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   right: {
     position: 'absolute',
     right: 0,
   },
-}));
+});
 
 enum AppTab {
   Installed,

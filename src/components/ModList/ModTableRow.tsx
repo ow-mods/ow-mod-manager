@@ -13,7 +13,6 @@ import ModActions from './ModActions';
 
 type Props = {
   mod: Mod;
-  isRequired?: boolean;
 };
 
 const useStyles = makeStyles({
@@ -23,10 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ModTableRow: React.FunctionComponent<Props> = ({
-  mod,
-  isRequired = false,
-}) => {
+const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const classes = useStyles();
 
   const getVersionColor = (): MaterialProps.Color => {
@@ -48,7 +44,10 @@ const ModTableRow: React.FunctionComponent<Props> = ({
   };
 
   return (
-    <TableRow classes={isRequired ? classes : undefined} key={mod.uniqueName}>
+    <TableRow
+      classes={mod.isRequired ? classes : undefined}
+      key={mod.uniqueName}
+    >
       <TableCell>{mod.name}</TableCell>
       <TableCell>{mod.author}</TableCell>
       <TableCell align="right">{mod.downloadCount}</TableCell>
@@ -64,7 +63,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({
         )}
       </TableCell>
       <TableCell padding="none">
-        <ModActions mod={mod} isRequired={isRequired} />
+        <ModActions mod={mod} />
       </TableCell>
     </TableRow>
   );
