@@ -8,13 +8,15 @@ import modDb from '../mod-db.json';
 type AppContext = {
   modMap: ModMap;
   isLocalModsDirty: boolean;
-  addMod: (mod: Mod) => void;
+  loadingCount: number;
+  setModIsLoading: (uniqueName: string, isLoading: boolean) => void;
 };
 
 const AppState = React.createContext<AppContext>({
   isLocalModsDirty: true,
   modMap: {},
-  addMod: () => {},
+  setModIsLoading: () => {},
+  loadingCount: 0,
 });
 
 export const useAppState = () => useContext(AppState);
@@ -24,12 +26,18 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   const [localModMap, setLocalModMap] = useState<ModMap>({});
   const [modMap, setModMap] = useState<ModMap>({});
   const [isLocalModsDirty, setIsLocalModsDirty] = useState(true);
+  const [loadingCount, setLoadingCount] = useState(0);
 
-  const addMod = (mod: Mod) => {
-    setModMap((prevState) => ({
-      ...prevState,
-      [mod.uniqueName]: mod,
-    }));
+  const setModIsLoading = (uniqueName: string, isLoading: boolean) => {
+    setModMap((prevState) => {
+      return {
+        ...prevState,
+        [uniqueName]: {
+          ...prevState[uniqueName],
+          isLoading,
+        },
+      };
+    });
     setIsLocalModsDirty(true);
   };
 
@@ -49,14 +57,24 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
 
   useEffect(() => {
     const getMod = async (modDbItem: ModDbItem) => {
-      const remoteMod = await getRemoteMod(modDbItem);
-      setRemoteModMap((remoteMods) => ({
-        ...remoteMods,
-        [remoteMod.uniqueName]: remoteMod,
-      }));
+      setLoadingCount((count) => {
+        return count + 1;
+      });
+      getRemoteMod(modDbItem)
+        .then((remoteMod) => {
+          setRemoteModMap((remoteMods) => ({
+            ...remoteMods,
+            [remoteMod.uniqueName]: remoteMod,
+          }));
+        })
+        .finally(() => {
+          setLoadingCount((count) => {
+            return count - 1;
+          });
+        });
     };
 
-    modDb.mods.map(getMod);
+    modDb.mods.forEach(getMod);
   }, []);
 
   useEffect(() => {
@@ -69,7 +87,8 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
       value={{
         modMap,
         isLocalModsDirty,
-        addMod,
+        setModIsLoading,
+        loadingCount,
       }}
     >
       {children}

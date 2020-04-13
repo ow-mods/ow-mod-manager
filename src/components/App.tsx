@@ -1,24 +1,18 @@
 import { hot } from 'react-hot-loader/root';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Button, Container, Tabs, Tab, makeStyles } from '@material-ui/core';
+import { Button, Container, Tabs, Tab } from '@material-ui/core';
 
 import runOwml from '../services/run-owml';
-import { AppStateProvider, useAppState } from './AppState';
+import { AppStateProvider } from './AppState';
 import ModList from './ModList';
 import TopBar from './TopBar';
 import { isInstalled } from '../services/mod-manager';
+import LoadingBar from './LoadingBar';
 
 const theme = createMuiTheme({
   palette: {
     type: 'dark',
-  },
-});
-
-const useStyles = makeStyles({
-  right: {
-    position: 'absolute',
-    right: 0,
   },
 });
 
@@ -44,7 +38,6 @@ const getTabFilter = (tab: AppTab) => {
 
 const App = () => {
   const [tab, setTab] = useState<AppTab>(AppTab.All);
-  const classes = useStyles();
 
   return (
     <AppStateProvider>
@@ -54,19 +47,19 @@ const App = () => {
             <Tab label="All" value={AppTab.All} />
             <Tab label="Installed" value={AppTab.Installed} />
             <Tab label="New" value={AppTab.New} />
-            <Button
-              onClick={runOwml}
-              size="large"
-              variant="contained"
-              color="primary"
-              className={classes.right}
-            >
-              Start Game
-            </Button>
           </Tabs>
+          <Button
+            onClick={runOwml}
+            size="large"
+            variant="contained"
+            color="primary"
+          >
+            Start Game
+          </Button>
         </TopBar>
         <Container>
           <ModList filter={getTabFilter(tab)} />
+          <LoadingBar />
         </Container>
       </ThemeProvider>
     </AppStateProvider>

@@ -3,6 +3,11 @@ import { AppBar, Toolbar, Container, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 }));
 
 const TopBar: React.FunctionComponent = ({ children }) => {
@@ -11,7 +16,7 @@ const TopBar: React.FunctionComponent = ({ children }) => {
     <>
       <AppBar color="default">
         <Toolbar>
-          <Container>{children}</Container>
+          <Container className={classes.container}>{children}</Container>
         </Toolbar>
       </AppBar>
       <div className={classes.offset} />
