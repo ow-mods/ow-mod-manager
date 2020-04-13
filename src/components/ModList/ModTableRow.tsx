@@ -63,7 +63,9 @@ const ModTableRow: React.FunctionComponent<Props> = ({
           <Chip color={getVersionColor()} label={getVersion()} />
         )}
       </TableCell>
-      <ModActions mod={mod} isRequired={isRequired} />
+      <TableCell padding="none">
+        <ModActions mod={mod} isRequired={isRequired} />
+      </TableCell>
     </TableRow>
   );
 };

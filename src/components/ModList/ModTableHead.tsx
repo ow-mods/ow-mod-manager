@@ -69,8 +69,6 @@ function ModTableHead(props: Props) {
           </TableCell>
         ))}
         <TableCell>Version</TableCell>
-        <TableCell>Enabled</TableCell>
-        <TableCell>Install</TableCell>
         <TableCell></TableCell>
       </TableRow>
     </TableHead>

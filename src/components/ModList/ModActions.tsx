@@ -100,71 +100,65 @@ const ModActions: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <TableCell padding="none">
-        <Tooltip title={getEnableTooltip()}>
-          <span>
-            <Button
-              disabled={!isModInstalled || isRequired}
-              onClick={modActionHandler(toggleEnabled)}
-            >
-              {mod.isEnabled ? <CheckBox /> : <CheckBoxOutlineBlank />}
-            </Button>
-          </span>
-        </Tooltip>
-      </TableCell>
-      <TableCell padding="none">
-        <Tooltip title={getInstallTooltip()}>
-          <span>
-            <Button
-              onClick={modActionHandler(isModOutdated ? update : install)}
-              disabled={mod.downloadUrl === undefined || !isModDownloadable}
-              variant={isModOutdated ? 'contained' : 'text'}
-              color={isModOutdated ? 'secondary' : 'default'}
-            >
-              <SaveAlt />
-            </Button>
-          </span>
-        </Tooltip>
-      </TableCell>
-      <TableCell padding="none">
-        <Tooltip title="More...">
-          <span>
-            <Button onClick={handleMoreClick}>
-              <MoreVert />
-            </Button>
-          </span>
-        </Tooltip>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-          TransitionComponent={undefined}
-          transitionDuration={0}
+      <Tooltip title={getEnableTooltip()}>
+        <span>
+          <Button
+            disabled={!isModInstalled || isRequired}
+            onClick={modActionHandler(toggleEnabled)}
+          >
+            {mod.isEnabled ? <CheckBox /> : <CheckBoxOutlineBlank />}
+          </Button>
+        </span>
+      </Tooltip>
+      <Tooltip title={getInstallTooltip()}>
+        <span>
+          <Button
+            onClick={modActionHandler(isModOutdated ? update : install)}
+            disabled={mod.downloadUrl === undefined || !isModDownloadable}
+            variant={isModOutdated ? 'contained' : 'text'}
+            color={isModOutdated ? 'secondary' : 'default'}
+          >
+            <SaveAlt />
+          </Button>
+        </span>
+      </Tooltip>
+      <Tooltip title="More...">
+        <span>
+          <Button onClick={handleMoreClick}>
+            <MoreVert />
+          </Button>
+        </span>
+      </Tooltip>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        TransitionComponent={undefined}
+        transitionDuration={0}
+      >
+        <MenuItem
+          disabled={mod.repo === undefined}
+          onClick={handleOpenRepoClick}
         >
+          <ListItemIcon>
+            <GitHub />
+          </ListItemIcon>
+          {mod.repo ? 'More info on GitHub' : 'No repository available'}
+        </MenuItem>
+        {!isRequired && (
           <MenuItem
-            disabled={mod.repo === undefined}
-            onClick={handleOpenRepoClick}
+            disabled={!isModInstalled}
+            onClick={modActionHandler(uninstall)}
           >
             <ListItemIcon>
-              <GitHub />
+              <Delete />
             </ListItemIcon>
-            {mod.repo ? 'More info on GitHub' : 'No repository available'}
+            Unistall
           </MenuItem>
-          {!isRequired && (
-            <MenuItem
-              disabled={!isModInstalled}
-              onClick={modActionHandler(uninstall)}
-            >
-              <ListItemIcon>
-                <Delete />
-              </ListItemIcon>
-              Unistall
-            </MenuItem>
-          )}
-        </Menu>
-      </TableCell>
+        )}
+      </Menu>
     </>
   );
 };
