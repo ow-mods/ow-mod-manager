@@ -77,9 +77,19 @@ const ModActions: React.FunctionComponent<Props> = ({
     shell.openExternal(`https://github.com/${mod.repo}`);
   };
 
+  const checkboxTooltip = () => {
+    if (isRequired) {
+      return 'Required, can\'t disable';
+    } else if (mod.isEnabled) {
+      return 'Disable';
+    } else {
+      return 'Enable';
+    }
+  };
+
   return (
     <>
-      <Tooltip title={mod.isEnabled ? 'Disable' : 'Enable'}>
+      <Tooltip title={checkboxTooltip()}>
         <span>
           <Button
             disabled={!isModInstalled || isRequired}
