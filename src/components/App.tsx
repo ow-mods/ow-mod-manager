@@ -1,7 +1,7 @@
 import { hot } from 'react-hot-loader/root';
 import React, { useState } from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Button, Container, Tabs, Tab, makeStyles } from '@material-ui/core';
+import { Button, Container, Tabs, Tab } from '@material-ui/core';
 
 import runOwml from '../services/run-owml';
 import { AppStateProvider } from './AppState';
@@ -14,10 +14,6 @@ const theme = createMuiTheme({
   palette: {
     type: 'dark',
   },
-});
-
-const useStyles = makeStyles({
-  right: {},
 });
 
 enum AppTab {
@@ -42,7 +38,6 @@ const getTabFilter = (tab: AppTab) => {
 
 const App = () => {
   const [tab, setTab] = useState<AppTab>(AppTab.All);
-  const classes = useStyles();
 
   return (
     <AppStateProvider>
@@ -58,7 +53,6 @@ const App = () => {
             size="large"
             variant="contained"
             color="primary"
-            className={classes.right}
           >
             Start Game
           </Button>
