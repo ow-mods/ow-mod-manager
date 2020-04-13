@@ -35,6 +35,10 @@
     {
       "repo": "misternebula/FreeCam",
       "manifest": "manifest.json"
+    },
+    {
+      "repo": "misternebula/RealismOverhaul",
+      "manifest": "manifest.json"
     }
   ]
 }
