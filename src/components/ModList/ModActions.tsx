@@ -49,6 +49,8 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const isModOutdated = isOutdated(mod);
   const isModInstallable = mod.downloadUrl !== undefined;
   const isModDownloadable = isModInstalled ? isModOutdated : isModInstallable;
+  const isInstallHighlighted =
+    isModOutdated || (mod.isRequired && !isModInstalled);
 
   const modActionHandler = useCallback(
     (handler: ModActionHandler) => async () => {
@@ -104,8 +106,8 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
           <Button
             onClick={modActionHandler(isModOutdated ? update : install)}
             disabled={mod.downloadUrl === undefined || !isModDownloadable}
-            variant={isModOutdated ? 'contained' : 'text'}
-            color={isModOutdated ? 'secondary' : 'default'}
+            variant={isInstallHighlighted ? 'contained' : 'text'}
+            color={isInstallHighlighted ? 'secondary' : 'default'}
           >
             <SaveAlt />
           </Button>
