@@ -39,7 +39,11 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   return stabilizedThis.map((element) => element[0]);
 }
 
-export default function ModList() {
+type Props = {
+  filter?: (mod: Mod) => boolean;
+};
+
+const ModList: React.FunctionComponent<Props> = ({ filter }) => {
   const [order, setOrder] = React.useState<SortOrder>('desc');
   const [orderBy, setOrderBy] = React.useState<keyof Mod>('downloadCount');
   const { modMap, owml } = useAppState();
@@ -64,12 +68,19 @@ export default function ModList() {
           onRequestSort={handleRequestSort}
         />
         <TableBody>
-          {owml !== undefined && <ModTableRow mod={owml} isRequired />}
-          {stableSort(rows, getComparator(order, orderBy)).map((mod: Mod) => (
+          {owml !== undefined && filter(owml) && (
+            <ModTableRow mod={owml} isRequired />
+          )}
+          {stableSort(
+            filter ? rows.filter(filter) : rows,
+            getComparator(order, orderBy),
+          ).map((mod: Mod) => (
             <ModTableRow mod={mod} key={mod.uniqueName} />
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
-}
+};
+
+export default ModList;
