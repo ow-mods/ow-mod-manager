@@ -19,12 +19,7 @@ function loadCache() {
 
 function getCachedRelease(repo: string) {
   loadCache();
-  if (
-    cachedData &&
-    cachedData.releases[repo] &&
-    cachedData.time &&
-    new Date().getTime() - new Date(cachedData.time).getTime() < timeout
-  ) {
+  if (cachedData && cachedData.releases[repo]) {
     return cachedData.releases[repo];
   }
   return null;
