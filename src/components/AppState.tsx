@@ -3,15 +3,16 @@ import { merge } from 'lodash';
 
 import getLocalMods from '../services/get-local-mods';
 import getRemoteMod from '../services/get-remote-mod';
-import modDB from '../mod-db.json';
+import getLocalOwml from '../services/get-local-owml';
+import modDb from '../mod-db.json';
 
 type ContextState = {
   isLocalModsDirty: boolean;
   modMap: ModMap;
+  owml?: Mod;
 };
 
 type ContextMethods = {
-  setAppState: (state: Partial<ContextState>) => void;
   addMod: (mod: Mod) => void;
 };
 
@@ -20,7 +21,6 @@ type AppContext = ContextState & ContextMethods;
 const AppState = React.createContext<AppContext>({
   isLocalModsDirty: true,
   modMap: {},
-  setAppState: () => {},
   addMod: () => {},
 });
 
@@ -32,12 +32,11 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     modMap: {},
   });
 
-  const {
-    isLocalModsDirty,
-  } = appState;
+  const { isLocalModsDirty } = appState;
 
   const [remoteModList, setRemoteModList] = useState<ModMap>({});
   const [localModList, setLocalModList] = useState<ModMap>({});
+  const [owml, setOwml] = useState<Mod>();
 
   const setAppState = (state: Partial<ContextState>) => {
     setState((prevState) => ({
@@ -61,15 +60,34 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     if (!isLocalModsDirty) {
       return;
     }
+
+    const getOwml = async () => {
+      const localOwml = await getLocalOwml();
+      setOwml((prevOwml) => ({
+        ...prevOwml,
+        ...localOwml,
+      }));
+    };
+
     const getMods = async () => {
       const localMods = await getLocalMods();
       setLocalModList(localMods);
       setAppState({ isLocalModsDirty: false });
     };
+
+    getOwml();
     getMods();
   }, [isLocalModsDirty]);
 
   useEffect(() => {
+    const getOwml = async () => {
+      const remoteOwml = await getRemoteMod(modDb.owml);
+      setOwml((prevOwml) => ({
+        ...prevOwml,
+        ...remoteOwml,
+      }));
+    };
+
     const getMod = async (modDbItem: ModDbItem) => {
       const remoteMod = await getRemoteMod(modDbItem);
       setRemoteModList((remoteMods) => ({
@@ -77,7 +95,9 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
         [remoteMod.uniqueName]: remoteMod,
       }));
     };
-    modDB.map(getMod);
+
+    getOwml();
+    modDb.mods.map(getMod);
   }, []);
 
   useEffect(() => {
@@ -85,14 +105,14 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     setState((prevState) => ({
       ...prevState,
       modMap: mods,
+      owml,
     }));
-  }, [remoteModList, localModList]);
+  }, [remoteModList, localModList, owml]);
 
   return (
     <AppState.Provider
       value={{
         ...appState,
-        setAppState,
         addMod,
       }}
     >

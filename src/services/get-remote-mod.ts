@@ -1,4 +1,3 @@
-
 import getRemoteRelease from './get-remote-release';
 import getRemoteManifest from './get-remote-manifest';
 import config from '../config.json';

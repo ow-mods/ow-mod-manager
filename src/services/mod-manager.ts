@@ -8,7 +8,11 @@ export function isInstalled(mod: Mod): boolean {
 }
 
 export function isOutdated(mod: Mod): boolean {
-  if (!isInstalled(mod) || mod.remoteVersion === undefined || mod.localVersion === undefined) {
+  if (
+    !isInstalled(mod) ||
+    mod.remoteVersion === undefined ||
+    mod.localVersion === undefined
+  ) {
     return false;
   }
 
@@ -19,7 +23,10 @@ export function isOutdated(mod: Mod): boolean {
   const remoteVersionNumbers = mod.remoteVersion.split('.');
   const localVersionNumbers = mod.localVersion.split('.');
 
-  const length = Math.max(remoteVersionNumbers.length, localVersionNumbers.length);
+  const length = Math.max(
+    remoteVersionNumbers.length,
+    localVersionNumbers.length,
+  );
 
   for (let i = 0; i < length; i += 1) {
     const remoteVersionChunk = remoteVersionNumbers[i];
@@ -47,6 +54,7 @@ async function createFolders(dir: string) {
 
 async function downloadFile(url: string, filePath: string) {
   const writer = fs.createWriteStream(filePath);
+
   request(url).pipe(writer);
   return new Promise((resolve) => {
     writer.on('finish', resolve);
@@ -65,9 +73,11 @@ async function unzipFile(zipPath: string, unzipPath: string) {
 
 async function copyFolder(sourcePath: string, targetPath: string) {
   const sourceContents = fs.readdirSync(sourcePath);
-  const innerPath = sourceContents.length === 1 && fs.lstatSync(`${sourcePath}/${sourceContents[0]}`).isDirectory()
-    ? `${sourcePath}/${sourceContents[0]}`
-    : sourcePath;
+  const innerPath =
+    sourceContents.length === 1 &&
+    fs.lstatSync(`${sourcePath}/${sourceContents[0]}`).isDirectory()
+      ? `${sourcePath}/${sourceContents[0]}`
+      : sourcePath;
   await fs.copy(innerPath, targetPath, {
     errorOnExist: false,
     overwrite: true,

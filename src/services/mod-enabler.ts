@@ -29,6 +29,6 @@ export function isEnabled(mod: Mod): boolean {
 
 export function toggleEnabled(mod: Mod) {
   const config = getConfig(mod);
-  config.enabled = !isEnabled(mod);
+  config.enabled = !config.enabled;
   saveConfig(mod, config);
 }

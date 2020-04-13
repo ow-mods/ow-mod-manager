@@ -19,10 +19,12 @@ function loadCache() {
 
 function getCachedRelease(repo: string) {
   loadCache();
-  if (cachedData
-    && cachedData.releases[repo]
-    && cachedData.time
-    && (new Date().getTime() - new Date(cachedData.time).getTime()) < timeout) {
+  if (
+    cachedData &&
+    cachedData.releases[repo] &&
+    cachedData.time &&
+    new Date().getTime() - new Date(cachedData.time).getTime() < timeout
+  ) {
     return cachedData.releases[repo];
   }
   return null;
@@ -40,14 +42,17 @@ async function getRemoteRelease(repo: string): Promise<Release> {
     return cachedRelease;
   }
 
-  return axios.get(`https://api.github.com/repos/${repo}/releases`)
+  return axios
+    .get(`https://api.github.com/repos/${repo}/releases`)
     .then((response) => {
       const { data } = response;
 
       const release: Release = {
         downloadUrl: data[0].assets[0].browser_download_url,
         downloadCount: data
-          .map((rel: Rel) => (rel.assets.length > 0 ? rel.assets[0].download_count : 0))
+          .map((rel: Rel) =>
+            rel.assets.length > 0 ? rel.assets[0].download_count : 0,
+          )
           .reduce((a: number, b: number) => a + b, 0),
       };
 

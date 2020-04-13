@@ -1,111 +1,106 @@
 {
-  "name": "ow-mod-installer",
+  "name": "ow-mod-manager",
+  "productName": "Outer Wilds Mod Manager",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Outer Wilds Mod Manager",
+  "main": ".webpack/main",
   "scripts": {
-    "start": "electron main.js",
-    "watch": "rm -rf ./dist && mkdir ./dist && cp ./src/index.html ./dist/index.html && NODE_ENV=development webpack-dev-server --hot",
-    "build": "rm -rf ./dist && mkdir ./dist && cp ./src/production.html ./dist/index.html && NODE_ENV=development webpack",
-    "lint:scripts": "eslint --plugin tsc --rule \"tsc/config:[2,{configFile: './tsconfig.json'}]\" '*/**/*.{js,ts,tsx}' --quiet --fix"
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "eslint --fix ."
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "eslintConfig": {
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint",
-      "eslint-comments",
-      "promise",
-      "import"
-    ],
-    "extends": [
-      "airbnb-typescript",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:eslint-comments/recommended",
-      "plugin:promise/recommended",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended-requiring-type-checking"
-    ],
-    "settings": {
-      "import/resolver": {
-        "typescript": {}
-      }
-    },
-    "parserOptions": {
-      "project": "./tsconfig.json",
-      "tsconfigRootDir": "./"
-    },
-    "rules": {
-      "import/prefer-default-export": "off",
-      "react/prop-types": "off",
-      "jsx-a11y/anchor-is-valid": "off",
-      "@typescript-eslint/explicit-function-return-type": "off",
-      "class-methods-use-this": "off",
-      "linebreak-style": "off"
-    },
-    "env": {
-      "node": true,
-      "browser": true
+  "author": {
+    "name": "Ricardo Lopes",
+    "email": "raicuparta@gmail.com"
+  },
+  "license": "MIT",
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "icon": "icon.ico"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "win32"
+          ]
+        }
+      ],
+      "plugins": [
+        [
+          "@electron-forge/plugin-webpack",
+          {
+            "mainConfig": "./webpack.main.config.js",
+            "renderer": {
+              "config": "./webpack.renderer.config.js",
+              "entryPoints": [
+                {
+                  "html": "./src/index.html",
+                  "js": "./src/index.tsx",
+                  "name": "main_window"
+                }
+              ]
+            }
+          }
+        ]
+      ]
     }
   },
-  "eslintIgnore": [
-    "dist/**/*",
-    "temp/**/*"
-  ],
-  "dependencies": {
+  "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-decorators": "^7.8.3",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
+    "@electron-forge/cli": "6.0.0-beta.50",
+    "@electron-forge/maker-deb": "6.0.0-beta.50",
+    "@electron-forge/maker-rpm": "6.0.0-beta.50",
+    "@electron-forge/maker-zip": "6.0.0-beta.50",
+    "@electron-forge/plugin-webpack": "6.0.0-beta.50",
+    "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
+    "@types/fs-extra": "^8.1.0",
+    "@types/lodash": "^4.14.149",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "@types/request": "^2.48.4",
+    "@types/unzipper": "^0.10.3",
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
+    "@typescript-eslint/parser": "^2.27.0",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^3.0.0",
+    "electron": "8.2.1",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.19.0",
+    "fork-ts-checker-webpack-plugin": "^4.1.3",
+    "node-loader": "^0.6.0",
+    "prettier": "^2.0.4",
+    "style-loader": "^1.1.3",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.0"
+  },
+  "dependencies": {
     "@hot-loader/react-dom": "^16.13.0",
     "@material-ui/core": "^4.9.9",
     "@material-ui/icons": "^4.9.1",
-    "@types/fs-extra": "^8.1.0",
-    "@types/lodash": "^4.14.149",
-    "@types/react": "^16.9.32",
-    "@types/react-dom": "^16.9.6",
-    "@types/request": "^2.48.4",
-    "@types/semver": "^7.1.0",
-    "@types/unzipper": "^0.10.3",
-    "@typescript-eslint/eslint-plugin": "^2.27.0",
     "axios": "^0.19.2",
-    "babel-loader": "^8.1.0",
-    "electron": "^8.2.0",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-typescript": "^7.2.0",
-    "eslint-friendly-formatter": "^4.0.1",
     "eslint-import-resolver-typescript": "^2.0.0",
-    "eslint-loader": "^4.0.0",
-    "eslint-plugin-eslint-comments": "^3.1.2",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^3.0.0",
-    "eslint-plugin-tsc": "^1.2.0",
-    "fork-ts-checker-webpack-plugin": "^4.1.2",
     "fs-extra": "^9.0.0",
     "glob": "^7.1.6",
     "glob-promise": "^3.4.0",
-    "html-webpack-plugin": "^4.0.4",
     "lodash": "^4.17.15",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-domerino": "npm:@hot-loader/react-dom@^16.13.0",
     "react-hot-loader": "^4.12.20",
     "regenerator-runtime": "^0.13.5",
     "request": "^2.88.2",
-    "semver": "^7.2.1",
-    "ts-loader": "^6.2.2",
-    "typescript": "^3.8.3",
-    "unzipper": "^0.10.10",
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3",
-    "webpack-merge": "^4.2.2"
+    "unzipper": "^0.10.10"
   }
 }
