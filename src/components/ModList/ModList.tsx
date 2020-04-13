@@ -8,8 +8,6 @@ import { useAppState } from '../AppState';
 import ModTableRow from './ModTableRow';
 import {
   TableContainer,
-  TableRow,
-  TableCell,
   Typography,
   Card,
   CardContent,

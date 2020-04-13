@@ -1,13 +1,14 @@
 import { hot } from 'react-hot-loader/root';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Button, Container, Tabs, Tab, makeStyles } from '@material-ui/core';
 
 import runOwml from '../services/run-owml';
-import { AppStateProvider, useAppState } from './AppState';
+import { AppStateProvider } from './AppState';
 import ModList from './ModList';
 import TopBar from './TopBar';
 import { isInstalled } from '../services/mod-manager';
+import LoadingBar from './LoadingBar';
 
 const theme = createMuiTheme({
   palette: {
@@ -67,6 +68,7 @@ const App = () => {
         </TopBar>
         <Container>
           <ModList filter={getTabFilter(tab)} />
+          <LoadingBar />
         </Container>
       </ThemeProvider>
     </AppStateProvider>
