@@ -5,16 +5,11 @@ import getLocalMods from '../services/get-local-mods';
 import getRemoteMod from '../services/get-remote-mod';
 import modDb from '../mod-db.json';
 
-type ContextState = {
-  isLocalModsDirty: boolean;
+type AppContext = {
   modMap: ModMap;
-};
-
-type ContextMethods = {
+  isLocalModsDirty: boolean;
   addMod: (mod: Mod) => void;
 };
-
-type AppContext = ContextState & ContextMethods;
 
 const AppState = React.createContext<AppContext>({
   isLocalModsDirty: true,
@@ -25,32 +20,17 @@ const AppState = React.createContext<AppContext>({
 export const useAppState = () => useContext(AppState);
 
 export const AppStateProvider: React.FunctionComponent = ({ children }) => {
-  const [appState, setState] = useState<ContextState>({
-    isLocalModsDirty: true,
-    modMap: {},
-  });
-
-  const { isLocalModsDirty } = appState;
-
   const [remoteModMap, setRemoteModMap] = useState<ModMap>({});
   const [localModMap, setLocalModMap] = useState<ModMap>({});
-
-  const setAppState = (state: Partial<ContextState>) => {
-    setState((prevState) => ({
-      ...prevState,
-      ...state,
-    }));
-  };
+  const [modMap, setModMap] = useState<ModMap>({});
+  const [isLocalModsDirty, setIsLocalModsDirty] = useState(true);
 
   const addMod = (mod: Mod) => {
-    setState((prevState) => ({
+    setModMap((prevState) => ({
       ...prevState,
-      modMap: {
-        ...prevState.modMap,
-        [mod.uniqueName]: mod,
-      },
-      isLocalModsDirty: !mod.isLoading,
+      [mod.uniqueName]: mod,
     }));
+    setIsLocalModsDirty(true);
   };
 
   useEffect(() => {
@@ -61,7 +41,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     const getMods = async () => {
       const localMods = await getLocalMods();
       setLocalModMap(localMods);
-      setAppState({ isLocalModsDirty: false });
+      setIsLocalModsDirty(false);
     };
 
     getMods();
@@ -81,16 +61,14 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
 
   useEffect(() => {
     const mods = merge({}, remoteModMap, localModMap);
-    setState((prevState) => ({
-      ...prevState,
-      modMap: mods,
-    }));
+    setModMap(mods);
   }, [remoteModMap, localModMap]);
 
   return (
     <AppState.Provider
       value={{
-        ...appState,
+        modMap,
+        isLocalModsDirty,
         addMod,
       }}
     >
