@@ -5,6 +5,7 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
+  TableCell,
 } from '@material-ui/core';
 import {
   MoreVert,
@@ -25,7 +26,7 @@ import {
   update,
   isOutdated,
 } from '../../services/mod-manager';
-import { isEnabled, toggleEnabled } from '../../services/mod-enabler';
+import { toggleEnabled } from '../../services/mod-enabler';
 
 interface Props {
   mod: Mod;
@@ -77,7 +78,7 @@ const ModActions: React.FunctionComponent<Props> = ({
     shell.openExternal(`https://github.com/${mod.repo}`);
   };
 
-  const checkboxTooltip = () => {
+  const getEnableTooltip = () => {
     if (isRequired) {
       return 'Required, can\'t disable';
     } else if (mod.isEnabled) {
@@ -87,67 +88,83 @@ const ModActions: React.FunctionComponent<Props> = ({
     }
   };
 
+  const getInstallTooltip = () => {
+    if (isModOutdated) {
+      return `Update to ${mod.remoteVersion}`;
+    } else if (isModInstalled) {
+      return 'Already installed';
+    } else {
+      return 'Install';
+    }
+  };
+
   return (
     <>
-      <Tooltip title={checkboxTooltip()}>
-        <span>
-          <Button
-            disabled={!isModInstalled || isRequired}
-            onClick={modActionHandler(toggleEnabled)}
-          >
-            {mod.isEnabled ? <CheckBox /> : <CheckBoxOutlineBlank />}
-          </Button>
-        </span>
-      </Tooltip>
-      <Tooltip title={isModOutdated ? 'Update' : 'Install'}>
-        <span>
-          <Button
-            onClick={modActionHandler(isModOutdated ? update : install)}
-            disabled={mod.downloadUrl === undefined || !isModDownloadable}
-            variant={isModOutdated ? 'contained' : 'text'}
-            color={isModOutdated ? 'primary' : 'default'}
-          >
-            <SaveAlt />
-          </Button>
-        </span>
-      </Tooltip>
-      <Tooltip title="More...">
-        <span>
-          <Button onClick={handleMoreClick}>
-            <MoreVert />
-          </Button>
-        </span>
-      </Tooltip>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        TransitionComponent={undefined}
-        transitionDuration={0}
-      >
-        <MenuItem
-          disabled={mod.repo === undefined}
-          onClick={handleOpenRepoClick}
+      <TableCell padding="none">
+        <Tooltip title={getEnableTooltip()}>
+          <span>
+            <Button
+              disabled={!isModInstalled || isRequired}
+              onClick={modActionHandler(toggleEnabled)}
+            >
+              {mod.isEnabled ? <CheckBox /> : <CheckBoxOutlineBlank />}
+            </Button>
+          </span>
+        </Tooltip>
+      </TableCell>
+      <TableCell padding="none">
+        <Tooltip title={getInstallTooltip()}>
+          <span>
+            <Button
+              onClick={modActionHandler(isModOutdated ? update : install)}
+              disabled={mod.downloadUrl === undefined || !isModDownloadable}
+              variant={isModOutdated ? 'contained' : 'text'}
+              color={isModOutdated ? 'secondary' : 'default'}
+            >
+              <SaveAlt />
+            </Button>
+          </span>
+        </Tooltip>
+      </TableCell>
+      <TableCell padding="none">
+        <Tooltip title="More...">
+          <span>
+            <Button onClick={handleMoreClick}>
+              <MoreVert />
+            </Button>
+          </span>
+        </Tooltip>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          TransitionComponent={undefined}
+          transitionDuration={0}
         >
-          <ListItemIcon>
-            <GitHub />
-          </ListItemIcon>
-          {mod.repo ? 'More info on GitHub' : 'No repository available'}
-        </MenuItem>
-        {!isRequired && (
           <MenuItem
-            disabled={!isModInstalled}
-            onClick={modActionHandler(uninstall)}
+            disabled={mod.repo === undefined}
+            onClick={handleOpenRepoClick}
           >
             <ListItemIcon>
-              <Delete />
+              <GitHub />
             </ListItemIcon>
-            Unistall
+            {mod.repo ? 'More info on GitHub' : 'No repository available'}
           </MenuItem>
-        )}
-      </Menu>
+          {!isRequired && (
+            <MenuItem
+              disabled={!isModInstalled}
+              onClick={modActionHandler(uninstall)}
+            >
+              <ListItemIcon>
+                <Delete />
+              </ListItemIcon>
+              Unistall
+            </MenuItem>
+          )}
+        </Menu>
+      </TableCell>
     </>
   );
 };

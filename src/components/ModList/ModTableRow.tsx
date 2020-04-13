@@ -1,7 +1,13 @@
 import React from 'react';
-import { makeStyles, TableCell, TableRow, Chip } from '@material-ui/core';
+import {
+  makeStyles,
+  TableCell,
+  TableRow,
+  Chip,
+  PropTypes as MaterialProps,
+} from '@material-ui/core';
 
-import { isOutdated } from '../../services/mod-manager';
+import { isOutdated, isInstalled } from '../../services/mod-manager';
 import ModActions from './ModActions';
 
 type Props = {
@@ -11,7 +17,7 @@ type Props = {
 
 const useStyles = makeStyles({
   root: {
-    opacity: 0.5,
+    opacity: 0.75,
     background: '#252525',
   },
 });
@@ -22,28 +28,36 @@ const ModTableRow: React.FunctionComponent<Props> = ({
 }) => {
   const classes = useStyles();
 
+  const getVersionColor = (): MaterialProps.Color => {
+    if (isOutdated(mod)) {
+      return 'secondary';
+    } else if (isInstalled(mod)) {
+      return 'primary';
+    } else {
+      return 'default';
+    }
+  };
+
+  const getVersion = () => {
+    if (isInstalled(mod)) {
+      return mod.localVersion;
+    } else {
+      return mod.remoteVersion;
+    }
+  };
+
   return (
     <TableRow classes={isRequired ? classes : undefined} key={mod.uniqueName}>
       <TableCell>{mod.name}</TableCell>
       <TableCell>{mod.author}</TableCell>
       <TableCell>
         {mod.isLoading && 'Loading...'}
-        {!mod.isLoading && mod.localVersion && (
-          <Chip label={mod.localVersion} />
-        )}
-      </TableCell>
-      <TableCell>
-        {mod.remoteVersion && (
-          <Chip
-            color={isOutdated(mod) ? 'primary' : 'default'}
-            label={mod.remoteVersion}
-          />
+        {!mod.isLoading && (
+          <Chip color={getVersionColor()} label={getVersion()} />
         )}
       </TableCell>
       <TableCell>{mod.downloadCount}</TableCell>
-      <TableCell padding="none">
-        <ModActions mod={mod} isRequired={isRequired} />
-      </TableCell>
+      <ModActions mod={mod} isRequired={isRequired} />
     </TableRow>
   );
 };

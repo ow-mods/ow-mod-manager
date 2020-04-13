@@ -36,3 +36,5 @@ type ModConfig = {
 };
 
 type SortOrder = 'asc' | 'desc';
+
+type HeadCellID = 'name' | 'author' | 'version' | 'downloadCount';

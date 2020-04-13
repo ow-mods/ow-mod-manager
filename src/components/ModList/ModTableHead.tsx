@@ -37,12 +37,6 @@ const headCells: HeadCell[] = [
     id: 'localVersion',
     numeric: false,
     disablePadding: false,
-    label: 'Local',
-  },
-  {
-    id: 'remoteVersion',
-    numeric: false,
-    disablePadding: false,
     label: 'Remote',
   },
   {
@@ -80,7 +74,9 @@ function ModTableHead(props: Props) {
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell />
+        <TableCell>Enabled</TableCell>
+        <TableCell>Install</TableCell>
+        <TableCell></TableCell>
       </TableRow>
     </TableHead>
   );
