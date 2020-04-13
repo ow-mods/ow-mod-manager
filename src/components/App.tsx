@@ -16,8 +16,8 @@ const theme = createMuiTheme({
 const App = () => (
   <AppStateProvider>
     <ThemeProvider theme={theme}>
+      <TopBar />
       <Container>
-        <TopBar />
         <ModList />
       </Container>
     </ThemeProvider>
