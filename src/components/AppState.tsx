@@ -53,7 +53,6 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   useEffect(() => {
     const getMod = async (modDbItem: ModDbItem) => {
       setLoadingCount((count) => {
-        console.log('inc', count);
         return count + 1;
       });
       const remoteMod = await getRemoteMod(modDbItem);
@@ -62,7 +61,6 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
         [remoteMod.uniqueName]: remoteMod,
       }));
       setLoadingCount((count) => {
-        console.log('dec', count);
         return count - 1;
       });
     };
@@ -75,7 +73,6 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     setModMap(mods);
   }, [remoteModMap, localModMap]);
 
-  console.log('count this', loadingCount);
   return (
     <AppState.Provider
       value={{
