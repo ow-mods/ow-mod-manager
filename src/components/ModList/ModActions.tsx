@@ -5,6 +5,7 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
+  TableCell,
 } from '@material-ui/core';
 import {
   MoreVert,
@@ -25,21 +26,23 @@ import {
   update,
   isOutdated,
 } from '../../services/mod-manager';
-import { isEnabled, toggleEnabled } from '../../services/mod-enabler';
+import { toggleEnabled } from '../../services/mod-enabler';
 
 interface Props {
   mod: Mod;
+  isRequired?: boolean;
 }
 
 type ModActionHandler = (mod: Mod) => Promise<void> | void;
 
-const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
+const ModActions: React.FunctionComponent<Props> = ({
+  mod,
+  isRequired = false,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { setAppState, addMod } = useAppState();
+  const { addMod } = useAppState();
 
-  const handleModActionsClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
+  const handleMoreClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -51,7 +54,6 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const isModOutdated = isOutdated(mod);
   const isModInstallable = mod.downloadUrl !== undefined;
   const isModDownloadable = isModInstalled ? isModOutdated : isModInstallable;
-  const isModEnabled = isModInstalled && isEnabled(mod);
 
   const modActionHandler = useCallback(
     (handler: ModActionHandler) => async () => {
@@ -68,7 +70,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         });
       }
     },
-    [mod, setAppState],
+    [mod],
   );
 
   const handleOpenRepoClick = () => {
@@ -76,25 +78,45 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     shell.openExternal(`https://github.com/${mod.repo}`);
   };
 
+  const getEnableTooltip = () => {
+    if (isRequired) {
+      return 'Required, can\'t disable';
+    } else if (mod.isEnabled) {
+      return 'Disable';
+    } else {
+      return 'Enable';
+    }
+  };
+
+  const getInstallTooltip = () => {
+    if (isModOutdated) {
+      return `Update to ${mod.remoteVersion}`;
+    } else if (isModInstalled) {
+      return 'Already installed';
+    } else {
+      return 'Install';
+    }
+  };
+
   return (
     <>
-      <Tooltip title={isModEnabled ? 'Disable' : 'Enable'}>
+      <Tooltip title={getEnableTooltip()}>
         <span>
           <Button
-            disabled={!isModInstalled}
+            disabled={!isModInstalled || isRequired}
             onClick={modActionHandler(toggleEnabled)}
           >
-            {isModEnabled ? <CheckBox /> : <CheckBoxOutlineBlank />}
+            {mod.isEnabled ? <CheckBox /> : <CheckBoxOutlineBlank />}
           </Button>
         </span>
       </Tooltip>
-      <Tooltip title={isModOutdated ? 'Update' : 'Install'}>
+      <Tooltip title={getInstallTooltip()}>
         <span>
           <Button
             onClick={modActionHandler(isModOutdated ? update : install)}
             disabled={mod.downloadUrl === undefined || !isModDownloadable}
             variant={isModOutdated ? 'contained' : 'text'}
-            color={isModOutdated ? 'primary' : 'default'}
+            color={isModOutdated ? 'secondary' : 'default'}
           >
             <SaveAlt />
           </Button>
@@ -102,7 +124,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
       </Tooltip>
       <Tooltip title="More...">
         <span>
-          <Button onClick={handleModActionsClick}>
+          <Button onClick={handleMoreClick}>
             <MoreVert />
           </Button>
         </span>
@@ -125,15 +147,17 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
           </ListItemIcon>
           {mod.repo ? 'More info on GitHub' : 'No repository available'}
         </MenuItem>
-        <MenuItem
-          disabled={!isModInstalled}
-          onClick={modActionHandler(uninstall)}
-        >
-          <ListItemIcon>
-            <Delete />
-          </ListItemIcon>
-          Unistall
-        </MenuItem>
+        {!isRequired && (
+          <MenuItem
+            disabled={!isModInstalled}
+            onClick={modActionHandler(uninstall)}
+          >
+            <ListItemIcon>
+              <Delete />
+            </ListItemIcon>
+            Unistall
+          </MenuItem>
+        )}
       </Menu>
     </>
   );

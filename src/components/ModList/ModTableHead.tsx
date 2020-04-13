@@ -34,20 +34,8 @@ const headCells: HeadCell[] = [
     label: 'Author',
   },
   {
-    id: 'localVersion',
-    numeric: false,
-    disablePadding: false,
-    label: 'Local',
-  },
-  {
-    id: 'remoteVersion',
-    numeric: false,
-    disablePadding: false,
-    label: 'Remote',
-  },
-  {
     id: 'downloadCount',
-    numeric: false,
+    numeric: true,
     disablePadding: false,
     label: 'Downloads',
   },
@@ -80,7 +68,8 @@ function ModTableHead(props: Props) {
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell />
+        <TableCell>Version</TableCell>
+        <TableCell></TableCell>
       </TableRow>
     </TableHead>
   );
