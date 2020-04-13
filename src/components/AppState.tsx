@@ -9,13 +9,13 @@ type AppContext = {
   modMap: ModMap;
   isLocalModsDirty: boolean;
   loadingCount: number;
-  addMod: (mod: Mod) => void;
+  setModIsLoading: (uniqueName: string, isLoading: boolean) => void;
 };
 
 const AppState = React.createContext<AppContext>({
   isLocalModsDirty: true,
   modMap: {},
-  addMod: () => {},
+  setModIsLoading: () => {},
   loadingCount: 0,
 });
 
@@ -28,10 +28,13 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   const [isLocalModsDirty, setIsLocalModsDirty] = useState(true);
   const [loadingCount, setLoadingCount] = useState(0);
 
-  const addMod = (mod: Mod) => {
+  const setModIsLoading = (uniqueName: string, isLoading: boolean) => {
     setModMap((prevState) => ({
       ...prevState,
-      [mod.uniqueName]: mod,
+      [uniqueName]: {
+        ...prevState[uniqueName],
+        isLoading,
+      },
     }));
     setIsLocalModsDirty(true);
   };
@@ -78,7 +81,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
       value={{
         modMap,
         isLocalModsDirty,
-        addMod,
+        setModIsLoading,
         loadingCount,
       }}
     >

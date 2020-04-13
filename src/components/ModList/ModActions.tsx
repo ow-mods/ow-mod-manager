@@ -5,7 +5,6 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
-  TableCell,
 } from '@material-ui/core';
 import {
   MoreVert,
@@ -36,7 +35,7 @@ type ModActionHandler = (mod: Mod) => Promise<void> | void;
 
 const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { addMod } = useAppState();
+  const { setModIsLoading } = useAppState();
 
   const handleMoreClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -55,15 +54,9 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     (handler: ModActionHandler) => async () => {
       handleClose();
       if (mod !== undefined) {
-        addMod({
-          ...mod,
-          isLoading: true,
-        });
+        setModIsLoading(mod.uniqueName, true);
         await handler(mod);
-        addMod({
-          ...mod,
-          isLoading: false,
-        });
+        setModIsLoading(mod.uniqueName, false);
       }
     },
     [mod],
