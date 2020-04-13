@@ -8,7 +8,6 @@ import modDb from '../mod-db.json';
 type ContextState = {
   isLocalModsDirty: boolean;
   modMap: ModMap;
-  localModMap: ModMap;
 };
 
 type ContextMethods = {
@@ -20,7 +19,6 @@ type AppContext = ContextState & ContextMethods;
 const AppState = React.createContext<AppContext>({
   isLocalModsDirty: true,
   modMap: {},
-  localModMap: {},
   addMod: () => {},
 });
 
@@ -30,7 +28,6 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   const [appState, setState] = useState<ContextState>({
     isLocalModsDirty: true,
     modMap: {},
-    localModMap: {},
   });
 
   const { isLocalModsDirty } = appState;
@@ -94,7 +91,6 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     <AppState.Provider
       value={{
         ...appState,
-        localModMap,
         addMod,
       }}
     >

@@ -43,31 +43,16 @@ const getTabFilter = (tab: AppTab) => {
 };
 
 const App = () => {
-  const [tab, setTab] = useState<AppTab>(AppTab.Installed);
-  const [isInstallTabDisabled, setIsInstallTabDisabled] = useState(false);
+  const [tab, setTab] = useState<AppTab>(AppTab.All);
   const classes = useStyles();
-  const { localModMap } = useAppState();
-
-  useEffect(() => {
-    if (tab === AppTab.Installed && Object.keys(localModMap).length === 0) {
-      setTab(AppTab.All);
-      setIsInstallTabDisabled(true);
-    } else {
-      setIsInstallTabDisabled(false);
-    }
-  }, [localModMap]);
 
   return (
     <AppStateProvider>
       <ThemeProvider theme={theme}>
         <TopBar>
           <Tabs value={tab} onChange={(event, index) => setTab(index)}>
-            <Tab
-              label="Installed"
-              value={AppTab.Installed}
-              disabled={isInstallTabDisabled}
-            />
             <Tab label="All" value={AppTab.All} />
+            <Tab label="Installed" value={AppTab.Installed} />
             <Tab label="New" value={AppTab.New} />
             <Button
               onClick={runOwml}

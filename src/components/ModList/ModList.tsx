@@ -6,7 +6,14 @@ import Paper from '@material-ui/core/Paper';
 import ModTableHead from './ModTableHead';
 import { useAppState } from '../AppState';
 import ModTableRow from './ModTableRow';
-import { TableContainer } from '@material-ui/core';
+import {
+  TableContainer,
+  TableRow,
+  TableCell,
+  Typography,
+  Card,
+  CardContent,
+} from '@material-ui/core';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -49,6 +56,7 @@ const ModList: React.FunctionComponent<Props> = ({ filter }) => {
   const { modMap } = useAppState();
 
   const rows = Object.values(modMap);
+  const filteredRows = filter ? rows.filter(filter) : rows;
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -59,6 +67,16 @@ const ModList: React.FunctionComponent<Props> = ({ filter }) => {
     setOrderBy(property);
   };
 
+  if (filteredRows.length === 0) {
+    return (
+      <Card>
+        <CardContent>
+          <Typography>No mods here! 😱</Typography>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table size="small">
@@ -68,12 +86,11 @@ const ModList: React.FunctionComponent<Props> = ({ filter }) => {
           onRequestSort={handleRequestSort}
         />
         <TableBody>
-          {stableSort(
-            filter ? rows.filter(filter) : rows,
-            getComparator(order, orderBy),
-          ).map((mod: Mod) => (
-            <ModTableRow mod={mod} key={mod.uniqueName} />
-          ))}
+          {stableSort(filteredRows, getComparator(order, orderBy)).map(
+            (mod: Mod) => (
+              <ModTableRow mod={mod} key={mod.uniqueName} />
+            ),
+          )}
         </TableBody>
       </Table>
     </TableContainer>
