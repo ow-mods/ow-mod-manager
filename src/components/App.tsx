@@ -1,9 +1,9 @@
 import { hot } from 'react-hot-loader/root';
 import React, { useState } from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Button, Container, Tabs, Tab } from '@material-ui/core';
+import { Container, Tabs, Tab } from '@material-ui/core';
+import { green, orange } from '@material-ui/core/colors';
 
-import runOwml from '../services/run-owml';
 import { AppStateProvider } from './AppState';
 import ModList from './ModList';
 import TopBar from './TopBar';
@@ -13,6 +13,12 @@ import LoadingBar from './LoadingBar';
 const theme = createMuiTheme({
   palette: {
     type: 'dark',
+    primary: {
+      main: green[700],
+    },
+    secondary: {
+      main: orange[700],
+    },
   },
 });
 
