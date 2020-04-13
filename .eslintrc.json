@@ -24,7 +24,8 @@
       "error",
       {
         "singleQuote": true,
-        "trailingComma": "all"
+        "trailingComma": "all",
+        "endOfLine": "auto"
       }
     ],
     "import/no-unresolved": [
