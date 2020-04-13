@@ -8,6 +8,7 @@ import modDb from '../mod-db.json';
 type ContextState = {
   isLocalModsDirty: boolean;
   modMap: ModMap;
+  localModMap: ModMap;
 };
 
 type ContextMethods = {
@@ -19,6 +20,7 @@ type AppContext = ContextState & ContextMethods;
 const AppState = React.createContext<AppContext>({
   isLocalModsDirty: true,
   modMap: {},
+  localModMap: {},
   addMod: () => {},
 });
 
@@ -28,12 +30,13 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   const [appState, setState] = useState<ContextState>({
     isLocalModsDirty: true,
     modMap: {},
+    localModMap: {},
   });
 
   const { isLocalModsDirty } = appState;
 
-  const [remoteModList, setRemoteModList] = useState<ModMap>({});
-  const [localModList, setLocalModList] = useState<ModMap>({});
+  const [remoteModMap, setRemoteModMap] = useState<ModMap>({});
+  const [localModMap, setLocalModMap] = useState<ModMap>({});
 
   const setAppState = (state: Partial<ContextState>) => {
     setState((prevState) => ({
@@ -60,7 +63,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
 
     const getMods = async () => {
       const localMods = await getLocalMods();
-      setLocalModList(localMods);
+      setLocalModMap(localMods);
       setAppState({ isLocalModsDirty: false });
     };
 
@@ -70,7 +73,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   useEffect(() => {
     const getMod = async (modDbItem: ModDbItem) => {
       const remoteMod = await getRemoteMod(modDbItem);
-      setRemoteModList((remoteMods) => ({
+      setRemoteModMap((remoteMods) => ({
         ...remoteMods,
         [remoteMod.uniqueName]: remoteMod,
       }));
@@ -80,17 +83,18 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const mods = merge({}, remoteModList, localModList);
+    const mods = merge({}, remoteModMap, localModMap);
     setState((prevState) => ({
       ...prevState,
       modMap: mods,
     }));
-  }, [remoteModList, localModList]);
+  }, [remoteModMap, localModMap]);
 
   return (
     <AppState.Provider
       value={{
         ...appState,
+        localModMap,
         addMod,
       }}
     >
