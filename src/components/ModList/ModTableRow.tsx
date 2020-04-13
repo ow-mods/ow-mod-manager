@@ -4,6 +4,7 @@ import {
   TableCell,
   TableRow,
   Chip,
+  CircularProgress,
   PropTypes as MaterialProps,
 } from '@material-ui/core';
 
@@ -50,13 +51,18 @@ const ModTableRow: React.FunctionComponent<Props> = ({
     <TableRow classes={isRequired ? classes : undefined} key={mod.uniqueName}>
       <TableCell>{mod.name}</TableCell>
       <TableCell>{mod.author}</TableCell>
+      <TableCell align="right">{mod.downloadCount}</TableCell>
       <TableCell>
-        {mod.isLoading && 'Loading...'}
+        {mod.isLoading && (
+          <Chip
+            label="Loading..."
+            icon={<CircularProgress size={20} color="inherit" />}
+          />
+        )}
         {!mod.isLoading && (
           <Chip color={getVersionColor()} label={getVersion()} />
         )}
       </TableCell>
-      <TableCell>{mod.downloadCount}</TableCell>
       <ModActions mod={mod} isRequired={isRequired} />
     </TableRow>
   );
