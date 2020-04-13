@@ -52,7 +52,7 @@ const App = () => {
           <Tabs value={tab} onChange={(event, index) => setTab(index)}>
             <Tab label="All" value={AppTab.All} />
             <Tab label="Installed" value={AppTab.Installed} />
-            <Tab label="New" value={AppTab.New} />
+            <Tab label="Not Installed" value={AppTab.New} />
           </Tabs>
         </TopBar>
         <Container>
