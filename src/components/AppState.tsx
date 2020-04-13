@@ -60,14 +60,18 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
       setLoadingCount((count) => {
         return count + 1;
       });
-      const remoteMod = await getRemoteMod(modDbItem);
-      setRemoteModMap((remoteMods) => ({
-        ...remoteMods,
-        [remoteMod.uniqueName]: remoteMod,
-      }));
-      setLoadingCount((count) => {
-        return count - 1;
-      });
+      getRemoteMod(modDbItem)
+        .then((remoteMod) => {
+          setRemoteModMap((remoteMods) => ({
+            ...remoteMods,
+            [remoteMod.uniqueName]: remoteMod,
+          }));
+        })
+        .finally(() => {
+          setLoadingCount((count) => {
+            return count - 1;
+          });
+        });
     };
 
     modDb.mods.forEach(getMod);
