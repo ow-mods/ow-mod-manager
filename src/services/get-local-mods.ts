@@ -15,7 +15,9 @@ function getOwml() {
     author: owmlManifest?.author ?? 'Alek',
     uniqueName: owmlManifest?.uniqueName ?? 'Alek.OWML',
     modPath: config.owmlPath,
-    localVersion: owmlManifest?.version ?? '< 0.3.43',
+    localVersion: owmlManifest
+      ? owmlManifest?.version ?? '< 0.3.43'
+      : undefined,
     isLoading: false,
     isEnabled: true,
     isRequired: true,

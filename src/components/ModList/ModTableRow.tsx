@@ -38,8 +38,10 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const getVersion = () => {
     if (isInstalled(mod)) {
       return mod.localVersion;
-    } else {
+    } else if (mod.remoteVersion) {
       return mod.remoteVersion;
+    } else {
+      return 'Not Available';
     }
   };
 
