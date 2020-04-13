@@ -17,10 +17,7 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles({
-  right: {
-    position: 'absolute',
-    right: 0,
-  },
+  right: {},
 });
 
 enum AppTab {
@@ -55,16 +52,16 @@ const App = () => {
             <Tab label="All" value={AppTab.All} />
             <Tab label="Installed" value={AppTab.Installed} />
             <Tab label="New" value={AppTab.New} />
-            <Button
-              onClick={runOwml}
-              size="large"
-              variant="contained"
-              color="primary"
-              className={classes.right}
-            >
-              Start Game
-            </Button>
           </Tabs>
+          <Button
+            onClick={runOwml}
+            size="large"
+            variant="contained"
+            color="primary"
+            className={classes.right}
+          >
+            Start Game
+          </Button>
         </TopBar>
         <Container>
           <ModList filter={getTabFilter(tab)} />
