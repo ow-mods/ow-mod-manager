@@ -41,9 +41,7 @@ const ModActions: React.FunctionComponent<Props> = ({
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { addMod } = useAppState();
 
-  const handleModActionsClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
+  const handleMoreClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -55,7 +53,6 @@ const ModActions: React.FunctionComponent<Props> = ({
   const isModOutdated = isOutdated(mod);
   const isModInstallable = mod.downloadUrl !== undefined;
   const isModDownloadable = isModInstalled ? isModOutdated : isModInstallable;
-  const isModEnabled = isModInstalled && (isRequired || isEnabled(mod));
 
   const modActionHandler = useCallback(
     (handler: ModActionHandler) => async () => {
@@ -82,13 +79,13 @@ const ModActions: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <Tooltip title={isModEnabled ? 'Disable' : 'Enable'}>
+      <Tooltip title={mod.isEnabled ? 'Disable' : 'Enable'}>
         <span>
           <Button
             disabled={!isModInstalled || isRequired}
             onClick={modActionHandler(toggleEnabled)}
           >
-            {isModEnabled ? <CheckBox /> : <CheckBoxOutlineBlank />}
+            {mod.isEnabled ? <CheckBox /> : <CheckBoxOutlineBlank />}
           </Button>
         </span>
       </Tooltip>
@@ -106,7 +103,7 @@ const ModActions: React.FunctionComponent<Props> = ({
       </Tooltip>
       <Tooltip title="More...">
         <span>
-          <Button onClick={handleModActionsClick}>
+          <Button onClick={handleMoreClick}>
             <MoreVert />
           </Button>
         </span>

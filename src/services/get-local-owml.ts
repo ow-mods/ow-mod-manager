@@ -13,6 +13,7 @@ function getLocalOwml() {
     modPath: config.owmlPath,
     localVersion: owmlManifest?.version ?? '< 0.3.43',
     isLoading: false,
+    isEnabled: true,
   };
   return owml;
 }
