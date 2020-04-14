@@ -1,9 +1,9 @@
 import { hot } from 'react-hot-loader/root';
 import React, { useState } from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Button, Container, Tabs, Tab } from '@material-ui/core';
+import { Container, Tabs, Tab } from '@material-ui/core';
+import { green, orange } from '@material-ui/core/colors';
 
-import runOwml from '../services/run-owml';
 import { AppStateProvider } from './AppState';
 import ModList from './ModList';
 import TopBar from './TopBar';
@@ -13,6 +13,12 @@ import LoadingBar from './LoadingBar';
 const theme = createMuiTheme({
   palette: {
     type: 'dark',
+    primary: {
+      main: green[700],
+    },
+    secondary: {
+      main: orange[800],
+    },
   },
 });
 
@@ -46,16 +52,8 @@ const App = () => {
           <Tabs value={tab} onChange={(event, index) => setTab(index)}>
             <Tab label="All" value={AppTab.All} />
             <Tab label="Installed" value={AppTab.Installed} />
-            <Tab label="New" value={AppTab.New} />
+            <Tab label="Not Installed" value={AppTab.New} />
           </Tabs>
-          <Button
-            onClick={runOwml}
-            size="large"
-            variant="contained"
-            color="primary"
-          >
-            Start Game
-          </Button>
         </TopBar>
         <Container>
           <ModList filter={getTabFilter(tab)} />

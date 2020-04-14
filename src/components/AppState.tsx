@@ -38,7 +38,9 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
         },
       };
     });
-    setIsLocalModsDirty(true);
+    if (!isLoading) {
+      setIsLocalModsDirty(true);
+    }
   };
 
   useEffect(() => {
@@ -78,8 +80,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const mods = merge({}, remoteModMap, localModMap);
-    setModMap(mods);
+    setModMap(merge({}, remoteModMap, localModMap));
   }, [remoteModMap, localModMap]);
 
   return (
