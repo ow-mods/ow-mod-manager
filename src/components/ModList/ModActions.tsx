@@ -146,7 +146,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
             <ListItemIcon>
               <Delete />
             </ListItemIcon>
-            Unistall
+            Uninstall
           </MenuItem>
         )}
       </Menu>
