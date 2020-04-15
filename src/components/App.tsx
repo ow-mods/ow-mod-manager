@@ -9,6 +9,7 @@ import { AppStateProvider } from './AppState';
 import ModList from './ModList';
 import TopBar from './TopBar';
 import LoadingBar from './LoadingBar';
+import OwmlLog from './OwmlLog';
 
 const theme = createMuiTheme({
   palette: {
@@ -55,6 +56,7 @@ const App = () => {
           </Tabs>
         </TopBar>
         <Container>
+          <OwmlLog />
           <ModList filter={getTabFilter(tab)} />
           <LoadingBar />
         </Container>

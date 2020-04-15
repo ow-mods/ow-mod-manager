@@ -26,7 +26,6 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   const [localModMap, setLocalModMap] = useState<ModMap>({});
   const [modMap, setModMap] = useState<ModMap>({});
   const [loadingCount, setLoadingCount] = useState(0);
-  const logLines = useOwmlLogWatcher();
 
   const setModIsLoading = (uniqueName: string, isLoading: boolean) => {
     setModMap((prevState) => {
@@ -48,10 +47,6 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
 
     getMods();
   });
-
-  useEffect(() => {
-    console.log(logLines.join('\n'));
-  }, [logLines]);
 
   useEffect(() => {
     const getMod = async (modDbItem: ModDbItem) => {
