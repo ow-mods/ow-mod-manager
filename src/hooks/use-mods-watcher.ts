@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import fs from 'fs-extra';
 
 import config from '../config.json';
-import useThrottle from './useThrottle';
+import useThrottle from './use-throttle';
 
 type Handler = () => void;
 
-function useModsDirectoryWatcher(handler: Handler) {
+function useModsWatcher(handler: Handler) {
   // Throttle handler to prevent it being called too often.
   const debouncedHandler = useThrottle(handler);
 
@@ -26,4 +26,4 @@ function useModsDirectoryWatcher(handler: Handler) {
   }, []);
 }
 
-export default useModsDirectoryWatcher;
+export default useModsWatcher;
