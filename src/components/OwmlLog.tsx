@@ -7,7 +7,7 @@ const OwmlLog: React.FunctionComponent = () => {
 
   return (
     <Card>
-      <List>
+      <List dense>
         {logLines.map((line, index) => (
           <ListItem key={index}>
             <Typography>{line}</Typography>

@@ -11,7 +11,10 @@ const endOfLineChar = os.EOL;
 
 function parseBuffer(buffer: Buffer) {
   // Iterate over each line in the buffer.
-  return buffer.toString().split(endOfLineChar);
+  return buffer
+    .toString()
+    .split(endOfLineChar)
+    .filter((line) => line.length > 0);
 }
 
 function useOwmlLogWatcher() {
@@ -19,12 +22,12 @@ function useOwmlLogWatcher() {
   const [lines, setLines] = useState<string[]>([]);
 
   useEffect(() => {
-    fs.watchFile(path, function (current, previous) {
+    fs.watch(path, function () {
       // Check if file modified time is less than last time.
       // If so, nothing changed so don't bother parsing.
-      if (current.mtime <= previous.mtime) {
-        return;
-      }
+      // if (current.mtime <= previous.mtime) {
+      //   return;
+      // }
       setFileSize((prevSize) => {
         // We're only going to read the portion of the file that
         // we have not read so far. Obtain new file size.
