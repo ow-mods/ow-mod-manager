@@ -66,7 +66,7 @@ function useOwmlLogWatcher() {
 
     getLines();
 
-    return watcher.close;
+    return () => watcher.close();
   }, []);
 
   return lines;
