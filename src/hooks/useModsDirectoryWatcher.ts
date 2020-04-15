@@ -1,29 +1,26 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import fs from 'fs-extra';
 
 import config from '../config.json';
+import useThrottle from './useThrottle';
 
-const useModsDirectoryWatcher = (handler: Function) => {
-  const savedHandler = useRef<Function>();
+type Handler = () => void;
 
-  useEffect(() => {
-    savedHandler.current = handler;
-  }, [handler]);
+function useModsDirectoryWatcher(handler: Handler) {
+  const debouncedHandler = useThrottle(handler);
 
   useEffect(() => {
     const watcher = fs.watch(
       `${config.owmlPath}/mods`,
       { recursive: true },
       (eventType, fileName) => {
-        console.log(eventType, fileName);
-        savedHandler.current();
+        debouncedHandler();
       },
     );
-
-    savedHandler.current();
+    debouncedHandler();
 
     return watcher.close;
   }, []);
-};
+}
 
 export default useModsDirectoryWatcher;
