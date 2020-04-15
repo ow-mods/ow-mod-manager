@@ -1,16 +1,9 @@
-import {
-  useEffect,
-  useCallback,
-  useState,
-  useRef,
-  Dispatch,
-  SetStateAction,
-} from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 
 function useThrottleCallback(callback: () => any, delay = 100) {
   const nextTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // cleans up pending timeouts when the function changes
+  // Clean up pending timeouts when props change / on unmount.
   useEffect(
     () => () => {
       if (nextTimeout.current !== null) {

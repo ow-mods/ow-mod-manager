@@ -39,8 +39,6 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   };
 
   useModsDirectoryWatcher(() => {
-    console.log('######## how many times mommy?');
-
     const getMods = async () => {
       const localMods = await getLocalMods();
       setLocalModMap(localMods);
