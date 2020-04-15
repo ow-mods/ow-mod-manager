@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import useOwmlLogWatcher from '../hooks/use-owml-logs-watcher';
 import { Typography, Card, List, ListItem } from '@material-ui/core';
 
 const OwmlLog: React.FunctionComponent = () => {
   const logLines = useOwmlLogWatcher();
+
+  useEffect(() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  }, [logLines]);
 
   return (
     <Card>
