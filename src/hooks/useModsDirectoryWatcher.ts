@@ -12,7 +12,7 @@ function useModsDirectoryWatcher(handler: Handler) {
 
   useEffect(() => {
     const watcher = fs.watch(
-      `${config.owmlPath}/mods`,
+      `${config.owmlPath}/Mods`,
       { recursive: true },
       () => {
         debouncedHandler();
