@@ -22,7 +22,7 @@ function useOwmlLogWatcher() {
   const [lines, setLines] = useState<string[]>([]);
 
   useEffect(() => {
-    fs.watch(path, function () {
+    function getLines() {
       // Check if file modified time is less than last time.
       // If so, nothing changed so don't bother parsing.
       // if (current.mtime <= previous.mtime) {
@@ -57,12 +57,16 @@ function useOwmlLogWatcher() {
 
         return size;
       });
-    });
+    }
+
+    const watcher = fs.watch(path, getLines);
 
     // Call the handler one first time.
     //handler();
 
-    //return watcher.close;
+    getLines();
+
+    return watcher.close;
   }, []);
 
   return lines;
