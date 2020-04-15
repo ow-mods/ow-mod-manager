@@ -27,6 +27,7 @@ enum AppTab {
   Installed,
   All,
   New,
+  Logs,
 }
 
 const getTabFilter = (tab: AppTab) => {
@@ -34,11 +35,11 @@ const getTabFilter = (tab: AppTab) => {
     case AppTab.Installed: {
       return isInstalled;
     }
-    case AppTab.All: {
-      return () => true;
-    }
     case AppTab.New: {
       return (mod: Mod) => !isInstalled(mod);
+    }
+    default: {
+      return () => true;
     }
   }
 };
@@ -53,11 +54,12 @@ const App = () => {
             <Tab label="All" value={AppTab.All} />
             <Tab label="Installed" value={AppTab.Installed} />
             <Tab label="Not Installed" value={AppTab.New} />
+            <Tab label="Logs" value={AppTab.Logs} />
           </Tabs>
         </TopBar>
         <Container>
-          <OwmlLog />
-          <ModList filter={getTabFilter(tab)} />
+          {tab === AppTab.Logs && <OwmlLog />}
+          {tab !== AppTab.Logs && <ModList filter={getTabFilter(tab)} />}
           <LoadingBar />
         </Container>
       </ThemeProvider>

@@ -1,15 +1,20 @@
 import React from 'react';
 import useOwmlLogWatcher from '../hooks/use-owml-logs-watcher';
+import { Typography, Card, List, ListItem } from '@material-ui/core';
 
 const OwmlLog: React.FunctionComponent = () => {
   const logLines = useOwmlLogWatcher();
 
   return (
-    <ul>
-      {logLines.map((line, index) => (
-        <li key={index}>{line}</li>
-      ))}
-    </ul>
+    <Card>
+      <List>
+        {logLines.map((line, index) => (
+          <ListItem key={index}>
+            <Typography>{line}</Typography>
+          </ListItem>
+        ))}
+      </List>
+    </Card>
   );
 };
 
