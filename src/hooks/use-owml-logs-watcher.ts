@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import fs from 'fs-extra';
 import os from 'os';
+import chokidar from 'chokidar';
 
 import config from '../config.json';
 
-type Handler = () => void;
 const path = `${config.owmlPath}/Logs/OWML.Output.txt`;
 const endOfLineChar = os.EOL;
 
@@ -43,11 +43,15 @@ function useOwmlLogWatcher() {
       });
     }
 
-    const watcher = fs.watch(path, getLines);
+    const watcher = chokidar
+      .watch(path, { usePolling: true })
+      .on('change', getLines);
 
     getLines();
 
-    return () => watcher.close();
+    return () => {
+      watcher.close();
+    };
   }, []);
 
   return lines;
