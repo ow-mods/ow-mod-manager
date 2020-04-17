@@ -4,10 +4,10 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Container, Tabs, Tab } from '@material-ui/core';
 import { green, orange } from '@material-ui/core/colors';
 
+import { isInstalled } from '../services/mod-manager';
 import { AppStateProvider } from './AppState';
 import ModList from './ModList';
 import TopBar from './TopBar';
-import { isInstalled } from '../services/mod-manager';
 import LoadingBar from './LoadingBar';
 
 const theme = createMuiTheme({
@@ -44,7 +44,6 @@ const getTabFilter = (tab: AppTab) => {
 
 const App = () => {
   const [tab, setTab] = useState<AppTab>(AppTab.All);
-
   return (
     <AppStateProvider>
       <ThemeProvider theme={theme}>
