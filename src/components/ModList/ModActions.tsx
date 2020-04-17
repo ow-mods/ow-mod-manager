@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
   Button,
   Tooltip,
@@ -7,15 +7,14 @@ import {
   ListItemIcon,
 } from '@material-ui/core';
 import {
-  MoreVert,
-  SaveAlt,
-  Delete,
-  CheckBox,
-  CheckBoxOutlineBlank,
-  GitHub,
+  MoreVert as MoreIcon,
+  SaveAlt as SaveIcon,
+  Delete as DeleteIcon,
+  CheckBox as CheckBoxIcon,
+  CheckBoxOutlineBlank as CheckboxBlankIcon,
+  GitHub as GitHubIcon,
+  FolderOpen as FolderIcon,
 } from '@material-ui/icons';
-
-import { shell } from 'electron';
 
 import { useAppState } from '../AppState';
 import {
@@ -24,6 +23,8 @@ import {
   uninstall,
   update,
   isOutdated,
+  openDirectory,
+  openRepo,
 } from '../../services/mod-manager';
 import { toggleEnabled } from '../../services/mod-enabler';
 
@@ -31,7 +32,7 @@ interface Props {
   mod: Mod;
 }
 
-type ModActionHandler = (mod: Mod) => Promise<void> | void;
+type ModActionHandler<Return> = (mod: Mod) => Return;
 
 const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -52,21 +53,20 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const isInstallHighlighted =
     isModOutdated || (mod.isRequired && !isModInstalled);
 
-  const modActionHandler = useCallback(
-    (handler: ModActionHandler) => async () => {
-      handleClose();
-      if (mod !== undefined) {
-        setModIsLoading(mod.uniqueName, true);
-        await handler(mod);
-        setModIsLoading(mod.uniqueName, false);
-      }
-    },
-    [mod],
-  );
-
-  const handleOpenRepoClick = () => {
+  const modActionHandler = (
+    handler: ModActionHandler<Promise<void>>,
+  ) => async () => {
     handleClose();
-    shell.openExternal(`https://github.com/${mod.repo}`);
+    if (mod !== undefined) {
+      setModIsLoading(mod.uniqueName, true);
+      await handler(mod);
+      setModIsLoading(mod.uniqueName, false);
+    }
+  };
+
+  const modActionHandlerSync = (handler: ModActionHandler<void>) => () => {
+    handleClose();
+    handler(mod);
   };
 
   const getEnableTooltip = () => {
@@ -95,9 +95,9 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         <span>
           <Button
             disabled={!isModInstalled || mod.isRequired}
-            onClick={modActionHandler(toggleEnabled)}
+            onClick={modActionHandlerSync(toggleEnabled)}
           >
-            {mod.isEnabled ? <CheckBox /> : <CheckBoxOutlineBlank />}
+            {mod.isEnabled ? <CheckBoxIcon /> : <CheckboxBlankIcon />}
           </Button>
         </span>
       </Tooltip>
@@ -109,14 +109,14 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
             variant={isInstallHighlighted ? 'contained' : 'text'}
             color={isInstallHighlighted ? 'secondary' : 'default'}
           >
-            <SaveAlt />
+            <SaveIcon />
           </Button>
         </span>
       </Tooltip>
       <Tooltip title="More...">
         <span>
           <Button onClick={handleMoreClick}>
-            <MoreVert />
+            <MoreIcon />
           </Button>
         </span>
       </Tooltip>
@@ -129,22 +129,32 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         TransitionComponent={undefined}
         transitionDuration={0}
       >
-        <MenuItem
-          disabled={mod.repo === undefined}
-          onClick={handleOpenRepoClick}
-        >
-          <ListItemIcon>
-            <GitHub />
-          </ListItemIcon>
-          {mod.repo ? 'More info on GitHub' : 'No repository available'}
-        </MenuItem>
+        {isModInstalled && (
+          <MenuItem
+            disabled={!isModInstalled}
+            onClick={modActionHandlerSync(openDirectory)}
+          >
+            <ListItemIcon>
+              <FolderIcon />
+            </ListItemIcon>
+            Show in explorer
+          </MenuItem>
+        )}
+        {mod.repo && (
+          <MenuItem onClick={modActionHandlerSync(openRepo)}>
+            <ListItemIcon>
+              <GitHubIcon />
+            </ListItemIcon>
+            More info on GitHub
+          </MenuItem>
+        )}
         {!mod.isRequired && (
           <MenuItem
             disabled={!isModInstalled}
-            onClick={modActionHandler(uninstall)}
+            onClick={modActionHandlerSync(uninstall)}
           >
             <ListItemIcon>
-              <Delete />
+              <DeleteIcon />
             </ListItemIcon>
             Uninstall
           </MenuItem>
