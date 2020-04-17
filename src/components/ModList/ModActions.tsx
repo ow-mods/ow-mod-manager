@@ -54,7 +54,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     isModOutdated || (mod.isRequired && !isModInstalled);
 
   const modActionHandler = (
-    handler: ModActionHandler<Promise<void>>,
+    handler: ModActionHandler<Promise<void> | void>,
   ) => async () => {
     handleClose();
     if (mod !== undefined) {
@@ -95,7 +95,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         <span>
           <Button
             disabled={!isModInstalled || mod.isRequired}
-            onClick={modActionHandlerSync(toggleEnabled)}
+            onClick={modActionHandler(toggleEnabled)}
           >
             {mod.isEnabled ? <CheckBoxIcon /> : <CheckboxBlankIcon />}
           </Button>
@@ -151,7 +151,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         {!mod.isRequired && (
           <MenuItem
             disabled={!isModInstalled}
-            onClick={modActionHandlerSync(uninstall)}
+            onClick={modActionHandler(uninstall)}
           >
             <ListItemIcon>
               <DeleteIcon />
