@@ -3,7 +3,7 @@ import { useEffect, useCallback, useRef } from 'react';
 function useThrottleCallback(callback: () => any, delay = 100) {
   const nextTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Clean up pending timeouts when props change / on unmount.
+  // Clean up pending timeouts on unmount.
   useEffect(
     () => () => {
       if (nextTimeout.current !== null) {
@@ -11,7 +11,7 @@ function useThrottleCallback(callback: () => any, delay = 100) {
         nextTimeout.current = null;
       }
     },
-    [callback, delay],
+    [],
   );
 
   return useCallback(
