@@ -2,7 +2,7 @@ import unzip from 'unzipper';
 import request from 'request';
 import fs from 'fs-extra';
 import path from 'path';
-import { shell, remote } from 'electron';
+import { shell } from 'electron';
 
 export function isInstalled(mod: Mod): boolean {
   return !!mod.localVersion;
@@ -131,13 +131,13 @@ export function openDirectory(mod: Mod) {
   if (!mod.modPath) {
     throw new Error("Can't open directory mod path is not defined");
   }
-  shell.openItem(`${remote.app.getAppPath()}/${mod.modPath}`);
+  shell.openItem(path.resolve(mod.modPath));
 }
 
 export function openRepo(mod: Mod) {
   if (!mod.repo) {
     throw new Error(
-      "Can't open repository because theere's no registered repository URL",
+      "Can't open repository because there's no registered repository URL",
     );
   }
   shell.openExternal(`https://github.com/${mod.repo}`);
