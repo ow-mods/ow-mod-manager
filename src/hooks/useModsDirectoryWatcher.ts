@@ -11,13 +11,15 @@ function useModsDirectoryWatcher(handler: Handler) {
   const debouncedHandler = useThrottle(handler);
 
   useEffect(() => {
-    const watcher = fs.watch(
-      `${config.owmlPath}/Mods`,
-      { recursive: true },
-      () => {
-        debouncedHandler();
-      },
-    );
+    const path = `${config.owmlPath}/Mods`;
+
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path, { recursive: true });
+    }
+
+    const watcher = fs.watch(path, { recursive: true }, () => {
+      debouncedHandler();
+    });
 
     // Call the handler one first time.
     handler();
