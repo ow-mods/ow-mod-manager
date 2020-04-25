@@ -1,0 +1,78 @@
+import { useEffect, useState } from 'react';
+import net from 'net';
+
+function useOwmlLogs() {
+  const [lines, setLines] = useState<LogLine[]>([]);
+
+  function writeLine(line: LogLine) {
+    setLines((prevLines) => {
+      const lastIndex = prevLines.length - 1;
+      const lastItem = prevLines[lastIndex];
+
+      if (prevLines.length > 0 && line.text === lastItem.text) {
+        return [
+          ...prevLines.slice(0, lastIndex),
+          {
+            ...lastItem,
+            count: lastItem.count + 1,
+          },
+        ];
+      } else {
+        return [
+          ...prevLines,
+          {
+            ...line,
+            id: prevLines.length + 1,
+          },
+        ];
+      }
+    });
+  }
+
+  function writeText(...textLines: string[]) {
+    console.log('writeText', ...textLines);
+    textLines.forEach((text, index) =>
+      writeLine({
+        type: 'log',
+        text,
+        count: 1,
+        id: index,
+      }),
+    );
+  }
+
+  useEffect(() => {
+    const server = net.createServer((socket) => {
+      //writeText('Starting console socket');
+      console.log('start socket');
+      socket.pipe(socket);
+      socket.on('data', (data) => {
+        const dataLines = data
+          .toString()
+          .split('\n')
+          .filter((line) => line);
+        writeText(...dataLines);
+      });
+      socket.on('error', (error) => {
+        writeText(`SOCKET ERROR: ${error.toString()}`);
+        socket.destroy();
+      });
+      socket.on('end', () => {
+        writeText('Console socket closed');
+        socket.destroy();
+      });
+
+      return () => {
+        writeText('Close console');
+        console.log('close socket');
+        socket.destroy();
+      };
+    });
+
+    server.listen(1234, '127.0.0.1');
+  }, []);
+
+  return lines;
+}
+
+export default useOwmlLogs;

@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
-import useOwmlLogWatcher from '../hooks/use-owml-logs-watcher';
+import useOwmlLogs from '../hooks/use-owml-logs';
 import {
   Typography,
   Card,
   List,
   ListItem,
-  Chip,
   ListItemSecondaryAction,
   Divider,
 } from '@material-ui/core';
 
 const OwmlLog: React.FunctionComponent = () => {
-  const logLines = useOwmlLogWatcher();
+  const logLines = useOwmlLogs();
 
   useEffect(() => {
     window.scrollTo(0, document.body.scrollHeight);
@@ -20,20 +19,18 @@ const OwmlLog: React.FunctionComponent = () => {
   return (
     <Card>
       <List dense>
-        {logLines.map((line, index) => (
-          <>
-            <ListItem key={index}>
-              <Typography>
-                {line.text}
-                {line.count > 1 && (
-                  <ListItemSecondaryAction>
-                    {line.count}
-                  </ListItemSecondaryAction>
-                )}
-              </Typography>
+        {logLines.map((line: LogLine) => (
+          <React.Fragment key={line.id}>
+            <ListItem>
+              <Typography>{line.text}</Typography>
+              {line.count > 1 && (
+                <ListItemSecondaryAction>
+                  <Typography>{line.count}</Typography>
+                </ListItemSecondaryAction>
+              )}
             </ListItem>
             <Divider />
-          </>
+          </React.Fragment>
         ))}
       </List>
     </Card>

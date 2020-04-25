@@ -44,4 +44,5 @@ type LogLine = {
   text: string;
   type: 'log' | 'error' | 'warning';
   count: number;
+  id: number;
 };
