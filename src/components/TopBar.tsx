@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 
 import runOwml from '../services/run-owml';
+import useOwmlLogs from '../hooks/use-owml-logs';
 import { useAppState } from './AppState';
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +24,12 @@ const useStyles = makeStyles((theme) => ({
 const TopBar: React.FunctionComponent = ({ children }) => {
   const classes = useStyles();
   const { modMap } = useAppState();
+  const { startServer } = useOwmlLogs();
+
+  function handleStartGameClick() {
+    startServer();
+    runOwml();
+  }
 
   const requiredMods = Object.values(modMap).filter((mod) => mod.isRequired);
   const isMissingRequiredMod = requiredMods.some(
@@ -45,7 +52,7 @@ const TopBar: React.FunctionComponent = ({ children }) => {
             >
               <span>
                 <Button
-                  onClick={runOwml}
+                  onClick={handleStartGameClick}
                   size="large"
                   variant="contained"
                   color="primary"

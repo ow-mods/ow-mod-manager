@@ -3,10 +3,12 @@ import net from 'net';
 
 type LogsContext = {
   logLines: LogLine[];
+  startServer: () => void;
 };
 
 const LogsState = React.createContext<LogsContext>({
   logLines: [],
+  startServer: () => {},
 });
 
 export const useOwmlLogs = () => useContext(LogsState);
@@ -34,6 +36,7 @@ function getSimpleLine(text: string): LogLine {
 
 export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const [lines, setLines] = useState<LogLine[]>([]);
+  const [server, setServer] = useState<net.Server>();
 
   function writeLogLine(line: LogLine) {
     setLines((prevLines) => {
@@ -68,8 +71,13 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     textLines.forEach((textLine) => writeLogLine(getSimpleLine(textLine)));
   }
 
+  function startServer() {
+    server.listen(3030, '127.0.0.1');
+    writeSimpleText('Started console server');
+  }
+
   useEffect(() => {
-    const server = net.createServer((socket) => {
+    const netServer = net.createServer((socket) => {
       socket.pipe(socket);
       socket.on('data', (data) => {
         const dataLines = data
@@ -80,23 +88,22 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
       });
       socket.on('error', (error) => {
         writeSimpleText(`SOCKET ERROR: ${error.toString()}`);
-        server.close();
+        netServer.close();
       });
       socket.on('end', () => {
         writeSimpleText('Console socket closed');
-        server.close();
+        netServer.close();
       });
     });
 
-    server.listen(3030, '127.0.0.1');
-    writeSimpleText('Started console server');
+    setServer(netServer);
 
-    server.on('connection', () => {
+    netServer.on('connection', () => {
       writeSimpleText('Game connected to console');
     });
 
     return () => {
-      server.close();
+      netServer.close();
     };
   }, []);
 
@@ -104,6 +111,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     <LogsState.Provider
       value={{
         logLines: lines,
+        startServer,
       }}
     >
       {children}
