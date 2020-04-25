@@ -61,7 +61,7 @@ function useOwmlLogs() {
       });
     });
 
-    server.listen(1234, '127.0.0.1');
+    server.listen(3030, '127.0.0.1');
     writeText('Started console server');
 
     server.on('connection', () => {

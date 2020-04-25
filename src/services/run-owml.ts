@@ -1,17 +1,12 @@
-import exec from 'child_process';
+import { spawn } from 'child_process';
 import config from '../config.json';
 
 const EXE_FILE = 'OWML.Launcher.exe';
-const options = {
-  shell: true,
-  cwd: config.owmlPath,
-};
 
 function runOwml() {
-  exec.execFile(EXE_FILE, options, (error) => {
-    if (error) {
-      throw error;
-    }
+  spawn(EXE_FILE, ['-owmmPort 3030'], {
+    shell: true,
+    cwd: config.owmlPath,
   });
 }
 
