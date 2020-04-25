@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useOwmlLogs } from '../hooks/use-owml-logs';
 import {
   makeStyles,
@@ -9,8 +9,10 @@ import {
   TableBody,
   TableContainer,
   Paper,
+  Input,
+  InputAdornment,
 } from '@material-ui/core';
-
+import { Search as SearchIcon } from '@material-ui/icons';
 const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   error: {
     color: palette.error.light,
@@ -34,10 +36,26 @@ const OwmlLog: React.FunctionComponent = () => {
   const styles = useStyles();
   const { logLines } = useOwmlLogs();
   const container = useRef<HTMLDivElement>(null);
+  const [filteredLines, setFilteredLines] = useState<LogLine[]>([]);
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
     container.current.scrollTo(0, container.current.scrollHeight);
   }, [logLines]);
+
+  useEffect(() => {
+    setFilteredLines(
+      logLines.filter((line) =>
+        line.text.toLowerCase().includes(filter.toLowerCase()),
+      ),
+    );
+  }, [filter, logLines]);
+
+  const handleFilterChange = ({
+    currentTarget,
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    setFilter(currentTarget.value);
+  };
 
   return (
     <TableContainer
@@ -48,13 +66,25 @@ const OwmlLog: React.FunctionComponent = () => {
       <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell>Message</TableCell>
+            <TableCell>
+              <Input
+                onChange={handleFilterChange}
+                value={filter}
+                placeholder="Filter log messages"
+                color="secondary"
+                startAdornment={
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                }
+              />
+            </TableCell>
             <TableCell>Mod</TableCell>
             <TableCell>#</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {logLines.map((line: LogLine) => (
+          {filteredLines.map((line: LogLine) => (
             <React.Fragment key={line.id}>
               <TableRow>
                 <TableCell className={styles[line.type]}>{line.text}</TableCell>
