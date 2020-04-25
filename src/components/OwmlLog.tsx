@@ -44,9 +44,12 @@ const OwmlLog: React.FunctionComponent = () => {
   }, [logLines]);
 
   useEffect(() => {
+    const lowerCaseFilter = filter.toLowerCase();
     setFilteredLines(
-      logLines.filter((line) =>
-        line.text.toLowerCase().includes(filter.toLowerCase()),
+      logLines.filter(
+        (line) =>
+          line.text.toLowerCase().includes(lowerCaseFilter) ||
+          line.modName.toLowerCase().includes(lowerCaseFilter),
       ),
     );
   }, [filter, logLines]);
