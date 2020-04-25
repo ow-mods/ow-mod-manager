@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useOwmlLogs } from '../hooks/use-owml-logs';
 import {
-  Card,
   makeStyles,
   Table,
   TableRow,
   TableHead,
   TableCell,
   TableBody,
+  TableContainer,
+  Paper,
 } from '@material-ui/core';
 
 const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
@@ -21,7 +22,7 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
     color: palette.success.light,
   },
   log: {},
-  logsTable: {
+  wrapper: {
     maxHeight: `calc(100vh - ${mixins.toolbar.minHeight}px - ${
       spacing(2) * 2
     }px)`,
@@ -32,13 +33,18 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
 const OwmlLog: React.FunctionComponent = () => {
   const styles = useStyles();
   const { logLines } = useOwmlLogs();
+  const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    window.scrollTo(0, document.body.scrollHeight);
+    container.current.scrollTo(0, container.current.scrollHeight);
   }, [logLines]);
 
   return (
-    <Card className={styles.logsTable}>
+    <TableContainer
+      component={Paper}
+      className={styles.wrapper}
+      ref={container}
+    >
       <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
@@ -59,7 +65,7 @@ const OwmlLog: React.FunctionComponent = () => {
           ))}
         </TableBody>
       </Table>
-    </Card>
+    </TableContainer>
   );
 };
 
