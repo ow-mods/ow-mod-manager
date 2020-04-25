@@ -1,57 +1,31 @@
 import { useEffect, useState } from 'react';
-import fs from 'fs-extra';
-import os from 'os';
-import chokidar from 'chokidar';
-
-import config from '../config.json';
-
-const path = `${config.owmlPath}/Logs/OWML.Output.txt`;
-const endOfLineChar = os.EOL;
-
-function parseBuffer(buffer: Buffer) {
-  return buffer
-    .toString()
-    .split(endOfLineChar)
-    .filter((line) => line.length > 0);
-}
+import net from 'net';
 
 function useOwmlLogWatcher() {
-  const [, setFileSize] = useState(0);
   const [lines, setLines] = useState<string[]>([]);
 
+  function writeLine(line: string) {
+    setLines((prevLines) => [...prevLines, line]);
+  }
+
   useEffect(() => {
-    function getLines() {
-      setFileSize((prevSize) => {
-        const size = fs.statSync(path).size;
-        let sizeDiff = size - prevSize;
-
-        if (sizeDiff < 0) {
-          setFileSize(0);
-          sizeDiff = size;
-        }
-
-        const buffer = new Buffer(sizeDiff);
-        const fileDescriptor = fs.openSync(path, 'r');
-
-        fs.readSync(fileDescriptor, buffer, 0, sizeDiff, prevSize);
-        fs.closeSync(fileDescriptor);
-
-        const newLines = parseBuffer(buffer);
-        setLines((prevLines) => [...prevLines, ...newLines]);
-
-        return size;
+    const server = net.createServer((socket) => {
+      console.log('creating server...', socket);
+      socket.write('Echo server\r\n');
+      socket.pipe(socket);
+      socket.on('data', (data) => {
+        writeLine(data.toString());
       });
-    }
+      socket.on('error', (error) => {
+        writeLine(`SOCKET ERROR: ${error.toString()}`);
+      });
+      socket.on('end', () => {
+        writeLine('Console socket closed');
+        socket.destroy();
+      });
+    });
 
-    const watcher = chokidar
-      .watch(path, { usePolling: true })
-      .on('change', getLines);
-
-    getLines();
-
-    return () => {
-      watcher.close();
-    };
+    server.listen(1234, '127.0.0.1');
   }, []);
 
   return lines;
