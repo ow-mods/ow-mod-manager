@@ -73,8 +73,9 @@ const OwmlLog: React.FunctionComponent = () => {
               <Input
                 onChange={handleFilterChange}
                 value={filter}
-                placeholder="Filter log messages"
+                placeholder="Filter by message or mod name"
                 color="secondary"
+                fullWidth
                 startAdornment={
                   <InputAdornment position="start">
                     <SearchIcon />
@@ -82,7 +83,7 @@ const OwmlLog: React.FunctionComponent = () => {
                 }
               />
             </TableCell>
-            <TableCell>Mod</TableCell>
+            <TableCell>Origin</TableCell>
             <TableCell>#</TableCell>
           </TableRow>
         </TableHead>
