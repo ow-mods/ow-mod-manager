@@ -13,10 +13,22 @@ const LogsState = React.createContext<LogsContext>({
 
 export const useOwmlLogs = () => useContext(LogsState);
 
+function getLogType(text: string): LogType {
+  const lowerText = text.toLowerCase();
+  if (lowerText.includes('error') || lowerText.includes('exception')) {
+    return 'error';
+  } else if (lowerText.includes('warning') || lowerText.includes('disabled')) {
+    return 'warning';
+  } else {
+    return 'log';
+  }
+}
+
 function getLogLine(lineText: string): LogLine {
   const [modName, text] = lineText.split(';;');
+
   return {
-    type: 'log',
+    type: getLogType(text),
     count: 1,
     id: 0,
     text,
@@ -24,12 +36,12 @@ function getLogLine(lineText: string): LogLine {
   };
 }
 
-function getSimpleLine(text: string): LogLine {
+function getSimpleLine(text: string, type: LogType = 'log'): LogLine {
   return {
-    type: 'log',
+    type,
+    text,
     count: 1,
     id: 0,
-    text,
     modName: 'Mod Manager',
   };
 }
@@ -67,13 +79,13 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     textLines.forEach((textLine) => writeLogLine(getLogLine(textLine)));
   }
 
-  function writeSimpleText(...textLines: string[]) {
-    textLines.forEach((textLine) => writeLogLine(getSimpleLine(textLine)));
+  function writeSimpleText(textLine: string, type?: LogType) {
+    writeLogLine(getSimpleLine(textLine, type));
   }
 
   function startServer() {
     server.listen(3030, '127.0.0.1');
-    writeSimpleText('Started console server');
+    writeSimpleText('Started console server', 'warning');
   }
 
   useEffect(() => {
@@ -87,11 +99,11 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
         writeLogText(...dataLines);
       });
       socket.on('error', (error) => {
-        writeSimpleText(`SOCKET ERROR: ${error.toString()}`);
+        writeSimpleText(`SOCKET ERROR: ${error.toString()}`, 'error');
         netServer.close();
       });
       socket.on('end', () => {
-        writeSimpleText('Console socket closed');
+        writeSimpleText('Console socket closed', 'warning');
         netServer.close();
       });
     });
@@ -99,7 +111,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     setServer(netServer);
 
     netServer.on('connection', () => {
-      writeSimpleText('Game connected to console');
+      writeSimpleText('Game connected to console', 'warning');
     });
 
     return () => {

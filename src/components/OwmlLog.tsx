@@ -7,9 +7,21 @@ import {
   ListItem,
   ListItemSecondaryAction,
   Divider,
+  makeStyles,
 } from '@material-ui/core';
 
+const useStyles = makeStyles((theme) => ({
+  error: {
+    color: theme.palette.error.light,
+  },
+  warning: {
+    color: theme.palette.warning.light,
+  },
+  log: {},
+}));
+
 const OwmlLog: React.FunctionComponent = () => {
+  const styles = useStyles();
   const { logLines } = useOwmlLogs();
 
   useEffect(() => {
@@ -21,7 +33,7 @@ const OwmlLog: React.FunctionComponent = () => {
       <List dense>
         {logLines.map((line: LogLine) => (
           <React.Fragment key={line.id}>
-            <ListItem>
+            <ListItem className={styles[line.type]}>
               <Typography>{line.text}</Typography>
               <ListItemSecondaryAction>
                 <Typography>
