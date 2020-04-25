@@ -43,8 +43,6 @@ function useOwmlLogs() {
 
   useEffect(() => {
     const server = net.createServer((socket) => {
-      //writeText('Starting console socket');
-      console.log('start socket');
       socket.pipe(socket);
       socket.on('data', (data) => {
         const dataLines = data
@@ -55,21 +53,24 @@ function useOwmlLogs() {
       });
       socket.on('error', (error) => {
         writeText(`SOCKET ERROR: ${error.toString()}`);
-        socket.destroy();
+        server.close();
       });
       socket.on('end', () => {
         writeText('Console socket closed');
-        socket.destroy();
+        server.close();
       });
-
-      return () => {
-        writeText('Close console');
-        console.log('close socket');
-        socket.destroy();
-      };
     });
 
     server.listen(1234, '127.0.0.1');
+    writeText('Started console server');
+
+    server.on('connection', () => {
+      writeText('Game connected to console');
+    });
+
+    return () => {
+      server.close();
+    };
   }, []);
 
   return lines;
