@@ -4,7 +4,6 @@ import { merge } from 'lodash';
 import getLocalMods from '../services/get-local-mods';
 import getRemoteMod from '../services/get-remote-mod';
 import modDb from '../mod-db.json';
-import useOwmlLogs from '../hooks/use-owml-logs';
 import useModsDirectoryWatcher from '../hooks/useModsDirectoryWatcher';
 
 type AppContext = {

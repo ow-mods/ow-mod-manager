@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import useOwmlLogs from '../hooks/use-owml-logs';
+import { useOwmlLogs } from '../hooks/use-owml-logs';
 import {
   Typography,
   Card,
@@ -7,11 +7,10 @@ import {
   ListItem,
   ListItemSecondaryAction,
   Divider,
-  ListItemIcon,
 } from '@material-ui/core';
 
 const OwmlLog: React.FunctionComponent = () => {
-  const logLines = useOwmlLogs();
+  const { logLines } = useOwmlLogs();
 
   useEffect(() => {
     window.scrollTo(0, document.body.scrollHeight);

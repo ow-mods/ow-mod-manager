@@ -5,6 +5,7 @@ import { Container, Tabs, Tab } from '@material-ui/core';
 import { green, orange } from '@material-ui/core/colors';
 
 import { isInstalled } from '../services/mod-manager';
+import { LogsProvider } from '../hooks/use-owml-logs';
 import { AppStateProvider } from './AppState';
 import ModList from './ModList';
 import TopBar from './TopBar';
@@ -48,21 +49,23 @@ const App = () => {
   const [tab, setTab] = useState<AppTab>(AppTab.All);
   return (
     <AppStateProvider>
-      <ThemeProvider theme={theme}>
-        <TopBar>
-          <Tabs value={tab} onChange={(event, index) => setTab(index)}>
-            <Tab label="All" value={AppTab.All} />
-            <Tab label="Installed" value={AppTab.Installed} />
-            <Tab label="Not Installed" value={AppTab.New} />
-            <Tab label="Logs" value={AppTab.Logs} />
-          </Tabs>
-        </TopBar>
-        <Container>
-          {tab === AppTab.Logs && <OwmlLog />}
-          {tab !== AppTab.Logs && <ModList filter={getTabFilter(tab)} />}
-          <LoadingBar />
-        </Container>
-      </ThemeProvider>
+      <LogsProvider>
+        <ThemeProvider theme={theme}>
+          <TopBar>
+            <Tabs value={tab} onChange={(event, index) => setTab(index)}>
+              <Tab label="All" value={AppTab.All} />
+              <Tab label="Installed" value={AppTab.Installed} />
+              <Tab label="Not Installed" value={AppTab.New} />
+              <Tab label="Logs" value={AppTab.Logs} />
+            </Tabs>
+          </TopBar>
+          <Container>
+            {tab === AppTab.Logs && <OwmlLog />}
+            {tab !== AppTab.Logs && <ModList filter={getTabFilter(tab)} />}
+            <LoadingBar />
+          </Container>
+        </ThemeProvider>
+      </LogsProvider>
     </AppStateProvider>
   );
 };

@@ -1,5 +1,15 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import net from 'net';
+
+type LogsContext = {
+  logLines: LogLine[];
+};
+
+const LogsState = React.createContext<LogsContext>({
+  logLines: [],
+});
+
+export const useOwmlLogs = () => useContext(LogsState);
 
 function getLogLine(lineText: string): LogLine {
   const [modName, text] = lineText.split(';;');
@@ -22,7 +32,7 @@ function getSimpleLine(text: string): LogLine {
   };
 }
 
-function useOwmlLogs() {
+export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const [lines, setLines] = useState<LogLine[]>([]);
 
   function writeLogLine(line: LogLine) {
@@ -90,7 +100,15 @@ function useOwmlLogs() {
     };
   }, []);
 
-  return lines;
-}
+  return (
+    <LogsState.Provider
+      value={{
+        logLines: lines,
+      }}
+    >
+      {children}
+    </LogsState.Provider>
+  );
+};
 
 export default useOwmlLogs;
