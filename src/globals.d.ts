@@ -41,6 +41,7 @@ type SortOrder = 'asc' | 'desc';
 type HeadCellID = 'name' | 'author' | 'version' | 'downloadCount';
 
 type LogLine = {
+  modName: string;
   text: string;
   type: 'log' | 'error' | 'warning';
   count: number;

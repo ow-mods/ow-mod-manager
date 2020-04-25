@@ -7,6 +7,7 @@ import {
   ListItem,
   ListItemSecondaryAction,
   Divider,
+  ListItemIcon,
 } from '@material-ui/core';
 
 const OwmlLog: React.FunctionComponent = () => {
@@ -23,11 +24,11 @@ const OwmlLog: React.FunctionComponent = () => {
           <React.Fragment key={line.id}>
             <ListItem>
               <Typography>{line.text}</Typography>
-              {line.count > 1 && (
-                <ListItemSecondaryAction>
-                  <Typography>{line.count}</Typography>
-                </ListItemSecondaryAction>
-              )}
+              <ListItemSecondaryAction>
+                <Typography>
+                  [{line.modName}] {line.count > 1 ? line.count : ''}
+                </Typography>
+              </ListItemSecondaryAction>
             </ListItem>
             <Divider />
           </React.Fragment>

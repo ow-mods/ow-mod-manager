@@ -1,10 +1,31 @@
 import { useEffect, useState } from 'react';
 import net from 'net';
 
+function getLogLine(lineText: string): LogLine {
+  const [modName, text] = lineText.split(';;');
+  return {
+    type: 'log',
+    count: 1,
+    id: 0,
+    text,
+    modName,
+  };
+}
+
+function getSimpleLine(text: string): LogLine {
+  return {
+    type: 'log',
+    count: 1,
+    id: 0,
+    text,
+    modName: 'Mod Manager',
+  };
+}
+
 function useOwmlLogs() {
   const [lines, setLines] = useState<LogLine[]>([]);
 
-  function writeLine(line: LogLine) {
+  function writeLogLine(line: LogLine) {
     setLines((prevLines) => {
       const lastIndex = prevLines.length - 1;
       const lastItem = prevLines[lastIndex];
@@ -29,16 +50,12 @@ function useOwmlLogs() {
     });
   }
 
-  function writeText(...textLines: string[]) {
-    console.log('writeText', ...textLines);
-    textLines.forEach((text, index) =>
-      writeLine({
-        type: 'log',
-        text,
-        count: 1,
-        id: index,
-      }),
-    );
+  function writeLogText(...textLines: string[]) {
+    textLines.forEach((textLine) => writeLogLine(getLogLine(textLine)));
+  }
+
+  function writeSimpleText(...textLines: string[]) {
+    textLines.forEach((textLine) => writeLogLine(getSimpleLine(textLine)));
   }
 
   useEffect(() => {
@@ -49,23 +66,23 @@ function useOwmlLogs() {
           .toString()
           .split('\n')
           .filter((line) => line);
-        writeText(...dataLines);
+        writeLogText(...dataLines);
       });
       socket.on('error', (error) => {
-        writeText(`SOCKET ERROR: ${error.toString()}`);
+        writeSimpleText(`SOCKET ERROR: ${error.toString()}`);
         server.close();
       });
       socket.on('end', () => {
-        writeText('Console socket closed');
+        writeSimpleText('Console socket closed');
         server.close();
       });
     });
 
     server.listen(3030, '127.0.0.1');
-    writeText('Started console server');
+    writeSimpleText('Started console server');
 
     server.on('connection', () => {
-      writeText('Game connected to console');
+      writeSimpleText('Game connected to console');
     });
 
     return () => {
