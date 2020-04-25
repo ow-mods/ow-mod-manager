@@ -14,7 +14,9 @@ const OwmlLog: React.FunctionComponent = () => {
       <List dense>
         {logLines.map((line, index) => (
           <ListItem key={index}>
-            <Typography>{line}</Typography>
+            <Typography>
+              ({line.count}) {line.text}
+            </Typography>
           </ListItem>
         ))}
       </List>

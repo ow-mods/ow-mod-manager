@@ -39,3 +39,9 @@ type ModConfig = {
 type SortOrder = 'asc' | 'desc';
 
 type HeadCellID = 'name' | 'author' | 'version' | 'downloadCount';
+
+type LogLine = {
+  text: string;
+  type: 'log' | 'error' | 'warning';
+  count: number;
+};

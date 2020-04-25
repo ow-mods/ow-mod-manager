@@ -2,10 +2,35 @@ import { useEffect, useState } from 'react';
 import net from 'net';
 
 function useOwmlLogWatcher() {
-  const [lines, setLines] = useState<string[]>([]);
+  const [lines, setLines] = useState<LogLine[]>([]);
 
-  function writeLines(...lines: string[]) {
-    setLines((prevLines) => [...prevLines, ...lines]);
+  function writeLine(line: LogLine) {
+    setLines((prevLines) => {
+      if (
+        prevLines.length > 0 &&
+        line.text === prevLines[prevLines.length - 1].text
+      ) {
+        return [
+          ...prevLines.slice(0, prevLines.length - 1),
+          {
+            ...prevLines[prevLines.length - 1],
+            count: prevLines[prevLines.length - 1].count + 1,
+          },
+        ];
+      } else {
+        return [...prevLines, line];
+      }
+    });
+  }
+
+  function writeLines(...textLines: string[]) {
+    textLines.forEach((textLine) =>
+      writeLine({
+        type: 'log',
+        text: textLine,
+        count: 1,
+      }),
+    );
   }
 
   useEffect(() => {
