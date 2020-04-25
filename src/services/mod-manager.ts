@@ -2,6 +2,7 @@ import unzip from 'unzipper';
 import request from 'request';
 import fs from 'fs-extra';
 import path from 'path';
+import { shell } from 'electron';
 
 export function isInstalled(mod: Mod): boolean {
   return !!mod.localVersion;
@@ -124,4 +125,20 @@ export function uninstall(mod: Mod) {
     throw new Error("Can't uninstall mod because it's not installed");
   }
   deleteFolder(mod.modPath);
+}
+
+export function openDirectory(mod: Mod) {
+  if (!mod.modPath) {
+    throw new Error("Can't open directory mod path is not defined");
+  }
+  shell.openItem(path.resolve(mod.modPath));
+}
+
+export function openRepo(mod: Mod) {
+  if (!mod.repo) {
+    throw new Error(
+      "Can't open repository because there's no registered repository URL",
+    );
+  }
+  shell.openExternal(`https://github.com/${mod.repo}`);
 }

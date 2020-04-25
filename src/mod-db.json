@@ -41,6 +41,10 @@
       "manifest": "manifest.json"
     },
     {
+      "repo": "misternebula/OWConsole",
+      "manifest": "manifest.json"
+    },
+    {
       "repo": "TAImatem/OW_ControllerFix",
       "manifest": "OW_ControllerFix/manifest.json"
     },

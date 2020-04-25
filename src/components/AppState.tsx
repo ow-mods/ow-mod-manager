@@ -4,8 +4,8 @@ import { merge } from 'lodash';
 import getLocalMods from '../services/get-local-mods';
 import getRemoteMod from '../services/get-remote-mod';
 import modDb from '../mod-db.json';
-import useModsWatcher from '../hooks/use-mods-watcher';
 import useOwmlLogWatcher from '../hooks/use-owml-logs-watcher';
+import useModsDirectoryWatcher from '../hooks/useModsDirectoryWatcher';
 
 type AppContext = {
   modMap: ModMap;
@@ -39,7 +39,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     });
   };
 
-  useModsWatcher(() => {
+  useModsDirectoryWatcher(() => {
     const getMods = async () => {
       const localMods = await getLocalMods();
       setLocalModMap(localMods);
