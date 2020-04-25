@@ -4,8 +4,8 @@ import net from 'net';
 function useOwmlLogWatcher() {
   const [lines, setLines] = useState<string[]>([]);
 
-  function writeLine(line: string) {
-    setLines((prevLines) => [...prevLines, line]);
+  function writeLines(...lines: string[]) {
+    setLines((prevLines) => [...prevLines, ...lines]);
   }
 
   useEffect(() => {
@@ -14,13 +14,18 @@ function useOwmlLogWatcher() {
       socket.write('Echo server\r\n');
       socket.pipe(socket);
       socket.on('data', (data) => {
-        writeLine(data.toString());
+        const lines = data
+          .toString()
+          .split('\n')
+          .filter((line) => line);
+        writeLines(...lines);
       });
       socket.on('error', (error) => {
-        writeLine(`SOCKET ERROR: ${error.toString()}`);
+        writeLines(`SOCKET ERROR: ${error.toString()}`);
+        socket.destroy();
       });
       socket.on('end', () => {
-        writeLine('Console socket closed');
+        writeLines('Console socket closed');
         socket.destroy();
       });
     });
