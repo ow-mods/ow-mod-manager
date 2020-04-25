@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
   warning: {
     color: theme.palette.warning.light,
   },
+  success: {
+    color: theme.palette.success.light,
+  },
   log: {},
 }));
 

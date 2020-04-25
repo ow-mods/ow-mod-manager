@@ -19,6 +19,8 @@ function getLogType(text: string): LogType {
     return 'error';
   } else if (lowerText.includes('warning') || lowerText.includes('disabled')) {
     return 'warning';
+  } else if (lowerText.includes('success')) {
+    return 'success';
   } else {
     return 'log';
   }
@@ -85,7 +87,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
 
   function startServer() {
     server.listen(3030, '127.0.0.1');
-    writeSimpleText('Started console server', 'warning');
+    writeSimpleText('Started console server', 'success');
   }
 
   useEffect(() => {
@@ -111,7 +113,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     setServer(netServer);
 
     netServer.on('connection', () => {
-      writeSimpleText('Game connected to console', 'warning');
+      writeSimpleText('Game connected to console', 'success');
     });
 
     return () => {
