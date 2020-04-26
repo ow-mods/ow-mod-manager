@@ -11,8 +11,11 @@ import {
   Paper,
   Input,
   InputAdornment,
+  Button,
+  IconButton,
 } from '@material-ui/core';
-import { Search as SearchIcon } from '@material-ui/icons';
+import { Close as CloseIcon, Search as SearchIcon } from '@material-ui/icons';
+
 const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   error: {
     color: palette.error.light,
@@ -45,19 +48,27 @@ const OwmlLog: React.FunctionComponent = () => {
 
   useEffect(() => {
     const lowerCaseFilter = filter.toLowerCase();
-    setFilteredLines(
-      logLines.filter(
-        (line) =>
-          line.text.toLowerCase().includes(lowerCaseFilter) ||
-          line.modName.toLowerCase().includes(lowerCaseFilter),
-      ),
-    );
+    if (filter) {
+      setFilteredLines(
+        logLines.filter(
+          (line) =>
+            line.text.toLowerCase().includes(lowerCaseFilter) ||
+            line.modName.toLowerCase().includes(lowerCaseFilter),
+        ),
+      );
+    } else {
+      setFilteredLines(logLines);
+    }
   }, [filter, logLines]);
 
   const handleFilterChange = ({
     currentTarget,
   }: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(currentTarget.value);
+  };
+
+  const handleClearFilterClick = () => {
+    setFilter('');
   };
 
   return (
@@ -73,13 +84,21 @@ const OwmlLog: React.FunctionComponent = () => {
               <Input
                 onChange={handleFilterChange}
                 value={filter}
-                placeholder="Filter by message or mod name"
+                placeholder="Filter"
                 color="secondary"
-                fullWidth
                 startAdornment={
                   <InputAdornment position="start">
                     <SearchIcon />
                   </InputAdornment>
+                }
+                endAdornment={
+                  filter !== '' && (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handleClearFilterClick} size="small">
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
+                    </InputAdornment>
+                  )
                 }
               />
             </TableCell>
