@@ -4,7 +4,7 @@ import { merge } from 'lodash';
 import getLocalMods from '../services/get-local-mods';
 import getRemoteMod from '../services/get-remote-mod';
 import modDb from '../mod-db.json';
-import useModsDirectoryWatcher from '../hooks/useModsDirectoryWatcher';
+import useModsDirectoryWatcher from './useModsDirectoryWatcher';
 
 type AppContext = {
   modMap: ModMap;

@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useRef } from 'react';
 
-function useThrottleCallback(callback: () => any, delay = 100) {
+function useThrottleCallback(callback: () => unknown, delay = 100) {
   const nextTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // Clean up pending timeouts on unmount.

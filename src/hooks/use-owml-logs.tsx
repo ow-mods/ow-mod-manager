@@ -86,6 +86,9 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
   }
 
   function startServer() {
+    if (!server) {
+      throw new Error('Tried to start server but it has not been initialized');
+    }
     server.listen(3030, '127.0.0.1');
     writeSimpleText('Started console server', 'success');
   }

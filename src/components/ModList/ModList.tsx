@@ -4,7 +4,7 @@ import TableBody from '@material-ui/core/TableBody';
 import Paper from '@material-ui/core/Paper';
 
 import ModTableHead from './ModTableHead';
-import { useAppState } from '../AppState';
+import { useAppState } from '../../hooks/use-app-state';
 import ModTableRow from './ModTableRow';
 import {
   TableContainer,

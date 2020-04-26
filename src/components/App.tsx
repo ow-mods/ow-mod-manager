@@ -6,7 +6,7 @@ import { green, orange } from '@material-ui/core/colors';
 
 import { isInstalled } from '../services/mod-manager';
 import { LogsProvider } from '../hooks/use-owml-logs';
-import { AppStateProvider } from './AppState';
+import { AppStateProvider } from '../hooks/use-app-state';
 import ModList from './ModList';
 import TopBar from './TopBar';
 import LoadingBar from './LoadingBar';

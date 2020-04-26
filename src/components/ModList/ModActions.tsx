@@ -16,7 +16,7 @@ import {
   FolderOpen as FolderIcon,
 } from '@material-ui/icons';
 
-import { useAppState } from '../AppState';
+import { useAppState } from '../../hooks/use-app-state';
 import {
   isInstalled,
   install,

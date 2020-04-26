@@ -10,7 +10,7 @@ import {
 
 import runOwml from '../services/run-owml';
 import useOwmlLogs from '../hooks/use-owml-logs';
-import { useAppState } from './AppState';
+import { useAppState } from '../hooks/use-app-state';
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
