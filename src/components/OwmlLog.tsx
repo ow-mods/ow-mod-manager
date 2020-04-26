@@ -43,6 +43,9 @@ const OwmlLog: React.FunctionComponent = () => {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
+    if (!container.current) {
+      return;
+    }
     container.current.scrollTo(0, container.current.scrollHeight);
   }, [logLines]);
 
