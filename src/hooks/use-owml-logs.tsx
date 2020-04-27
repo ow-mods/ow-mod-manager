@@ -8,12 +8,14 @@ type LogsContext = {
   logLines: LogLine[];
   startServer: () => Promise<number>;
   isLoggerInstalled: boolean;
+  isServerRunning: boolean;
 };
 
 const LogsState = React.createContext<LogsContext>({
   logLines: [],
   startServer: () => new Promise(() => {}),
   isLoggerInstalled: false,
+  isServerRunning: false,
 });
 
 export const useOwmlLogs = () => useContext(LogsState);
@@ -56,6 +58,7 @@ function getSimpleLine(text: string, type: LogType = 'log'): LogLine {
 export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const [lines, setLines] = useState<LogLine[]>([]);
   const [server, setServer] = useState<net.Server>();
+  const [isServerRunning, setIsServerRunning] = useState(false);
 
   const {
     modMap: { [config.consoleMod]: consoleMod },
@@ -108,6 +111,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
 
     return new Promise<number>((resolve, reject) => {
       server.on('listening', () => {
+        setIsServerRunning(true);
         const port = (server.address() as net.AddressInfo).port;
         writeSimpleText(`Started console server on port ${port}`, 'success');
         resolve(port);
@@ -133,10 +137,12 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
       });
       socket.on('error', (error) => {
         writeSimpleText(`SOCKET ERROR: ${error.toString()}`, 'error');
+        setIsServerRunning(false);
         netServer.close();
       });
       socket.on('end', () => {
         writeSimpleText('Console socket closed', 'warning');
+        setIsServerRunning(false);
         netServer.close();
       });
     });
@@ -148,6 +154,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     });
 
     return () => {
+      setIsServerRunning(false);
       netServer.close();
     };
   }, []);
@@ -157,6 +164,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
       value={{
         logLines: lines,
         startServer,
+        isServerRunning,
         isLoggerInstalled,
       }}
     >

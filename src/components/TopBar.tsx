@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 const TopBar: React.FunctionComponent = ({ children }) => {
   const classes = useStyles();
   const { modMap } = useAppState();
-  const { startServer, isLoggerInstalled } = useOwmlLogs();
+  const { startServer, isLoggerInstalled, isServerRunning } = useOwmlLogs();
 
   async function handleStartGameClick() {
     if (isLoggerInstalled) {
@@ -39,6 +39,23 @@ const TopBar: React.FunctionComponent = ({ children }) => {
     (mod) => mod.localVersion === undefined,
   );
   const requiredModNames = requiredMods.map((mod) => mod.name).join(', ');
+  const isStartDisabled = isMissingRequiredMod || isServerRunning;
+
+  function getStartGameTooltip() {
+    if (isMissingRequiredMod) {
+      return `Please install ${requiredModNames} before starting the game`;
+    } else if (isServerRunning) {
+      // TODO: This tooltip only makes sense if we patch OWML
+      // to allow for running multiple instances of the game.
+      return `
+        Console already running.
+        Open a new instance of the Mod Manager
+        if you need multiple instances of the game running.
+      `;
+    } else {
+      return '';
+    }
+  }
 
   return (
     <>
@@ -46,20 +63,14 @@ const TopBar: React.FunctionComponent = ({ children }) => {
         <Toolbar>
           <Container className={classes.container}>
             {children}
-            <Tooltip
-              title={
-                isMissingRequiredMod
-                  ? `Please install ${requiredModNames} before starting the game`
-                  : ''
-              }
-            >
+            <Tooltip title={getStartGameTooltip()}>
               <span>
                 <Button
                   onClick={handleStartGameClick}
                   size="large"
                   variant="contained"
                   color="primary"
-                  disabled={isMissingRequiredMod}
+                  disabled={isStartDisabled}
                 >
                   Start Game
                 </Button>
