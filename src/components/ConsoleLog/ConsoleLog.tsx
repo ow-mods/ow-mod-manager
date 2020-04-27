@@ -47,17 +47,17 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
 
 const OwmlLog: React.FunctionComponent = () => {
   const styles = useStyles();
+  const containerRef = useRef<HTMLDivElement>(null);
   const { logLines } = useOwmlLogs();
-  const container = useRef<HTMLDivElement>(null);
   const [filteredLines, setFilteredLines] = useState<LogLine[]>([]);
   const [filter, debouncedFilter, setFilter] = useDebouncedState('', 300);
   const [selectedModName, setSelectedModName] = useState<string>('');
 
   useEffect(() => {
-    if (!container.current) {
+    if (!containerRef.current) {
       return;
     }
-    container.current.scrollTo(0, container.current.scrollHeight);
+    containerRef.current.scrollTo(0, containerRef.current.scrollHeight);
   }, [logLines]);
 
   useEffect(() => {
@@ -85,7 +85,7 @@ const OwmlLog: React.FunctionComponent = () => {
     <TableContainer
       component={Paper}
       className={styles.wrapper}
-      ref={container}
+      ref={containerRef}
     >
       <Table size="small" stickyHeader>
         <TableHead>
