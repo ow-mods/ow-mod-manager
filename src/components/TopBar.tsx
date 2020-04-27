@@ -9,8 +9,7 @@ import {
 } from '@material-ui/core';
 
 import runOwml from '../services/run-owml';
-import useOwmlLogs from '../hooks/use-owml-logs';
-import { useAppState } from '../hooks/use-app-state';
+import { useAppState, useOwmlLogs } from '../hooks';
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,

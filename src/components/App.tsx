@@ -5,8 +5,7 @@ import { Container, Tabs, Tab } from '@material-ui/core';
 import { green, orange } from '@material-ui/core/colors';
 
 import { isInstalled } from '../services/mod-manager';
-import { LogsProvider } from '../hooks/use-owml-logs';
-import { AppStateProvider } from '../hooks/use-app-state';
+import { LogsProvider, AppStateProvider } from '../hooks';
 import ModList from './ModList';
 import TopBar from './TopBar';
 import LoadingBar from './LoadingBar';

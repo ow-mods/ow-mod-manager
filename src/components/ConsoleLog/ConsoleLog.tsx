@@ -10,8 +10,7 @@ import {
   Paper,
 } from '@material-ui/core';
 
-import { useOwmlLogs } from '../../hooks/use-owml-logs';
-import useDebouncedState from '../../hooks/use-debounced-state';
+import { useOwmlLogs, useDebouncedState } from '../../hooks';
 import LogFilter from './LogFilter';
 import ModNameSelect from './ModNameSelect';
 

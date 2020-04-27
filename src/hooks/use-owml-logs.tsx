@@ -135,5 +135,3 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     </LogsState.Provider>
   );
 };
-
-export default useOwmlLogs;

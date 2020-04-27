@@ -1,6 +1,7 @@
 import React from 'react';
-import { useAppState } from '../hooks/use-app-state';
 import { LinearProgress, makeStyles } from '@material-ui/core';
+
+import { useAppState } from '../hooks';
 
 const useStyles = makeStyles((theme) => ({
   root: {
