@@ -36,6 +36,18 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
     }px)`,
     overflowY: 'auto',
   },
+  modNameHeader: {
+    width: 200,
+  },
+  modNameText: {
+    maxWidth: 200,
+    overflowX: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  logCountHeader: {
+    width: 1,
+  },
 }));
 
 const ALL_MODS = 'all';
@@ -131,8 +143,12 @@ const OwmlLog: React.FunctionComponent = () => {
                 }
               />
             </TableCell>
-            <TableCell>
-              <Select value={selectedModName} onChange={handleModNameChange}>
+            <TableCell className={styles.modNameHeader}>
+              <Select
+                className={styles.modNameText}
+                value={selectedModName}
+                onChange={handleModNameChange}
+              >
                 <MenuItem value={ALL_MODS}>All mods</MenuItem>
                 {modNames.map((modName) => (
                   <MenuItem value={modName} key={modName}>
@@ -141,7 +157,7 @@ const OwmlLog: React.FunctionComponent = () => {
                 ))}
               </Select>
             </TableCell>
-            <TableCell>#</TableCell>
+            <TableCell className={styles.logCountHeader}>#</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -149,7 +165,9 @@ const OwmlLog: React.FunctionComponent = () => {
             <React.Fragment key={line.id}>
               <TableRow>
                 <TableCell className={styles[line.type]}>{line.text}</TableCell>
-                <TableCell>{line.modName}</TableCell>
+                <TableCell className={styles.modNameText}>
+                  {line.modName}
+                </TableCell>
                 <TableCell>{line.count > 1 ? line.count : ''}</TableCell>
               </TableRow>
             </React.Fragment>
