@@ -6,13 +6,13 @@ import config from '../config.json';
 
 type LogsContext = {
   logLines: LogLine[];
-  startServer: (port: number) => void;
+  startServer: () => Promise<number>;
   isLoggerInstalled: boolean;
 };
 
 const LogsState = React.createContext<LogsContext>({
   logLines: [],
-  startServer: () => {},
+  startServer: () => new Promise(() => {}),
   isLoggerInstalled: false,
 });
 
@@ -56,6 +56,7 @@ function getSimpleLine(text: string, type: LogType = 'log'): LogLine {
 export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const [lines, setLines] = useState<LogLine[]>([]);
   const [server, setServer] = useState<net.Server>();
+
   const {
     modMap: { [config.consoleMod]: consoleMod },
   } = useAppState();
@@ -100,13 +101,24 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     writeLogLine(getSimpleLine(textLine, type));
   }
 
-  function startServer(port: number) {
+  async function startServer() {
     if (!server) {
       throw new Error('Tried to start server but it has not been initialized');
     }
 
-    server.listen(port, '127.0.0.1');
-    writeSimpleText(`Started console server on port ${port}`, 'success');
+    return new Promise<number>((resolve, reject) => {
+      server.on('listening', () => {
+        const port = (server.address() as net.AddressInfo).port;
+        writeSimpleText(`Started console server on port ${port}`, 'success');
+        resolve(port);
+      });
+
+      server.on('error', () => {
+        reject();
+      });
+
+      server.listen(0, '127.0.0.1');
+    });
   }
 
   useEffect(() => {

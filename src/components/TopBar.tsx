@@ -25,11 +25,13 @@ const TopBar: React.FunctionComponent = ({ children }) => {
   const { modMap } = useAppState();
   const { startServer, isLoggerInstalled } = useOwmlLogs();
 
-  function handleStartGameClick() {
+  async function handleStartGameClick() {
     if (isLoggerInstalled) {
-      startServer(3030);
+      const port = await startServer();
+      runOwml(port);
+    } else {
+      runOwml();
     }
-    runOwml();
   }
 
   const requiredMods = Object.values(modMap).filter((mod) => mod.isRequired);
