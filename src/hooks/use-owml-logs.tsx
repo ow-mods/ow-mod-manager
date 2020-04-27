@@ -6,16 +6,18 @@ import config from '../config.json';
 
 type LogsContext = {
   logLines: LogLine[];
-  startServer: () => Promise<number>;
   isLoggerInstalled: boolean;
   isServerRunning: boolean;
+  startServer: () => Promise<number>;
+  clear: () => void;
 };
 
 const LogsState = React.createContext<LogsContext>({
   logLines: [],
-  startServer: () => new Promise(() => {}),
   isLoggerInstalled: false,
   isServerRunning: false,
+  startServer: () => new Promise(() => {}),
+  clear: () => {},
 });
 
 export const useOwmlLogs = () => useContext(LogsState);
@@ -104,6 +106,10 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     writeLogLine(getSimpleLine(textLine, type));
   }
 
+  function clear() {
+    setLines([]);
+  }
+
   async function startServer() {
     if (!server) {
       throw new Error('Tried to start server but it has not been initialized');
@@ -166,6 +172,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
         startServer,
         isServerRunning,
         isLoggerInstalled,
+        clear,
       }}
     >
       {children}

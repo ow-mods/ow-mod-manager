@@ -8,7 +8,10 @@ import {
   TableBody,
   TableContainer,
   Paper,
+  IconButton,
+  Tooltip,
 } from '@material-ui/core';
+import { ClearAll as ClearAllIcon } from '@material-ui/icons';
 
 import { useOwmlLogs, useDebouncedState } from '../../hooks';
 import LogFilter from './LogFilter';
@@ -31,8 +34,12 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
     }px)`,
     overflowY: 'auto',
   },
-  modNameHeader: {
+  modSelectHeader: {
     width: 150,
+  },
+  nameHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   modNameCell: {
     overflowX: 'hidden',
@@ -47,7 +54,7 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
 const OwmlLog: React.FunctionComponent = () => {
   const styles = useStyles();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { logLines } = useOwmlLogs();
+  const { logLines, clear } = useOwmlLogs();
   const [filteredLines, setFilteredLines] = useState<LogLine[]>([]);
   const [filter, debouncedFilter, setFilter] = useDebouncedState('', 300);
   const [selectedModName, setSelectedModName] = useState<string>('');
@@ -89,10 +96,15 @@ const OwmlLog: React.FunctionComponent = () => {
       <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell>
+            <TableCell className={styles.nameHeader}>
               <LogFilter onChange={setFilter} value={filter} />
+              <Tooltip title="Clear log entries">
+                <IconButton size="small" onClick={clear}>
+                  <ClearAllIcon />
+                </IconButton>
+              </Tooltip>
             </TableCell>
-            <TableCell className={styles.modNameHeader}>
+            <TableCell className={styles.modSelectHeader}>
               <ModNameSelect
                 value={selectedModName}
                 onChange={setSelectedModName}
