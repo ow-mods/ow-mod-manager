@@ -37,7 +37,6 @@ const MainView = () => {
     if (!isLoggerInstalled && tab === AppTab.Logs) {
       setTab(AppTab.All);
     }
-    console.log('isLoggerInstalled', isLoggerInstalled);
   }, [isLoggerInstalled]);
 
   return (

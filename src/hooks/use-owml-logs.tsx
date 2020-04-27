@@ -6,7 +6,7 @@ import config from '../config.json';
 
 type LogsContext = {
   logLines: LogLine[];
-  startServer: () => void;
+  startServer: (port: number) => void;
   isLoggerInstalled: boolean;
 };
 
@@ -63,7 +63,6 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
 
   useEffect(() => {
     if (consoleMod) {
-      console.log('setting to', consoleMod.isEnabled);
       setIsLoggerInstalled(Boolean(consoleMod.isEnabled));
     }
   }, [consoleMod]);
@@ -101,12 +100,13 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     writeLogLine(getSimpleLine(textLine, type));
   }
 
-  function startServer() {
+  function startServer(port: number) {
     if (!server) {
       throw new Error('Tried to start server but it has not been initialized');
     }
-    server.listen(3030, '127.0.0.1');
-    writeSimpleText('Started console server', 'success');
+
+    server.listen(port, '127.0.0.1');
+    writeSimpleText(`Started console server on port ${port}`, 'success');
   }
 
   useEffect(() => {

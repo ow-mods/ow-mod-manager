@@ -27,7 +27,7 @@ const TopBar: React.FunctionComponent = ({ children }) => {
 
   function handleStartGameClick() {
     if (isLoggerInstalled) {
-      startServer();
+      startServer(3030);
     }
     runOwml();
   }
