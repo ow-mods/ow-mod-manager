@@ -4,7 +4,7 @@ import { uniq } from 'lodash';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 200,
+    maxWidth: 150,
     overflowX: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',

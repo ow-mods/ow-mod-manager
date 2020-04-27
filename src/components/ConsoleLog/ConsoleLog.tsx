@@ -32,7 +32,7 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
     overflowY: 'auto',
   },
   modNameHeader: {
-    width: 200,
+    width: 150,
   },
   modNameCell: {
     overflowX: 'hidden',
