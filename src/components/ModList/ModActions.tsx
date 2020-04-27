@@ -25,8 +25,8 @@ import {
   isOutdated,
   openDirectory,
   openRepo,
-} from '../../services/mod-manager';
-import { toggleEnabled } from '../../services/mod-enabler';
+  toggleEnabled,
+} from '../../services';
 
 interface Props {
   mod: Mod;

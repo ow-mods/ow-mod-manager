@@ -1,9 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { merge } from 'lodash';
 
-import getLocalMods from '../services/get-local-mods';
-import getRemoteMod from '../services/get-remote-mod';
 import modDb from '../mod-db.json';
+import { getLocalMods, getRemoteMod } from '../services';
 import { useModsDirectoryWatcher } from './use-mods-directory-watcher';
 
 type AppContext = {

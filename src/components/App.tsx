@@ -4,7 +4,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Container, Tabs, Tab } from '@material-ui/core';
 import { green, orange } from '@material-ui/core/colors';
 
-import { isInstalled } from '../services/mod-manager';
+import { isInstalled } from '../services';
 import { LogsProvider, AppStateProvider } from '../hooks';
 import ModList from './ModList';
 import TopBar from './TopBar';

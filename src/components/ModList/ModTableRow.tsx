@@ -8,7 +8,7 @@ import {
   PropTypes as MaterialProps,
 } from '@material-ui/core';
 
-import { isOutdated, isInstalled } from '../../services/mod-manager';
+import { isOutdated, isInstalled } from '../../services';
 import ModActions from './ModActions';
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 };
 
 const useStyles = makeStyles({
-  root: {
+  requiredRow: {
     opacity: 0.75,
     background: '#252525',
   },
@@ -47,7 +47,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
 
   return (
     <TableRow
-      classes={mod.isRequired ? classes : undefined}
+      className={mod.isRequired ? classes.requiredRow : undefined}
       key={mod.uniqueName}
     >
       <TableCell>{mod.name}</TableCell>
