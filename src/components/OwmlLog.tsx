@@ -18,6 +18,7 @@ import { Close as CloseIcon, Search as SearchIcon } from '@material-ui/icons';
 import { uniq } from 'lodash';
 
 import { useOwmlLogs } from '../hooks/use-owml-logs';
+import useDebounce from '../hooks/use-debounce';
 
 const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   error: {
@@ -58,6 +59,7 @@ const OwmlLog: React.FunctionComponent = () => {
   const container = useRef<HTMLDivElement>(null);
   const [filteredLines, setFilteredLines] = useState<LogLine[]>([]);
   const [filter, setFilter] = useState('');
+  const debouncedFilter = useDebounce(filter, 300);
   const [modNames, setModNames] = useState<string[]>([]);
   const [selectedModName, setSelectedModName] = useState<string>(ALL_MODS);
 
@@ -69,8 +71,8 @@ const OwmlLog: React.FunctionComponent = () => {
   }, [logLines]);
 
   useEffect(() => {
-    const lowerCaseFilter = filter.toLowerCase();
-    const isFilteringByName = filter !== '';
+    const lowerCaseFilter = debouncedFilter.toLowerCase();
+    const isFilteringByName = debouncedFilter !== '';
     const isFilteringByMod = selectedModName !== ALL_MODS;
 
     if (isFilteringByName || isFilteringByMod) {
@@ -87,7 +89,7 @@ const OwmlLog: React.FunctionComponent = () => {
     } else {
       setFilteredLines(logLines);
     }
-  }, [filter, logLines, selectedModName]);
+  }, [debouncedFilter, logLines, selectedModName]);
 
   useEffect(() => {
     setModNames(uniq(logLines.map((line) => line.modName)));
