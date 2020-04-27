@@ -8,19 +8,12 @@ import {
   TableBody,
   TableContainer,
   Paper,
-  Input,
-  InputAdornment,
-  Select,
-  IconButton,
-  MenuItem,
 } from '@material-ui/core';
-import { Close as CloseIcon, Search as SearchIcon } from '@material-ui/icons';
-import { uniq } from 'lodash';
 
 import { useOwmlLogs } from '../../hooks/use-owml-logs';
-import useDebounce from '../../hooks/use-debounce';
 import useDebouncedState from '../../hooks/use-debounced-state';
 import LogFilter from './LogFilter';
+import ModNameSelect from './ModNameSelect';
 
 const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   error: {
@@ -42,8 +35,7 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   modNameHeader: {
     width: 200,
   },
-  modNameText: {
-    maxWidth: 200,
+  modNameCell: {
     overflowX: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -53,16 +45,13 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   },
 }));
 
-const ALL_MODS = 'all';
-
 const OwmlLog: React.FunctionComponent = () => {
   const styles = useStyles();
   const { logLines } = useOwmlLogs();
   const container = useRef<HTMLDivElement>(null);
   const [filteredLines, setFilteredLines] = useState<LogLine[]>([]);
   const [filter, debouncedFilter, setFilter] = useDebouncedState('', 300);
-  const [modNames, setModNames] = useState<string[]>([]);
-  const [selectedModName, setSelectedModName] = useState<string>(ALL_MODS);
+  const [selectedModName, setSelectedModName] = useState<string>('');
 
   useEffect(() => {
     if (!container.current) {
@@ -74,7 +63,7 @@ const OwmlLog: React.FunctionComponent = () => {
   useEffect(() => {
     const lowerCaseFilter = debouncedFilter.toLowerCase();
     const isFilteringByName = debouncedFilter !== '';
-    const isFilteringByMod = selectedModName !== ALL_MODS;
+    const isFilteringByMod = selectedModName !== '';
 
     if (isFilteringByName || isFilteringByMod) {
       setFilteredLines(
@@ -92,26 +81,6 @@ const OwmlLog: React.FunctionComponent = () => {
     }
   }, [debouncedFilter, logLines, selectedModName]);
 
-  useEffect(() => {
-    setModNames(uniq(logLines.map((line) => line.modName)));
-  }, [logLines]);
-
-  const handleFilterChange = ({
-    currentTarget,
-  }: React.ChangeEvent<HTMLInputElement>) => {
-    setFilter(currentTarget.value);
-  };
-
-  const handleModNameChange = ({
-    target,
-  }: React.ChangeEvent<{
-    name?: string | undefined;
-    value: unknown;
-  }>) => {
-    console.log('target', target.value);
-    setSelectedModName(target.value as string);
-  };
-
   return (
     <TableContainer
       component={Paper}
@@ -125,18 +94,11 @@ const OwmlLog: React.FunctionComponent = () => {
               <LogFilter onChange={setFilter} value={filter} />
             </TableCell>
             <TableCell className={styles.modNameHeader}>
-              <Select
-                className={styles.modNameText}
+              <ModNameSelect
                 value={selectedModName}
-                onChange={handleModNameChange}
-              >
-                <MenuItem value={ALL_MODS}>All mods</MenuItem>
-                {modNames.map((modName) => (
-                  <MenuItem value={modName} key={modName}>
-                    {modName}
-                  </MenuItem>
-                ))}
-              </Select>
+                onChange={setSelectedModName}
+                logLines={logLines}
+              />
             </TableCell>
             <TableCell className={styles.logCountHeader}>#</TableCell>
           </TableRow>
@@ -146,7 +108,7 @@ const OwmlLog: React.FunctionComponent = () => {
             <React.Fragment key={line.id}>
               <TableRow>
                 <TableCell className={styles[line.type]}>{line.text}</TableCell>
-                <TableCell className={styles.modNameText}>
+                <TableCell className={styles.modNameCell}>
                   {line.modName}
                 </TableCell>
                 <TableCell>{line.count > 1 ? line.count : ''}</TableCell>
