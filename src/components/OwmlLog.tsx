@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useOwmlLogs } from '../hooks/use-owml-logs';
 import {
   makeStyles,
   Table,
@@ -11,10 +10,14 @@ import {
   Paper,
   Input,
   InputAdornment,
-  Button,
+  Select,
   IconButton,
+  MenuItem,
 } from '@material-ui/core';
 import { Close as CloseIcon, Search as SearchIcon } from '@material-ui/icons';
+import { uniq } from 'lodash';
+
+import { useOwmlLogs } from '../hooks/use-owml-logs';
 
 const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   error: {
@@ -35,12 +38,16 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   },
 }));
 
+const ALL_MODS = 'all';
+
 const OwmlLog: React.FunctionComponent = () => {
   const styles = useStyles();
   const { logLines } = useOwmlLogs();
   const container = useRef<HTMLDivElement>(null);
   const [filteredLines, setFilteredLines] = useState<LogLine[]>([]);
   const [filter, setFilter] = useState('');
+  const [modNames, setModNames] = useState<string[]>([]);
+  const [selectedModName, setSelectedModName] = useState<string>(ALL_MODS);
 
   useEffect(() => {
     if (!container.current) {
@@ -51,18 +58,28 @@ const OwmlLog: React.FunctionComponent = () => {
 
   useEffect(() => {
     const lowerCaseFilter = filter.toLowerCase();
-    if (filter) {
+    const isFilteringByName = filter !== '';
+    const isFilteringByMod = selectedModName !== ALL_MODS;
+
+    if (isFilteringByName || isFilteringByMod) {
       setFilteredLines(
-        logLines.filter(
-          (line) =>
-            line.text.toLowerCase().includes(lowerCaseFilter) ||
-            line.modName.toLowerCase().includes(lowerCaseFilter),
-        ),
+        logLines.filter((line) => {
+          const isFromSelectedMod =
+            !isFilteringByMod || line.modName === selectedModName;
+          const isMatchWithFilter =
+            !isFilteringByName ||
+            line.text.toLowerCase().includes(lowerCaseFilter);
+          return isMatchWithFilter && isFromSelectedMod;
+        }),
       );
     } else {
       setFilteredLines(logLines);
     }
-  }, [filter, logLines]);
+  }, [filter, logLines, selectedModName]);
+
+  useEffect(() => {
+    setModNames(uniq(logLines.map((line) => line.modName)));
+  }, [logLines]);
 
   const handleFilterChange = ({
     currentTarget,
@@ -72,6 +89,15 @@ const OwmlLog: React.FunctionComponent = () => {
 
   const handleClearFilterClick = () => {
     setFilter('');
+  };
+  const handleModNameChange = ({
+    target,
+  }: React.ChangeEvent<{
+    name?: string | undefined;
+    value: unknown;
+  }>) => {
+    console.log('target', target.value);
+    setSelectedModName(target.value as string);
   };
 
   return (
@@ -105,7 +131,16 @@ const OwmlLog: React.FunctionComponent = () => {
                 }
               />
             </TableCell>
-            <TableCell>Origin</TableCell>
+            <TableCell>
+              <Select value={selectedModName} onChange={handleModNameChange}>
+                <MenuItem value={ALL_MODS}>All mods</MenuItem>
+                {modNames.map((modName) => (
+                  <MenuItem value={modName} key={modName}>
+                    {modName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </TableCell>
             <TableCell>#</TableCell>
           </TableRow>
         </TableHead>
