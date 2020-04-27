@@ -10,7 +10,7 @@ import { AppStateProvider } from '../hooks/use-app-state';
 import ModList from './ModList';
 import TopBar from './TopBar';
 import LoadingBar from './LoadingBar';
-import OwmlLog from './OwmlLog';
+import OwmlLog from './ConsoleLog';
 
 const theme = createMuiTheme({
   palette: {

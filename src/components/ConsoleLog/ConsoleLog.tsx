@@ -17,8 +17,10 @@ import {
 import { Close as CloseIcon, Search as SearchIcon } from '@material-ui/icons';
 import { uniq } from 'lodash';
 
-import { useOwmlLogs } from '../hooks/use-owml-logs';
-import useDebounce from '../hooks/use-debounce';
+import { useOwmlLogs } from '../../hooks/use-owml-logs';
+import useDebounce from '../../hooks/use-debounce';
+import useDebouncedState from '../../hooks/use-debounced-state';
+import LogFilter from './LogFilter';
 
 const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   error: {
@@ -58,8 +60,7 @@ const OwmlLog: React.FunctionComponent = () => {
   const { logLines } = useOwmlLogs();
   const container = useRef<HTMLDivElement>(null);
   const [filteredLines, setFilteredLines] = useState<LogLine[]>([]);
-  const [filter, setFilter] = useState('');
-  const debouncedFilter = useDebounce(filter, 300);
+  const [filter, debouncedFilter, setFilter] = useDebouncedState('', 300);
   const [modNames, setModNames] = useState<string[]>([]);
   const [selectedModName, setSelectedModName] = useState<string>(ALL_MODS);
 
@@ -101,9 +102,6 @@ const OwmlLog: React.FunctionComponent = () => {
     setFilter(currentTarget.value);
   };
 
-  const handleClearFilterClick = () => {
-    setFilter('');
-  };
   const handleModNameChange = ({
     target,
   }: React.ChangeEvent<{
@@ -124,26 +122,7 @@ const OwmlLog: React.FunctionComponent = () => {
         <TableHead>
           <TableRow>
             <TableCell>
-              <Input
-                onChange={handleFilterChange}
-                value={filter}
-                placeholder="Filter"
-                color="secondary"
-                startAdornment={
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                }
-                endAdornment={
-                  filter !== '' && (
-                    <InputAdornment position="end">
-                      <IconButton onClick={handleClearFilterClick} size="small">
-                        <CloseIcon fontSize="small" />
-                      </IconButton>
-                    </InputAdornment>
-                  )
-                }
-              />
+              <LogFilter onChange={setFilter} value={filter} />
             </TableCell>
             <TableCell className={styles.modNameHeader}>
               <Select
