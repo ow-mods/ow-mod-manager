@@ -1,14 +1,19 @@
 import React, { useEffect, useState, useContext } from 'react';
 import net from 'net';
 
+import { useAppState } from './use-app-state';
+import config from '../config.json';
+
 type LogsContext = {
   logLines: LogLine[];
   startServer: () => void;
+  isLoggerInstalled: boolean;
 };
 
 const LogsState = React.createContext<LogsContext>({
   logLines: [],
   startServer: () => {},
+  isLoggerInstalled: false,
 });
 
 export const useOwmlLogs = () => useContext(LogsState);
@@ -51,6 +56,17 @@ function getSimpleLine(text: string, type: LogType = 'log'): LogLine {
 export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const [lines, setLines] = useState<LogLine[]>([]);
   const [server, setServer] = useState<net.Server>();
+  const {
+    modMap: { [config.consoleMod]: consoleMod },
+  } = useAppState();
+  const [isLoggerInstalled, setIsLoggerInstalled] = useState(false);
+
+  useEffect(() => {
+    if (consoleMod) {
+      console.log('setting to', consoleMod.isEnabled);
+      setIsLoggerInstalled(Boolean(consoleMod.isEnabled));
+    }
+  }, [consoleMod]);
 
   function writeLogLine(line: LogLine) {
     setLines((prevLines) => {
@@ -129,6 +145,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
       value={{
         logLines: lines,
         startServer,
+        isLoggerInstalled,
       }}
     >
       {children}

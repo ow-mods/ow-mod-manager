@@ -23,10 +23,12 @@ const useStyles = makeStyles((theme) => ({
 const TopBar: React.FunctionComponent = ({ children }) => {
   const classes = useStyles();
   const { modMap } = useAppState();
-  const { startServer } = useOwmlLogs();
+  const { startServer, isLoggerInstalled } = useOwmlLogs();
 
   function handleStartGameClick() {
-    startServer();
+    if (isLoggerInstalled) {
+      startServer();
+    }
     runOwml();
   }
 
