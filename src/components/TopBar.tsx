@@ -5,11 +5,11 @@ import {
   Container,
   Button,
   makeStyles,
-  Tooltip,
 } from '@material-ui/core';
 
 import { runOwml } from '../services';
 import { useAppState, useOwmlLogs } from '../hooks';
+import Tooltip from './Tooltip';
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,

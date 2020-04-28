@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Tooltip,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-} from '@material-ui/core';
+import { Button, Menu, MenuItem, ListItemIcon } from '@material-ui/core';
 import {
   MoreVert as MoreIcon,
   SaveAlt as SaveIcon,
@@ -27,6 +21,7 @@ import {
   openRepo,
   toggleEnabled,
 } from '../../services';
+import Tooltip from '../Tooltip';
 
 interface Props {
   mod: Mod;

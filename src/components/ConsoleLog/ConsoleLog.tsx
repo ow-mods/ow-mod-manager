@@ -9,13 +9,13 @@ import {
   TableContainer,
   Paper,
   IconButton,
-  Tooltip,
 } from '@material-ui/core';
 import { ClearAll as ClearAllIcon } from '@material-ui/icons';
 
 import { useOwmlLogs } from '../../hooks';
 import LogFilter from './LogFilter';
 import ModNameSelect from './ModNameSelect';
+import Tooltip from '../Tooltip';
 
 const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   error: {
