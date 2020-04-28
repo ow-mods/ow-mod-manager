@@ -1,3 +1,6 @@
+/// <reference types="react-dom/experimental" />
+/// <reference types="react/experimental" />
+
 type Mod = {
   name: string;
   author: string;
