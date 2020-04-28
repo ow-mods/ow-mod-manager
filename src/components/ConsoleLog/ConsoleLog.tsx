@@ -64,7 +64,7 @@ const OwmlLog: React.FunctionComponent = () => {
       return;
     }
     containerRef.current.scrollTo(0, containerRef.current.scrollHeight);
-  }, [logLines]);
+  }, [filteredLines]);
 
   useEffect(() => {
     const lowerCaseFilter = debouncedFilter.toLowerCase();
