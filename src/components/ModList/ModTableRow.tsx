@@ -54,12 +54,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
       <TableCell>{mod.author}</TableCell>
       <TableCell align="right">{mod.downloadCount}</TableCell>
       <TableCell>
-        {mod.isLoading && (
-          <Chip
-            label="Loading..."
-            icon={<CircularProgress size={20} color="inherit" />}
-          />
-        )}
+        {mod.isLoading && <CircularProgress size={27} color="inherit" />}
         {!mod.isLoading && (
           <Chip color={getVersionColor()} label={getVersion()} />
         )}
