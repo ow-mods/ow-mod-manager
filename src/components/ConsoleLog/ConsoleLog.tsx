@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import { ClearAll as ClearAllIcon } from '@material-ui/icons';
 
-import { useOwmlLogs, useDebouncedState } from '../../hooks';
+import { useOwmlLogs } from '../../hooks';
 import LogFilter from './LogFilter';
 import ModNameSelect from './ModNameSelect';
 
@@ -56,7 +56,7 @@ const OwmlLog: React.FunctionComponent = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { logLines, clear } = useOwmlLogs();
   const [filteredLines, setFilteredLines] = useState<LogLine[]>([]);
-  const [filter, debouncedFilter, setFilter] = useDebouncedState('', 300);
+  const [filter, setFilter] = useState('');
   const [selectedModName, setSelectedModName] = useState<string>('');
 
   useEffect(() => {
@@ -67,8 +67,8 @@ const OwmlLog: React.FunctionComponent = () => {
   }, [filteredLines]);
 
   useEffect(() => {
-    const lowerCaseFilter = debouncedFilter.toLowerCase();
-    const isFilteringByName = debouncedFilter !== '';
+    const lowerCaseFilter = filter.toLowerCase();
+    const isFilteringByName = filter !== '';
     const isFilteringByMod = selectedModName !== '';
 
     if (isFilteringByName || isFilteringByMod) {
@@ -85,7 +85,7 @@ const OwmlLog: React.FunctionComponent = () => {
     } else {
       setFilteredLines(logLines);
     }
-  }, [debouncedFilter, logLines, selectedModName]);
+  }, [filter, logLines, selectedModName]);
 
   return (
     <TableContainer
