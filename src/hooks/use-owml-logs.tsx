@@ -129,6 +129,11 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     });
   }
 
+  function setServerClosed() {
+    writeSimpleText('Console server closed', 'warning');
+    setIsServerRunning(false);
+  }
+
   useEffect(() => {
     const netServer = net.createServer((socket) => {
       socket.pipe(socket);
@@ -145,8 +150,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
         netServer.close();
       });
       socket.on('end', () => {
-        writeSimpleText('Console socket closed', 'warning');
-        setIsServerRunning(false);
+        setServerClosed();
         netServer.close();
       });
     });
@@ -157,10 +161,8 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
       writeSimpleText('Game connected to console', 'success');
     });
 
-    return () => {
-      setIsServerRunning(false);
-      netServer.close();
-    };
+    netServer.on('close', setServerClosed);
+    return setServerClosed;
   }, []);
 
   return (
