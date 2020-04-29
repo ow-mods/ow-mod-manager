@@ -45,13 +45,7 @@ const TopBar: React.FunctionComponent = ({ children }) => {
     if (isMissingRequiredMod) {
       return `Please install ${requiredModNames} before starting the game`;
     } else if (isServerRunning) {
-      // TODO: This tooltip only makes sense if we patch OWML
-      // to allow for running multiple instances of the game.
-      return `
-        Console already running.
-        Open a new instance of the Mod Manager
-        if you need multiple instances of the game running.
-      `;
+      return 'Already running';
     } else {
       return '';
     }

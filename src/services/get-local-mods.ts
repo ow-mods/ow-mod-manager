@@ -3,7 +3,7 @@ import glob from 'glob-promise';
 import path from 'path';
 
 import config from '../config.json';
-import { isEnabled } from './mod-enabler';
+import { isEnabled } from '.';
 
 function getOwml() {
   const owmlManifestPath = `${config.owmlPath}/OWML.Manifest.json`;

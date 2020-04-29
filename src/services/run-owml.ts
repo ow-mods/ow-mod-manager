@@ -1,4 +1,5 @@
 import { spawn } from 'child_process';
+
 import config from '../config.json';
 
 const EXE_FILE = 'OWML.Launcher.exe';

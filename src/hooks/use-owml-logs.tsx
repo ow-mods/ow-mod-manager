@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import net from 'net';
 
-import { useAppState } from './use-app-state';
+import { useAppState } from '.';
 import config from '../config.json';
 
 type LogsContext = {

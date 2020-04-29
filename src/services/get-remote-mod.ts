@@ -1,5 +1,4 @@
-import { getRemoteRelease } from './get-remote-release';
-import { getRemoteManifest } from './get-remote-manifest';
+import { getRemoteRelease, getRemoteManifest } from '.';
 import config from '../config.json';
 
 export async function getRemoteMod(modDbItem: ModDbItem): Promise<Mod> {

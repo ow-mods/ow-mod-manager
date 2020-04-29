@@ -12,7 +12,7 @@ import { green, orange } from '@material-ui/core/colors';
 import { LogsProvider, AppStateProvider } from '../hooks';
 import MainView from './MainView';
 
-// Suppresses some errors when using Material UI with Concurrent mode.
+// Compatibility with React current mode.
 const createMuiStrictTheme = unstableCreateMuiStrictModeTheme as typeof createMuiTheme;
 const theme = createMuiStrictTheme({
   palette: {
