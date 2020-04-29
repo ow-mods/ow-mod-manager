@@ -68,9 +68,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const [isLoggerInstalled, setIsLoggerInstalled] = useState(false);
 
   useEffect(() => {
-    if (consoleMod) {
-      setIsLoggerInstalled(Boolean(consoleMod.isEnabled));
-    }
+    setIsLoggerInstalled(Boolean(consoleMod?.isEnabled));
   }, [consoleMod]);
 
   function writeLogLine(line: LogLine) {
