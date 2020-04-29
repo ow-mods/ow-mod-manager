@@ -1,12 +1,20 @@
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import {
+  createMuiTheme,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  unstable_createMuiStrictModeTheme as unstableCreateMuiStrictModeTheme,
+  ThemeProvider,
+} from '@material-ui/core/styles';
 import { green, orange } from '@material-ui/core/colors';
 
 import { LogsProvider, AppStateProvider } from '../hooks';
 import MainView from './MainView';
 
-const theme = createMuiTheme({
+// Suppresses some errors when using Material UI with Concurrent mode.
+const createMuiStrictTheme = unstableCreateMuiStrictModeTheme as typeof createMuiTheme;
+const theme = createMuiStrictTheme({
   palette: {
     type: 'dark',
     primary: {
