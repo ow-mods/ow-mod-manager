@@ -53,7 +53,19 @@ function getSimpleLine(text: string, type: LogType = 'log'): LogLine {
 }
 
 export const LogsProvider: React.FunctionComponent = ({ children }) => {
-  const [lines, setLines] = useState<LogLine[]>([]);
+  const [lines, setLines] = useState<LogLine[]>(() => {
+    const l: LogLine[] = [];
+    for (let i = 0; i < 70; i += 1) {
+      l[i] = {
+        modName: 'TEST',
+        text: 'line ' + i,
+        type: 'log',
+        count: 0,
+        id: i,
+      };
+    }
+    return l;
+  });
   const [server, setServer] = useState<net.Server>();
   const [isServerRunning, setIsServerRunning] = useState(false);
 

@@ -64,12 +64,14 @@ const OwmlLog: React.FunctionComponent = () => {
   const [selectedModName, setSelectedModName] = useState<string>('');
   const [page, setPage] = useState<number>(0);
 
-  function getSlicedLines() {
-    const end = page * logLinesLimit;
-    const start = end + logLinesLimit;
-    return logLines.length <= logLinesLimit
-      ? logLines
-      : logLines.slice(logLines.length - start, logLines.length - end);
+  function sliceLines(lines: LogLine[]) {
+    if (lines.length <= logLinesLimit) {
+      return lines;
+    }
+
+    const end = lines.length - page * logLinesLimit;
+    const start = end > logLinesLimit ? end - logLinesLimit : 0;
+    return lines.slice(start, end);
   }
 
   useEffect(() => {
@@ -86,17 +88,19 @@ const OwmlLog: React.FunctionComponent = () => {
 
     if (isFilteringByName || isFilteringByMod) {
       setFilteredLines(
-        getSlicedLines().filter((line) => {
-          const isFromSelectedMod =
-            !isFilteringByMod || line.modName === selectedModName;
-          const isMatchWithFilter =
-            !isFilteringByName ||
-            line.text.toLowerCase().includes(lowerCaseFilter);
-          return isMatchWithFilter && isFromSelectedMod;
-        }),
+        sliceLines(
+          logLines.filter((line) => {
+            const isFromSelectedMod =
+              !isFilteringByMod || line.modName === selectedModName;
+            const isMatchWithFilter =
+              !isFilteringByName ||
+              line.text.toLowerCase().includes(lowerCaseFilter);
+            return isMatchWithFilter && isFromSelectedMod;
+          }),
+        ),
       );
     } else {
-      setFilteredLines(getSlicedLines());
+      setFilteredLines(sliceLines(logLines));
     }
   }, [filter, logLines, selectedModName, page]);
 
@@ -142,17 +146,19 @@ const OwmlLog: React.FunctionComponent = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
-            <TableCell colSpan={3}>
-              <Button
-                onClick={handlePreviousPageClick}
-                fullWidth
-                variant="outlined"
-              >
-                Show previous {logLinesLimit}
-              </Button>
-            </TableCell>
-          </TableRow>
+          {page <= filteredLines.length / logLinesLimit && (
+            <TableRow>
+              <TableCell colSpan={3}>
+                <Button
+                  onClick={handlePreviousPageClick}
+                  fullWidth
+                  variant="outlined"
+                >
+                  Show previous {logLinesLimit}
+                </Button>
+              </TableCell>
+            </TableRow>
+          )}
           {filteredLines.map((line: LogLine) => (
             <React.Fragment key={line.id}>
               <TableRow>
