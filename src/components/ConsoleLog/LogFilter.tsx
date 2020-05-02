@@ -23,7 +23,7 @@ const LogFilter: React.FunctionComponent<Props> = ({ value, onChange }) => {
     <Input
       onChange={handleChange}
       value={value}
-      placeholder="Filter"
+      placeholder="Find"
       color="secondary"
       startAdornment={
         <InputAdornment position="start">
