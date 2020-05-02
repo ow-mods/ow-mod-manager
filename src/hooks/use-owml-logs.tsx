@@ -101,7 +101,6 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
 
     return new Promise<number>((resolve, reject) => {
       server.on('listening', () => {
-        setIsServerRunning(true);
         const port = (server.address() as net.AddressInfo).port;
         writeSimpleText(`Started console server on port ${port}`, 'success');
         resolve(port);
@@ -144,6 +143,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     setServer(netServer);
 
     netServer.on('connection', () => {
+      setIsServerRunning(true);
       writeSimpleText('Game connected to console', 'success');
     });
 
