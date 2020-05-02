@@ -60,31 +60,23 @@ const OwmlLog: React.FunctionComponent = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { logLines, clear } = useOwmlLogs();
   const [filteredLines, setFilteredLines] = useState<LogLine[]>([]);
+  const [paginatedLines, setPaginatedLines] = useState<LogLine[]>([]);
   const [filter, setFilter] = useState('');
   const [selectedModName, setSelectedModName] = useState<string>('');
   const [page, setPage] = useState<number>(0);
 
-  const isPrevPageVisible =
-    page < Math.floor(filteredLines.length / logLinesLimit);
   const isNextPageVisible = page > 0;
-  const isFiltered = logLines.length !== filteredLines.length;
-
-  function sliceLines(lines: LogLine[]) {
-    if (lines.length <= logLinesLimit) {
-      return lines;
-    }
-
-    const end = lines.length - page * logLinesLimit;
-    const start = end > logLinesLimit ? end - logLinesLimit : 0;
-    return lines.slice(start, end);
-  }
+  const isPreviousPageVisible =
+    page < Math.floor((filteredLines.length - 1) / logLinesLimit);
+  const isPaginated = filteredLines.length !== paginatedLines.length;
+  const hasHiddenLines = logLines.length !== paginatedLines.length;
 
   useEffect(() => {
     if (!containerRef.current) {
       return;
     }
     containerRef.current.scrollTo(0, containerRef.current.scrollHeight);
-  }, [filteredLines]);
+  }, [paginatedLines]);
 
   useEffect(() => {
     const lowerCaseFilter = filter.toLowerCase();
@@ -93,21 +85,29 @@ const OwmlLog: React.FunctionComponent = () => {
 
     if (isFilteringByName || isFilteringByMod) {
       setFilteredLines(
-        sliceLines(
-          logLines.filter((line) => {
-            const isFromSelectedMod =
-              !isFilteringByMod || line.modName === selectedModName;
-            const isMatchWithFilter =
-              !isFilteringByName ||
-              line.text.toLowerCase().includes(lowerCaseFilter);
-            return isMatchWithFilter && isFromSelectedMod;
-          }),
-        ),
+        logLines.filter((line) => {
+          const isFromSelectedMod =
+            !isFilteringByMod || line.modName === selectedModName;
+          const isMatchWithFilter =
+            !isFilteringByName ||
+            line.text.toLowerCase().includes(lowerCaseFilter);
+          return isMatchWithFilter && isFromSelectedMod;
+        }),
       );
     } else {
-      setFilteredLines(sliceLines(logLines));
+      setFilteredLines(logLines);
     }
   }, [filter, logLines, selectedModName, page]);
+
+  useEffect(() => {
+    if (filteredLines.length <= logLinesLimit) {
+      setPaginatedLines(filteredLines);
+    }
+
+    const end = filteredLines.length - page * logLinesLimit;
+    const start = end > logLinesLimit ? end - logLinesLimit : 0;
+    setPaginatedLines(filteredLines.slice(start, end));
+  }, [filteredLines, page]);
 
   function handlePreviousPageClick() {
     setPage((prevPage) => prevPage + 1);
@@ -130,9 +130,9 @@ const OwmlLog: React.FunctionComponent = () => {
               <LogFilter onChange={setFilter} value={filter} />
               {logLines.length > 1 && (
                 <Typography variant="subtitle2" color="textSecondary">
-                  {isFiltered && `Showing ${filteredLines.length} of `}
+                  {hasHiddenLines && `Showing ${paginatedLines.length} of `}
                   {logLines.length} entries
-                  {isFiltered && `, page ${page + 1}`}
+                  {isPaginated && `, page ${page + 1}`}
                 </Typography>
               )}
               <Tooltip title="Clear log entries">
@@ -152,7 +152,7 @@ const OwmlLog: React.FunctionComponent = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {isPrevPageVisible && (
+          {isPreviousPageVisible && (
             <TableRow>
               <TableCell colSpan={3}>
                 <Button
@@ -165,7 +165,7 @@ const OwmlLog: React.FunctionComponent = () => {
               </TableCell>
             </TableRow>
           )}
-          {filteredLines.map((line: LogLine) => (
+          {paginatedLines.map((line: LogLine) => (
             <React.Fragment key={line.id}>
               <TableRow>
                 <TableCell className={styles[line.type]}>{line.text}</TableCell>
