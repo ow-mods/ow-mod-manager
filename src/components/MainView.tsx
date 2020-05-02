@@ -31,13 +31,6 @@ const getTabFilter = (tab: AppTab) => {
 
 const MainView = () => {
   const [tab, setTab] = useState<AppTab>(AppTab.All);
-  const { isLoggerInstalled } = useOwmlLogs();
-
-  useEffect(() => {
-    if (!isLoggerInstalled && tab === AppTab.Logs) {
-      setTab(AppTab.All);
-    }
-  }, [isLoggerInstalled]);
 
   return (
     <>
@@ -46,7 +39,7 @@ const MainView = () => {
           <Tab label="All" value={AppTab.All} />
           <Tab label="Installed" value={AppTab.Installed} />
           <Tab label="Not Installed" value={AppTab.New} />
-          {isLoggerInstalled && <Tab label="Logs" value={AppTab.Logs} />}
+          <Tab label="Logs" value={AppTab.Logs} />
         </Tabs>
       </TopBar>
       <Container>

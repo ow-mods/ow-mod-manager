@@ -1,12 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import net from 'net';
 
-import { useAppState } from '.';
-import config from '../config.json';
-
 type LogsContext = {
   logLines: LogLine[];
-  isLoggerInstalled: boolean;
   isServerRunning: boolean;
   startServer: () => Promise<number>;
   clear: () => void;
@@ -14,7 +10,6 @@ type LogsContext = {
 
 const LogsState = React.createContext<LogsContext>({
   logLines: [],
-  isLoggerInstalled: false,
   isServerRunning: false,
   startServer: () => new Promise(() => {}),
   clear: () => {},
@@ -61,15 +56,6 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const [lines, setLines] = useState<LogLine[]>([]);
   const [server, setServer] = useState<net.Server>();
   const [isServerRunning, setIsServerRunning] = useState(false);
-
-  const {
-    modMap: { [config.consoleMod]: consoleMod },
-  } = useAppState();
-  const [isLoggerInstalled, setIsLoggerInstalled] = useState(false);
-
-  useEffect(() => {
-    setIsLoggerInstalled(Boolean(consoleMod?.isEnabled));
-  }, [consoleMod]);
 
   function writeLogLine(line: LogLine) {
     setLines((prevLines) => {
@@ -171,7 +157,6 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
         logLines: lines,
         startServer,
         isServerRunning,
-        isLoggerInstalled,
         clear,
       }}
     >

@@ -23,15 +23,11 @@ const useStyles = makeStyles((theme) => ({
 const TopBar: React.FunctionComponent = ({ children }) => {
   const classes = useStyles();
   const { modMap } = useAppState();
-  const { startServer, isLoggerInstalled, isServerRunning } = useOwmlLogs();
+  const { startServer, isServerRunning } = useOwmlLogs();
 
   async function handleStartGameClick() {
-    if (isLoggerInstalled) {
-      const port = await startServer();
-      runOwml(port);
-    } else {
-      runOwml();
-    }
+    const port = await startServer();
+    runOwml(port);
   }
 
   const requiredMods = Object.values(modMap).filter((mod) => mod.isRequired);

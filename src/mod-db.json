@@ -55,10 +55,6 @@
     {
       "repo": "TAImatem/OW_TAIcheat",
       "manifest": "OW_TAIcheat/manifest.json"
-    },
-    {
-      "repo": "Raicuparta/owmm-console",
-      "manifest": "OWMMConsole/manifest.json"
     }
   ]
 }
