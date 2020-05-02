@@ -11,6 +11,7 @@ import {
   IconButton,
   Tooltip,
   Typography,
+  Button,
 } from '@material-ui/core';
 import { ClearAll as ClearAllIcon } from '@material-ui/icons';
 
@@ -54,11 +55,6 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   },
 }));
 
-const sliceLines = (logLines: LogLine[]) =>
-  logLines.length <= logLinesLimit
-    ? logLines
-    : logLines.slice(logLines.length - logLinesLimit, logLines.length);
-
 const OwmlLog: React.FunctionComponent = () => {
   const styles = useStyles();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -66,6 +62,15 @@ const OwmlLog: React.FunctionComponent = () => {
   const [filteredLines, setFilteredLines] = useState<LogLine[]>([]);
   const [filter, setFilter] = useState('');
   const [selectedModName, setSelectedModName] = useState<string>('');
+  const [page, setPage] = useState<number>(0);
+
+  function getSlicedLines() {
+    const end = page * logLinesLimit;
+    const start = end + logLinesLimit;
+    return logLines.length <= logLinesLimit
+      ? logLines
+      : logLines.slice(logLines.length - start, logLines.length - end);
+  }
 
   useEffect(() => {
     if (!containerRef.current) {
@@ -81,21 +86,27 @@ const OwmlLog: React.FunctionComponent = () => {
 
     if (isFilteringByName || isFilteringByMod) {
       setFilteredLines(
-        sliceLines(
-          logLines.filter((line) => {
-            const isFromSelectedMod =
-              !isFilteringByMod || line.modName === selectedModName;
-            const isMatchWithFilter =
-              !isFilteringByName ||
-              line.text.toLowerCase().includes(lowerCaseFilter);
-            return isMatchWithFilter && isFromSelectedMod;
-          }),
-        ),
+        getSlicedLines().filter((line) => {
+          const isFromSelectedMod =
+            !isFilteringByMod || line.modName === selectedModName;
+          const isMatchWithFilter =
+            !isFilteringByName ||
+            line.text.toLowerCase().includes(lowerCaseFilter);
+          return isMatchWithFilter && isFromSelectedMod;
+        }),
       );
     } else {
-      setFilteredLines(sliceLines(logLines));
+      setFilteredLines(getSlicedLines());
     }
-  }, [filter, logLines, selectedModName]);
+  }, [filter, logLines, selectedModName, page]);
+
+  function handlePreviousPageClick() {
+    setPage((prevPage) => prevPage + 1);
+  }
+
+  function handleNextPageClick() {
+    setPage((prevPage) => prevPage - 1);
+  }
 
   return (
     <TableContainer
@@ -110,7 +121,8 @@ const OwmlLog: React.FunctionComponent = () => {
               <LogFilter onChange={setFilter} value={filter} />
               {logLines.length > 1 && (
                 <Typography variant="subtitle2" color="textSecondary">
-                  Showing {filteredLines.length} of {logLines.length} entries
+                  Showing {filteredLines.length} of {logLines.length} entries,
+                  page {page + 1}
                 </Typography>
               )}
               <Tooltip title="Clear log entries">
@@ -130,6 +142,17 @@ const OwmlLog: React.FunctionComponent = () => {
           </TableRow>
         </TableHead>
         <TableBody>
+          <TableRow>
+            <TableCell colSpan={3}>
+              <Button
+                onClick={handlePreviousPageClick}
+                fullWidth
+                variant="outlined"
+              >
+                Show previous {logLinesLimit}
+              </Button>
+            </TableCell>
+          </TableRow>
           {filteredLines.map((line: LogLine) => (
             <React.Fragment key={line.id}>
               <TableRow>
@@ -141,6 +164,19 @@ const OwmlLog: React.FunctionComponent = () => {
               </TableRow>
             </React.Fragment>
           ))}
+          {page > 0 && (
+            <TableRow>
+              <TableCell colSpan={3}>
+                <Button
+                  onClick={handleNextPageClick}
+                  fullWidth
+                  variant="outlined"
+                >
+                  Show next {logLinesLimit}
+                </Button>
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </TableContainer>
