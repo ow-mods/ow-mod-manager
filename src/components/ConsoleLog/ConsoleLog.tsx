@@ -109,6 +109,10 @@ const OwmlLog: React.FunctionComponent = () => {
     setPaginatedLines(filteredLines.slice(start, end));
   }, [filteredLines, page]);
 
+  useEffect(() => {
+    setPage(0);
+  }, [filter, selectedModName]);
+
   function handlePreviousPageClick() {
     setPage((prevPage) => prevPage + 1);
   }
