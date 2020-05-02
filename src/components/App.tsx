@@ -2,6 +2,9 @@ import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import {
   createMuiTheme,
+  // The typings for this package haven't been updated yet,
+  // So we need to ignore typescript and eslint rules to
+  // import experimental stuff.
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   unstable_createMuiStrictModeTheme as unstableCreateMuiStrictModeTheme,
