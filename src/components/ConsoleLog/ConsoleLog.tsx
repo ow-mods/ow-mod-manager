@@ -10,9 +10,11 @@ import {
   Paper,
   IconButton,
   Tooltip,
+  Typography,
 } from '@material-ui/core';
 import { ClearAll as ClearAllIcon } from '@material-ui/icons';
 
+import { logLinesLimit } from '../../config.json';
 import { useOwmlLogs } from '../../hooks';
 import LogFilter from './LogFilter';
 import ModNameSelect from './ModNameSelect';
@@ -40,6 +42,7 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   nameHeader: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   modNameCell: {
     overflowX: 'hidden',
@@ -50,6 +53,11 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
     width: 1,
   },
 }));
+
+const sliceLines = (logLines: LogLine[]) =>
+  logLines.length <= logLinesLimit
+    ? logLines
+    : logLines.slice(logLines.length - logLinesLimit, logLines.length);
 
 const OwmlLog: React.FunctionComponent = () => {
   const styles = useStyles();
@@ -73,17 +81,19 @@ const OwmlLog: React.FunctionComponent = () => {
 
     if (isFilteringByName || isFilteringByMod) {
       setFilteredLines(
-        logLines.filter((line) => {
-          const isFromSelectedMod =
-            !isFilteringByMod || line.modName === selectedModName;
-          const isMatchWithFilter =
-            !isFilteringByName ||
-            line.text.toLowerCase().includes(lowerCaseFilter);
-          return isMatchWithFilter && isFromSelectedMod;
-        }),
+        sliceLines(
+          logLines.filter((line) => {
+            const isFromSelectedMod =
+              !isFilteringByMod || line.modName === selectedModName;
+            const isMatchWithFilter =
+              !isFilteringByName ||
+              line.text.toLowerCase().includes(lowerCaseFilter);
+            return isMatchWithFilter && isFromSelectedMod;
+          }),
+        ),
       );
     } else {
-      setFilteredLines(logLines);
+      setFilteredLines(sliceLines(logLines));
     }
   }, [filter, logLines, selectedModName]);
 
@@ -98,6 +108,11 @@ const OwmlLog: React.FunctionComponent = () => {
           <TableRow>
             <TableCell className={styles.nameHeader}>
               <LogFilter onChange={setFilter} value={filter} />
+              {logLines.length > 1 && (
+                <Typography variant="subtitle2" color="textSecondary">
+                  Showing {filteredLines.length} of {logLines.length} entries
+                </Typography>
+              )}
               <Tooltip title="Clear log entries">
                 <IconButton size="small" onClick={clear}>
                   <ClearAllIcon />

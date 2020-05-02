@@ -1,3 +1,4 @@
 {
-    "owmlPath": "OWML"
+    "owmlPath": "OWML",
+    "logLinesLimit": 50
 }

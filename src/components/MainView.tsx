@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container, Tabs, Tab } from '@material-ui/core';
 
 import { isInstalled } from '../services';
-import { useOwmlLogs } from '../hooks';
 import ModList from './ModList';
 import TopBar from './TopBar';
 import LoadingBar from './LoadingBar';
