@@ -64,6 +64,11 @@ const OwmlLog: React.FunctionComponent = () => {
   const [selectedModName, setSelectedModName] = useState<string>('');
   const [page, setPage] = useState<number>(0);
 
+  const isPrevPageVisible =
+    page < Math.floor(filteredLines.length / logLinesLimit);
+  const isNextPageVisible = page > 0;
+  const isFiltered = logLines.length !== filteredLines.length;
+
   function sliceLines(lines: LogLine[]) {
     if (lines.length <= logLinesLimit) {
       return lines;
@@ -125,8 +130,9 @@ const OwmlLog: React.FunctionComponent = () => {
               <LogFilter onChange={setFilter} value={filter} />
               {logLines.length > 1 && (
                 <Typography variant="subtitle2" color="textSecondary">
-                  Showing {filteredLines.length} of {logLines.length} entries,
-                  page {page + 1}
+                  {isFiltered && `Showing ${filteredLines.length} of `}
+                  {logLines.length} entries
+                  {isFiltered && `, page ${page + 1}`}
                 </Typography>
               )}
               <Tooltip title="Clear log entries">
@@ -146,7 +152,7 @@ const OwmlLog: React.FunctionComponent = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {page <= filteredLines.length / logLinesLimit && (
+          {isPrevPageVisible && (
             <TableRow>
               <TableCell colSpan={3}>
                 <Button
@@ -170,7 +176,7 @@ const OwmlLog: React.FunctionComponent = () => {
               </TableRow>
             </React.Fragment>
           ))}
-          {page > 0 && (
+          {isNextPageVisible && (
             <TableRow>
               <TableCell colSpan={3}>
                 <Button
