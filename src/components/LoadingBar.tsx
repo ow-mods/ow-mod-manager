@@ -1,6 +1,7 @@
 import React from 'react';
-import { useAppState } from './AppState';
 import { LinearProgress, makeStyles } from '@material-ui/core';
+
+import { useAppState } from '../hooks';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,11 +13,9 @@ const LoadingBar: React.FunctionComponent = () => {
   const { loadingCount } = useAppState();
   const classes = useStyles();
 
-  return (
-    loadingCount > 0 && (
-      <LinearProgress color="primary" className={classes.root} />
-    )
-  );
+  return loadingCount > 0 ? (
+    <LinearProgress color="primary" className={classes.root} />
+  ) : null;
 };
 
 export default LoadingBar;

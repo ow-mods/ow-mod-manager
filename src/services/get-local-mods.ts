@@ -3,7 +3,7 @@ import glob from 'glob-promise';
 import path from 'path';
 
 import config from '../config.json';
-import { isEnabled } from './mod-enabler';
+import { isEnabled } from '.';
 
 function getOwml() {
   const owmlManifestPath = `${config.owmlPath}/OWML.Manifest.json`;
@@ -25,7 +25,7 @@ function getOwml() {
   return owml;
 }
 
-async function getLocalMods(): Promise<ModMap> {
+export async function getLocalMods(): Promise<ModMap> {
   const manifestPaths = await glob(`${config.owmlPath}/Mods/**/manifest.json`);
   const manifestFiles = manifestPaths.map((manifestPath) => ({
     path: manifestPath,
@@ -58,5 +58,3 @@ async function getLocalMods(): Promise<ModMap> {
 
   return modMap;
 }
-
-export default getLocalMods;

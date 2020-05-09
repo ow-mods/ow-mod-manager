@@ -1,3 +1,6 @@
+/// <reference types="react-dom/experimental" />
+/// <reference types="react/experimental" />
+
 type Mod = {
   name: string;
   author: string;
@@ -39,3 +42,13 @@ type ModConfig = {
 type SortOrder = 'asc' | 'desc';
 
 type HeadCellID = 'name' | 'author' | 'version' | 'downloadCount';
+
+type LogType = 'log' | 'error' | 'warning' | 'success';
+
+type LogLine = {
+  modName: string;
+  text: string;
+  type: LogType;
+  count: number;
+  id: number;
+};

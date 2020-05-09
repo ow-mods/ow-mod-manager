@@ -36,7 +36,7 @@ function saveCache(repo: string, release: Release) {
   fs.writeJSONSync(cachePath, cachedData);
 }
 
-async function getRemoteRelease(repo: string): Promise<Release> {
+export async function getRemoteRelease(repo: string): Promise<Release> {
   const cachedRelease = getCachedRelease(repo);
   if (cachedRelease) {
     return cachedRelease;
@@ -60,8 +60,6 @@ async function getRemoteRelease(repo: string): Promise<Release> {
       return release;
     });
 }
-
-export default getRemoteRelease;
 
 type Rel = {
   assets: {

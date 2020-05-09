@@ -16,7 +16,7 @@ import {
   FolderOpen as FolderIcon,
 } from '@material-ui/icons';
 
-import { useAppState } from '../AppState';
+import { useAppState } from '../../hooks';
 import {
   isInstalled,
   install,
@@ -25,8 +25,8 @@ import {
   isOutdated,
   openDirectory,
   openRepo,
-} from '../../services/mod-manager';
-import { toggleEnabled } from '../../services/mod-enabler';
+  toggleEnabled,
+} from '../../services';
 
 interface Props {
   mod: Mod;
@@ -95,7 +95,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         <span>
           <Button
             disabled={!isModInstalled || mod.isRequired}
-            onClick={modActionHandler(toggleEnabled)}
+            onClick={modActionHandlerSync(toggleEnabled)}
           >
             {mod.isEnabled ? <CheckBoxIcon /> : <CheckboxBlankIcon />}
           </Button>
@@ -151,7 +151,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         {!mod.isRequired && (
           <MenuItem
             disabled={!isModInstalled}
-            onClick={modActionHandler(uninstall)}
+            onClick={modActionHandlerSync(uninstall)}
           >
             <ListItemIcon>
               <DeleteIcon />
