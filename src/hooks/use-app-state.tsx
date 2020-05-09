@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { merge } from 'lodash';
 
 import modDb from '../mod-db.json';
-import { getLocalMods, getRemoteMod } from '../services';
+import { getLocalMods, getRemoteMod, getModDatabase } from '../services';
 import { useModsDirectoryWatcher } from '.';
 
 type AppContext = {
@@ -47,25 +47,31 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   });
 
   useEffect(() => {
-    const getMod = async (modDbItem: ModDbItem) => {
-      setLoadingCount((count) => {
-        return count + 1;
-      });
-      getRemoteMod(modDbItem)
-        .then((remoteMod) => {
-          setRemoteModMap((remoteMods) => ({
-            ...remoteMods,
-            [remoteMod.uniqueName]: remoteMod,
-          }));
-        })
-        .finally(() => {
-          setLoadingCount((count) => {
-            return count - 1;
-          });
-        });
+    const getMods = async () => {
+      setLoadingCount((count) => count + 1);
+      const modDatabase = await getModDatabase();
+      setRemoteModMap(
+        modDatabase.reduce(
+          (accumulator, mod) => ({
+            ...accumulator,
+            [mod.manifest.uniqueName]: {
+              name: mod.manifest.name,
+              author: mod.manifest.author,
+              uniqueName: mod.manifest.uniqueName,
+              modPath: 'string',
+              remoteVersion: mod.manifest.version,
+              downloadUrl: mod.downloadUrl,
+              downloadCount: mod.downloadCount,
+              //repo?: string, // TODO missing repo
+              isLoading: false,
+            },
+          }),
+          {},
+        ),
+      );
     };
 
-    modDb.mods.forEach(getMod);
+    getMods();
   }, []);
 
   useEffect(() => {

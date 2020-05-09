@@ -1,4 +1,5 @@
 {
     "owmlPath": "OWML",
-    "logLinesLimit": 50
+    "logLinesLimit": 50,
+    "modDatabaseUrl": "https://raw.githubusercontent.com/Raicuparta/outer-wilds-mod-db/master/releases.json"
 }
