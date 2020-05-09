@@ -1,8 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { merge } from 'lodash';
 
-import modDb from '../mod-db.json';
-import { getLocalMods, getRemoteMod, getModDatabase } from '../services';
+import { getLocalMods, getModDatabase } from '../services';
 import { useModsDirectoryWatcher } from '.';
 
 type AppContext = {
@@ -54,17 +53,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
         modDatabase.reduce(
           (accumulator, mod) => ({
             ...accumulator,
-            [mod.manifest.uniqueName]: {
-              name: mod.manifest.name,
-              author: mod.manifest.author,
-              uniqueName: mod.manifest.uniqueName,
-              modPath: 'string',
-              remoteVersion: mod.manifest.version,
-              downloadUrl: mod.downloadUrl,
-              downloadCount: mod.downloadCount,
-              //repo?: string, // TODO missing repo
-              isLoading: false,
-            },
+            [mod.uniqueName]: mod,
           }),
           {},
         ),
