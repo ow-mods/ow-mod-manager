@@ -47,7 +47,6 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
 
   useEffect(() => {
     const getMods = async () => {
-      setLoadingCount((count) => count + 1);
       const modDatabase = await getModDatabase();
       setRemoteModMap(
         modDatabase.reduce(
@@ -58,8 +57,10 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
           {},
         ),
       );
+      setLoadingCount((count) => count - 1);
     };
 
+    setLoadingCount((count) => count + 1);
     getMods();
   }, []);
 
