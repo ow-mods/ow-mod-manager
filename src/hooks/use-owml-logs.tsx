@@ -4,15 +4,15 @@ import net from 'net';
 type LogsContext = {
   logLines: LogLine[];
   isServerRunning: boolean;
-  startServer: () => Promise<number>;
   clear: () => void;
+  serverPort: number;
 };
 
 const LogsState = React.createContext<LogsContext>({
   logLines: [],
   isServerRunning: false,
-  startServer: () => new Promise(() => {}),
   clear: () => {},
+  serverPort: 0,
 });
 
 export const useOwmlLogs = () => useContext(LogsState);
@@ -54,8 +54,8 @@ function getSimpleLine(text: string, type: LogType = 'log'): LogLine {
 
 export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const [lines, setLines] = useState<LogLine[]>([]);
-  const [server, setServer] = useState<net.Server>();
   const [isServerRunning, setIsServerRunning] = useState(false);
+  const [serverPort, setServerPort] = useState(0);
 
   function writeLogLine(line: LogLine) {
     setLines((prevLines) => {
@@ -94,29 +94,14 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     setLines([]);
   }
 
-  async function startServer() {
-    if (!server) {
-      throw new Error('Tried to start server but it has not been initialized');
-    }
-
-    return new Promise<number>((resolve, reject) => {
-      server.on('listening', () => {
-        const port = (server.address() as net.AddressInfo).port;
-        writeSimpleText(`Started console server on port ${port}`, 'success');
-        resolve(port);
-      });
-
-      server.on('error', () => {
-        reject();
-      });
-
-      server.listen(0, '127.0.0.1');
-    });
+  function signalServerOpen() {
+    setIsServerRunning(true);
+    writeSimpleText('Game connected to console', 'success');
   }
 
-  function setServerClosed() {
-    writeSimpleText('Console server closed', 'warning');
+  function signalServerClosed() {
     setIsServerRunning(false);
+    writeSimpleText('Game disconnected from console', 'warning');
   }
 
   useEffect(() => {
@@ -131,33 +116,34 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
       });
       socket.on('error', (error) => {
         writeSimpleText(`SOCKET ERROR: ${error.toString()}`, 'error');
-        setIsServerRunning(false);
-        netServer.close();
+        signalServerClosed();
       });
       socket.on('end', () => {
-        setServerClosed();
+        signalServerClosed();
         netServer.close();
       });
     });
 
-    setServer(netServer);
-
-    netServer.on('connection', () => {
-      setIsServerRunning(true);
-      writeSimpleText('Game connected to console', 'success');
+    netServer.on('connection', signalServerOpen);
+    netServer.on('close', signalServerClosed);
+    netServer.on('listening', () => {
+      const port = (netServer.address() as net.AddressInfo).port;
+      writeSimpleText(`Started console server on port ${port}`, 'success');
+      setServerPort(port);
     });
 
-    netServer.on('close', setServerClosed);
-    return setServerClosed;
+    netServer.listen(0, '127.0.0.1');
+
+    return signalServerClosed;
   }, []);
 
   return (
     <LogsState.Provider
       value={{
         logLines: lines,
-        startServer,
         isServerRunning,
         clear,
+        serverPort,
       }}
     >
       {children}
