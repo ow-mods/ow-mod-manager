@@ -41,10 +41,10 @@ const MainView = () => {
           <Tab label="Logs" value={AppTab.Logs} />
         </Tabs>
       </TopBar>
+      <LoadingBar />
       <Container>
         {tab === AppTab.Logs && <OwmlLog />}
         {tab !== AppTab.Logs && <ModList filter={getTabFilter(tab)} />}
-        <LoadingBar />
       </Container>
     </CssBaseline>
   );
