@@ -2,14 +2,10 @@ import { useEffect } from 'react';
 import fs from 'fs-extra';
 
 import config from '../config.json';
-import useThrottle from './useThrottle';
 
 type Handler = () => void;
 
-function useModsDirectoryWatcher(handler: Handler) {
-  // Throttle handler to prevent it being called too often.
-  const debouncedHandler = useThrottle(handler);
-
+export function useModsDirectoryWatcher(handler: Handler) {
   useEffect(() => {
     const path = `${config.owmlPath}/Mods`;
 
@@ -18,7 +14,7 @@ function useModsDirectoryWatcher(handler: Handler) {
     }
 
     const watcher = fs.watch(path, { recursive: true }, () => {
-      debouncedHandler();
+      handler();
     });
 
     // Call the handler one first time.
@@ -27,5 +23,3 @@ function useModsDirectoryWatcher(handler: Handler) {
     return watcher.close;
   }, []);
 }
-
-export default useModsDirectoryWatcher;

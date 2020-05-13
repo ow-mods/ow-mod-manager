@@ -1,8 +1,7 @@
-import getRemoteRelease from './get-remote-release';
-import getRemoteManifest from './get-remote-manifest';
+import { getRemoteRelease, getRemoteManifest } from '.';
 import config from '../config.json';
 
-async function getRemoteMod(modDbItem: ModDbItem): Promise<Mod> {
+export async function getRemoteMod(modDbItem: ModDbItem): Promise<Mod> {
   const release = await getRemoteRelease(modDbItem.repo);
   const manifest = await getRemoteManifest(modDbItem);
   const remoteMod: Mod = {
@@ -18,5 +17,3 @@ async function getRemoteMod(modDbItem: ModDbItem): Promise<Mod> {
   };
   return remoteMod;
 }
-
-export default getRemoteMod;

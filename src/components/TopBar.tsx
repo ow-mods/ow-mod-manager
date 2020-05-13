@@ -8,8 +8,8 @@ import {
   Tooltip,
 } from '@material-ui/core';
 
-import runOwml from '../services/run-owml';
-import { useAppState } from './AppState';
+import { runOwml } from '../services';
+import { useAppState, useOwmlLogs } from '../hooks';
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
@@ -23,12 +23,28 @@ const useStyles = makeStyles((theme) => ({
 const TopBar: React.FunctionComponent = ({ children }) => {
   const classes = useStyles();
   const { modMap } = useAppState();
+  const { serverPort, isServerRunning } = useOwmlLogs();
+
+  async function handleStartGameClick() {
+    runOwml(serverPort);
+  }
 
   const requiredMods = Object.values(modMap).filter((mod) => mod.isRequired);
   const isMissingRequiredMod = requiredMods.some(
     (mod) => mod.localVersion === undefined,
   );
   const requiredModNames = requiredMods.map((mod) => mod.name).join(', ');
+  const isStartDisabled = isMissingRequiredMod || isServerRunning;
+
+  function getStartGameTooltip() {
+    if (isMissingRequiredMod) {
+      return `Please install ${requiredModNames} before starting the game`;
+    } else if (isServerRunning) {
+      return 'Already running';
+    } else {
+      return '';
+    }
+  }
 
   return (
     <>
@@ -36,20 +52,14 @@ const TopBar: React.FunctionComponent = ({ children }) => {
         <Toolbar>
           <Container className={classes.container}>
             {children}
-            <Tooltip
-              title={
-                isMissingRequiredMod
-                  ? `Please install ${requiredModNames} before starting the game`
-                  : ''
-              }
-            >
+            <Tooltip title={getStartGameTooltip()}>
               <span>
                 <Button
-                  onClick={runOwml}
+                  onClick={handleStartGameClick}
                   size="large"
                   variant="contained"
                   color="primary"
-                  disabled={isMissingRequiredMod}
+                  disabled={isStartDisabled}
                 >
                   Start Game
                 </Button>
