@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from '@material-ui/core';
 
-import { runOwml } from '../services';
+import { runOwml, runSelfUpdate } from '../services';
 import { useAppState, useOwmlLogs } from '../hooks';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +33,8 @@ const TopBar: React.FunctionComponent = ({ children }) => {
   const { serverPort, isServerRunning } = useOwmlLogs();
 
   async function handleStartGameClick() {
-    runOwml(serverPort);
+    //runOwml(serverPort);
+    runSelfUpdate();
   }
 
   const requiredMods = Object.values(modMap).filter((mod) => mod.isRequired);
