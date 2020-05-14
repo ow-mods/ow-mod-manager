@@ -140,5 +140,5 @@ export function openRepo(mod: Mod) {
       "Can't open repository because there's no registered repository URL",
     );
   }
-  shell.openExternal(`https://github.com/${mod.repo}`);
+  shell.openExternal(mod.repo);
 }

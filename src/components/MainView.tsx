@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Tabs, Tab } from '@material-ui/core';
+import { Container, Tabs, Tab, CssBaseline } from '@material-ui/core';
 
 import { isInstalled } from '../services';
 import ModList from './ModList';
@@ -32,7 +32,7 @@ const MainView = () => {
   const [tab, setTab] = useState<AppTab>(AppTab.All);
 
   return (
-    <>
+    <CssBaseline>
       <TopBar>
         <Tabs value={tab} onChange={(event, index) => setTab(index)}>
           <Tab label="All" value={AppTab.All} />
@@ -41,12 +41,12 @@ const MainView = () => {
           <Tab label="Logs" value={AppTab.Logs} />
         </Tabs>
       </TopBar>
+      <LoadingBar />
       <Container>
         {tab === AppTab.Logs && <OwmlLog />}
         {tab !== AppTab.Logs && <ModList filter={getTabFilter(tab)} />}
-        <LoadingBar />
       </Container>
-    </>
+    </CssBaseline>
   );
 };
 
