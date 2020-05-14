@@ -96,12 +96,12 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
 
   function signalServerOpen() {
     setIsServerRunning(true);
-    writeSimpleText('Game connected to console', 'success');
+    writeSimpleText('Client connected to console', 'success');
   }
 
   function signalServerClosed() {
     setIsServerRunning(false);
-    writeSimpleText('Game disconnected from console', 'warning');
+    writeSimpleText('Client disconnected from console', 'warning');
   }
 
   useEffect(() => {

@@ -12,11 +12,18 @@ import { runOwml } from '../services';
 import { useAppState, useOwmlLogs } from '../hooks';
 
 const useStyles = makeStyles((theme) => ({
-  offset: theme.mixins.toolbar,
+  offset: {
+    ...theme.mixins.toolbar,
+    marginBottom: theme.spacing(3),
+  },
   container: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  toolbar: {
+    padding: 0,
   },
 }));
 
@@ -49,7 +56,7 @@ const TopBar: React.FunctionComponent = ({ children }) => {
   return (
     <>
       <AppBar color="default">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <Container className={classes.container}>
             {children}
             <Tooltip title={getStartGameTooltip()}>

@@ -1,8 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { merge } from 'lodash';
 
-import modDb from '../mod-db.json';
-import { getLocalMods, getRemoteMod } from '../services';
+import { getLocalMods, getModDatabase } from '../services';
 import { useModsDirectoryWatcher } from '.';
 
 type AppContext = {
@@ -47,25 +46,25 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   });
 
   useEffect(() => {
-    const getMod = async (modDbItem: ModDbItem) => {
-      setLoadingCount((count) => {
-        return count + 1;
-      });
-      getRemoteMod(modDbItem)
-        .then((remoteMod) => {
-          setRemoteModMap((remoteMods) => ({
-            ...remoteMods,
-            [remoteMod.uniqueName]: remoteMod,
-          }));
-        })
-        .finally(() => {
-          setLoadingCount((count) => {
-            return count - 1;
-          });
-        });
+    const getMods = async () => {
+      try {
+        const modDatabase = await getModDatabase();
+        setRemoteModMap(
+          modDatabase.reduce(
+            (accumulator, mod) => ({
+              ...accumulator,
+              [mod.uniqueName]: mod,
+            }),
+            {},
+          ),
+        );
+      } finally {
+        setLoadingCount((count) => count - 1);
+      }
     };
 
-    modDb.mods.forEach(getMod);
+    setLoadingCount((count) => count + 1);
+    getMods();
   }, []);
 
   useEffect(() => {
