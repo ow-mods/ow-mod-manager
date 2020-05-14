@@ -57,19 +57,18 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
 
 const OwmlLog: React.FunctionComponent = () => {
   const styles = useStyles();
-  const containerRef = useRef<HTMLDivElement>(null);
   const { logLines, clear } = useOwmlLogs();
-  const [filteredLines, setFilteredLines] = useState<LogLine[]>([]);
+
   const [paginatedLines, setPaginatedLines] = useState<LogLine[]>([]);
-  const [filter, setFilter] = useState('');
   const [selectedModName, setSelectedModName] = useState<string>('');
+  const [filter, setFilter] = useState('');
   const [page, setPage] = useState<number>(0);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isPreviousPageVisible = useRef(false);
   const isNextPageVisible = page > 0;
-  const isPreviousPageVisible =
-    page < Math.floor((filteredLines.length - 1) / logLinesLimit);
-  const isPaginated = filteredLines.length !== paginatedLines.length;
-  const hasHiddenLines = logLines.length !== paginatedLines.length;
+  const isPaginated = useRef(false);
+  const hasHiddenLines = useRef(false);
 
   useEffect(() => {
     if (!containerRef.current) {
@@ -83,31 +82,36 @@ const OwmlLog: React.FunctionComponent = () => {
     const isFilteringByName = filter !== '';
     const isFilteringByMod = selectedModName !== '';
 
+    let filteredLines: LogLine[] = [];
     if (isFilteringByName || isFilteringByMod) {
-      setFilteredLines(
-        logLines.filter((line) => {
-          const isFromSelectedMod =
-            !isFilteringByMod || line.modName === selectedModName;
-          const isMatchWithFilter =
-            !isFilteringByName ||
-            line.text.toLowerCase().includes(lowerCaseFilter);
-          return isMatchWithFilter && isFromSelectedMod;
-        }),
-      );
+      filteredLines = logLines.filter((line) => {
+        const isFromSelectedMod =
+          !isFilteringByMod || line.modName === selectedModName;
+        const isMatchWithFilter =
+          !isFilteringByName ||
+          line.text.toLowerCase().includes(lowerCaseFilter);
+        return isMatchWithFilter && isFromSelectedMod;
+      });
     } else {
-      setFilteredLines(logLines);
+      filteredLines = logLines;
     }
-  }, [filter, logLines, selectedModName, page]);
 
-  useEffect(() => {
+    let lines: LogLine[] = [];
     if (filteredLines.length <= logLinesLimit) {
-      setPaginatedLines(filteredLines);
+      lines = filteredLines;
     }
 
     const end = filteredLines.length - page * logLinesLimit;
     const start = end > logLinesLimit ? end - logLinesLimit : 0;
-    setPaginatedLines(filteredLines.slice(start, end));
-  }, [filteredLines, page]);
+    lines = filteredLines.slice(start, end);
+
+    isPreviousPageVisible.current =
+      page < Math.floor((filteredLines.length - 1) / logLinesLimit);
+    isPaginated.current = filteredLines.length !== lines.length;
+    hasHiddenLines.current = logLines.length !== lines.length;
+
+    setPaginatedLines(lines);
+  }, [filter, logLines, selectedModName, page]);
 
   useEffect(() => {
     setPage(0);
@@ -134,9 +138,10 @@ const OwmlLog: React.FunctionComponent = () => {
               <LogFilter onChange={setFilter} value={filter} />
               {logLines.length > 1 && (
                 <Typography variant="subtitle2" color="textSecondary">
-                  {hasHiddenLines && `Showing ${paginatedLines.length} of `}
+                  {hasHiddenLines.current &&
+                    `Showing ${paginatedLines.length} of `}
                   {logLines.length} entries
-                  {isPaginated && `, page ${page + 1}`}
+                  {isPaginated.current && `, page ${page + 1}`}
                 </Typography>
               )}
               <Tooltip title="Clear log entries">
@@ -156,7 +161,7 @@ const OwmlLog: React.FunctionComponent = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {isPreviousPageVisible && (
+          {isPreviousPageVisible.current && (
             <TableRow>
               <TableCell colSpan={3}>
                 <Button

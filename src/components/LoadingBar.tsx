@@ -5,7 +5,10 @@ import { useAppState } from '../hooks';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(1),
+    height: theme.spacing(1),
+    marginTop: -theme.spacing(1),
+    position: 'relative',
+    top: -theme.spacing(2),
   },
 }));
 
