@@ -4,7 +4,7 @@ import { remote } from 'electron';
 import { downloadFile, unzipFile } from '../services';
 
 // TODO separator
-const BAT_FILE = 'update\\install-update.bat';
+const BAT_FILE = '"update\\install-update.bat"';
 const updateUrl =
   'https://github.com/Raicuparta/ow-mod-manager/releases/download/0.0.3/OWModManager.zip';
 const zipPath = 'OWModManager.zip';
@@ -32,7 +32,7 @@ function runSelfUpdate() {
 }
 
 async function downloadSelfUpdate() {
-  //await downloadFile(updateUrl, zipPath);
+  await downloadFile(updateUrl, zipPath);
   await unzipFile(zipPath, unzipPath);
 }
 
