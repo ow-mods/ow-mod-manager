@@ -57,7 +57,20 @@ async function createFolders(dir: string) {
 export async function downloadFile(url: string, filePath: string) {
   const writer = fs.createWriteStream(filePath);
 
-  request(url).pipe(writer);
+  let receivedBytes = 0;
+  let totalBytes = 0;
+
+  const fileRequest = request(url);
+  fileRequest.on('response', (response) => {
+    totalBytes = parseInt(response.headers['content-length'] || '0');
+  });
+  fileRequest.on('data', (data) => {
+    receivedBytes += data.length;
+    console.log('download progress:', (receivedBytes / totalBytes) * 100, '%');
+  });
+
+  fileRequest.pipe(writer);
+
   return new Promise((resolve) => {
     writer.on('finish', resolve);
   });

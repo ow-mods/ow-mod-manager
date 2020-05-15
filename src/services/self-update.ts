@@ -3,7 +3,7 @@ import { remote } from 'electron';
 
 import { downloadFile, unzipFile } from '../services';
 
-const BAT_FILE = 'install-update.bat';
+const BAT_FILE = 'update\\install-update.bat';
 const updateUrl =
   'https://github.com/Raicuparta/ow-mod-manager/releases/download/0.0.3/OWModManager.zip';
 const zipPath = 'OWModManager.zip';
