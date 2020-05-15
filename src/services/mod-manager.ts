@@ -53,7 +53,8 @@ async function createFolders(dir: string) {
   await fs.mkdirs(dir);
 }
 
-async function downloadFile(url: string, filePath: string) {
+// TODO move this somewhere else
+export async function downloadFile(url: string, filePath: string) {
   const writer = fs.createWriteStream(filePath);
 
   request(url).pipe(writer);
@@ -62,7 +63,7 @@ async function downloadFile(url: string, filePath: string) {
   });
 }
 
-async function unzipFile(zipPath: string, unzipPath: string) {
+export async function unzipFile(zipPath: string, unzipPath: string) {
   const absUnzipPath = path.resolve(unzipPath);
   const extract = unzip.Extract({ path: absUnzipPath });
   const reader = fs.createReadStream(zipPath);

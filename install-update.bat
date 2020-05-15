@@ -1,22 +1,8 @@
+echo Waiting...
 ping -n 2 127.0.0.1 >nul
-echo Hello World 1
-ping -n 2 127.0.0.1 >nul
-echo Hello World 1
-ping -n 2 127.0.0.1 >nul
-echo Hello World 1
-ping -n 2 127.0.0.1 >nul
-echo Hello World 1
-ping -n 2 127.0.0.1 >nul
-echo Hello World 1
-ping -n 2 127.0.0.1 >nul
-echo Hello World 1
-ping -n 2 127.0.0.1 >nul
-echo Hello World 1
-ping -n 2 127.0.0.1 >nul
-echo Hello World 1
-ping -n 2 127.0.0.1 >nul
-echo Hello World 1
-ping -n 2 127.0.0.1 >nul
-echo Hello World 1
-ping -n 2 127.0.0.1 >nul
-echo Hello World 1
+echo Copying...
+copy *.* "../" /y
+echo Running manager...
+"../Outer Wilds Mod Manager.exe" > NUL
+echo Exiting updater...
+exit
