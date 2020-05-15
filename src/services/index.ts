@@ -4,3 +4,4 @@ export * from './mod-enabler';
 export * from './mod-manager';
 export * from './run-owml';
 export * from './self-update';
+export * from './files';
