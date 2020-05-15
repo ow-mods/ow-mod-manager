@@ -17,36 +17,8 @@ export function isOutdated(mod: Mod): boolean {
     return false;
   }
 
-  if (mod.localVersion.startsWith('<')) {
-    return true;
-  }
-
-  const remoteVersionNumbers = mod.remoteVersion.split('.');
-  const localVersionNumbers = mod.localVersion.split('.');
-
-  const length = Math.max(
-    remoteVersionNumbers.length,
-    localVersionNumbers.length,
-  );
-
-  for (let i = 0; i < length; i += 1) {
-    const remoteVersionChunk = remoteVersionNumbers[i];
-    const localVersionChunk = localVersionNumbers[i];
-
-    if (remoteVersionChunk === undefined && localVersionChunk !== undefined) {
-      return false;
-    }
-
-    if (remoteVersionChunk !== undefined && localVersionChunk === undefined) {
-      return true;
-    }
-
-    if (remoteVersionNumbers[i] > localVersionNumbers[i]) {
-      return true;
-    }
-  }
-
-  return false;
+  // TODO actually check if remote version is superior instead of just different.
+  return mod.remoteVersion !== mod.localVersion;
 }
 
 async function createFolders(dir: string) {
