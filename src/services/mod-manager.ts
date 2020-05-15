@@ -7,6 +7,8 @@ import {
   copyFolder,
   deleteFolder,
   createFolders,
+  getConfig,
+  saveConfig,
 } from '.';
 
 export function isInstalled(mod: Mod): boolean {
@@ -105,4 +107,15 @@ export function openRepo(mod: Mod) {
     );
   }
   shell.openExternal(mod.repo);
+}
+
+export function isEnabled(mod: Mod): boolean {
+  const config = getConfig(mod);
+  return config.enabled;
+}
+
+export function toggleEnabled(mod: Mod) {
+  const config = getConfig(mod);
+  config.enabled = !config.enabled;
+  saveConfig(mod, config);
 }
