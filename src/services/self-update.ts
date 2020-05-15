@@ -24,7 +24,7 @@ function runSelfUpdate() {
     cwd: unzipPath,
   });
 
-  remote.app.quit();
+  remote.app.exit();
 
   ls.stdout.on('data', function (data) {
     console.log('stdout: ' + data.toString());
