@@ -17,7 +17,8 @@ const createWindow = () => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   if (process.env.NODE_ENV === 'production') {
-    mainWindow.setMenu(null);
+    // TODO Uncomment this!
+    //mainWindow.setMenu(null);
   }
 };
 

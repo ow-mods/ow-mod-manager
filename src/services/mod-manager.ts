@@ -53,6 +53,10 @@ async function createFolders(dir: string) {
   await fs.mkdirs(dir);
 }
 
+function percentage(part: number, total: number) {
+  return `${Math.round((part / total) * 100)}%`;
+}
+
 // TODO move this somewhere else
 export async function downloadFile(url: string, filePath: string) {
   const writer = fs.createWriteStream(filePath);
@@ -66,7 +70,7 @@ export async function downloadFile(url: string, filePath: string) {
   });
   fileRequest.on('data', (data) => {
     receivedBytes += data.length;
-    console.log('download progress:', (receivedBytes / totalBytes) * 100, '%');
+    console.log('download progress:', percentage(receivedBytes, totalBytes));
   });
 
   fileRequest.pipe(writer);
@@ -80,7 +84,17 @@ export async function unzipFile(zipPath: string, unzipPath: string) {
   const absUnzipPath = path.resolve(unzipPath);
   const extract = unzip.Extract({ path: absUnzipPath });
   const reader = fs.createReadStream(zipPath);
+
+  const totalBytes = fs.statSync(zipPath).size;
+  let extractedBytes = 0;
+
   reader.pipe(extract);
+
+  reader.on('data', (data) => {
+    extractedBytes += data.length;
+    console.log('unzip', percentage(extractedBytes, totalBytes));
+  });
+
   return new Promise((resolve) => {
     extract.on('close', resolve);
   });
