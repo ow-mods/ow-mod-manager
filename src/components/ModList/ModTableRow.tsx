@@ -14,12 +14,11 @@ type Props = {
   mod: Mod;
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   requiredRow: {
-    opacity: 0.75,
-    background: '#252525',
+    background: theme.palette.background.default,
   },
-});
+}));
 
 const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const classes = useStyles();
