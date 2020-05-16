@@ -6,6 +6,8 @@ import {
   MenuItem,
   ListItemIcon,
   LinearProgress,
+  CircularProgress,
+  makeStyles,
 } from '@material-ui/core';
 import {
   MoreVert as MoreIcon,
@@ -15,6 +17,7 @@ import {
   CheckBoxOutlineBlank as CheckboxBlankIcon,
   GitHub as GitHubIcon,
   FolderOpen as FolderIcon,
+  Palette,
 } from '@material-ui/icons';
 
 import { useAppState } from '../../hooks';
@@ -40,7 +43,16 @@ type ModActionHandler<Return> = (
 
 type ModActionHandlerSync<Return> = (mod: Mod) => Return;
 
+const useStyles = makeStyles((theme) => ({
+  circularProgress: {
+    background: theme.palette.primary.light,
+    color: theme.palette.primary.dark,
+    borderRadius: '100%',
+  },
+}));
+
 const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
+  const styles = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [progress, setProgress] = useState(0);
   const { setModIsLoading } = useAppState();
@@ -80,21 +92,24 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const getEnableTooltip = () => {
     if (mod.isRequired) {
       return 'Required, can\'t disable';
-    } else if (mod.isEnabled) {
-      return 'Disable';
-    } else {
-      return 'Enable';
     }
+    if (mod.isEnabled) {
+      return 'Disable';
+    }
+    return 'Enable';
   };
 
   const getInstallTooltip = () => {
+    if (mod.isLoading) {
+      return 'Loading...';
+    }
     if (isModOutdated) {
       return `Update to ${mod.remoteVersion}`;
-    } else if (isModInstalled) {
-      return 'Already installed';
-    } else {
-      return 'Install';
     }
+    if (isModInstalled) {
+      return 'Already installed';
+    }
+    return 'Install';
   };
 
   return (
@@ -117,7 +132,17 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
             variant={isInstallHighlighted ? 'contained' : 'text'}
             color={isInstallHighlighted ? 'secondary' : 'default'}
           >
-            <SaveIcon />
+            {mod.isLoading && (
+              <CircularProgress
+                variant="static"
+                value={progress * 100}
+                color="primary"
+                size={24}
+                thickness={23}
+                className={styles.circularProgress}
+              />
+            )}
+            {!mod.isLoading && <SaveIcon />}
           </Button>
         </span>
       </Tooltip>
@@ -168,13 +193,6 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
           </MenuItem>
         )}
       </Menu>
-      {mod.isLoading && (
-        <LinearProgress
-          variant="determinate"
-          value={progress * 100}
-          color="primary"
-        />
-      )}
     </>
   );
 };
