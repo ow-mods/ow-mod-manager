@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
     borderWidth: 3,
     borderStyle: 'solid',
     borderColor: theme.palette.background.default,
-    animationDuration: '10000ms',
     boxShadow: `0 0 5px 0 ${theme.palette.grey[300]}`,
   },
 }));
