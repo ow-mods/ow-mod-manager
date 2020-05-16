@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { merge } from 'lodash';
 
 import { getLocalMods, getModDatabase } from '../services';
@@ -7,12 +7,14 @@ import { useModsDirectoryWatcher } from '.';
 type AppContext = {
   modMap: ModMap;
   loadingCount: number;
-  setModIsLoading: (uniqueName: string, isLoading: boolean) => void;
+  startLoading: () => void;
+  endLoading: () => void;
 };
 
 const AppState = React.createContext<AppContext>({
   modMap: {},
-  setModIsLoading: () => {},
+  startLoading: () => {},
+  endLoading: () => {},
   loadingCount: 0,
 });
 
@@ -24,17 +26,13 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   const [modMap, setModMap] = useState<ModMap>({});
   const [loadingCount, setLoadingCount] = useState(0);
 
-  const setModIsLoading = (uniqueName: string, isLoading: boolean) => {
-    setModMap((prevState) => {
-      return {
-        ...prevState,
-        [uniqueName]: {
-          ...prevState[uniqueName],
-          isLoading,
-        },
-      };
-    });
-  };
+  const startLoading = useCallback(() => {
+    setLoadingCount((count) => count + 1);
+  }, []);
+
+  const endLoading = useCallback(() => {
+    setLoadingCount((count) => count - 1);
+  }, []);
 
   useModsDirectoryWatcher(() => {
     const getMods = async () => {
@@ -75,7 +73,8 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     <AppState.Provider
       value={{
         modMap,
-        setModIsLoading,
+        startLoading,
+        endLoading,
         loadingCount,
       }}
     >

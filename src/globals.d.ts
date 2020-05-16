@@ -11,7 +11,6 @@ type Mod = {
   downloadUrl?: string;
   downloadCount?: number;
   repo?: string;
-  isLoading: boolean;
   isEnabled?: boolean;
   isRequired?: boolean;
 };
