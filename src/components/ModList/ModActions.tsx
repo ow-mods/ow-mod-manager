@@ -86,6 +86,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
       startLoading();
       await handler(mod, setProgress);
       endLoading();
+      setProgress(0);
       setIsLoading(false);
     }
   };
