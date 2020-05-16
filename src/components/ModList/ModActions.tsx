@@ -57,8 +57,9 @@ const useStyles = makeStyles((theme) => ({
 const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const styles = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [progress, setProgress] = useState(0);
-  const { setModIsLoading } = useAppState();
+  const [progress, setProgress] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const { startLoading, endLoading } = useAppState();
 
   const handleMoreClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -72,19 +73,20 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const isModOutdated = isOutdated(mod);
   const isModInstallable = mod.downloadUrl !== undefined;
   const isModDownloadable =
-    !mod.isLoading && (isModInstalled ? isModOutdated : isModInstallable);
+    !isLoading && (isModInstalled ? isModOutdated : isModInstallable);
   const isInstallHighlighted =
-    !mod.isLoading && (isModOutdated || (mod.isRequired && !isModInstalled));
+    !isLoading && (isModOutdated || (mod.isRequired && !isModInstalled));
 
   const modActionHandler = (
     handler: ModActionHandler<Promise<void> | void>,
   ) => async () => {
     handleClose();
     if (mod !== undefined) {
-      setModIsLoading(mod.uniqueName, true);
+      setIsLoading(true);
+      startLoading();
       await handler(mod, setProgress);
-      setProgress(0);
-      setModIsLoading(mod.uniqueName, false);
+      endLoading();
+      setIsLoading(false);
     }
   };
 
@@ -104,7 +106,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   };
 
   const getInstallTooltip = () => {
-    if (mod.isLoading) {
+    if (isLoading) {
       return 'Loading...';
     }
     if (isModOutdated) {
@@ -136,7 +138,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
             variant={isInstallHighlighted ? 'contained' : 'text'}
             color={isInstallHighlighted ? 'secondary' : 'default'}
           >
-            {mod.isLoading && (
+            {isLoading && (
               <CircularProgress
                 variant="determinate"
                 value={progress * 100}
@@ -146,7 +148,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
                 className={styles.circularProgress}
               />
             )}
-            {!mod.isLoading && <SaveIcon />}
+            {!isLoading && <SaveIcon />}
           </Button>
         </span>
       </Tooltip>
