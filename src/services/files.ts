@@ -7,19 +7,25 @@ function percentage(part: number, total: number) {
   return `${Math.round((part / total) * 100)}%`;
 }
 
-export async function downloadFile(url: string, filePath: string) {
+export async function downloadFile(
+  url: string,
+  filePath: string,
+  onProgress: ProgressHandler,
+) {
   const writer = fs.createWriteStream(filePath);
 
   let receivedBytes = 0;
   let totalBytes = 0;
 
   const fileRequest = request(url);
+
   fileRequest.on('response', (response) => {
     totalBytes = parseInt(response.headers['content-length'] || '0');
   });
+
   fileRequest.on('data', (data) => {
     receivedBytes += data.length;
-    console.log('download progress:', percentage(receivedBytes, totalBytes));
+    onProgress(receivedBytes / totalBytes);
   });
 
   fileRequest.pipe(writer);
@@ -29,7 +35,11 @@ export async function downloadFile(url: string, filePath: string) {
   });
 }
 
-export async function unzipFile(zipPath: string, unzipPath: string) {
+export async function unzipFile(
+  zipPath: string,
+  unzipPath: string,
+  onProgress: ProgressHandler,
+) {
   const absUnzipPath = path.resolve(unzipPath);
   const extract = unzip.Extract({ path: absUnzipPath });
   const reader = fs.createReadStream(zipPath);
@@ -41,7 +51,7 @@ export async function unzipFile(zipPath: string, unzipPath: string) {
 
   reader.on('data', (data) => {
     extractedBytes += data.length;
-    console.log('unzip', percentage(extractedBytes, totalBytes));
+    onProgress(extractedBytes / totalBytes);
   });
 
   return new Promise((resolve) => {

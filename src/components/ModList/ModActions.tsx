@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Tooltip,
   Menu,
   MenuItem,
   ListItemIcon,
+  LinearProgress,
 } from '@material-ui/core';
 import {
   MoreVert as MoreIcon,
@@ -32,10 +33,16 @@ interface Props {
   mod: Mod;
 }
 
-type ModActionHandler<Return> = (mod: Mod) => Return;
+type ModActionHandler<Return> = (
+  mod: Mod,
+  progressHandler: ProgressHandler,
+) => Return;
+
+type ModActionHandlerSync<Return> = (mod: Mod) => Return;
 
 const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [progress, setProgress] = useState(0);
   const { setModIsLoading } = useAppState();
 
   const handleMoreClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -59,12 +66,13 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     handleClose();
     if (mod !== undefined) {
       setModIsLoading(mod.uniqueName, true);
-      await handler(mod);
+      await handler(mod, setProgress);
+      setProgress(0);
       setModIsLoading(mod.uniqueName, false);
     }
   };
 
-  const modActionHandlerSync = (handler: ModActionHandler<void>) => () => {
+  const modActionHandlerSync = (handler: ModActionHandlerSync<void>) => () => {
     handleClose();
     handler(mod);
   };
@@ -160,6 +168,13 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
           </MenuItem>
         )}
       </Menu>
+      {mod.isLoading && (
+        <LinearProgress
+          variant="determinate"
+          value={progress * 100}
+          color="primary"
+        />
+      )}
     </>
   );
 };

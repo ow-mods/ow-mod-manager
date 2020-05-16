@@ -52,3 +52,5 @@ type LogLine = {
   count: number;
   id: number;
 };
+
+type ProgressHandler = (progress: number) => void;

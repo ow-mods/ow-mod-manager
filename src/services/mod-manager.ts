@@ -11,6 +11,11 @@ import {
   saveConfig,
 } from '.';
 
+// Defines which portion of the loading bar is for download progress,
+// and the remaining is for unzipping progress.
+const progressDownloadPortion = 0.8;
+const progressUnzipPortion = 1 - progressDownloadPortion;
+
 export function isInstalled(mod: Mod): boolean {
   return !!mod.localVersion;
 }
@@ -28,7 +33,7 @@ export function isOutdated(mod: Mod): boolean {
   return mod.remoteVersion !== mod.localVersion;
 }
 
-async function upstall(mod: Mod) {
+async function upstall(mod: Mod, onProgress: ProgressHandler) {
   if (!mod.downloadUrl) {
     return;
   }
@@ -37,25 +42,33 @@ async function upstall(mod: Mod) {
   const zipPath = `${temporaryPath}/${mod.name}.zip`;
   const unzipPath = `${temporaryPath}/${mod.name}`;
 
+  const onDownloadProgress: ProgressHandler = (progress) => {
+    onProgress(progress * progressDownloadPortion);
+  };
+
+  const onUnzipProgress: ProgressHandler = (progress) => {
+    onProgress(progressDownloadPortion + progress * progressUnzipPortion);
+  };
+
   await createFolders(unzipPath);
-  await downloadFile(mod.downloadUrl, zipPath);
-  await unzipFile(zipPath, unzipPath);
+  await downloadFile(mod.downloadUrl, zipPath, onDownloadProgress);
+  await unzipFile(zipPath, unzipPath, onUnzipProgress);
   await copyFolder(unzipPath, mod.modPath);
   await deleteFolder(temporaryPath);
 }
 
-export async function install(mod: Mod) {
+export async function install(mod: Mod, onProgress: ProgressHandler) {
   if (isInstalled(mod)) {
     throw new Error("Can't install mod because it's already installed");
   }
-  await upstall(mod);
+  await upstall(mod, onProgress);
 }
 
-export async function update(mod: Mod) {
+export async function update(mod: Mod, onProgress: ProgressHandler) {
   if (!isOutdated) {
     throw new Error("Can't update mod because it's not out of date");
   }
-  await upstall(mod);
+  await upstall(mod, onProgress);
 }
 
 export function uninstall(mod: Mod) {
