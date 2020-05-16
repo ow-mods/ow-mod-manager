@@ -25,6 +25,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   const [loadingCount, setLoadingCount] = useState(0);
 
   const setModIsLoading = (uniqueName: string, isLoading: boolean) => {
+    setLoadingCount((count) => (isLoading ? count + 1 : count - 1));
     setModMap((prevState) => {
       return {
         ...prevState,
