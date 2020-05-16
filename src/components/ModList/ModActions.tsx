@@ -43,9 +43,14 @@ type ModActionHandlerSync<Return> = (mod: Mod) => Return;
 
 const useStyles = makeStyles((theme) => ({
   circularProgress: {
-    background: theme.palette.primary.light,
-    color: theme.palette.primary.dark,
+    background: theme.palette.background.default,
+    color: theme.palette.primary.main,
     borderRadius: '100%',
+    borderWidth: 3,
+    borderStyle: 'solid',
+    borderColor: theme.palette.background.default,
+    animationDuration: '10000ms',
+    boxShadow: `0 0 5px 0 ${theme.palette.grey[300]}`,
   },
 }));
 
@@ -133,7 +138,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
           >
             {mod.isLoading && (
               <CircularProgress
-                variant="static"
+                variant="determinate"
                 value={progress * 100}
                 color="primary"
                 size={24}
