@@ -5,7 +5,6 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
-  LinearProgress,
   CircularProgress,
   makeStyles,
 } from '@material-ui/core';
@@ -17,7 +16,6 @@ import {
   CheckBoxOutlineBlank as CheckboxBlankIcon,
   GitHub as GitHubIcon,
   FolderOpen as FolderIcon,
-  Palette,
 } from '@material-ui/icons';
 
 import { useAppState } from '../../hooks';
@@ -68,7 +66,8 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const isModInstalled = mod !== undefined && isInstalled(mod);
   const isModOutdated = isOutdated(mod);
   const isModInstallable = mod.downloadUrl !== undefined;
-  const isModDownloadable = isModInstalled ? isModOutdated : isModInstallable;
+  const isModDownloadable =
+    !mod.isLoading && (isModInstalled ? isModOutdated : isModInstallable);
   const isInstallHighlighted =
     isModOutdated || (mod.isRequired && !isModInstalled);
 
@@ -128,7 +127,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         <span>
           <Button
             onClick={modActionHandler(isModOutdated ? update : install)}
-            disabled={mod.downloadUrl === undefined || !isModDownloadable}
+            disabled={!isModDownloadable}
             variant={isInstallHighlighted ? 'contained' : 'text'}
             color={isInstallHighlighted ? 'secondary' : 'default'}
           >
