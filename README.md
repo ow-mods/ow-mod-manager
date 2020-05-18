@@ -25,13 +25,7 @@ Please [open an issue](https://github.com/Raicuparta/ow-mod-manager/issues) desc
 
 ## I made a mod! How do I submit it?
 
-* Fork this repository;
-
-* Edit [src/mod-db.json](https://github.com/Raicuparta/ow-mod-manager/blob/master/src/mod-db.json), adding your mod at the end of the list;
-
-* Create a [pull request](https://github.com/Raicuparta/ow-mod-manager/pulls) (from your fork to this repo's master branch);
-
-* The maintainers of this repository will review it and merge it to the list.
+The mod database is stored in a separate repository. [Go here to find out how to add your mod to the list](https://github.com/Raicuparta/outer-wilds-mod-db#adding-your-mod-to-the-list).
 
 ## I feel a deep emotional connection with you, can we chat?
 
