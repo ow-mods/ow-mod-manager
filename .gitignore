@@ -1,5 +1,6 @@
 node_modules
 temp
+update
 releases-cache.json
 *.tsbuildinfo
 .npm

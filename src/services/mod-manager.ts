@@ -1,8 +1,20 @@
-import unzip from 'unzipper';
-import request from 'request';
-import fs from 'fs-extra';
 import path from 'path';
 import { shell } from 'electron';
+
+import {
+  downloadFile,
+  unzipFile,
+  copyFolder,
+  deleteFolder,
+  createFolders,
+  getConfig,
+  saveConfig,
+} from '.';
+
+// Defines which portion of the loading bar is for download progress,
+// and the remaining is for unzipping progress.
+const progressDownloadPortion = 0.8;
+const progressUnzipPortion = 1 - progressDownloadPortion;
 
 export function isInstalled(mod: Mod): boolean {
   return !!mod.localVersion;
@@ -21,48 +33,7 @@ export function isOutdated(mod: Mod): boolean {
   return mod.remoteVersion !== mod.localVersion;
 }
 
-async function createFolders(dir: string) {
-  await fs.mkdirs(dir);
-}
-
-async function downloadFile(url: string, filePath: string) {
-  const writer = fs.createWriteStream(filePath);
-
-  request(url).pipe(writer);
-  return new Promise((resolve) => {
-    writer.on('finish', resolve);
-  });
-}
-
-async function unzipFile(zipPath: string, unzipPath: string) {
-  const absUnzipPath = path.resolve(unzipPath);
-  const extract = unzip.Extract({ path: absUnzipPath });
-  const reader = fs.createReadStream(zipPath);
-  reader.pipe(extract);
-  return new Promise((resolve) => {
-    extract.on('close', resolve);
-  });
-}
-
-async function copyFolder(sourcePath: string, targetPath: string) {
-  const sourceContents = fs.readdirSync(sourcePath);
-  const innerPath =
-    sourceContents.length === 1 &&
-    fs.lstatSync(`${sourcePath}/${sourceContents[0]}`).isDirectory()
-      ? `${sourcePath}/${sourceContents[0]}`
-      : sourcePath;
-  await fs.copy(innerPath, targetPath, {
-    errorOnExist: false,
-    overwrite: true,
-    recursive: true,
-  });
-}
-
-function deleteFolder(folderPath: string) {
-  fs.removeSync(folderPath);
-}
-
-async function upstall(mod: Mod) {
+async function upstall(mod: Mod, onProgress: ProgressHandler) {
   if (!mod.downloadUrl) {
     return;
   }
@@ -71,25 +42,33 @@ async function upstall(mod: Mod) {
   const zipPath = `${temporaryPath}/${mod.name}.zip`;
   const unzipPath = `${temporaryPath}/${mod.name}`;
 
+  const onDownloadProgress: ProgressHandler = (progress) => {
+    onProgress(progress * progressDownloadPortion);
+  };
+
+  const onUnzipProgress: ProgressHandler = (progress) => {
+    onProgress(progressDownloadPortion + progress * progressUnzipPortion);
+  };
+
   await createFolders(unzipPath);
-  await downloadFile(mod.downloadUrl, zipPath);
-  await unzipFile(zipPath, unzipPath);
+  await downloadFile(mod.downloadUrl, zipPath, onDownloadProgress);
+  await unzipFile(zipPath, unzipPath, onUnzipProgress);
   await copyFolder(unzipPath, mod.modPath);
   await deleteFolder(temporaryPath);
 }
 
-export async function install(mod: Mod) {
+export async function install(mod: Mod, onProgress: ProgressHandler) {
   if (isInstalled(mod)) {
     throw new Error("Can't install mod because it's already installed");
   }
-  await upstall(mod);
+  await upstall(mod, onProgress);
 }
 
-export async function update(mod: Mod) {
+export async function update(mod: Mod, onProgress: ProgressHandler) {
   if (!isOutdated) {
     throw new Error("Can't update mod because it's not out of date");
   }
-  await upstall(mod);
+  await upstall(mod, onProgress);
 }
 
 export function uninstall(mod: Mod) {
@@ -113,4 +92,15 @@ export function openRepo(mod: Mod) {
     );
   }
   shell.openExternal(mod.repo);
+}
+
+export function isEnabled(mod: Mod): boolean {
+  const config = getConfig(mod);
+  return config.enabled;
+}
+
+export function toggleEnabled(mod: Mod) {
+  const config = getConfig(mod);
+  config.enabled = !config.enabled;
+  saveConfig(mod, config);
 }

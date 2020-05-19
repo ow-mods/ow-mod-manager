@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Tooltip,
   Menu,
   MenuItem,
   ListItemIcon,
+  CircularProgress,
+  makeStyles,
 } from '@material-ui/core';
 import {
   MoreVert as MoreIcon,
@@ -32,11 +34,31 @@ interface Props {
   mod: Mod;
 }
 
-type ModActionHandler<Return> = (mod: Mod) => Return;
+type ModActionHandler<Return> = (
+  mod: Mod,
+  progressHandler: ProgressHandler,
+) => Return;
+
+type ModActionHandlerSync<Return> = (mod: Mod) => Return;
+
+const useStyles = makeStyles((theme) => ({
+  circularProgress: {
+    background: theme.palette.background.default,
+    color: theme.palette.primary.main,
+    borderRadius: '100%',
+    borderWidth: 3,
+    borderStyle: 'solid',
+    borderColor: theme.palette.background.default,
+    boxShadow: `0 0 5px 0 ${theme.palette.grey[300]}`,
+  },
+}));
 
 const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { setModIsLoading } = useAppState();
+  const styles = useStyles();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [progress, setProgress] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const { startLoading, endLoading } = useAppState();
 
   const handleMoreClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -49,22 +71,26 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const isModInstalled = mod !== undefined && isInstalled(mod);
   const isModOutdated = isOutdated(mod);
   const isModInstallable = mod.downloadUrl !== undefined;
-  const isModDownloadable = isModInstalled ? isModOutdated : isModInstallable;
+  const isModDownloadable =
+    !isLoading && (isModInstalled ? isModOutdated : isModInstallable);
   const isInstallHighlighted =
-    isModOutdated || (mod.isRequired && !isModInstalled);
+    !isLoading && (isModOutdated || (mod.isRequired && !isModInstalled));
 
   const modActionHandler = (
     handler: ModActionHandler<Promise<void> | void>,
   ) => async () => {
     handleClose();
     if (mod !== undefined) {
-      setModIsLoading(mod.uniqueName, true);
-      await handler(mod);
-      setModIsLoading(mod.uniqueName, false);
+      setIsLoading(true);
+      startLoading();
+      await handler(mod, setProgress);
+      endLoading();
+      setProgress(0);
+      setIsLoading(false);
     }
   };
 
-  const modActionHandlerSync = (handler: ModActionHandler<void>) => () => {
+  const modActionHandlerSync = (handler: ModActionHandlerSync<void>) => () => {
     handleClose();
     handler(mod);
   };
@@ -72,21 +98,24 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const getEnableTooltip = () => {
     if (mod.isRequired) {
       return 'Required, can\'t disable';
-    } else if (mod.isEnabled) {
-      return 'Disable';
-    } else {
-      return 'Enable';
     }
+    if (mod.isEnabled) {
+      return 'Disable';
+    }
+    return 'Enable';
   };
 
   const getInstallTooltip = () => {
+    if (isLoading) {
+      return 'Loading...';
+    }
     if (isModOutdated) {
       return `Update to ${mod.remoteVersion}`;
-    } else if (isModInstalled) {
-      return 'Already installed';
-    } else {
-      return 'Install';
     }
+    if (isModInstalled) {
+      return 'Already installed';
+    }
+    return 'Install';
   };
 
   return (
@@ -105,11 +134,21 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         <span>
           <Button
             onClick={modActionHandler(isModOutdated ? update : install)}
-            disabled={mod.downloadUrl === undefined || !isModDownloadable}
+            disabled={!isModDownloadable}
             variant={isInstallHighlighted ? 'contained' : 'text'}
             color={isInstallHighlighted ? 'secondary' : 'default'}
           >
-            <SaveIcon />
+            {isLoading && (
+              <CircularProgress
+                variant="determinate"
+                value={progress * 100}
+                color="primary"
+                size={24}
+                thickness={23}
+                className={styles.circularProgress}
+              />
+            )}
+            {!isLoading && <SaveIcon />}
           </Button>
         </span>
       </Tooltip>

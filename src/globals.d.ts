@@ -11,7 +11,6 @@ type Mod = {
   downloadUrl?: string;
   downloadCount?: number;
   repo?: string;
-  isLoading: boolean;
   isEnabled?: boolean;
   isRequired?: boolean;
 };
@@ -52,3 +51,5 @@ type LogLine = {
   count: number;
   id: number;
 };
+
+type ProgressHandler = (progress: number) => void;
