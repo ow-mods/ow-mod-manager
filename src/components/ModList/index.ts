@@ -1,3 +1,3 @@
-import ModList from './ModList';
+import ModTable from './ModTable';
 
-export default ModList;
+export default ModTable;

@@ -11,7 +11,11 @@ import {
   Typography,
   Card,
   CardContent,
+  Toolbar,
+  Switch,
+  FormControlLabel,
 } from '@material-ui/core';
+import LogFilter from '../ConsoleLog/LogFilter';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -48,7 +52,7 @@ type Props = {
   filter?: (mod: Mod) => boolean;
 };
 
-const ModList: React.FunctionComponent<Props> = ({ filter }) => {
+const ModTable: React.FunctionComponent<Props> = ({ filter }) => {
   const [order, setOrder] = React.useState<SortOrder>('desc');
   const [orderBy, setOrderBy] = React.useState<keyof Mod>('downloadCount');
   const { modMap } = useAppState();
@@ -76,23 +80,32 @@ const ModList: React.FunctionComponent<Props> = ({ filter }) => {
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table size="small">
-        <ModTableHead
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={handleRequestSort}
-        />
-        <TableBody>
-          {stableSort(filteredRows, getComparator(order, orderBy)).map(
-            (mod: Mod) => (
-              <ModTableRow mod={mod} key={mod.uniqueName} />
-            ),
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      <TableContainer component={Paper}>
+        <Toolbar>
+          <LogFilter />
+          <FormControlLabel
+            control={<Switch checked={true} onChange={() => {}} />}
+            label="Normal"
+          />
+        </Toolbar>
+        <Table size="small">
+          <ModTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {stableSort(filteredRows, getComparator(order, orderBy)).map(
+              (mod: Mod) => (
+                <ModTableRow mod={mod} key={mod.uniqueName} />
+              ),
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 };
 
-export default ModList;
+export default ModTable;
