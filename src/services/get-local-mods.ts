@@ -18,7 +18,6 @@ function getOwml() {
     localVersion: owmlManifest
       ? owmlManifest?.version ?? '< 0.3.43'
       : undefined,
-    isLoading: false,
     isEnabled: true,
     isRequired: true,
   };
@@ -40,7 +39,6 @@ export async function getLocalMods(): Promise<ModMap> {
         uniqueName: manifestFile.manifest.uniqueName,
         modPath: path.dirname(manifestFile.path),
         localVersion: manifestFile.manifest.version,
-        isLoading: false,
       };
 
       mod.isEnabled = isEnabled(mod);
