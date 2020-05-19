@@ -1,21 +1,18 @@
 import React from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import Paper from '@material-ui/core/Paper';
-
-import ModTableHead from './ModTableHead';
-import { useAppState } from '../../hooks';
-import ModTableRow from './ModTableRow';
 import {
   TableContainer,
   Typography,
   Card,
   CardContent,
-  Toolbar,
-  Switch,
-  FormControlLabel,
+  Table,
+  TableBody,
+  Paper,
 } from '@material-ui/core';
-import LogFilter from '../ConsoleLog/LogFilter';
+
+import ModTableHead from './ModTableHead';
+import { useAppState } from '../../hooks';
+import ModTableRow from './ModTableRow';
+import ModToolbar from './ModToolbar';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -80,31 +77,23 @@ const ModTable: React.FunctionComponent<Props> = ({ filter }) => {
   }
 
   return (
-    <>
-      <TableContainer component={Paper}>
-        <Toolbar>
-          <LogFilter />
-          <FormControlLabel
-            control={<Switch checked={true} onChange={() => {}} />}
-            label="Normal"
-          />
-        </Toolbar>
-        <Table size="small">
-          <ModTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-          />
-          <TableBody>
-            {stableSort(filteredRows, getComparator(order, orderBy)).map(
-              (mod: Mod) => (
-                <ModTableRow mod={mod} key={mod.uniqueName} />
-              ),
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </>
+    <TableContainer component={Paper}>
+      <ModToolbar />
+      <Table size="small">
+        <ModTableHead
+          order={order}
+          orderBy={orderBy}
+          onRequestSort={handleRequestSort}
+        />
+        <TableBody>
+          {stableSort(filteredRows, getComparator(order, orderBy)).map(
+            (mod: Mod) => (
+              <ModTableRow mod={mod} key={mod.uniqueName} />
+            ),
+          )}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 
