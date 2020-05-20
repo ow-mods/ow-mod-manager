@@ -57,11 +57,11 @@ const useStyles = makeStyles({
 });
 
 enum SelectFilter {
-  All,
-  Installed,
-  Enabled,
-  NotInstalled,
-  Outdated,
+  All = 'All',
+  Installed = 'Installed',
+  Enabled = 'Enabled',
+  NotInstalled = 'Not installed',
+  Outdated = 'Outdated',
 }
 
 const filterByText = (filter: string, mod: Mod) => {
@@ -135,14 +135,11 @@ const ModTable: React.FunctionComponent = () => {
           onChange={handleSelectFilterChange}
           displayEmpty
         >
-          <MenuItem value={SelectFilter.All}>Show all</MenuItem>
-          <MenuItem value={SelectFilter.Installed}>
-            Show installed only
-          </MenuItem>
-          <MenuItem value={SelectFilter.NotInstalled}>
-            Show not installed only
-          </MenuItem>
-          <MenuItem value={SelectFilter.Outdated}>Show outdated only</MenuItem>
+          {Object.values(SelectFilter).map((value) => (
+            <MenuItem key={value} value={value}>
+              {value}
+            </MenuItem>
+          ))}
         </Select>
       </Toolbar>
       <Table size="small">
