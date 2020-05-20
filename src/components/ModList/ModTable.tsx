@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TableContainer,
-  Typography,
-  Card,
-  CardContent,
   Table,
   TableBody,
   Paper,
+  Toolbar,
+  makeStyles,
+  Select,
+  MenuItem,
+  TableRow,
+  TableCell,
 } from '@material-ui/core';
 
+import { isInstalled, isOutdated } from '../../services';
 import ModTableHead from './ModTableHead';
 import { useAppState } from '../../hooks';
 import ModTableRow from './ModTableRow';
-import ModToolbar from './ModToolbar';
+import FilterInput from '../FilterInput';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -45,17 +49,64 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   return stabilizedThis.map((element) => element[0]);
 }
 
-type Props = {
-  filter?: (mod: Mod) => boolean;
+const useStyles = makeStyles({
+  toolBar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+});
+
+enum SelectFilter {
+  All,
+  Installed,
+  Enabled,
+  NotInstalled,
+  Outdated,
+}
+
+const filterByText = (filter: string, mod: Mod) => {
+  const lowerCaseFilter = filter.toLowerCase();
+  const nameMatch = mod.name.toLowerCase().includes(lowerCaseFilter);
+  const authorNatch = mod.author.toLowerCase().includes(lowerCaseFilter);
+  const uniqueNameMatch = mod.uniqueName
+    .toLowerCase()
+    .includes(lowerCaseFilter);
+
+  return nameMatch || authorNatch || uniqueNameMatch;
 };
 
-const ModTable: React.FunctionComponent<Props> = ({ filter }) => {
-  const [order, setOrder] = React.useState<SortOrder>('desc');
-  const [orderBy, setOrderBy] = React.useState<keyof Mod>('downloadCount');
-  const { modMap } = useAppState();
+const filterBySelect = (filter: SelectFilter, mod: Mod) => {
+  if (filter === SelectFilter.Installed) {
+    return isInstalled(mod);
+  }
+  if (filter === SelectFilter.NotInstalled) {
+    return !isInstalled(mod);
+  }
+  if (filter === SelectFilter.Enabled) {
+    return mod.isEnabled;
+  }
+  if (filter === SelectFilter.Outdated) {
+    return isOutdated(mod);
+  }
+  return true;
+};
 
-  const rows = Object.values(modMap);
-  const filteredRows = filter ? rows.filter(filter) : rows;
+const ModTable: React.FunctionComponent = () => {
+  const styles = useStyles();
+  const [order, setOrder] = useState<SortOrder>('desc');
+  const [orderBy, setOrderBy] = useState<keyof Mod>('downloadCount');
+  const { modMap } = useAppState();
+  const [filter, setFilter] = useState('');
+  const [selectFilter, setSelectFilter] = useState(SelectFilter.All);
+  const [modRows, setModRows] = useState<Mod[]>([]);
+
+  useEffect(() => {
+    const filteredRows = Object.values(modMap).filter((mod) => {
+      return filterByText(filter, mod) && filterBySelect(selectFilter, mod);
+    });
+
+    setModRows(filteredRows);
+  }, [filter, selectFilter, modMap]);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -66,19 +117,34 @@ const ModTable: React.FunctionComponent<Props> = ({ filter }) => {
     setOrderBy(property);
   };
 
-  if (filteredRows.length === 0) {
-    return (
-      <Card>
-        <CardContent>
-          <Typography>No mods here! 😱</Typography>
-        </CardContent>
-      </Card>
-    );
-  }
+  const handleSelectFilterChange = ({
+    target,
+  }: React.ChangeEvent<{
+    name?: string | undefined;
+    value: unknown;
+  }>) => {
+    setSelectFilter(target.value as SelectFilter);
+  };
 
   return (
     <TableContainer component={Paper}>
-      <ModToolbar />
+      <Toolbar variant="dense" className={styles.toolBar}>
+        <FilterInput value={filter} onChange={setFilter} />
+        <Select
+          value={selectFilter}
+          onChange={handleSelectFilterChange}
+          displayEmpty
+        >
+          <MenuItem value={SelectFilter.All}>Show all</MenuItem>
+          <MenuItem value={SelectFilter.Installed}>
+            Show installed only
+          </MenuItem>
+          <MenuItem value={SelectFilter.NotInstalled}>
+            Show not installed only
+          </MenuItem>
+          <MenuItem value={SelectFilter.Outdated}>Show outdated only</MenuItem>
+        </Select>
+      </Toolbar>
       <Table size="small">
         <ModTableHead
           order={order}
@@ -86,11 +152,16 @@ const ModTable: React.FunctionComponent<Props> = ({ filter }) => {
           onRequestSort={handleRequestSort}
         />
         <TableBody>
-          {stableSort(filteredRows, getComparator(order, orderBy)).map(
-            (mod: Mod) => (
-              <ModTableRow mod={mod} key={mod.uniqueName} />
-            ),
+          {modRows.length === 0 && (
+            <TableRow>
+              <TableCell>No mods here! 😱</TableCell>
+            </TableRow>
           )}
+          {modRows.length > 0 &&
+            stableSort(
+              modRows,
+              getComparator(order, orderBy),
+            ).map((mod: Mod) => <ModTableRow mod={mod} key={mod.uniqueName} />)}
         </TableBody>
       </Table>
     </TableContainer>
