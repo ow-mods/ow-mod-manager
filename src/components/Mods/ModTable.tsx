@@ -10,6 +10,7 @@ import {
   MenuItem,
   TableRow,
   TableCell,
+  Typography,
 } from '@material-ui/core';
 
 import { isInstalled, isOutdated } from '../../services';
@@ -130,17 +131,19 @@ const ModTable: React.FunctionComponent = () => {
     <TableContainer component={Paper}>
       <Toolbar variant="dense" className={styles.toolBar}>
         <FilterInput value={filter} onChange={setFilter} />
-        <Select
-          value={selectFilter}
-          onChange={handleSelectFilterChange}
-          displayEmpty
-        >
-          {Object.values(SelectFilter).map((value) => (
-            <MenuItem key={value} value={value}>
-              {value}
-            </MenuItem>
-          ))}
-        </Select>
+        <div>
+          <Select
+            value={selectFilter}
+            onChange={handleSelectFilterChange}
+            color="secondary"
+          >
+            {Object.values(SelectFilter).map((value) => (
+              <MenuItem key={value} value={value}>
+                {value}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
       </Toolbar>
       <Table size="small">
         <ModTableHead
