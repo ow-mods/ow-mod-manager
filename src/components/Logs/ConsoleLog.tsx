@@ -17,7 +17,7 @@ import { ClearAll as ClearAllIcon } from '@material-ui/icons';
 
 import { logLinesLimit } from '../../config.json';
 import { useOwmlLogs } from '../../hooks';
-import LogFilter from './LogFilter';
+import FilterInput from '../FilterInput';
 import ModNameSelect from './ModNameSelect';
 
 const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
@@ -135,7 +135,7 @@ const OwmlLog: React.FunctionComponent = () => {
         <TableHead>
           <TableRow>
             <TableCell className={styles.nameHeader}>
-              <LogFilter onChange={setFilter} value={filter} />
+              <FilterInput onChange={setFilter} value={filter} />
               {logLines.length > 1 && (
                 <Typography variant="subtitle2" color="textSecondary">
                   {hasHiddenLines.current &&

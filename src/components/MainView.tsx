@@ -1,50 +1,31 @@
 import React, { useState } from 'react';
 import { Container, Tabs, Tab, CssBaseline } from '@material-ui/core';
 
-import { isInstalled } from '../services';
-import ModList from './ModList';
+import ModTable from './Mods';
 import TopBar from './TopBar';
 import LoadingBar from './LoadingBar';
-import OwmlLog from './ConsoleLog';
+import OwmlLog from './Logs';
 
 enum AppTab {
-  Installed,
-  All,
-  New,
+  Mods,
   Logs,
 }
 
-const getTabFilter = (tab: AppTab) => {
-  switch (tab) {
-    case AppTab.Installed: {
-      return isInstalled;
-    }
-    case AppTab.New: {
-      return (mod: Mod) => !isInstalled(mod);
-    }
-    default: {
-      return () => true;
-    }
-  }
-};
-
 const MainView = () => {
-  const [tab, setTab] = useState<AppTab>(AppTab.All);
+  const [tab, setTab] = useState<AppTab>(AppTab.Mods);
 
   return (
     <CssBaseline>
       <TopBar>
         <Tabs value={tab} onChange={(event, index) => setTab(index)}>
-          <Tab label="All" value={AppTab.All} />
-          <Tab label="Installed" value={AppTab.Installed} />
-          <Tab label="Not Installed" value={AppTab.New} />
+          <Tab label="Mods" value={AppTab.Mods} />
           <Tab label="Logs" value={AppTab.Logs} />
         </Tabs>
       </TopBar>
       <LoadingBar />
       <Container>
         {tab === AppTab.Logs && <OwmlLog />}
-        {tab !== AppTab.Logs && <ModList filter={getTabFilter(tab)} />}
+        {tab === AppTab.Mods && <ModTable />}
       </Container>
     </CssBaseline>
   );

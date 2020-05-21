@@ -7,7 +7,7 @@ type Props = {
   onChange: (value: string) => void;
 };
 
-const LogFilter: React.FunctionComponent<Props> = ({ value, onChange }) => {
+const FilterInput: React.FunctionComponent<Props> = ({ value, onChange }) => {
   const handleChange = useCallback(
     ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
       onChange(currentTarget.value);
@@ -43,4 +43,4 @@ const LogFilter: React.FunctionComponent<Props> = ({ value, onChange }) => {
   );
 };
 
-export default LogFilter;
+export default FilterInput;
