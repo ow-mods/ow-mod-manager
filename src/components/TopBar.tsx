@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 
 import { runOwml } from '../services';
-import { useAppState, useOwmlLogs } from '../hooks';
+import { useAppState, useOwmlLogs, useSettings } from '../hooks';
 
 const useStyles = makeStyles((theme) => ({
   offset: {
@@ -31,9 +31,10 @@ const TopBar: React.FunctionComponent = ({ children }) => {
   const classes = useStyles();
   const { modMap } = useAppState();
   const { serverPort, isServerRunning } = useOwmlLogs();
+  const { closeOnPlay } = useSettings();
 
   async function handleStartGameClick() {
-    runOwml(serverPort);
+    runOwml(closeOnPlay, serverPort);
   }
 
   const requiredMods = Object.values(modMap).filter((mod) => mod.isRequired);
