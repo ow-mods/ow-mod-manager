@@ -70,7 +70,9 @@ const MainView = () => {
       </TopBar>
       <LoadingBar />
       <Container>
-        {tabs.map((tab) => selectedTab === tab.name && <tab.component />)}
+        {tabs.map(
+          (tab) => selectedTab === tab.name && <tab.component key={tab.name} />,
+        )}
       </Container>
     </CssBaseline>
   );

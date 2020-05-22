@@ -5,7 +5,7 @@ type SettingsState = {
   logToSocket: boolean;
 };
 
-type SettingsContext = {
+export type SettingsContext = {
   settings: SettingsState;
   setSettings: (settings: Partial<SettingsState>) => void;
 };
