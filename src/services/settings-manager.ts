@@ -9,3 +9,7 @@ export function getSettings() {
 
   return settings;
 }
+
+export function setSettings(settings: SettingsState) {
+  fs.writeJsonSync(config.settingsPath, settings);
+}
