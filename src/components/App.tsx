@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core/styles';
 import { green, orange } from '@material-ui/core/colors';
 
-import { LogsProvider, AppStateProvider } from '../hooks';
+import { LogsProvider, AppStateProvider, SettingsProvider } from '../hooks';
 import MainView from './MainView';
 
 // Compatibility with React current mode.
@@ -30,13 +30,15 @@ const theme = createMuiStrictTheme({
 });
 
 const App = () => (
-  <AppStateProvider>
-    <LogsProvider>
-      <ThemeProvider theme={theme}>
-        <MainView />
-      </ThemeProvider>
-    </LogsProvider>
-  </AppStateProvider>
+  <SettingsProvider>
+    <AppStateProvider>
+      <LogsProvider>
+        <ThemeProvider theme={theme}>
+          <MainView />
+        </ThemeProvider>
+      </LogsProvider>
+    </AppStateProvider>
+  </SettingsProvider>
 );
 
 export default hot(App);
