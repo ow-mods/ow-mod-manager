@@ -2,41 +2,44 @@ import React from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { useSettings } from '../../hooks';
-import { FormGroup } from '@material-ui/core';
+import { FormGroup, List, Paper, ListItem, Divider } from '@material-ui/core';
 
 const Settings = () => {
   const settings = useSettings();
   const { setSettings, closeOnPlay, logToSocket } = settings;
 
   return (
-    <FormGroup>
-      <FormControlLabel
-        control={
-          <Switch
-            checked={closeOnPlay}
-            onChange={() =>
-              setSettings({
-                closeOnPlay: !closeOnPlay,
-              })
-            }
+    <List component={Paper}>
+      <FormGroup>
+        <ListItem
+          button
+          onClick={() =>
+            setSettings({
+              closeOnPlay: !closeOnPlay,
+            })
+          }
+        >
+          <FormControlLabel
+            control={<Switch checked={closeOnPlay} />}
+            label="Close Mod Manager on game start"
           />
-        }
-        label="Close Mod Manager on game start"
-      />
-      <FormControlLabel
-        control={
-          <Switch
-            checked={logToSocket}
-            onChange={() =>
-              setSettings({
-                logToSocket: !logToSocket,
-              })
-            }
+        </ListItem>
+        <Divider />
+        <ListItem
+          button
+          onClick={() =>
+            setSettings({
+              logToSocket: !logToSocket,
+            })
+          }
+        >
+          <FormControlLabel
+            control={<Switch checked={logToSocket} />}
+            label="Send game logs to Mod Manager"
           />
-        }
-        label="Send game logs to Mod Manager"
-      />
-    </FormGroup>
+        </ListItem>
+      </FormGroup>
+    </List>
   );
 };
 
