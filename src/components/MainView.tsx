@@ -18,12 +18,6 @@ import Logs from './Logs';
 import TopBar from './TopBar';
 import LoadingBar from './LoadingBar';
 
-enum AppTab {
-  Mods,
-  Logs,
-  Settings,
-}
-
 const useStyles = makeStyles({
   root: {
     minHeight: 0,
@@ -34,39 +28,49 @@ const useStyles = makeStyles({
   },
 });
 
+const tabs = [
+  {
+    name: 'Mods',
+    component: Mods,
+    icon: BuildIcon,
+  },
+  {
+    name: 'Logs',
+    component: Logs,
+    icon: DvrIcon,
+  },
+  {
+    name: 'Settings',
+    component: Settings,
+    icon: SettingsIcon,
+  },
+] as const;
+
+type Tab = typeof tabs[number]['name'];
+
 const MainView = () => {
   const styles = useStyles();
-  const [tab, setTab] = useState<AppTab>(AppTab.Mods);
+  const [selectedTab, setSelectedTab] = useState<Tab>('Mods');
 
   return (
     <CssBaseline>
       <TopBar>
-        <Tabs value={tab} onChange={(event, index) => setTab(index)}>
-          <Tab
-            classes={styles}
-            icon={<BuildIcon />}
-            label="Mods"
-            value={AppTab.Mods}
-          />
-          <Tab
-            classes={styles}
-            icon={<DvrIcon />}
-            label="Logs"
-            value={AppTab.Logs}
-          />
-          <Tab
-            classes={styles}
-            icon={<SettingsIcon />}
-            label="Settings"
-            value={AppTab.Settings}
-          />
+        <Tabs value={selectedTab}>
+          {tabs.map((tab) => (
+            <Tab
+              key={tab.name}
+              label={tab.name}
+              value={tab.name}
+              classes={styles}
+              icon={<tab.icon />}
+              onClick={() => setSelectedTab(tab.name)}
+            />
+          ))}
         </Tabs>
       </TopBar>
       <LoadingBar />
       <Container>
-        {tab === AppTab.Logs && <Logs />}
-        {tab === AppTab.Mods && <Mods />}
-        {tab === AppTab.Settings && <Settings />}
+        {tabs.map((tab) => selectedTab === tab.name && <tab.component />)}
       </Container>
     </CssBaseline>
   );
