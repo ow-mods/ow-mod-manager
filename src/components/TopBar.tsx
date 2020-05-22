@@ -7,6 +7,7 @@ import {
   makeStyles,
   Tooltip,
 } from '@material-ui/core';
+import { PlayArrow as PlayIcon } from '@material-ui/icons';
 
 import { runOwml } from '../services';
 import { useAppState, useOwmlLogs, useSettings } from '../hooks';
@@ -71,6 +72,7 @@ const TopBar: React.FunctionComponent = ({ children }) => {
                   variant="contained"
                   color="primary"
                   disabled={isStartDisabled}
+                  startIcon={<PlayIcon />}
                 >
                   Start Game
                 </Button>
