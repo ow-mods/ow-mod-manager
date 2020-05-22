@@ -3,10 +3,6 @@ import request from 'request';
 import fs from 'fs-extra';
 import path from 'path';
 
-function percentage(part: number, total: number) {
-  return `${Math.round((part / total) * 100)}%`;
-}
-
 export async function downloadFile(
   url: string,
   filePath: string,

@@ -19,7 +19,6 @@ export async function getModDatabase(): Promise<Mod[]> {
           uniqueName: manifest.uniqueName,
           remoteVersion: manifest.version,
           modPath: `${config.owmlPath}/Mods/${manifest.name}`,
-          isLoading: false,
           downloadUrl,
           downloadCount,
           repo,
