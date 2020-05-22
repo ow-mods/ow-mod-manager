@@ -2,14 +2,16 @@ import React, { useState, useCallback, useContext } from 'react';
 
 type SettingsState = {
   closeOnPlay: boolean;
+  logToSocket: boolean;
 };
 
 interface SettingsContext extends SettingsState {
-  setSettings: (settings: SettingsState) => void;
+  setSettings: (settings: Partial<SettingsState>) => void;
 }
 
 const defaultState: SettingsState = {
   closeOnPlay: false,
+  logToSocket: true,
 };
 
 const Settings = React.createContext<SettingsContext>({

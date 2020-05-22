@@ -15,7 +15,7 @@ function waitAndQuit() {
 }
 
 export function runOwml(closeManager: boolean, port?: number) {
-  const params = port ? [`-consolePort ${port}`] : undefined;
+  const params = !closeManager && port ? [`-consolePort ${port}`] : undefined;
 
   spawn(EXE_FILE, params, {
     shell: true,

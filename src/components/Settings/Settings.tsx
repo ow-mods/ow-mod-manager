@@ -6,7 +6,7 @@ import { Card, CardContent } from '@material-ui/core';
 
 const Settings = () => {
   const settings = useSettings();
-  const { setSettings, closeOnPlay } = settings;
+  const { setSettings, closeOnPlay, logToSocket } = settings;
 
   return (
     <Card>
@@ -23,6 +23,19 @@ const Settings = () => {
             />
           }
           label="Close Mod Manager on game start"
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={logToSocket}
+              onChange={() =>
+                setSettings({
+                  logToSocket: !logToSocket,
+                })
+              }
+            />
+          }
+          label="Send game logs to Mod Manager"
         />
       </CardContent>
     </Card>
