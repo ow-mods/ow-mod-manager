@@ -1,5 +1,6 @@
 import React, { useCallback, useContext } from 'react';
 
+import config from '../config.json';
 import { setSettings } from '../services';
 import { useSettingsFileWatcher } from './use-settings-file-watcher';
 
@@ -8,13 +9,8 @@ export type SettingsContext = {
   setSettings: (settings: Partial<SettingsState>) => void;
 };
 
-const defaultSettings: SettingsState = {
-  closeOnPlay: false,
-  logToSocket: true,
-};
-
 const Settings = React.createContext<SettingsContext>({
-  settings: defaultSettings,
+  settings: config.defaultSettings,
   setSettings: () => {},
 });
 
@@ -23,15 +19,12 @@ export const useSettings = () => useContext(Settings);
 export const SettingsProvider: React.FunctionComponent = ({ children }) => {
   const settings = useSettingsFileWatcher();
 
-  const setSettingsPartial = useCallback(
-    (newSettings: Partial<SettingsState>) => {
-      setSettings({
-        ...settings,
-        ...newSettings,
-      });
-    },
-    [],
-  );
+  const setSettingsPartial = (newSettings: Partial<SettingsState>) => {
+    setSettings({
+      ...settings,
+      ...newSettings,
+    });
+  };
 
   return (
     <Settings.Provider

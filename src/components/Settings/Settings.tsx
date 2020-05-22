@@ -1,8 +1,8 @@
 import React from 'react';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import { useSettings, SettingsContext } from '../../hooks';
-import { List, Paper, ListItem, Divider } from '@material-ui/core';
+import { List, Paper, Divider } from '@material-ui/core';
+
+import { SettingsContext } from '../../hooks';
+import SettingFormControl from './SettingFormControl';
 
 type SettingKey = keyof SettingsContext['settings'];
 
@@ -10,8 +10,7 @@ type SettingsInput = {
   key: SettingKey;
   label: string;
 };
-
-const settingsInputs: SettingsInput[] = [
+const settingsInputs: readonly SettingsInput[] = [
   {
     key: 'closeOnPlay',
     label: 'Close Mod Manager on game start',
@@ -20,33 +19,25 @@ const settingsInputs: SettingsInput[] = [
     key: 'logToSocket',
     label: 'Send game logs to Mod Manager',
   },
-];
+  {
+    key: 'logLinesLimit',
+    label: 'Log lines per page',
+  },
+  {
+    key: 'modDatabaseUrl',
+    label: 'Mod database URL',
+  },
+] as const;
 
-const Settings = () => {
-  const { settings, setSettings } = useSettings();
-
-  const handleSwitchClick = (key: SettingKey) => (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
-    setSettings({ [key]: !settings[key] });
-  };
-
-  return (
-    <List component={Paper}>
-      {settingsInputs.map(({ key, label }) => (
-        <React.Fragment key={key}>
-          <ListItem button onClick={handleSwitchClick(key)}>
-            <FormControlLabel
-              control={<Switch checked={settings[key]} />}
-              label={label}
-            />
-          </ListItem>
-          <Divider />
-        </React.Fragment>
-      ))}
-    </List>
-  );
-};
+const Settings = () => (
+  <List component={Paper}>
+    {settingsInputs.map(({ key, label }) => (
+      <React.Fragment key={key}>
+        <SettingFormControl settingKey={key} label={label} />
+        <Divider />
+      </React.Fragment>
+    ))}
+  </List>
+);
 
 export default Settings;

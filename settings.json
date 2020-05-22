@@ -1,1 +1,1 @@
-{"closeOnPlay":false,"logToSocket":true,"owmlPath":"OWML","logLinesLimit":50,"modDatabaseUrl":"https://raw.githubusercontent.com/Raicuparta/outer-wilds-mod-db/master/database.json"}
+{"closeOnPlay":true,"logToSocket":false,"logLinesLimit":50,"modDatabaseUrl":"https://raw.githubusercontent.com/Raicuparta/outer-wilds-mod-db/master/database.json"}
