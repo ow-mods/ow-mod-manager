@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Container, Tabs, Tab, CssBaseline } from '@material-ui/core';
 
-import ModTable from './Mods';
+import Mods from './Mods';
+import Settings from './Settings';
+import Logs from './Logs';
 import TopBar from './TopBar';
 import LoadingBar from './LoadingBar';
-import OwmlLog from './Logs';
 
 enum AppTab {
   Mods,
   Logs,
+  Settings,
 }
 
 const MainView = () => {
@@ -24,8 +26,9 @@ const MainView = () => {
       </TopBar>
       <LoadingBar />
       <Container>
-        {tab === AppTab.Logs && <OwmlLog />}
-        {tab === AppTab.Mods && <ModTable />}
+        {tab === AppTab.Logs && <Logs />}
+        {tab === AppTab.Mods && <Mods />}
+        {tab === AppTab.Mods && <Settings />}
       </Container>
     </CssBaseline>
   );
