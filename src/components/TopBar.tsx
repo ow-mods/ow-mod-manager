@@ -31,10 +31,13 @@ const TopBar: React.FunctionComponent = ({ children }) => {
   const classes = useStyles();
   const { modMap } = useAppState();
   const { serverPort, isServerRunning } = useOwmlLogs();
-  const { closeOnPlay, logToSocket } = useSettings();
+  const { settings } = useSettings();
 
   async function handleStartGameClick() {
-    runOwml(closeOnPlay, logToSocket ? serverPort : undefined);
+    runOwml(
+      settings.closeOnPlay,
+      settings.logToSocket ? serverPort : undefined,
+    );
   }
 
   const requiredMods = Object.values(modMap).filter((mod) => mod.isRequired);

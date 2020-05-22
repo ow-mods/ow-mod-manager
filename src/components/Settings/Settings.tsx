@@ -5,8 +5,8 @@ import { useSettings } from '../../hooks';
 import { FormGroup, List, Paper, ListItem, Divider } from '@material-ui/core';
 
 const Settings = () => {
-  const settings = useSettings();
-  const { setSettings, closeOnPlay, logToSocket } = settings;
+  const { settings, setSettings } = useSettings();
+  const { closeOnPlay, logToSocket } = settings;
 
   return (
     <List component={Paper}>

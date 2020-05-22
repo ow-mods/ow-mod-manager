@@ -5,27 +5,28 @@ type SettingsState = {
   logToSocket: boolean;
 };
 
-interface SettingsContext extends SettingsState {
+type SettingsContext = {
+  settings: SettingsState;
   setSettings: (settings: Partial<SettingsState>) => void;
-}
+};
 
-const defaultState: SettingsState = {
+const defaultSettings: SettingsState = {
   closeOnPlay: false,
   logToSocket: true,
 };
 
 const Settings = React.createContext<SettingsContext>({
-  ...defaultState,
+  settings: defaultSettings,
   setSettings: () => {},
 });
 
 export const useSettings = () => useContext(Settings);
 
 export const SettingsProvider: React.FunctionComponent = ({ children }) => {
-  const [settings, setSettings] = useState(defaultState);
+  const [settings, setSettings] = useState(defaultSettings);
 
   const setSettingsPartial = useCallback(
-    (newSettings: Partial<SettingsContext>) => {
+    (newSettings: Partial<SettingsState>) => {
       setSettings((previousSettings) => ({
         ...previousSettings,
         ...newSettings,
@@ -37,7 +38,7 @@ export const SettingsProvider: React.FunctionComponent = ({ children }) => {
   return (
     <Settings.Provider
       value={{
-        ...settings,
+        settings,
         setSettings: setSettingsPartial,
       }}
     >
