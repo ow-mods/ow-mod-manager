@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useSettings, SettingsContext } from '../../hooks';
 import SwitchInput from './SwitchInput';
+import SliderInput from './SliderInput';
 
 const SettingFormControl: React.FunctionComponent<{
   settingKey: keyof SettingsContext['settings'];
@@ -25,7 +26,13 @@ const SettingFormControl: React.FunctionComponent<{
   }
 
   if (typeof setting === 'number') {
-    return null;
+    return (
+      <SliderInput
+        value={setting}
+        onChange={(value) => setSettings({ [settingKey]: value })}
+        label={label}
+      />
+    );
   }
 
   return null;
