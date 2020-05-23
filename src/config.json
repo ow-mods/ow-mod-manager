@@ -3,7 +3,7 @@
     "owmlPath": "OWML",
     "defaultSettings": {
         "closeOnPlay": false,
-        "logToSocket": false,
+        "logToSocket": true,
         "logLinesLimit": 50,
         "modDatabaseUrl": "https://raw.githubusercontent.com/Raicuparta/outer-wilds-mod-db/master/database.json"
     }

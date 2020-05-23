@@ -17,7 +17,7 @@ const SliderInput: FunctionComponent<Props> = ({ value, onChange, label }) => {
   return (
     <ListItem>
       <ListItemText>
-        <Typography>{label}</Typography>
+        <Typography>{label} </Typography>{' '}
         <Slider
           value={value}
           onChange={handleChange}

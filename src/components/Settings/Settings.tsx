@@ -1,8 +1,10 @@
 import React from 'react';
-import { List, Paper, Divider } from '@material-ui/core';
+import { List, Paper, Button, ListItem } from '@material-ui/core';
+import { SettingsBackupRestore as RestoreIcon } from '@material-ui/icons';
 
 import { SettingsContext } from '../../hooks';
 import SettingFormControl from './SettingFormControl';
+import ResetSettings from './ResetSettings';
 
 type SettingKey = keyof SettingsContext['settings'];
 
@@ -10,6 +12,7 @@ type SettingsInput = {
   key: SettingKey;
   label: string;
 };
+
 const settingsInputs: readonly SettingsInput[] = [
   {
     key: 'closeOnPlay',
@@ -31,6 +34,7 @@ const settingsInputs: readonly SettingsInput[] = [
 
 const Settings = () => (
   <List component={Paper}>
+    <ResetSettings />
     {settingsInputs.map(({ key, label }) => (
       <React.Fragment key={key}>
         <SettingFormControl settingKey={key} label={label} />
