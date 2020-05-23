@@ -10,7 +10,7 @@ import {
   Build as BuildIcon,
   Dvr as DvrIcon,
   Settings as SettingsIcon,
-  Error as NotificationIcon,
+  NewReleases as NewReleasesIcon,
 } from '@material-ui/icons';
 
 import Mods from './Mods';
@@ -18,6 +18,7 @@ import SettingsPage from './Settings';
 import Logs from './Logs';
 import TopBar from './TopBar';
 import LoadingBar from './LoadingBar';
+import UpdatePage from './Update';
 
 const useStyles = makeStyles({
   root: {
@@ -54,8 +55,8 @@ const tabs: readonly Tab[] = [
   },
   {
     name: 'Update',
-    component: SettingsPage,
-    icon: NotificationIcon,
+    component: UpdatePage,
+    icon: NewReleasesIcon,
     color: 'primary',
   },
 ] as const;
