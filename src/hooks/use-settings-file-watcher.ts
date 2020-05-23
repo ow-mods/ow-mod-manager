@@ -14,6 +14,10 @@ export function useSettingsFileWatcher() {
   };
 
   useEffect(() => {
+    if (!fs.existsSync(config.settingsPath)) {
+      fs.writeJSONSync(config.settingsPath, config.defaultSettings);
+    }
+
     const watcher = fs.watch(config.settingsPath, () => {
       updateSettings();
     });
