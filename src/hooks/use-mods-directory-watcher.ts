@@ -20,6 +20,6 @@ export function useModsDirectoryWatcher(handler: Handler) {
     // Call the handler one first time.
     handler();
 
-    return watcher.close;
+    return () => watcher.close();
   }, [handler]);
 }

@@ -25,7 +25,7 @@ export function useSettingsFileWatcher() {
 
     updateSettings();
 
-    return watcher.close;
+    return () => watcher.close();
   }, []);
 
   return settings;
