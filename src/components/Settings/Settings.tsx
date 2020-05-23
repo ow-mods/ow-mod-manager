@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Paper } from '@material-ui/core';
+import { List, Paper, Divider } from '@material-ui/core';
 
 import { SettingsContext } from '../../hooks';
 import SettingFormControl from './SettingFormControl';
@@ -36,6 +36,7 @@ const Settings = () => (
     {settingsInputs.map(({ key, label }) => (
       <React.Fragment key={key}>
         <SettingFormControl settingKey={key} label={label} />
+        <Divider />
       </React.Fragment>
     ))}
     <ResetSettings />
