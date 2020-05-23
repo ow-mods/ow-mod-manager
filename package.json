@@ -21,7 +21,10 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "icon.ico"
+        "icon": "icon.ico",
+        "win32metadata": {
+          "requested-execution-level": "highestAvailable"
+        }
       },
       "makers": [
         {
