@@ -5,9 +5,7 @@ import config from '../config.json';
 import { getSettings } from '../services';
 
 export function useSettingsFileWatcher() {
-  const [settings, setSettings] = useState<SettingsState>(
-    config.defaultSettings,
-  );
+  const [settings, setSettings] = useState<Settings>(config.defaultSettings);
 
   const updateSettings = () => {
     setSettings({

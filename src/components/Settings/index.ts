@@ -1,3 +1,3 @@
-import Settings from './Settings';
+import SettingsPage from './SettingsPage';
 
-export default Settings;
+export default SettingsPage;

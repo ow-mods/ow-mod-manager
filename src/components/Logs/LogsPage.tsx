@@ -113,7 +113,7 @@ const OwmlLog: React.FunctionComponent = () => {
     hasHiddenLines.current = logLines.length !== lines.length;
 
     setPaginatedLines(lines);
-  }, [filter, logLines, selectedModName, page]);
+  }, [filter, logLines, selectedModName, page, logLinesLimit]);
 
   useEffect(() => {
     setPage(0);

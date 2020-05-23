@@ -13,7 +13,7 @@ import {
 } from '@material-ui/icons';
 
 import Mods from './Mods';
-import Settings from './Settings';
+import SettingsPage from './Settings';
 import Logs from './Logs';
 import TopBar from './TopBar';
 import LoadingBar from './LoadingBar';
@@ -41,7 +41,7 @@ const tabs = [
   },
   {
     name: 'Settings',
-    component: Settings,
+    component: SettingsPage,
     icon: SettingsIcon,
   },
 ] as const;

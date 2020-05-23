@@ -5,8 +5,8 @@ import { setSettings } from '../services';
 import { useSettingsFileWatcher } from './use-settings-file-watcher';
 
 export type SettingsContext = {
-  settings: SettingsState;
-  setSettings: (settings: Partial<SettingsState>) => void;
+  settings: Settings;
+  setSettings: (settings: Partial<Settings>) => void;
 };
 
 const Settings = React.createContext<SettingsContext>({
@@ -19,7 +19,7 @@ export const useSettings = () => useContext(Settings);
 export const SettingsProvider: React.FunctionComponent = ({ children }) => {
   const settings = useSettingsFileWatcher();
 
-  const setSettingsPartial = (newSettings: Partial<SettingsState>) => {
+  const setSettingsPartial = (newSettings: Partial<Settings>) => {
     setSettings({
       ...settings,
       ...newSettings,
