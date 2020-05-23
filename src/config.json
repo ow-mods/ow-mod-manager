@@ -6,6 +6,7 @@
         "logToSocket": true,
         "logLinesLimit": 50,
         "showAdvancedSettings": false,
-        "modDatabaseUrl": "https://raw.githubusercontent.com/Raicuparta/outer-wilds-mod-db/master/database.json"
+        "modDatabaseUrl": "https://raw.githubusercontent.com/Raicuparta/outer-wilds-mod-db/master/database.json",
+        "modManagerRepo": "Raicuparta/ow-mod-manager"
     }
 }

@@ -58,6 +58,7 @@ type Settings = {
   closeOnPlay: boolean;
   logToSocket: boolean;
   logLinesLimit: number;
-  modDatabaseUrl: string;
   showAdvancedSettings: boolean;
+  modDatabaseUrl: string;
+  modManagerRepo: string;
 };

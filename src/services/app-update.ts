@@ -1,9 +1,9 @@
-import { spawn } from 'child_process';
+import axios from 'axios';
 import { remote } from 'electron';
+import { spawn } from 'child_process';
 
-import { downloadFile, unzipFile } from '../services';
+import { downloadFile, unzipFile } from '.';
 
-// TODO separator
 const BAT_FILE = '"install-update.bat"';
 const updateUrl =
   'https://github.com/Raicuparta/ow-mod-manager/releases/download/0.0.3/OWModManager.zip';
@@ -17,7 +17,7 @@ type RemoteMod = {
   repo: string;
 };
 
-export function installSelfUpdate() {
+export function installAppUpdate() {
   const ls = spawn('cmd.exe', ['/c', BAT_FILE], {
     detached: true,
     shell: true,
@@ -31,8 +31,17 @@ export function installSelfUpdate() {
   });
 }
 
-export async function downloadSelfUpdate() {
+export async function downloadAppUpdate() {
   // TODO handle progress
   await downloadFile(updateUrl, zipPath, () => {});
   await unzipFile(zipPath, unzipPath, () => {});
+}
+
+export async function getIsAppOutdated(repo: string) {
+  const packageJsonUrl = `https://raw.githubusercontent.com/${repo}/master/package.json`;
+  return axios.get(packageJsonUrl).then(({ data }) => {
+    const remoteVersion: string = data.version;
+    const localVersion = remote.app.getVersion();
+    return remoteVersion !== localVersion;
+  });
 }

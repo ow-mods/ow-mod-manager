@@ -35,6 +35,11 @@ const settingsInputs: readonly SettingsInput[] = [
     label: 'Mod database URL',
     isAdvanced: true,
   },
+  {
+    key: 'modManagerRepo',
+    label: 'Mod Manager repository',
+    isAdvanced: true,
+  },
 ] as const;
 
 const Settings = () => {

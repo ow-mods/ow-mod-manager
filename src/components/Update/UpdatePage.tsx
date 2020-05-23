@@ -1,4 +1,5 @@
 import React from 'react';
+import { remote } from 'electron';
 import {
   Card,
   CardContent,
@@ -7,12 +8,14 @@ import {
   LinearProgress,
 } from '@material-ui/core';
 import { CloudDownload as DownloadIcon } from '@material-ui/icons';
+import { downloadAppUpdate } from '../../services';
 
 const UpdatePage: React.FunctionComponent = () => {
   return (
     <Card>
       <CardHeader title="New update available for the Outer Wilds Mod Manager" />
       <CardContent>
+        Current version: {remote.app.getVersion()}
         <Button
           startIcon={<DownloadIcon />}
           color="primary"

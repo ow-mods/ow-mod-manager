@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Tabs,
@@ -13,6 +13,8 @@ import {
   NewReleases as NewReleasesIcon,
 } from '@material-ui/icons';
 
+import { useSettings } from '../hooks';
+import { getIsAppOutdated } from '../services';
 import Mods from './Mods';
 import SettingsPage from './Settings';
 import Logs from './Logs';
@@ -53,23 +55,37 @@ const tabs: readonly Tab[] = [
     component: SettingsPage,
     icon: SettingsIcon,
   },
-  {
-    name: 'Update',
-    component: UpdatePage,
-    icon: NewReleasesIcon,
-    color: 'primary',
-  },
 ] as const;
+
+const updateTab: Tab = {
+  name: 'Update',
+  component: UpdatePage,
+  icon: NewReleasesIcon,
+  color: 'primary',
+};
 
 const MainView = () => {
   const styles = useStyles();
   const [selectedTab, setSelectedTab] = useState(0);
+  const [isAppOutdated, setIsAppOutdated] = useState(false);
+  const {
+    settings: { modManagerRepo },
+  } = useSettings();
+
+  useEffect(() => {
+    const updateState = async () => {
+      setIsAppOutdated(await getIsAppOutdated(modManagerRepo));
+    };
+    updateState();
+  }, [modManagerRepo]);
+
+  const visibleTabs = isAppOutdated ? [...tabs, updateTab] : tabs;
 
   return (
     <CssBaseline>
       <TopBar>
         <Tabs value={selectedTab}>
-          {tabs.map((tab: Tab, index: number) => (
+          {visibleTabs.map((tab: Tab, index: number) => (
             <Tab
               key={tab.name}
               label={tab.name}
@@ -83,9 +99,9 @@ const MainView = () => {
       </TopBar>
       <LoadingBar />
       <Container>
-        {tabs.map(
+        {visibleTabs.map(
           (tab) =>
-            tabs[selectedTab].name === tab.name && (
+            visibleTabs[selectedTab].name === tab.name && (
               <tab.component key={tab.name} />
             ),
         )}
