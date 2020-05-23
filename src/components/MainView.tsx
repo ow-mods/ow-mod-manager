@@ -72,7 +72,7 @@ const MainView = () => {
             <Tab
               key={tab.name}
               label={tab.name}
-              value={tab.name}
+              value={index}
               classes={styles}
               icon={<tab.icon color={tab.color} />}
               onClick={() => setSelectedTab(index)}
