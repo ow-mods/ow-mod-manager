@@ -34,7 +34,6 @@ const Settings = () => (
     {settingsInputs.map(({ key, label }) => (
       <React.Fragment key={key}>
         <SettingFormControl settingKey={key} label={label} />
-        <Divider />
       </React.Fragment>
     ))}
   </List>
