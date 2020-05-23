@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { remote } from 'electron';
 import {
   Card,
@@ -11,24 +11,45 @@ import { CloudDownload as DownloadIcon } from '@material-ui/icons';
 import { downloadAppUpdate } from '../../services';
 
 const UpdatePage: React.FunctionComponent = () => {
+  const [progress, setProgress] = useState(0);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownloadUpdateClick = useCallback(() => {
+    const updateApp = async () => {
+      setIsDownloading(true);
+      await downloadAppUpdate((newProgress) => {
+        setProgress(newProgress);
+      });
+      setIsDownloading(false);
+    };
+
+    updateApp();
+  }, []);
+
   return (
     <Card>
       <CardHeader title="New update available for the Outer Wilds Mod Manager" />
       <CardContent>
-        Current version: {remote.app.getVersion()}
-        <Button
-          startIcon={<DownloadIcon />}
-          color="primary"
-          variant="contained"
-        >
-          Download update
-        </Button>
-        Downloading update...
-        <LinearProgress
-          style={{ height: 15, borderRadius: 5 }}
-          variant="determinate"
-          value={50}
-        />
+        {!isDownloading && (
+          <Button
+            startIcon={<DownloadIcon />}
+            color="primary"
+            variant="contained"
+            onClick={handleDownloadUpdateClick}
+          >
+            Download update
+          </Button>
+        )}
+        {isDownloading && (
+          <>
+            Downloading update...
+            <LinearProgress
+              style={{ height: 15, borderRadius: 5 }}
+              variant="determinate"
+              value={progress * 100}
+            />
+          </>
+        )}
       </CardContent>
     </Card>
   );

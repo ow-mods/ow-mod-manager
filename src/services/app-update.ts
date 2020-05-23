@@ -3,6 +3,7 @@ import { remote } from 'electron';
 import { spawn } from 'child_process';
 
 import { downloadFile, unzipFile } from '.';
+import { unzipRemoteFile } from './files';
 
 const BAT_FILE = '"install-update.bat"';
 const updateUrl =
@@ -31,10 +32,8 @@ export function installAppUpdate() {
   });
 }
 
-export async function downloadAppUpdate() {
-  // TODO handle progress
-  await downloadFile(updateUrl, zipPath, () => {});
-  await unzipFile(zipPath, unzipPath, () => {});
+export async function downloadAppUpdate(onProgress: ProgressHandler) {
+  await unzipRemoteFile(updateUrl, unzipPath, onProgress);
 }
 
 export async function getIsAppOutdated(repo: string) {
