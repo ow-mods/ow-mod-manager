@@ -59,4 +59,5 @@ type SettingsState = {
   logToSocket: boolean;
   logLinesLimit: number;
   modDatabaseUrl: string;
+  showAdvancedSettings: boolean;
 };

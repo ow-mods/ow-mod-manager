@@ -10,7 +10,10 @@ export function useSettingsFileWatcher() {
   );
 
   const updateSettings = () => {
-    setSettings(getSettings());
+    setSettings({
+      ...config.defaultSettings,
+      ...getSettings(),
+    });
   };
 
   useEffect(() => {
