@@ -17,7 +17,7 @@ type RemoteMod = {
   repo: string;
 };
 
-function runSelfUpdate() {
+export function installSelfUpdate() {
   const ls = spawn('cmd.exe', ['/c', BAT_FILE], {
     detached: true,
     shell: true,
@@ -31,13 +31,8 @@ function runSelfUpdate() {
   });
 }
 
-async function downloadSelfUpdate() {
+export async function downloadSelfUpdate() {
   // TODO handle progress
   await downloadFile(updateUrl, zipPath, () => {});
   await unzipFile(zipPath, unzipPath, () => {});
-}
-
-export async function selfUpdate() {
-  await downloadSelfUpdate();
-  runSelfUpdate();
 }

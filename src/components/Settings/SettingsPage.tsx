@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Paper, Divider } from '@material-ui/core';
+import { List, Paper, Divider, ListItem } from '@material-ui/core';
 
 import { SettingsContext, useSettings } from '../../hooks';
 import SettingFormControl from './SettingFormControl';
@@ -43,6 +43,7 @@ const Settings = () => {
   } = useSettings();
   return (
     <List component={Paper}>
+      <ListItem>Update</ListItem>
       {settingsInputs.map(
         ({ key, label, isAdvanced }) =>
           (!isAdvanced || showAdvancedSettings) && (
