@@ -7,9 +7,15 @@ type Props = {
   value: boolean;
   onChange: (value: boolean) => void;
   label: string;
+  disabled?: boolean;
 };
 
-const SwitchInput: FunctionComponent<Props> = ({ value, onChange, label }) => {
+const SwitchInput: FunctionComponent<Props> = ({
+  value,
+  onChange,
+  label,
+  disabled,
+}) => {
   const handleSwitchClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
@@ -18,8 +24,12 @@ const SwitchInput: FunctionComponent<Props> = ({ value, onChange, label }) => {
   };
 
   return (
-    <ListItem button onClick={handleSwitchClick}>
-      <FormControlLabel control={<Switch checked={value} />} label={label} />
+    <ListItem disabled={disabled} button onClick={handleSwitchClick}>
+      <FormControlLabel
+        disabled={disabled}
+        control={<Switch checked={value} />}
+        label={label}
+      />
     </ListItem>
   );
 };

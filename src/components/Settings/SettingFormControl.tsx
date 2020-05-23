@@ -11,6 +11,7 @@ const SettingFormControl: React.FunctionComponent<{
 }> = ({ settingKey, label }) => {
   const { settings, setSettings } = useSettings();
   const setting = settings[settingKey];
+  const isDisabled = settingKey === 'logToSocket' && settings.closeOnPlay;
 
   const setSetting = useCallback(
     (value: boolean | string | number) => setSettings({ [settingKey]: value }),
@@ -18,15 +19,36 @@ const SettingFormControl: React.FunctionComponent<{
   );
 
   if (typeof setting === 'boolean') {
-    return <SwitchInput value={setting} onChange={setSetting} label={label} />;
+    return (
+      <SwitchInput
+        disabled={isDisabled}
+        value={setting}
+        onChange={setSetting}
+        label={label}
+      />
+    );
   }
 
   if (typeof setting === 'string') {
-    return <TextInput value={setting} onChange={setSetting} label={label} />;
+    return (
+      <TextInput
+        disabled={isDisabled}
+        value={setting}
+        onChange={setSetting}
+        label={label}
+      />
+    );
   }
 
   if (typeof setting === 'number') {
-    return <SliderInput value={setting} onChange={setSetting} label={label} />;
+    return (
+      <SliderInput
+        disabled={isDisabled}
+        value={setting}
+        onChange={setSetting}
+        label={label}
+      />
+    );
   }
 
   return null;

@@ -11,5 +11,10 @@ export function getSettings() {
 }
 
 export function setSettings(settings: Settings) {
-  fs.writeJsonSync(config.settingsPath, settings);
+  const constrainedSettings: Settings = {
+    ...settings,
+    logToSocket: settings.closeOnPlay ? false : settings.logToSocket,
+  };
+
+  fs.writeJsonSync(config.settingsPath, constrainedSettings);
 }

@@ -16,6 +16,7 @@ type Props = {
   value: string;
   onChange: (value: string) => void;
   label: string;
+  disabled?: boolean;
 };
 
 const useStyles = makeStyles(({ spacing }) => ({
@@ -26,7 +27,12 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
 }));
 
-const TextInput: FunctionComponent<Props> = ({ value, onChange, label }) => {
+const TextInput: FunctionComponent<Props> = ({
+  value,
+  onChange,
+  label,
+  disabled,
+}) => {
   const styles = useStyles();
   const [text, setText] = useState('');
   const handleChange = useCallback(
@@ -51,6 +57,7 @@ const TextInput: FunctionComponent<Props> = ({ value, onChange, label }) => {
         value={text}
         onChange={handleChange}
         color="secondary"
+        disabled={disabled}
       />
       {value !== text && <Button onClick={handleSaveClick}>Save</Button>}
     </ListItem>

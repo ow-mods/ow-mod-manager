@@ -5,6 +5,7 @@ type Props = {
   value: number;
   onChange: (value: number) => void;
   label: string;
+  disabled?: boolean;
 };
 
 const useStyles = makeStyles(({ spacing }) => ({
@@ -15,7 +16,12 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
 }));
 
-const SliderInput: FunctionComponent<Props> = ({ value, onChange, label }) => {
+const SliderInput: FunctionComponent<Props> = ({
+  value,
+  onChange,
+  label,
+  disabled,
+}) => {
   const styles = useStyles();
   const handleChange = useCallback(
     (_: React.ChangeEvent<{}>, changeValue: number | number[]) =>
@@ -27,6 +33,7 @@ const SliderInput: FunctionComponent<Props> = ({ value, onChange, label }) => {
     <ListItem>
       <Typography>{label}</Typography>
       <Slider
+        disabled={disabled}
         className={styles.slider}
         value={value}
         onChange={handleChange}
