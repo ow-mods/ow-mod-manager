@@ -16,7 +16,7 @@ const TextInput: FunctionComponent<Props> = ({ value, onChange, label }) => {
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       onChange(event.target.value),
-    [],
+    [onChange],
   );
 
   return (

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import config from '../config.json';
 import { setSettings } from '../services';

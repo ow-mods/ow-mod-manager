@@ -1,6 +1,5 @@
 import React from 'react';
-import { List, Paper, Button, ListItem } from '@material-ui/core';
-import { SettingsBackupRestore as RestoreIcon } from '@material-ui/icons';
+import { List, Paper } from '@material-ui/core';
 
 import { SettingsContext } from '../../hooks';
 import SettingFormControl from './SettingFormControl';
@@ -34,12 +33,12 @@ const settingsInputs: readonly SettingsInput[] = [
 
 const Settings = () => (
   <List component={Paper}>
-    <ResetSettings />
     {settingsInputs.map(({ key, label }) => (
       <React.Fragment key={key}>
         <SettingFormControl settingKey={key} label={label} />
       </React.Fragment>
     ))}
+    <ResetSettings />
   </List>
 );
 
