@@ -1,5 +1,4 @@
 import { hot } from 'react-hot-loader/root';
-import React from 'react';
 import {
   createMuiTheme,
   // The typings for this package haven't been updated yet,
@@ -7,12 +6,13 @@ import {
   // import experimental stuff.
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
-  unstable_createMuiStrictModeTheme as unstableCreateMuiStrictModeTheme,
   ThemeProvider,
+  unstable_createMuiStrictModeTheme as unstableCreateMuiStrictModeTheme,
 } from '@material-ui/core/styles';
 import { green, orange } from '@material-ui/core/colors';
 
-import { LogsProvider, AppStateProvider, SettingsProvider } from '../hooks';
+import React from 'react';
+import { AppStateProvider, LogsProvider, SettingsProvider } from '../hooks';
 import MainView from './MainView';
 
 // Compatibility with React current mode.

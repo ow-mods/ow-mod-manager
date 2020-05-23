@@ -17,7 +17,7 @@ const progressDownloadPortion = 0.8;
 const progressUnzipPortion = 1 - progressDownloadPortion;
 
 export function isInstalled(mod: Mod): boolean {
-  return !!mod.localVersion;
+  return Boolean(mod.localVersion);
 }
 
 export function isOutdated(mod: Mod): boolean {
