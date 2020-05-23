@@ -43,6 +43,7 @@
     ],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "no-implicit-coercion": "warn"
+    "no-implicit-coercion": "warn",
+    "no-else-return": ["warn", { "allowElseIf": false }]
   }
 }

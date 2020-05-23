@@ -51,11 +51,11 @@ const TopBar: React.FunctionComponent = ({ children }) => {
   function getStartGameTooltip() {
     if (isMissingRequiredMod) {
       return `Please install ${requiredModNames} before starting the game`;
-    } else if (isServerRunning) {
-      return 'Already running';
-    } else {
-      return '';
     }
+    if (isServerRunning) {
+      return 'Already running';
+    }
+    return '';
   }
 
   return (

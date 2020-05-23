@@ -26,21 +26,21 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const getVersionColor = (): MaterialProps.Color => {
     if (isOutdated(mod)) {
       return 'secondary';
-    } else if (isInstalled(mod)) {
-      return 'primary';
-    } else {
-      return 'default';
     }
+    if (isInstalled(mod)) {
+      return 'primary';
+    }
+    return 'default';
   };
 
   const getVersion = () => {
     if (isInstalled(mod)) {
       return mod.localVersion;
-    } else if (mod.remoteVersion) {
-      return mod.remoteVersion;
-    } else {
-      return 'Not Available';
     }
+    if (mod.remoteVersion) {
+      return mod.remoteVersion;
+    }
+    return 'Not Available';
   };
 
   return (

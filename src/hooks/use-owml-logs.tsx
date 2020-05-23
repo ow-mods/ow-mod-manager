@@ -21,13 +21,14 @@ function getLogType(text: string): LogType {
   const lowerText = text.toLowerCase();
   if (lowerText.includes('error') || lowerText.includes('exception')) {
     return 'error';
-  } else if (lowerText.includes('warning') || lowerText.includes('disabled')) {
-    return 'warning';
-  } else if (lowerText.includes('success')) {
-    return 'success';
-  } else {
-    return 'log';
   }
+  if (lowerText.includes('warning') || lowerText.includes('disabled')) {
+    return 'warning';
+  }
+  if (lowerText.includes('success')) {
+    return 'success';
+  }
+  return 'log';
 }
 
 function getLogLine(lineText: string): LogLine {
@@ -70,15 +71,14 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
             count: lastItem.count + 1,
           },
         ];
-      } else {
-        return [
-          ...prevLines,
-          {
-            ...line,
-            id: prevLines.length + 1,
-          },
-        ];
       }
+      return [
+        ...prevLines,
+        {
+          ...line,
+          id: prevLines.length + 1,
+        },
+      ];
     });
   }
 
