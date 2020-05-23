@@ -3,6 +3,7 @@ import { merge } from 'lodash';
 
 import { getLocalMods, getModDatabase } from '../services';
 import { useModsDirectoryWatcher } from '.';
+import { useSettings } from './use-settings';
 
 type AppContext = {
   modMap: ModMap;
@@ -25,6 +26,9 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   const [localModMap, setLocalModMap] = useState<ModMap>({});
   const [modMap, setModMap] = useState<ModMap>({});
   const [loadingCount, setLoadingCount] = useState(0);
+  const {
+    settings: { modDatabaseUrl },
+  } = useSettings();
 
   const startLoading = useCallback(() => {
     setLoadingCount((count) => count + 1);
@@ -46,7 +50,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   useEffect(() => {
     const getMods = async () => {
       try {
-        const modDatabase = await getModDatabase();
+        const modDatabase = await getModDatabase(modDatabaseUrl);
         setRemoteModMap(
           modDatabase.reduce(
             (accumulator, mod) => ({
@@ -63,7 +67,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
 
     setLoadingCount((count) => count + 1);
     getMods();
-  }, []);
+  }, [modDatabaseUrl]);
 
   useEffect(() => {
     setModMap(merge({}, remoteModMap, localModMap));
