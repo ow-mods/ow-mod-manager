@@ -15,10 +15,6 @@ type SettingsInput = {
 
 const settingsInputs: readonly SettingsInput[] = [
   {
-    key: 'closeOnPlay',
-    label: 'Close Mod Manager on game start',
-  },
-  {
     key: 'logToSocket',
     label: 'Send game logs to Mod Manager',
   },

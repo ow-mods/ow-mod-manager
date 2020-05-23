@@ -55,7 +55,6 @@ type LogLine = {
 type ProgressHandler = (progress: number) => void;
 
 type Settings = {
-  closeOnPlay: boolean;
   logToSocket: boolean;
   logLinesLimit: number;
   modDatabaseUrl: string;
