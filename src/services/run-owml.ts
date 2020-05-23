@@ -20,6 +20,7 @@ export function runOwml(closeManager: boolean, port?: number) {
   spawn(EXE_FILE, params, {
     shell: true,
     cwd: config.owmlPath,
+    detached: true,
   });
 
   if (closeManager) {
