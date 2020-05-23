@@ -32,7 +32,7 @@ const TextInput: FunctionComponent<Props> = ({ value, onChange, label }) => {
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       setText(event.target.value),
-    [onChange],
+    [],
   );
   const handleSaveClick = () => {
     onChange(text);

@@ -38,14 +38,16 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     setLoadingCount((count) => count - 1);
   }, []);
 
-  useModsDirectoryWatcher(() => {
-    const getMods = async () => {
-      const localMods = await getLocalMods();
-      setLocalModMap(localMods);
-    };
+  useModsDirectoryWatcher(
+    useCallback(() => {
+      const getMods = async () => {
+        const localMods = await getLocalMods();
+        setLocalModMap(localMods);
+      };
 
-    getMods();
-  });
+      getMods();
+    }, []),
+  );
 
   useEffect(() => {
     const getMods = async () => {

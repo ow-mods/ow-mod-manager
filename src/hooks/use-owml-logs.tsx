@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import net from 'net';
 
 type LogsContext = {
@@ -82,29 +82,27 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     });
   }
 
-  function writeLogText(...textLines: string[]) {
-    textLines.forEach((textLine) => writeLogLine(getLogLine(textLine)));
-  }
-
-  function writeSimpleText(textLine: string, type?: LogType) {
-    writeLogLine(getSimpleLine(textLine, type));
-  }
-
-  function clear() {
-    setLines([]);
-  }
-
-  function signalServerOpen() {
-    setIsServerRunning(true);
-    writeSimpleText('Client connected to console', 'success');
-  }
-
-  function signalServerClosed() {
-    setIsServerRunning(false);
-    writeSimpleText('Client disconnected from console', 'warning');
-  }
+  const clear = useCallback(() => setLines([]), []);
 
   useEffect(() => {
+    function writeLogText(...textLines: string[]) {
+      textLines.forEach((textLine) => writeLogLine(getLogLine(textLine)));
+    }
+
+    function writeSimpleText(textLine: string, type?: LogType) {
+      writeLogLine(getSimpleLine(textLine, type));
+    }
+
+    function signalServerOpen() {
+      setIsServerRunning(true);
+      writeSimpleText('Client connected to console', 'success');
+    }
+
+    function signalServerClosed() {
+      setIsServerRunning(false);
+      writeSimpleText('Client disconnected from console', 'warning');
+    }
+
     const netServer = net.createServer((socket) => {
       socket.pipe(socket);
       socket.on('data', (data) => {

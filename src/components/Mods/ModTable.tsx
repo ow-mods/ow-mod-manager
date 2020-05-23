@@ -10,7 +10,6 @@ import {
   MenuItem,
   TableRow,
   TableCell,
-  Typography,
 } from '@material-ui/core';
 
 import { isInstalled, isOutdated } from '../../services';
