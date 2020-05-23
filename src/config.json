@@ -2,6 +2,7 @@
     "settingsPath": "settings.json",
     "owmlPath": "OWML",
     "defaultSettings": {
+        "closeOnPlay": false,
         "logToSocket": true,
         "logLinesLimit": 50,
         "showAdvancedSettings": false,
