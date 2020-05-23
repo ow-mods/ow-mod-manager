@@ -1,18 +1,18 @@
 import { hot } from 'react-hot-loader/root';
-import React from 'react';
 import {
   createMuiTheme,
+  ThemeProvider,
   // The typings for this package haven't been updated yet,
   // So we need to ignore typescript and eslint rules to
   // import experimental stuff.
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   unstable_createMuiStrictModeTheme as unstableCreateMuiStrictModeTheme,
-  ThemeProvider,
 } from '@material-ui/core/styles';
 import { green, orange } from '@material-ui/core/colors';
 
-import { LogsProvider, AppStateProvider } from '../hooks';
+import React from 'react';
+import { AppStateProvider, LogsProvider, SettingsProvider } from '../hooks';
 import MainView from './MainView';
 
 // Compatibility with React current mode.
@@ -30,13 +30,15 @@ const theme = createMuiStrictTheme({
 });
 
 const App = () => (
-  <AppStateProvider>
-    <LogsProvider>
-      <ThemeProvider theme={theme}>
-        <MainView />
-      </ThemeProvider>
-    </LogsProvider>
-  </AppStateProvider>
+  <SettingsProvider>
+    <AppStateProvider>
+      <LogsProvider>
+        <ThemeProvider theme={theme}>
+          <MainView />
+        </ThemeProvider>
+      </LogsProvider>
+    </AppStateProvider>
+  </SettingsProvider>
 );
 
 export default hot(App);

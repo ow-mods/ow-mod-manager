@@ -5,3 +5,4 @@ export * from './mod-manager';
 export * from './run-owml';
 export * from './files';
 export * from './self-update';
+export * from './settings-manager';

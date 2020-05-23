@@ -16,9 +16,12 @@
   "settings": {
     "import/resolver": {
       "typescript": {}
+    },
+    "react": {
+      "version": "detect"
     }
   },
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "react-hooks"],
   "rules": {
     "prettier/prettier": [
       "error",
@@ -37,6 +40,10 @@
     "@typescript-eslint/no-empty-function": [
       2,
       { "allow": ["arrowFunctions"] }
-    ]
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "no-implicit-coercion": "warn",
+    "no-else-return": ["warn", { "allowElseIf": false }]
   }
 }

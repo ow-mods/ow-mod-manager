@@ -7,9 +7,10 @@ import {
   makeStyles,
   Tooltip,
 } from '@material-ui/core';
+import { PlayArrow as PlayIcon } from '@material-ui/icons';
 
 import { runOwml } from '../services';
-import { useAppState, useOwmlLogs } from '../hooks';
+import { useAppState, useOwmlLogs, useSettings } from '../hooks';
 
 const useStyles = makeStyles((theme) => ({
   offset: {
@@ -31,9 +32,13 @@ const TopBar: React.FunctionComponent = ({ children }) => {
   const classes = useStyles();
   const { modMap } = useAppState();
   const { serverPort, isServerRunning } = useOwmlLogs();
+  const { settings } = useSettings();
 
   async function handleStartGameClick() {
-    runOwml(serverPort);
+    runOwml(
+      settings.closeOnPlay,
+      settings.logToSocket ? serverPort : undefined,
+    );
   }
 
   const requiredMods = Object.values(modMap).filter((mod) => mod.isRequired);
@@ -46,11 +51,11 @@ const TopBar: React.FunctionComponent = ({ children }) => {
   function getStartGameTooltip() {
     if (isMissingRequiredMod) {
       return `Please install ${requiredModNames} before starting the game`;
-    } else if (isServerRunning) {
-      return 'Already running';
-    } else {
-      return '';
     }
+    if (isServerRunning) {
+      return 'Already running';
+    }
+    return '';
   }
 
   return (
@@ -67,6 +72,7 @@ const TopBar: React.FunctionComponent = ({ children }) => {
                   variant="contained"
                   color="primary"
                   disabled={isStartDisabled}
+                  startIcon={<PlayIcon />}
                 >
                   Start Game
                 </Button>

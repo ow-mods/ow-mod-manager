@@ -14,10 +14,10 @@ const useStyles = makeStyles((theme) => ({
 
 const LoadingBar: React.FunctionComponent = () => {
   const { loadingCount } = useAppState();
-  const classes = useStyles();
+  const styles = useStyles();
 
   return loadingCount > 0 ? (
-    <LinearProgress color="primary" className={classes.root} />
+    <LinearProgress color="primary" className={styles.root} />
   ) : null;
 };
 

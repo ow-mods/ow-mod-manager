@@ -21,5 +21,5 @@ export function useModsDirectoryWatcher(handler: Handler) {
     handler();
 
     return watcher.close;
-  }, []);
+  }, [handler]);
 }

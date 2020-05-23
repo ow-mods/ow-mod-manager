@@ -15,9 +15,8 @@ import {
 } from '@material-ui/core';
 import { ClearAll as ClearAllIcon } from '@material-ui/icons';
 
-import { logLinesLimit } from '../../config.json';
-import { useOwmlLogs } from '../../hooks';
-import LogFilter from './LogFilter';
+import { useOwmlLogs, useSettings } from '../../hooks';
+import FilterInput from '../FilterInput';
 import ModNameSelect from './ModNameSelect';
 
 const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
@@ -58,6 +57,9 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
 const OwmlLog: React.FunctionComponent = () => {
   const styles = useStyles();
   const { logLines, clear } = useOwmlLogs();
+  const {
+    settings: { logLinesLimit },
+  } = useSettings();
 
   const [paginatedLines, setPaginatedLines] = useState<LogLine[]>([]);
   const [selectedModName, setSelectedModName] = useState<string>('');
@@ -111,7 +113,7 @@ const OwmlLog: React.FunctionComponent = () => {
     hasHiddenLines.current = logLines.length !== lines.length;
 
     setPaginatedLines(lines);
-  }, [filter, logLines, selectedModName, page]);
+  }, [filter, logLines, selectedModName, page, logLinesLimit]);
 
   useEffect(() => {
     setPage(0);
@@ -135,7 +137,7 @@ const OwmlLog: React.FunctionComponent = () => {
         <TableHead>
           <TableRow>
             <TableCell className={styles.nameHeader}>
-              <LogFilter onChange={setFilter} value={filter} />
+              <FilterInput onChange={setFilter} value={filter} />
               {logLines.length > 1 && (
                 <Typography variant="subtitle2" color="textSecondary">
                   {hasHiddenLines.current &&
