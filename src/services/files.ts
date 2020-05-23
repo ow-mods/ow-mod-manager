@@ -3,6 +3,11 @@ import request from 'request';
 import fs from 'fs-extra';
 import path from 'path';
 
+// Defines which portion of the loading bar is for download progress,
+// and the remaining is for unzipping progress.
+const progressDownloadPortion = 0.8;
+const progressUnzipPortion = 1 - progressDownloadPortion;
+
 export async function downloadFile(
   url: string,
   filePath: string,
@@ -75,4 +80,29 @@ export async function copyFolder(sourcePath: string, targetPath: string) {
 
 export function deleteFolder(folderPath: string) {
   fs.removeSync(folderPath);
+}
+
+export async function unzipRemoteFile(
+  url: string,
+  destinationPath: string,
+  onProgress: ProgressHandler,
+) {
+  const onDownloadProgress: ProgressHandler = (progress) => {
+    onProgress(progress * progressDownloadPortion);
+  };
+
+  const onUnzipProgress: ProgressHandler = (progress) => {
+    onProgress(progressDownloadPortion + progress * progressUnzipPortion);
+  };
+
+  const temporaryName = path.basename(destinationPath);
+  const temporaryPath = `temp/${temporaryName}-${new Date().getTime()}`;
+  const zipPath = `${temporaryPath}/${temporaryName}.zip`;
+  const unzipPath = `${temporaryPath}/${temporaryName}`;
+
+  await createFolders(unzipPath);
+  await downloadFile(url, zipPath, onDownloadProgress);
+  await unzipFile(zipPath, unzipPath, onUnzipProgress);
+  await copyFolder(unzipPath, destinationPath);
+  await deleteFolder(temporaryPath);
 }

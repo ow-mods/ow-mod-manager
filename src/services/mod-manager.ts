@@ -10,11 +10,7 @@ import {
   getConfig,
   saveConfig,
 } from '.';
-
-// Defines which portion of the loading bar is for download progress,
-// and the remaining is for unzipping progress.
-const progressDownloadPortion = 0.8;
-const progressUnzipPortion = 1 - progressDownloadPortion;
+import { unzipRemoteFile } from './files';
 
 export function isInstalled(mod: Mod): boolean {
   return Boolean(mod.localVersion);
@@ -38,23 +34,7 @@ async function upstall(mod: Mod, onProgress: ProgressHandler) {
     return;
   }
 
-  const temporaryPath = `temp/${mod.name}-${new Date().getTime()}`;
-  const zipPath = `${temporaryPath}/${mod.name}.zip`;
-  const unzipPath = `${temporaryPath}/${mod.name}`;
-
-  const onDownloadProgress: ProgressHandler = (progress) => {
-    onProgress(progress * progressDownloadPortion);
-  };
-
-  const onUnzipProgress: ProgressHandler = (progress) => {
-    onProgress(progressDownloadPortion + progress * progressUnzipPortion);
-  };
-
-  await createFolders(unzipPath);
-  await downloadFile(mod.downloadUrl, zipPath, onDownloadProgress);
-  await unzipFile(zipPath, unzipPath, onUnzipProgress);
-  await copyFolder(unzipPath, mod.modPath);
-  await deleteFolder(temporaryPath);
+  await unzipRemoteFile(mod.downloadUrl, mod.modPath, onProgress);
 }
 
 export async function install(mod: Mod, onProgress: ProgressHandler) {
