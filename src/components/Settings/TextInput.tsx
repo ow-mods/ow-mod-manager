@@ -1,5 +1,16 @@
-import React, { FunctionComponent, useCallback } from 'react';
-import { ListItem, Typography, TextField, makeStyles } from '@material-ui/core';
+import React, {
+  FunctionComponent,
+  useCallback,
+  useState,
+  useEffect,
+} from 'react';
+import {
+  ListItem,
+  Typography,
+  TextField,
+  makeStyles,
+  Button,
+} from '@material-ui/core';
 
 type Props = {
   value: string;
@@ -17,11 +28,19 @@ const useStyles = makeStyles(({ spacing }) => ({
 
 const TextInput: FunctionComponent<Props> = ({ value, onChange, label }) => {
   const styles = useStyles();
+  const [text, setText] = useState('');
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-      onChange(event.target.value),
+      setText(event.target.value),
     [onChange],
   );
+  const handleSaveClick = () => {
+    onChange(text);
+  };
+
+  useEffect(() => {
+    setText(value);
+  }, [value]);
 
   return (
     <ListItem>
@@ -29,10 +48,11 @@ const TextInput: FunctionComponent<Props> = ({ value, onChange, label }) => {
       <TextField
         className={styles.textField}
         fullWidth
-        value={value}
+        value={text}
         onChange={handleChange}
         color="secondary"
       />
+      {value !== text && <Button onClick={handleSaveClick}>Save</Button>}
     </ListItem>
   );
 };
