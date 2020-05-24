@@ -62,7 +62,7 @@ const updateTab: Tab = {
   name: 'Update',
   component: UpdatePage,
   icon: NewReleasesIcon,
-  color: 'primary',
+  color: 'secondary',
 };
 
 const MainView = () => {
