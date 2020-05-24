@@ -1,5 +1,5 @@
 import unzip from 'unzipper';
-import request from 'request';
+import fetch from 'node-fetch';
 import fs from 'fs-extra';
 import path from 'path';
 
@@ -13,25 +13,21 @@ export async function downloadFile(
   filePath: string,
   onProgress: ProgressHandler,
 ) {
-  const writer = fs.createWriteStream(filePath);
-
   let receivedBytes = 0;
-  let totalBytes = 0;
 
-  const fileRequest = request(url);
-
-  fileRequest.on('response', (response) => {
-    totalBytes = parseInt(response.headers['content-length'] || '0');
-  });
-
-  fileRequest.on('data', (data) => {
-    receivedBytes += data.length;
-    onProgress(receivedBytes / totalBytes);
-  });
-
-  fileRequest.pipe(writer);
+  const response = await fetch(url);
 
   return new Promise((resolve) => {
+    const totalBytes = parseInt(response.headers.get('content-length') || '0');
+
+    const writer = fs.createWriteStream(filePath);
+    response.body.pipe(writer);
+
+    response.body.on('data', (data) => {
+      receivedBytes += data.length;
+      onProgress(receivedBytes / totalBytes);
+    });
+
     writer.on('finish', resolve);
   });
 }
