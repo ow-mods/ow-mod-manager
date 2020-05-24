@@ -11,16 +11,23 @@ type AppNotification = {
 };
 
 interface NotificationsContext extends NotificationsState {
-  addNotification: (message: string, severity: NotificationSeverity) => void;
+  pushNotification: (message: string, severity: NotificationSeverity) => void;
+  popNotification: () => void;
 }
 
 const defaultState: NotificationsState = {
-  notifications: [],
+  notifications: [
+    {
+      message: 'hello',
+      severity: 'error',
+    },
+  ],
 };
 
 const Notifications = React.createContext<NotificationsContext>({
   ...defaultState,
-  addNotification: () => {},
+  pushNotification: () => {},
+  popNotification: () => {},
 });
 
 export const useNotifications = () => useContext(Notifications);
@@ -28,17 +35,27 @@ export const useNotifications = () => useContext(Notifications);
 export const NotificationsProvider: React.FunctionComponent = ({
   children,
 }) => {
-  const [notifications, setNotifications] = useState<AppNotification[]>([]);
+  const [notifications, setNotifications] = useState<AppNotification[]>(
+    defaultState.notifications,
+  );
 
-  const addNotification = useCallback((message, severity) => {
+  const pushNotification = useCallback((message, severity) => {
     setNotifications((prevNotifications) => [
       ...prevNotifications,
       { message, severity },
     ]);
   }, []);
 
+  const popNotification = useCallback(() => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.slice(0, prevNotifications.length - 1),
+    );
+  }, []);
+
   return (
-    <Notifications.Provider value={{ addNotification, notifications }}>
+    <Notifications.Provider
+      value={{ pushNotification, notifications, popNotification }}
+    >
       {children}
     </Notifications.Provider>
   );

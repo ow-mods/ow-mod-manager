@@ -21,6 +21,7 @@ import Logs from './Logs';
 import TopBar from './TopBar';
 import LoadingBar from './LoadingBar';
 import UpdatePage from './Update';
+import Notifications from './Notifications';
 
 const useStyles = makeStyles({
   root: {
@@ -96,6 +97,7 @@ const MainView = () => {
             ),
         )}
       </Container>
+      <Notifications />
     </CssBaseline>
   );
 };
