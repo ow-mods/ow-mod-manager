@@ -1,6 +1,6 @@
 {
   "name": "ow-mod-manager",
-  "productName": "Outer Wilds Mod Manager",
+  "productName": "OuterWildsModManager",
   "version": "0.0.4",
   "description": "Outer Wilds Mod Manager",
   "main": ".webpack/main",
@@ -24,7 +24,8 @@
         "icon": "icon.ico",
         "win32metadata": {
           "requested-execution-level": "highestAvailable"
-        }
+        },
+        "extraResource": "install-update.bat"
       },
       "makers": [
         {

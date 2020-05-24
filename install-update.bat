@@ -1,11 +1,11 @@
 @ECHO OFF
-if exist ../install-update.bat (
+if exist ../../resources/install-update.bat (
   echo Waiting for Mod Manager to close...
   ping -n 2 127.0.0.1 >nul
   echo Replacing outdated files with updated ones...
-  robocopy . ./.. /e
+  robocopy .. ../.. /e
   echo Running Mod Manager...
-  cd ..
+  cd ../..
   start "" "Outer Wilds Mod Manager.exe"
   echo Exiting updater...
   exit
