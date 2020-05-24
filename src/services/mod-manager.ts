@@ -1,15 +1,7 @@
 import path from 'path';
 import { shell } from 'electron';
 
-import {
-  downloadFile,
-  unzipFile,
-  copyFolder,
-  deleteFolder,
-  createFolders,
-  getConfig,
-  saveConfig,
-} from '.';
+import { deleteFolder, getConfig, saveConfig } from '.';
 import { unzipRemoteFile } from './files';
 
 export function isInstalled(mod: Mod): boolean {
