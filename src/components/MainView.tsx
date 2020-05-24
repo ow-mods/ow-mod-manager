@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { remote } from 'electron';
 import {
   Container,
   Tabs,
@@ -13,7 +14,7 @@ import {
   NewReleases as NewReleasesIcon,
 } from '@material-ui/icons';
 
-import { useSettings, useAppUpdate } from '../hooks';
+import { useSettings, useAppUpdate, useAppState } from '../hooks';
 import { getIsAppOutdated } from '../services';
 import Mods from './Mods';
 import SettingsPage from './Settings';
@@ -68,8 +69,10 @@ const updateTab: Tab = {
 const MainView = () => {
   const styles = useStyles();
   const [selectedTab, setSelectedTab] = useState(0);
-  const { isAppOutdated } = useAppUpdate();
+  const { appRelease } = useAppState();
 
+  const isAppOutdated =
+    appRelease && appRelease.version !== remote.app.getVersion();
   const visibleTabs = isAppOutdated ? [...tabs, updateTab] : tabs;
 
   return (

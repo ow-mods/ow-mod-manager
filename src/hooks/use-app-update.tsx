@@ -1,11 +1,10 @@
-import React, { useContext, useState, useCallback, useEffect } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 
-import { downloadAppUpdate, getIsAppOutdated } from '../services';
+import { downloadAppUpdate } from '../services';
 import { useSettings } from './use-settings';
 import { useNotifications } from './use-notifications';
 
 const defaultState = {
-  isAppOutdated: false,
   isDownloading: false,
   isUpdateReady: false,
   progress: 0,
@@ -25,21 +24,10 @@ const AppUpdate = React.createContext<AppUpdateContext>({
 export const useAppUpdate = () => useContext(AppUpdate);
 
 export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
-  const {
-    settings: { modManagerRepo },
-  } = useSettings();
   const { pushNotification } = useNotifications();
-  const [isAppOutdated, setIsAppOutdated] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isUpdateReady, setIsUpdateReady] = useState(false);
   const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const updateState = async () => {
-      setIsAppOutdated(await getIsAppOutdated(modManagerRepo));
-    };
-    updateState();
-  }, [modManagerRepo]);
 
   const updateApp = useCallback(() => {
     (async () => {
@@ -68,7 +56,6 @@ export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
   return (
     <AppUpdate.Provider
       value={{
-        isAppOutdated,
         isDownloading,
         progress,
         updateApp,

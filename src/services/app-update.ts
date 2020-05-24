@@ -26,12 +26,3 @@ export function installAppUpdate() {
 export async function downloadAppUpdate(onProgress: ProgressHandler) {
   await unzipRemoteFile(updateUrl, unzipPath, onProgress);
 }
-
-export async function getIsAppOutdated(repo: string) {
-  const packageJsonUrl = `https://raw.githubusercontent.com/${repo}/master/package.json`;
-  return axios.get(packageJsonUrl).then(({ data }) => {
-    const remoteVersion: string = data.version;
-    const localVersion = remote.app.getVersion();
-    return remoteVersion !== localVersion;
-  });
-}
