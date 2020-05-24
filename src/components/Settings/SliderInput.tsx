@@ -24,7 +24,7 @@ const SliderInput: FunctionComponent<Props> = ({
 }) => {
   const styles = useStyles();
   const handleChange = useCallback(
-    (_: React.ChangeEvent<{}>, changeValue: number | number[]) =>
+    (_: React.ChangeEvent<unknown>, changeValue: number | number[]) =>
       onChange(typeof changeValue === 'number' ? changeValue : changeValue[0]),
     [onChange],
   );

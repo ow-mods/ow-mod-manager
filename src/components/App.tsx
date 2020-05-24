@@ -5,7 +5,7 @@ import {
   // The typings for this package haven't been updated yet,
   // So we need to ignore typescript and eslint rules to
   // import experimental stuff.
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   unstable_createMuiStrictModeTheme as unstableCreateMuiStrictModeTheme,
 } from '@material-ui/core/styles';

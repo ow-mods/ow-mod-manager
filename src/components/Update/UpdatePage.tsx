@@ -8,8 +8,6 @@ import {
   Grid,
   makeStyles,
   Chip,
-  List,
-  ListItem,
 } from '@material-ui/core';
 import {
   CloudDownload as DownloadIcon,
