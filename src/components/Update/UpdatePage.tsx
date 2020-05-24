@@ -7,7 +7,6 @@ import {
   Typography,
   Grid,
   makeStyles,
-  Paper,
   Chip,
 } from '@material-ui/core';
 import {
