@@ -48,7 +48,7 @@ export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
         });
       } catch (error) {
         pushNotification({
-          message: error,
+          message: `Error updating app: ${error}`,
           severity: 'error',
         });
       } finally {
@@ -56,7 +56,7 @@ export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
         setProgress(0);
       }
     })();
-  }, []);
+  }, [pushNotification]);
 
   return (
     <AppUpdate.Provider
