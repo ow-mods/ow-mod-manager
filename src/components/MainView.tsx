@@ -13,7 +13,7 @@ import {
   NewReleases as NewReleasesIcon,
 } from '@material-ui/icons';
 
-import { useSettings } from '../hooks';
+import { useSettings, useAppUpdate } from '../hooks';
 import { getIsAppOutdated } from '../services';
 import Mods from './Mods';
 import SettingsPage from './Settings';
@@ -67,17 +67,7 @@ const updateTab: Tab = {
 const MainView = () => {
   const styles = useStyles();
   const [selectedTab, setSelectedTab] = useState(0);
-  const [isAppOutdated, setIsAppOutdated] = useState(false);
-  const {
-    settings: { modManagerRepo },
-  } = useSettings();
-
-  useEffect(() => {
-    const updateState = async () => {
-      setIsAppOutdated(await getIsAppOutdated(modManagerRepo));
-    };
-    updateState();
-  }, [modManagerRepo]);
+  const { isAppOutdated } = useAppUpdate();
 
   const visibleTabs = isAppOutdated ? [...tabs, updateTab] : tabs;
 

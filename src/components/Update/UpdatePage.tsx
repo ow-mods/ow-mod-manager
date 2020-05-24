@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -7,27 +7,11 @@ import {
   LinearProgress,
 } from '@material-ui/core';
 import { CloudDownload as DownloadIcon } from '@material-ui/icons';
-import { downloadAppUpdate } from '../../services';
+
+import { useAppUpdate } from '../../hooks';
 
 const UpdatePage: React.FunctionComponent = () => {
-  const [progress, setProgress] = useState(0);
-  const [isDownloading, setIsDownloading] = useState(false);
-
-  const handleDownloadUpdateClick = useCallback(() => {
-    const updateApp = async () => {
-      setIsDownloading(true);
-      try {
-        await downloadAppUpdate((newProgress) => {
-          setProgress(newProgress);
-        });
-      } finally {
-        setIsDownloading(false);
-        setProgress(0);
-      }
-    };
-
-    updateApp();
-  }, []);
+  const { isDownloading, progress, updateApp } = useAppUpdate();
 
   return (
     <Card>
@@ -38,7 +22,7 @@ const UpdatePage: React.FunctionComponent = () => {
             startIcon={<DownloadIcon />}
             color="primary"
             variant="contained"
-            onClick={handleDownloadUpdateClick}
+            onClick={updateApp}
           >
             Download update
           </Button>
