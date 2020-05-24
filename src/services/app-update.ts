@@ -4,13 +4,14 @@ import { spawn } from 'child_process';
 import { unzipRemoteFile } from './files';
 
 const BAT_FILE = '"install-update.bat"';
-const updatePath = 'update/resources';
+const updatePath = 'update';
+const resourcesPath = 'update/resources';
 
 export function installAppUpdate() {
   spawn('cmd.exe', ['/c', BAT_FILE], {
     detached: true,
     shell: true,
-    cwd: updatePath,
+    cwd: resourcesPath,
   });
 
   remote.app.exit();
