@@ -6,15 +6,8 @@ import { unzipRemoteFile } from './files';
 
 const BAT_FILE = '"install-update.bat"';
 const updateUrl =
-  'https://github.com/Raicuparta/ow-mod-manager/releases/downasdasdload/0.0.3/OaWModMasdasdanager.zip';
+  'https://github.com/Raicuparta/ow-mod-manager/releases/download/0.0.3/OWModManager.zip';
 const unzipPath = 'update';
-
-type RemoteMod = {
-  downloadUrl: string;
-  downloadCount: number;
-  manifest: Manifest;
-  repo: string;
-};
 
 export function installAppUpdate() {
   const ls = spawn('cmd.exe', ['/c', BAT_FILE], {
