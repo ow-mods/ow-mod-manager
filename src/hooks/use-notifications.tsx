@@ -5,23 +5,23 @@ type NotificationsState = {
 };
 
 type NotificationSeverity = 'error' | 'warning' | 'info' | 'success';
-type AppNotification = {
+
+type BaseNotification = {
   message: string;
   severity: NotificationSeverity;
 };
 
+export interface AppNotification extends BaseNotification {
+  id: number;
+}
+
 interface NotificationsContext extends NotificationsState {
-  pushNotification: (message: string, severity: NotificationSeverity) => void;
+  pushNotification: (notification: BaseNotification) => void;
   popNotification: () => void;
 }
 
 const defaultState: NotificationsState = {
-  notifications: [
-    {
-      message: 'hello',
-      severity: 'error',
-    },
-  ],
+  notifications: [],
 };
 
 const Notifications = React.createContext<NotificationsContext>({
@@ -35,16 +35,25 @@ export const useNotifications = () => useContext(Notifications);
 export const NotificationsProvider: React.FunctionComponent = ({
   children,
 }) => {
-  const [notifications, setNotifications] = useState<AppNotification[]>(
-    defaultState.notifications,
-  );
+  const [count, setCount] = useState(0);
+  const [notifications, setNotifications] = useState<AppNotification[]>([]);
 
-  const pushNotification = useCallback((message, severity) => {
-    setNotifications((prevNotifications) => [
-      ...prevNotifications,
-      { message, severity },
-    ]);
-  }, []);
+  const pushNotification = useCallback(
+    (notification: BaseNotification) => {
+      setCount((prevCount) => {
+        setNotifications((prevNotifications) => [
+          ...prevNotifications,
+          {
+            ...notification,
+            id: count,
+          },
+        ]);
+
+        return prevCount + 1;
+      });
+    },
+    [count],
+  );
 
   const popNotification = useCallback(() => {
     setNotifications((prevNotifications) =>

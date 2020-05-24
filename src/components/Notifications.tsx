@@ -1,15 +1,35 @@
 import React from 'react';
-import { useNotifications } from '../hooks';
-import { Snackbar, IconButton } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { useNotifications, AppNotification } from '../hooks';
+import { Snackbar, IconButton, makeStyles } from '@material-ui/core';
+import { Close as CloseIcon } from '@material-ui/icons';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    background: theme.palette.error.main,
+  },
+}));
+
+const emptyNotification: AppNotification = {
+  message: '',
+  severity: 'info',
+  id: -1,
+};
 
 const Notifications: React.FunctionComponent = () => {
+  const styles = useStyles();
   const { notifications, popNotification } = useNotifications();
+
+  const isOpen = notifications.length > 0;
+  const notification = isOpen
+    ? notifications[notifications.length - 1]
+    : emptyNotification;
 
   return (
     <Snackbar
-      open={notifications.length > 0}
-      message={notifications[0].message}
+      key={notification.id}
+      open={isOpen}
+      message={notification.message}
+      className={styles.root}
       action={
         <IconButton
           onClick={popNotification}
@@ -17,7 +37,7 @@ const Notifications: React.FunctionComponent = () => {
           aria-label="close"
           color="inherit"
         >
-          <Close fontSize="small" />
+          <CloseIcon fontSize="small" />
         </IconButton>
       }
     />

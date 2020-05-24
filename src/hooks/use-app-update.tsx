@@ -2,6 +2,7 @@ import React, { useContext, useState, useCallback, useEffect } from 'react';
 
 import { downloadAppUpdate, getIsAppOutdated } from '../services';
 import { useSettings } from './use-settings';
+import { useNotifications } from './use-notifications';
 
 const defaultState = {
   isAppOutdated: false,
@@ -26,6 +27,7 @@ export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
   const {
     settings: { modManagerRepo },
   } = useSettings();
+  const { pushNotification } = useNotifications();
   const [isAppOutdated, setIsAppOutdated] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -43,6 +45,11 @@ export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
       try {
         await downloadAppUpdate((newProgress) => {
           setProgress(newProgress);
+        });
+      } catch (error) {
+        pushNotification({
+          message: error,
+          severity: 'error',
         });
       } finally {
         setIsDownloading(false);
