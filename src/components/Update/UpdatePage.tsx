@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { remote } from 'electron';
 import {
   Card,
   CardContent,
@@ -17,10 +16,14 @@ const UpdatePage: React.FunctionComponent = () => {
   const handleDownloadUpdateClick = useCallback(() => {
     const updateApp = async () => {
       setIsDownloading(true);
-      await downloadAppUpdate((newProgress) => {
-        setProgress(newProgress);
-      });
-      setIsDownloading(false);
+      try {
+        await downloadAppUpdate((newProgress) => {
+          setProgress(newProgress);
+        });
+      } finally {
+        setIsDownloading(false);
+        setProgress(0);
+      }
     };
 
     updateApp();

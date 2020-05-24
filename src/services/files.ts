@@ -17,7 +17,11 @@ export async function downloadFile(
 
   const response = await fetch(url);
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
+    if (!response.ok) {
+      reject(response.statusText);
+    }
+
     const totalBytes = parseInt(response.headers.get('content-length') || '0');
 
     const writer = fs.createWriteStream(filePath);
@@ -97,6 +101,7 @@ export async function unzipRemoteFile(
   const unzipPath = `${temporaryPath}/${temporaryName}`;
 
   await createFolders(unzipPath);
+
   await downloadFile(url, zipPath, onDownloadProgress);
   await unzipFile(zipPath, unzipPath, onUnzipProgress);
   await copyFolder(unzipPath, destinationPath);

@@ -7,7 +7,7 @@ import { unzipRemoteFile } from './files';
 
 const BAT_FILE = '"install-update.bat"';
 const updateUrl =
-  'https://github.com/Raicuparta/ow-mod-manager/releases/download/0.0.3/OWModManager.zip';
+  'https://github.com/Raicuparta/ow-mod-manager/releases/downasdasdload/0.0.3/OaWModMasdasdanager.zip';
 const zipPath = 'OWModManager.zip';
 const unzipPath = 'update';
 
