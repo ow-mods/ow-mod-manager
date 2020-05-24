@@ -2,13 +2,11 @@ import axios from 'axios';
 import { remote } from 'electron';
 import { spawn } from 'child_process';
 
-import { downloadFile, unzipFile } from '.';
 import { unzipRemoteFile } from './files';
 
 const BAT_FILE = '"install-update.bat"';
 const updateUrl =
   'https://github.com/Raicuparta/ow-mod-manager/releases/downasdasdload/0.0.3/OaWModMasdasdanager.zip';
-const zipPath = 'OWModManager.zip';
 const unzipPath = 'update';
 
 type RemoteMod = {
