@@ -15,8 +15,9 @@ import React from 'react';
 import { AppStateProvider, LogsProvider, SettingsProvider } from '../hooks';
 import MainView from './MainView';
 
-// Compatibility with React current mode.
+// Compatibility with React concurrent mode.
 const createMuiStrictTheme = unstableCreateMuiStrictModeTheme as typeof createMuiTheme;
+
 const theme = createMuiStrictTheme({
   palette: {
     type: 'dark',
