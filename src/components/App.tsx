@@ -17,6 +17,7 @@ import {
   LogsProvider,
   SettingsProvider,
   AppUpdateProvider,
+  NotificationsProvider,
 } from '../hooks';
 import MainView from './MainView';
 
@@ -37,15 +38,17 @@ const theme = createMuiStrictTheme({
 
 const App = () => (
   <SettingsProvider>
-    <AppUpdateProvider>
-      <AppStateProvider>
-        <LogsProvider>
-          <ThemeProvider theme={theme}>
-            <MainView />
-          </ThemeProvider>
-        </LogsProvider>
-      </AppStateProvider>
-    </AppUpdateProvider>
+    <NotificationsProvider>
+      <AppUpdateProvider>
+        <AppStateProvider>
+          <LogsProvider>
+            <ThemeProvider theme={theme}>
+              <MainView />
+            </ThemeProvider>
+          </LogsProvider>
+        </AppStateProvider>
+      </AppUpdateProvider>
+    </NotificationsProvider>
   </SettingsProvider>
 );
 
