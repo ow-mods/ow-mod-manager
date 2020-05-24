@@ -62,3 +62,8 @@ type Settings = {
   modDatabaseUrl: string;
   modManagerRepo: string;
 };
+
+type AppRelease = {
+  version: string;
+  downloadUrl: string;
+};

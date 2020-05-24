@@ -39,15 +39,15 @@ const theme = createMuiStrictTheme({
 const App = () => (
   <SettingsProvider>
     <NotificationsProvider>
-      <AppUpdateProvider>
-        <AppStateProvider>
+      <AppStateProvider>
+        <AppUpdateProvider>
           <LogsProvider>
             <ThemeProvider theme={theme}>
               <MainView />
             </ThemeProvider>
           </LogsProvider>
-        </AppStateProvider>
-      </AppUpdateProvider>
+        </AppUpdateProvider>
+      </AppStateProvider>
     </NotificationsProvider>
   </SettingsProvider>
 );

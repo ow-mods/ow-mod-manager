@@ -10,6 +10,7 @@ type AppContext = {
   loadingCount: number;
   startLoading: () => void;
   endLoading: () => void;
+  appRelease?: AppRelease;
 };
 
 const AppState = React.createContext<AppContext>({
@@ -22,13 +23,14 @@ const AppState = React.createContext<AppContext>({
 export const useAppState = () => useContext(AppState);
 
 export const AppStateProvider: React.FunctionComponent = ({ children }) => {
+  const {
+    settings: { modDatabaseUrl },
+  } = useSettings();
   const [remoteModMap, setRemoteModMap] = useState<ModMap>({});
   const [localModMap, setLocalModMap] = useState<ModMap>({});
   const [modMap, setModMap] = useState<ModMap>({});
   const [loadingCount, setLoadingCount] = useState(0);
-  const {
-    settings: { modDatabaseUrl },
-  } = useSettings();
+  const [appRelease, setAppRelease] = useState<AppRelease>();
 
   const startLoading = useCallback(() => {
     setLoadingCount((count) => count + 1);
@@ -52,9 +54,9 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   useEffect(() => {
     const getMods = async () => {
       try {
-        const modDatabase = await getModDatabase(modDatabaseUrl);
+        const { mods, modManager } = await getModDatabase(modDatabaseUrl);
         setRemoteModMap(
-          modDatabase.reduce(
+          mods.reduce(
             (accumulator, mod) => ({
               ...accumulator,
               [mod.uniqueName]: mod,
@@ -62,6 +64,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
             {},
           ),
         );
+        setAppRelease(modManager);
       } finally {
         setLoadingCount((count) => count - 1);
       }
@@ -82,6 +85,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
         startLoading,
         endLoading,
         loadingCount,
+        appRelease,
       }}
     >
       {children}
