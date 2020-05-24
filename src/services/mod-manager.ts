@@ -54,7 +54,7 @@ export function openDirectory(mod: Mod) {
   if (!mod.modPath) {
     throw new Error("Can't open directory mod path is not defined");
   }
-  shell.openItem(path.resolve(mod.modPath));
+  shell.openPath(path.resolve(mod.modPath));
 }
 
 export function openRepo(mod: Mod) {
