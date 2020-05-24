@@ -60,7 +60,6 @@ type Settings = {
   logLinesLimit: number;
   showAdvancedSettings: boolean;
   modDatabaseUrl: string;
-  modManagerRepo: string;
 };
 
 type AppRelease = {
