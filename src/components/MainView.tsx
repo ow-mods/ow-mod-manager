@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { remote } from 'electron';
 import {
   Container,
@@ -14,8 +14,7 @@ import {
   NewReleases as NewReleasesIcon,
 } from '@material-ui/icons';
 
-import { useSettings, useAppUpdate, useAppState } from '../hooks';
-import { getIsAppOutdated } from '../services';
+import { useAppState } from '../hooks';
 import Mods from './Mods';
 import SettingsPage from './Settings';
 import Logs from './Logs';
