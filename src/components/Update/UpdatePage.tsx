@@ -6,18 +6,32 @@ import {
   Button,
   LinearProgress,
 } from '@material-ui/core';
-import { CloudDownload as DownloadIcon } from '@material-ui/icons';
+import {
+  CloudDownload as DownloadIcon,
+  SystemUpdateAlt as UpdateIcon,
+} from '@material-ui/icons';
 
 import { useAppUpdate } from '../../hooks';
+import { installAppUpdate } from '../../services';
 
 const UpdatePage: React.FunctionComponent = () => {
-  const { isDownloading, progress, updateApp } = useAppUpdate();
+  const { isDownloading, progress, updateApp, isUpdateReady } = useAppUpdate();
 
   return (
     <Card>
       <CardHeader title="New update available for the Outer Wilds Mod Manager" />
       <CardContent>
-        {!isDownloading && (
+        {isUpdateReady && (
+          <Button
+            startIcon={<UpdateIcon />}
+            color="secondary"
+            variant="contained"
+            onClick={installAppUpdate}
+          >
+            Install update and restart
+          </Button>
+        )}
+        {!isUpdateReady && !isDownloading && (
           <Button
             startIcon={<DownloadIcon />}
             color="primary"

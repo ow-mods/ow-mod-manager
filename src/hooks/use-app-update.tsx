@@ -7,6 +7,7 @@ import { useNotifications } from './use-notifications';
 const defaultState = {
   isAppOutdated: false,
   isDownloading: false,
+  isUpdateReady: false,
   progress: 0,
 };
 
@@ -30,6 +31,7 @@ export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
   const { pushNotification } = useNotifications();
   const [isAppOutdated, setIsAppOutdated] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isUpdateReady, setIsUpdateReady] = useState(false);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -46,6 +48,7 @@ export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
         await downloadAppUpdate((newProgress) => {
           setProgress(newProgress);
         });
+        setIsUpdateReady(true);
         pushNotification({
           message: `Finished downloading app update`,
           severity: 'success',
@@ -69,6 +72,7 @@ export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
         isDownloading,
         progress,
         updateApp,
+        isUpdateReady,
       }}
     >
       {children}
