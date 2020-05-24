@@ -8,6 +8,8 @@ import {
   Grid,
   makeStyles,
   Chip,
+  List,
+  ListItem,
 } from '@material-ui/core';
 import {
   CloudDownload as DownloadIcon,
@@ -53,13 +55,13 @@ const UpdatePage: React.FunctionComponent = () => {
       alignItems="center"
       direction="column"
     >
-      <Grid item>
-        <Typography gutterBottom align="right">
+      <Grid item container spacing={1} direction="column" alignItems="center">
+        <Grid item>
           Installed: <Chip label={remote.app.getVersion()} />
-        </Typography>
-        <Typography align="right">
+        </Grid>
+        <Grid item>
           Latest: <Chip label={appRelease?.version} color="secondary" />
-        </Typography>
+        </Grid>
       </Grid>
       <Grid item xs={6}>
         <Card>
