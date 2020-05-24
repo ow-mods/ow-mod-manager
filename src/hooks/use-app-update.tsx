@@ -46,6 +46,10 @@ export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
         await downloadAppUpdate((newProgress) => {
           setProgress(newProgress);
         });
+        pushNotification({
+          message: `Finished downloading app update`,
+          severity: 'success',
+        });
       } catch (error) {
         pushNotification({
           message: `Error updating app: ${error}`,
