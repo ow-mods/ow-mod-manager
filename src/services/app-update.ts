@@ -1,12 +1,9 @@
-import axios from 'axios';
 import { remote } from 'electron';
 import { spawn } from 'child_process';
 
 import { unzipRemoteFile } from './files';
 
 const BAT_FILE = '"install-update.bat"';
-const updateUrl =
-  'https://github.com/Raicuparta/ow-mod-manager/releases/download/0.0.3/OWModManager.zip';
 const unzipPath = 'update';
 
 export function installAppUpdate() {
@@ -23,6 +20,9 @@ export function installAppUpdate() {
   });
 }
 
-export async function downloadAppUpdate(onProgress: ProgressHandler) {
-  await unzipRemoteFile(updateUrl, unzipPath, onProgress);
+export async function downloadAppUpdate(
+  url: string,
+  onProgress: ProgressHandler,
+) {
+  await unzipRemoteFile(url, unzipPath, onProgress);
 }

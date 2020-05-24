@@ -1,8 +1,8 @@
 import React, { useContext, useState, useCallback } from 'react';
 
 import { downloadAppUpdate } from '../services';
-import { useSettings } from './use-settings';
 import { useNotifications } from './use-notifications';
+import { useAppState } from './use-app-state';
 
 const defaultState = {
   isDownloading: false,
@@ -24,6 +24,7 @@ const AppUpdate = React.createContext<AppUpdateContext>({
 export const useAppUpdate = () => useContext(AppUpdate);
 
 export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
+  const { appRelease } = useAppState();
   const { pushNotification } = useNotifications();
   const [isDownloading, setIsDownloading] = useState(false);
   const [isUpdateReady, setIsUpdateReady] = useState(false);
@@ -33,7 +34,12 @@ export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
     (async () => {
       setIsDownloading(true);
       try {
-        await downloadAppUpdate((newProgress) => {
+        if (!appRelease) {
+          throw new Error(
+            'Not able to retrieve Mod Manager release from database',
+          );
+        }
+        await downloadAppUpdate(appRelease.downloadUrl, (newProgress) => {
           setProgress(newProgress);
         });
         setIsUpdateReady(true);
@@ -51,7 +57,7 @@ export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
         setProgress(0);
       }
     })();
-  }, [pushNotification]);
+  }, [pushNotification, appRelease]);
 
   return (
     <AppUpdate.Provider
