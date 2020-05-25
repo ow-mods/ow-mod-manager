@@ -1,2 +1,2 @@
-import ConsoleLog from './ConsoleLog';
-export default ConsoleLog;
+import LogsPage from './LogsPage';
+export default LogsPage;

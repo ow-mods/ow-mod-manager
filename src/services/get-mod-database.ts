@@ -9,8 +9,8 @@ type RemoteMod = {
   repo: string;
 };
 
-export async function getModDatabase(): Promise<Mod[]> {
-  return axios.get(config.modDatabaseUrl).then(({ data }) =>
+export async function getModDatabase(url: string): Promise<Mod[]> {
+  return axios.get(url).then(({ data }) =>
     data.releases.map(
       ({ manifest, downloadCount, downloadUrl, repo }: RemoteMod) => {
         const mod: Mod = {
@@ -19,7 +19,6 @@ export async function getModDatabase(): Promise<Mod[]> {
           uniqueName: manifest.uniqueName,
           remoteVersion: manifest.version,
           modPath: `${config.owmlPath}/Mods/${manifest.name}`,
-          isLoading: false,
           downloadUrl,
           downloadCount,
           repo,

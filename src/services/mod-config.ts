@@ -21,11 +21,10 @@ function getDefaultConfig(mod: Mod): ModConfig {
     const defaultConfig: ModConfig = fs.readJSONSync(getDefaultConfigPath(mod));
     defaultConfig.enabled = true;
     return defaultConfig;
-  } else {
-    return {
-      enabled: true,
-    };
   }
+  return {
+    enabled: true,
+  };
 }
 
 export function saveConfig(mod: Mod, config: ModConfig) {

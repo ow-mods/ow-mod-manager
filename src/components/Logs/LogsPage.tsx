@@ -15,8 +15,7 @@ import {
 } from '@material-ui/core';
 import { ClearAll as ClearAllIcon } from '@material-ui/icons';
 
-import { logLinesLimit } from '../../config.json';
-import { useOwmlLogs } from '../../hooks';
+import { useOwmlLogs, useSettings } from '../../hooks';
 import FilterInput from '../FilterInput';
 import ModNameSelect from './ModNameSelect';
 
@@ -58,6 +57,9 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
 const OwmlLog: React.FunctionComponent = () => {
   const styles = useStyles();
   const { logLines, clear } = useOwmlLogs();
+  const {
+    settings: { logLinesLimit },
+  } = useSettings();
 
   const [paginatedLines, setPaginatedLines] = useState<LogLine[]>([]);
   const [selectedModName, setSelectedModName] = useState<string>('');
@@ -111,7 +113,7 @@ const OwmlLog: React.FunctionComponent = () => {
     hasHiddenLines.current = logLines.length !== lines.length;
 
     setPaginatedLines(lines);
-  }, [filter, logLines, selectedModName, page]);
+  }, [filter, logLines, selectedModName, page, logLinesLimit]);
 
   useEffect(() => {
     setPage(0);

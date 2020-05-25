@@ -1,3 +1,3 @@
-import ModTable from './ModTable';
+import ModsPage from './ModsPage';
 
-export default ModTable;
+export default ModsPage;

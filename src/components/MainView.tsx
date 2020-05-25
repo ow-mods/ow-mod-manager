@@ -1,31 +1,78 @@
 import React, { useState } from 'react';
-import { Container, Tabs, Tab, CssBaseline } from '@material-ui/core';
+import {
+  Container,
+  Tabs,
+  Tab,
+  CssBaseline,
+  makeStyles,
+} from '@material-ui/core';
+import {
+  Build as BuildIcon,
+  Dvr as DvrIcon,
+  Settings as SettingsIcon,
+} from '@material-ui/icons';
 
-import ModTable from './Mods';
+import Mods from './Mods';
+import SettingsPage from './Settings';
+import Logs from './Logs';
 import TopBar from './TopBar';
 import LoadingBar from './LoadingBar';
-import OwmlLog from './Logs';
 
-enum AppTab {
-  Mods,
-  Logs,
-}
+const useStyles = makeStyles({
+  root: {
+    minHeight: 0,
+  },
+  wrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+});
+
+const tabs = [
+  {
+    name: 'Mods',
+    component: Mods,
+    icon: BuildIcon,
+  },
+  {
+    name: 'Logs',
+    component: Logs,
+    icon: DvrIcon,
+  },
+  {
+    name: 'Settings',
+    component: SettingsPage,
+    icon: SettingsIcon,
+  },
+] as const;
+
+type Tab = typeof tabs[number]['name'];
 
 const MainView = () => {
-  const [tab, setTab] = useState<AppTab>(AppTab.Mods);
+  const styles = useStyles();
+  const [selectedTab, setSelectedTab] = useState<Tab>('Mods');
 
   return (
     <CssBaseline>
       <TopBar>
-        <Tabs value={tab} onChange={(event, index) => setTab(index)}>
-          <Tab label="Mods" value={AppTab.Mods} />
-          <Tab label="Logs" value={AppTab.Logs} />
+        <Tabs value={selectedTab}>
+          {tabs.map((tab) => (
+            <Tab
+              key={tab.name}
+              label={tab.name}
+              value={tab.name}
+              classes={styles}
+              icon={<tab.icon />}
+              onClick={() => setSelectedTab(tab.name)}
+            />
+          ))}
         </Tabs>
       </TopBar>
       <LoadingBar />
       <Container>
-        {tab === AppTab.Logs && <OwmlLog />}
-        {tab === AppTab.Mods && <ModTable />}
+        {tabs.map(
+          (tab) => selectedTab === tab.name && <tab.component key={tab.name} />,
+        )}
       </Container>
     </CssBaseline>
   );
