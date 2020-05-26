@@ -32,9 +32,19 @@ export function saveConfig(mod: Mod, config: ModConfig) {
 }
 
 export function getConfig(mod: Mod): ModConfig {
-  if (!isConfigExisting(mod)) {
-    const defaultConfig = getDefaultConfig(mod);
-    saveConfig(mod, defaultConfig);
+  try {
+    if (!isConfigExisting(mod)) {
+      const defaultConfig = getDefaultConfig(mod);
+      saveConfig(mod, defaultConfig);
+    }
+    return fs.readJSONSync(getConfigPath(mod));
+  } catch (error) {
+    console.error(
+      'Not able to get mod config for',
+      mod.uniqueName,
+      '. Error:',
+      error,
+    );
+    return { enabled: false };
   }
-  return fs.readJSONSync(getConfigPath(mod));
 }
