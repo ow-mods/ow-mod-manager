@@ -9,7 +9,7 @@ import {
   // @ts-ignore
   unstable_createMuiStrictModeTheme as unstableCreateMuiStrictModeTheme,
 } from '@material-ui/core/styles';
-import { green, orange } from '@material-ui/core/colors';
+import { green, orange, grey } from '@material-ui/core/colors';
 
 import React from 'react';
 import {
@@ -32,6 +32,26 @@ const theme = createMuiStrictTheme({
     },
     secondary: {
       main: orange[800],
+    },
+  },
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        body: {
+          overflowY: 'scroll',
+        },
+        '*::-webkit-scrollbar': {
+          width: '1em',
+        },
+        '*::-webkit-scrollbar-track': {
+          background: grey[900],
+        },
+        '*::-webkit-scrollbar-thumb': {
+          background: grey[800],
+          border: 0,
+          borderRadius: 10,
+        },
+      },
     },
   },
 });
