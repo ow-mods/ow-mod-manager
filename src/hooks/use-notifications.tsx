@@ -35,25 +35,22 @@ export const useNotifications = () => useContext(Notifications);
 export const NotificationsProvider: React.FunctionComponent = ({
   children,
 }) => {
-  const [count, setCount] = useState(0);
+  const [, setCount] = useState(0);
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
 
-  const pushNotification = useCallback(
-    (notification: BaseNotification) => {
-      setCount((prevCount) => {
-        setNotifications((prevNotifications) => [
-          ...prevNotifications,
-          {
-            ...notification,
-            id: count,
-          },
-        ]);
+  const pushNotification = useCallback((notification: BaseNotification) => {
+    setCount((prevCount) => {
+      setNotifications((prevNotifications) => [
+        ...prevNotifications,
+        {
+          ...notification,
+          id: prevCount,
+        },
+      ]);
 
-        return prevCount + 1;
-      });
-    },
-    [count],
-  );
+      return prevCount + 1;
+    });
+  }, []);
 
   const popNotification = useCallback(() => {
     setNotifications((prevNotifications) =>

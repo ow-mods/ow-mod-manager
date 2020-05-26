@@ -67,7 +67,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
       };
 
       getMods();
-    }, []),
+    }, [pushNotification]),
   );
 
   useEffect(() => {
