@@ -40,13 +40,21 @@ export const NotificationsProvider: React.FunctionComponent = ({
 
   const pushNotification = useCallback((notification: BaseNotification) => {
     setCount((prevCount) => {
-      setNotifications((prevNotifications) => [
-        ...prevNotifications,
-        {
-          ...notification,
-          id: prevCount,
-        },
-      ]);
+      setNotifications((prevNotifications) => {
+        const existing = prevNotifications.find(
+          ({ message }) => message === notification.message,
+        );
+        if (existing) {
+          return prevNotifications;
+        }
+        return [
+          ...prevNotifications,
+          {
+            ...notification,
+            id: prevCount,
+          },
+        ];
+      });
 
       return prevCount + 1;
     });

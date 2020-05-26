@@ -124,7 +124,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         <span>
           <Button
             disabled={!isModInstalled || mod.isRequired}
-            onClick={modActionHandlerSync(toggleEnabled)}
+            onClick={modActionHandler(toggleEnabled)}
           >
             {mod.isEnabled ? <CheckBoxIcon /> : <CheckboxBlankIcon />}
           </Button>
