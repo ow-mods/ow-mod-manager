@@ -29,15 +29,15 @@ async function getDefaultConfig(mod: Mod) {
   };
 }
 
-export function saveConfig(mod: Mod, config: ModConfig) {
-  fs.writeJSONSync(getConfigPath(mod), config);
+export async function saveConfig(mod: Mod, config: ModConfig) {
+  return fs.writeJson(getConfigPath(mod), config);
 }
 
 export async function getConfig(mod: Mod) {
   if (!isConfigExisting(mod)) {
     const defaultConfig = await getDefaultConfig(mod);
-    saveConfig(mod, defaultConfig);
+    await saveConfig(mod, defaultConfig);
   }
-  const config: ModConfig = await fs.readJSONSync(getConfigPath(mod));
+  const config: ModConfig = await fs.readJson(getConfigPath(mod));
   return config;
 }
