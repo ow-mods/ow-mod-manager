@@ -4,6 +4,7 @@ import { merge } from 'lodash';
 import { getLocalMods, getModDatabase } from '../services';
 import { useModsDirectoryWatcher } from '.';
 import { useSettings } from './use-settings';
+import { useNotifications } from './use-notifications';
 
 type AppContext = {
   modMap: ModMap;
@@ -31,6 +32,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   const [modMap, setModMap] = useState<ModMap>({});
   const [loadingCount, setLoadingCount] = useState(0);
   const [appRelease, setAppRelease] = useState<AppRelease>();
+  const { pushNotification } = useNotifications();
 
   const startLoading = useCallback(() => {
     setLoadingCount((count) => count + 1);
@@ -43,8 +45,25 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   useModsDirectoryWatcher(
     useCallback(() => {
       const getMods = async () => {
-        const localMods = await getLocalMods();
-        setLocalModMap(localMods);
+        const localModsPromises = await getLocalMods();
+
+        localModsPromises.forEach((result) => {
+          if (result.status === 'fulfilled') {
+            const mod = result.value;
+
+            setLocalModMap((map) => ({
+              ...map,
+              [mod.uniqueName]: mod,
+            }));
+            return;
+          }
+          if (result.status === 'rejected') {
+            pushNotification({
+              message: `Error loading local mod. Error: ${result.reason}`,
+              severity: 'error',
+            });
+          }
+        });
       };
 
       getMods();

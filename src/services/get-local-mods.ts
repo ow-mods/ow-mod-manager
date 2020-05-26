@@ -24,35 +24,24 @@ function getOwml() {
   return owml;
 }
 
-export async function getLocalMods(): Promise<ModMap> {
+export async function getLocalMods() {
   const manifestPaths = await glob(`${config.owmlPath}/Mods/**/manifest.json`);
-  const manifestFiles = manifestPaths.map((manifestPath) => ({
-    path: manifestPath,
-    manifest: fs.readJSONSync(manifestPath),
-  }));
 
-  const modMap: ModMap = manifestFiles.reduce<ModMap>(
-    (accumulator, manifestFile): ModMap => {
+  return Promise.allSettled(
+    manifestPaths.map<Promise<Mod>>(async (manifestPath) => {
+      const manifest: Manifest = await fs.readJson(manifestPath);
+
       const mod: Mod = {
-        name: manifestFile.manifest.name,
-        author: manifestFile.manifest.author,
-        uniqueName: manifestFile.manifest.uniqueName,
-        modPath: path.dirname(manifestFile.path),
-        localVersion: manifestFile.manifest.version,
+        name: manifest.name,
+        author: manifest.author,
+        uniqueName: manifest.uniqueName,
+        modPath: path.dirname(manifestPath),
+        localVersion: manifest.version,
       };
 
-      mod.isEnabled = isEnabled(mod);
+      mod.isEnabled = await isEnabled(mod);
 
-      return {
-        ...accumulator,
-        [mod.uniqueName]: mod,
-      };
-    },
-    {},
+      return mod;
+    }),
   );
-
-  const owml = getOwml();
-  modMap[owml.uniqueName] = owml;
-
-  return modMap;
 }
