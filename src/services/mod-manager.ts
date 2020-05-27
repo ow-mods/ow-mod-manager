@@ -66,13 +66,13 @@ export function openRepo(mod: Mod) {
   shell.openExternal(mod.repo);
 }
 
-export async function isEnabled(mod: Mod) {
-  const config = await getConfig(mod);
+export function isEnabled(mod: Mod) {
+  const config = getConfig(mod);
   return config.enabled;
 }
 
-export async function toggleEnabled(mod: Mod) {
-  const config = await getConfig(mod);
+export function toggleEnabled(mod: Mod) {
+  const config = getConfig(mod);
   config.enabled = !config.enabled;
   saveConfig(mod, config);
 }

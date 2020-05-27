@@ -16,11 +16,9 @@ function isConfigExisting(mod: Mod) {
   return fs.existsSync(getConfigPath(mod));
 }
 
-async function getDefaultConfig(mod: Mod) {
+function getDefaultConfig(mod: Mod) {
   if (isDefaultConfigExisting(mod)) {
-    const defaultConfig: ModConfig = await fs.readJson(
-      getDefaultConfigPath(mod),
-    );
+    const defaultConfig: ModConfig = fs.readJsonSync(getDefaultConfigPath(mod));
     defaultConfig.enabled = true;
     return defaultConfig;
   }
@@ -29,15 +27,15 @@ async function getDefaultConfig(mod: Mod) {
   };
 }
 
-export async function saveConfig(mod: Mod, config: ModConfig) {
-  return fs.writeJson(getConfigPath(mod), config);
+export function saveConfig(mod: Mod, config: ModConfig) {
+  return fs.writeJsonSync(getConfigPath(mod), config);
 }
 
-export async function getConfig(mod: Mod) {
+export function getConfig(mod: Mod) {
   if (!isConfigExisting(mod)) {
-    const defaultConfig = await getDefaultConfig(mod);
-    await saveConfig(mod, defaultConfig);
+    const defaultConfig = getDefaultConfig(mod);
+    saveConfig(mod, defaultConfig);
   }
-  const config: ModConfig = await fs.readJson(getConfigPath(mod));
+  const config: ModConfig = fs.readJsonSync(getConfigPath(mod));
   return config;
 }
