@@ -46,15 +46,13 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     useCallback(() => {
       const getMods = async () => {
         const localModsPromises = await getLocalMods();
+        const newModMap: ModMap = {};
 
         localModsPromises.forEach((result) => {
           if (result.status === 'fulfilled') {
             const mod = result.value;
 
-            setLocalModMap((map) => ({
-              ...map,
-              [mod.uniqueName]: mod,
-            }));
+            newModMap[mod.uniqueName] = mod;
             return;
           }
           if (result.status === 'rejected') {
@@ -64,6 +62,8 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
             });
           }
         });
+
+        setLocalModMap(newModMap);
       };
 
       getMods();

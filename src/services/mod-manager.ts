@@ -47,7 +47,7 @@ export function uninstall(mod: Mod) {
   if (!isInstalled(mod)) {
     throw new Error("Can't uninstall mod because it's not installed");
   }
-  deleteFolder(mod.modPath);
+  return deleteFolder(mod.modPath);
 }
 
 export function openDirectory(mod: Mod) {
