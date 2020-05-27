@@ -56,12 +56,13 @@ function getSimpleLine(text: string, type: LogType = 'info'): LogLine {
 
 export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const { notifications } = useNotifications();
-  const [, setNotificationIds] = useState<number[]>([]);
+  const [notificationIds, setNotificationIds] = useState<number[]>([]);
   const [lines, setLines] = useState<LogLine[]>([]);
   const [isServerRunning, setIsServerRunning] = useState(false);
   const [serverPort, setServerPort] = useState(0);
 
-  function writeLogLine(line: LogLine) {
+  const writeLogLine = useCallback((line: LogLine) => {
+    console.log('write log line');
     setLines((prevLines) => {
       const lastIndex = prevLines.length - 1;
       const lastItem = prevLines[lastIndex];
@@ -83,17 +84,20 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
         },
       ];
     });
-  }
+  }, []);
+
+  const writeSimpleText = useCallback(
+    (textLine: string, type?: LogType) => {
+      writeLogLine(getSimpleLine(textLine, type));
+    },
+    [writeLogLine],
+  );
 
   const clear = useCallback(() => setLines([]), []);
 
   useEffect(() => {
     function writeLogText(...textLines: string[]) {
       textLines.forEach((textLine) => writeLogLine(getLogLine(textLine)));
-    }
-
-    function writeSimpleText(textLine: string, type?: LogType) {
-      writeLogLine(getSimpleLine(textLine, type));
     }
 
     function signalServerOpen() {
@@ -136,26 +140,16 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     netServer.listen(0, '127.0.0.1');
 
     return signalServerClosed;
-  }, []);
+  }, [writeLogLine, writeSimpleText]);
 
   useEffect(() => {
-    notifications.forEach(({ id, severity, message }) => {
-      setNotificationIds((ids) => {
-        if (!ids.includes(id)) {
-          writeLogLine({
-            modName: 'Mod Manager',
-            id,
-            count: 0,
-            text: message,
-            type: severity,
-          });
-
-          return [...ids, id];
-        }
-        return ids;
+    notifications
+      .filter(({ id }) => !notificationIds.includes(id))
+      .forEach(({ id, severity, message }) => {
+        setNotificationIds((ids) => [...ids, id]);
+        writeSimpleText(message, severity);
       });
-    });
-  }, [notifications]);
+  }, [notifications, writeSimpleText, notificationIds]);
 
   return (
     <LogsState.Provider
