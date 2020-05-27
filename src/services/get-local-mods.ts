@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import glob from 'glob-promise';
 import path from 'path';
+import { uniqueId } from 'lodash';
 
 import config from '../config.json';
 import { isEnabled } from '.';
@@ -32,13 +33,24 @@ export async function getLocalMods() {
     ...manifestPaths.map<Promise<Mod>>(async (manifestPath) => {
       const manifest: Manifest = await fs.readJson(manifestPath);
 
+      const errors: string[] = [];
+
+      function getMissingAttribute(name: string) {
+        errors.push(
+          `Manifest "${manifestPath}" is missing attribute "${name}"`,
+        );
+        return `[Missing ${name}]`;
+      }
+
       const mod: Mod = {
-        name: manifest.name,
-        author: manifest.author,
-        uniqueName: manifest.uniqueName,
+        name: manifest.name || getMissingAttribute('name'),
+        author: manifest.author || getMissingAttribute('author'),
+        uniqueName:
+          manifest.uniqueName ||
+          `${getMissingAttribute('uniqueName')}${uniqueId()}`,
         modPath: path.dirname(manifestPath),
-        localVersion: manifest.version,
-        errors: [],
+        localVersion: manifest.version || getMissingAttribute('version'),
+        errors,
       };
 
       try {

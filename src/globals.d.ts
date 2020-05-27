@@ -29,10 +29,10 @@ type Release = {
 };
 
 type Manifest = {
-  name: string;
-  author: string;
-  uniqueName: string;
-  version: string;
+  name?: string;
+  author?: string;
+  uniqueName?: string;
+  version?: string;
 };
 
 type ModConfig = {
