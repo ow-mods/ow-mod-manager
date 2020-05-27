@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
 import net from 'net';
+import { useNotifications } from './use-notifications';
 
 type LogsContext = {
   logLines: LogLine[];
@@ -28,7 +29,7 @@ function getLogType(text: string): LogType {
   if (lowerText.includes('success')) {
     return 'success';
   }
-  return 'log';
+  return 'info';
 }
 
 function getLogLine(lineText: string): LogLine {
@@ -43,7 +44,7 @@ function getLogLine(lineText: string): LogLine {
   };
 }
 
-function getSimpleLine(text: string, type: LogType = 'log'): LogLine {
+function getSimpleLine(text: string, type: LogType = 'info'): LogLine {
   return {
     type,
     text,
@@ -54,6 +55,8 @@ function getSimpleLine(text: string, type: LogType = 'log'): LogLine {
 }
 
 export const LogsProvider: React.FunctionComponent = ({ children }) => {
+  const { notifications } = useNotifications();
+  const [, setNotificationIds] = useState<number[]>([]);
   const [lines, setLines] = useState<LogLine[]>([]);
   const [isServerRunning, setIsServerRunning] = useState(false);
   const [serverPort, setServerPort] = useState(0);
@@ -134,6 +137,25 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
 
     return signalServerClosed;
   }, []);
+
+  useEffect(() => {
+    notifications.forEach(({ id, severity, message }) => {
+      setNotificationIds((ids) => {
+        if (!ids.includes(id)) {
+          writeLogLine({
+            modName: 'Mod Manager',
+            id,
+            count: 0,
+            text: message,
+            type: severity,
+          });
+
+          return [...ids, id];
+        }
+        return ids;
+      });
+    });
+  }, [notifications]);
 
   return (
     <LogsState.Provider

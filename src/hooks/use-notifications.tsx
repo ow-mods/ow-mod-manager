@@ -4,11 +4,9 @@ type NotificationsState = {
   notifications: AppNotification[];
 };
 
-type NotificationSeverity = 'error' | 'warning' | 'info' | 'success';
-
 type BaseNotification = {
   message: string;
-  severity: NotificationSeverity;
+  severity: LogType;
 };
 
 export interface AppNotification extends BaseNotification {
