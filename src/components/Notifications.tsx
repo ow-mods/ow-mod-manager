@@ -10,19 +10,19 @@ import { Close as CloseIcon } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   error: {
-    background: theme.palette.error.main,
+    background: theme.palette.error.dark,
     color: theme.palette.text.primary,
   },
   warning: {
-    background: theme.palette.warning.main,
+    background: theme.palette.warning.dark,
     color: theme.palette.text.primary,
   },
   info: {
-    background: theme.palette.info.main,
+    background: theme.palette.info.dark,
     color: theme.palette.text.primary,
   },
   success: {
-    background: theme.palette.success.main,
+    background: theme.palette.success.dark,
     color: theme.palette.text.primary,
   },
 }));

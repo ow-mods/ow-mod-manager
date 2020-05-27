@@ -53,7 +53,15 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
             const mod = result.value;
 
             newModMap[mod.uniqueName] = mod;
-            return;
+
+            if (mod.errors.length > 0) {
+              pushNotification({
+                message: `Error loading local mod. Errors: ${mod.errors.join(
+                  ' || ',
+                )}`,
+                severity: 'error',
+              });
+            }
           }
           if (result.status === 'rejected') {
             pushNotification({
