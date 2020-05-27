@@ -13,7 +13,7 @@ type Mod = {
   repo?: string;
   isEnabled?: boolean;
   isRequired?: boolean;
-  isBroken?: boolean;
+  errors: string[];
 };
 
 type ModMap = { [uniqueName: string]: Mod };

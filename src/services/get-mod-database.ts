@@ -34,6 +34,7 @@ export async function getModDatabase(url: string): Promise<ModDatabase> {
         downloadUrl,
         downloadCount,
         repo,
+        errors: [],
       };
 
       return mod;

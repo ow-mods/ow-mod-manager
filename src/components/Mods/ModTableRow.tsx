@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from '@material-ui/core';
 
-import { isOutdated, isInstalled } from '../../services';
+import { isOutdated, isInstalled, isBroken } from '../../services';
 import ModActions from './ModActions';
 
 type Props = {
@@ -51,15 +51,15 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     if (mod.isRequired) {
       return styles.requiredRow;
     }
-    if (mod.isBroken) {
+    if (isBroken(mod)) {
       return styles.brokenRow;
     }
     return undefined;
   };
 
   const getRowTooltip = () => {
-    if (mod.isBroken) {
-      return 'Failed to load mod. It might still be loaded anyway.';
+    if (isBroken(mod)) {
+      return `Failed to load mod. Errors: ${mod.errors.join(' || ')}`;
     }
     return '';
   };

@@ -28,6 +28,7 @@ import {
   openDirectory,
   openRepo,
   toggleEnabled,
+  isBroken,
 } from '../../services';
 
 interface Props {
@@ -102,7 +103,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     if (mod.isEnabled) {
       return 'Disable';
     }
-    if (isModInstalled && !mod.isBroken) {
+    if (isModInstalled && !isBroken(mod)) {
       return 'Enable';
     }
     return '';
@@ -126,7 +127,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
       <Tooltip title={getEnableTooltip()}>
         <span>
           <Button
-            disabled={!isModInstalled || mod.isRequired || mod.isBroken}
+            disabled={!isModInstalled || mod.isRequired || isBroken(mod)}
             onClick={modActionHandlerSync(toggleEnabled)}
           >
             {mod.isEnabled ? <CheckBoxIcon /> : <CheckboxBlankIcon />}

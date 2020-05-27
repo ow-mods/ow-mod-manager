@@ -20,6 +20,7 @@ async function getOwml() {
       : undefined,
     isEnabled: true,
     isRequired: true,
+    errors: [],
   };
   return owml;
 }
@@ -37,12 +38,13 @@ export async function getLocalMods() {
         uniqueName: manifest.uniqueName,
         modPath: path.dirname(manifestPath),
         localVersion: manifest.version,
+        errors: [],
       };
 
       try {
         mod.isEnabled = isEnabled(mod);
       } catch (error) {
-        mod.isBroken = true;
+        mod.errors.push(error);
       } finally {
         return mod;
       }

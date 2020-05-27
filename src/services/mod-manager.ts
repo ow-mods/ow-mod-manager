@@ -71,6 +71,10 @@ export function isEnabled(mod: Mod) {
   return config.enabled;
 }
 
+export function isBroken(mod: Mod) {
+  return mod.errors.length > 0;
+}
+
 export function toggleEnabled(mod: Mod) {
   const config = getConfig(mod);
   config.enabled = !config.enabled;
