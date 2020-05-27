@@ -29,7 +29,7 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   success: {
     color: palette.success.light,
   },
-  log: {},
+  info: {},
   wrapper: {
     maxHeight: `calc(100vh - ${mixins.toolbar.minHeight}px - ${
       spacing(2) * 2
