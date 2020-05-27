@@ -39,9 +39,13 @@ export async function getLocalMods() {
         localVersion: manifest.version,
       };
 
-      mod.isEnabled = await isEnabled(mod);
-
-      return mod;
+      try {
+        mod.isEnabled = isEnabled(mod);
+      } catch (error) {
+        mod.isBroken = true;
+      } finally {
+        return mod;
+      }
     }),
     getOwml(),
   ]);
