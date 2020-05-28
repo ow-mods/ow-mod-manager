@@ -62,7 +62,6 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const [serverPort, setServerPort] = useState(0);
 
   const writeLogLine = useCallback((line: LogLine) => {
-    console.log('write log line');
     setLines((prevLines) => {
       const lastIndex = prevLines.length - 1;
       const lastItem = prevLines[lastIndex];

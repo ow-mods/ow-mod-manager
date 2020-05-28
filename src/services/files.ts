@@ -20,7 +20,7 @@ export async function downloadFile(
 
   return new Promise((resolve, reject) => {
     if (!response.ok) {
-      reject(response.statusText);
+      reject(`${response.statusText} (${response.status})`);
     }
 
     const totalBytes = parseInt(response.headers.get('content-length') || '0');
