@@ -26,13 +26,15 @@ export async function getModDatabase(url: string): Promise<ModDatabase> {
 
   const mods = releases.map(
     ({ manifest, downloadCount, downloadUrl, repo }: RemoteMod) => {
-      const errors: string[] = [];
+      const missingAttributes: string[] = [];
+
       function getAttribute(key: keyof Manifest, isUnique?: boolean) {
         const value = manifest[key];
         if (value) {
           return value;
         }
-        errors.push(`Manifest from "${repo}" is missing attribute "${key}"`);
+        console.log('pushing missing', missingAttributes);
+        missingAttributes.push(key);
         return `[Missing ${key}]${isUnique ? uniqueId() : ''}`;
       }
 
@@ -42,11 +44,19 @@ export async function getModDatabase(url: string): Promise<ModDatabase> {
         uniqueName: getAttribute('uniqueName'),
         remoteVersion: getAttribute('version'),
         modPath: `${config.owmlPath}/Mods/${manifest.uniqueName}`,
+        errors: [],
         downloadUrl,
         downloadCount,
         repo,
-        errors,
       };
+
+      if (missingAttributes.length > 0) {
+        mod.errors.push(
+          `Manifest ${repo} missing attributes "${missingAttributes.join(
+            '", "',
+          )}"`,
+        );
+      }
 
       return mod;
     },

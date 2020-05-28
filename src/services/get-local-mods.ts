@@ -33,14 +33,14 @@ export async function getLocalMods() {
     ...manifestPaths.map<Promise<Mod>>(async (manifestPath) => {
       const manifest: Manifest = await fs.readJson(manifestPath);
 
-      const errors: string[] = [];
+      const missingAttributes: string[] = [];
 
       function getAttribute(key: keyof Manifest, isUnique?: boolean) {
         const value = manifest[key];
         if (value) {
           return value;
         }
-        errors.push(`Manifest "${manifestPath}" is missing attribute "${key}"`);
+        missingAttributes.push(key);
         return `[Missing ${key}]${isUnique ? uniqueId() : ''}`;
       }
 
@@ -50,8 +50,16 @@ export async function getLocalMods() {
         uniqueName: getAttribute('uniqueName'),
         localVersion: getAttribute('version'),
         modPath: path.dirname(manifestPath),
-        errors,
+        errors: [],
       };
+
+      if (missingAttributes.length > 0) {
+        mod.errors.push(
+          `Manifest ${manifestPath} missing attributes "${missingAttributes.join(
+            '", "',
+          )}"`,
+        );
+      }
 
       try {
         mod.isEnabled = isEnabled(mod);
