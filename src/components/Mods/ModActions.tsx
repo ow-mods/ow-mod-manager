@@ -106,10 +106,8 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   ) => () => {
     handleClose();
     try {
-      console.log('trying');
       handler(mod);
     } catch (error) {
-      console.log('catching');
       pushNotification({
         message: `Error executing mod ${actionName}: ${error}`,
         severity: 'error',
