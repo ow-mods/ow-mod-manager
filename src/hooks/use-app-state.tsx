@@ -51,17 +51,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
         localModsPromises.forEach((result) => {
           if (result.status === 'fulfilled') {
             const mod = result.value;
-
             newModMap[mod.uniqueName] = mod;
-
-            if (mod.errors.length > 0) {
-              mod.errors.forEach((error) => {
-                pushNotification({
-                  message: `Failed to load local mod: ${error}`,
-                  severity: 'error',
-                });
-              });
-            }
           }
           if (result.status === 'rejected') {
             pushNotification({
@@ -104,6 +94,19 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   useEffect(() => {
     setModMap(merge({}, remoteModMap, localModMap));
   }, [remoteModMap, localModMap]);
+
+  useEffect(() => {
+    for (const mod of Object.values(modMap)) {
+      if (mod.errors.length > 0) {
+        mod.errors.forEach((error) => {
+          pushNotification({
+            message: `Failed to load local mod: ${error}`,
+            severity: 'error',
+          });
+        });
+      }
+    }
+  }, [modMap, pushNotification]);
 
   return (
     <AppState.Provider

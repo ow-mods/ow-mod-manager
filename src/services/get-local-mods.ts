@@ -35,21 +35,21 @@ export async function getLocalMods() {
 
       const errors: string[] = [];
 
-      function getMissingAttribute(name: string) {
-        errors.push(
-          `Manifest "${manifestPath}" is missing attribute "${name}"`,
-        );
-        return `[Missing ${name}]`;
+      function getAttribute(key: keyof Manifest, isUnique?: boolean) {
+        const value = manifest[key];
+        if (value) {
+          return value;
+        }
+        errors.push(`Manifest "${manifestPath}" is missing attribute "${key}"`);
+        return `[Missing ${key}]${isUnique ? uniqueId() : ''}`;
       }
 
       const mod: Mod = {
-        name: manifest.name || getMissingAttribute('name'),
-        author: manifest.author || getMissingAttribute('author'),
-        uniqueName:
-          manifest.uniqueName ||
-          `${getMissingAttribute('uniqueName')}${uniqueId()}`,
+        name: getAttribute('name'),
+        author: getAttribute('author'),
+        uniqueName: getAttribute('uniqueName'),
+        localVersion: getAttribute('version'),
         modPath: path.dirname(manifestPath),
-        localVersion: manifest.version || getMissingAttribute('version'),
         errors,
       };
 
