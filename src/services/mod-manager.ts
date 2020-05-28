@@ -3,6 +3,7 @@ import { shell } from 'electron';
 
 import { deleteFolder, getConfig, saveConfig } from '.';
 import { unzipRemoteFile } from './files';
+import fs from 'fs-extra';
 
 export function isInstalled(mod: Mod): boolean {
   return Boolean(mod.localVersion);
@@ -52,7 +53,10 @@ export function uninstall(mod: Mod) {
 
 export function openDirectory(mod: Mod) {
   if (!mod.modPath) {
-    throw new Error("Can't open directory mod path is not defined");
+    throw new Error('Mod path is not defined');
+  }
+  if (!fs.existsSync(mod.modPath)) {
+    throw new Error('Trying to open non existing directory');
   }
   shell.openPath(path.resolve(mod.modPath));
 }
