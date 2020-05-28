@@ -63,9 +63,7 @@ export function openDirectory(mod: Mod) {
 
 export function openRepo(mod: Mod) {
   if (!mod.repo) {
-    throw new Error(
-      "Can't open repository because there's no registered repository URL",
-    );
+    throw new Error('Mod repository URL not defined');
   }
   shell.openExternal(mod.repo);
 }
