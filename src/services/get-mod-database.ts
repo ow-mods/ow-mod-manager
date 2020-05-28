@@ -1,12 +1,12 @@
 import fetch from 'node-fetch';
 
 import config from '../config.json';
-import { uniqueId } from 'lodash';
+import { manifestPartialToFull } from '.';
 
 type RemoteMod = {
   downloadUrl: string;
   downloadCount: number;
-  manifest: Manifest;
+  manifest: Partial<Manifest>;
   repo: string;
 };
 
@@ -25,24 +25,21 @@ export async function getModDatabase(url: string): Promise<ModDatabase> {
   const { releases, modManager }: RemoteModDatabase = await response.json();
 
   const mods = releases.map(
-    ({ manifest, downloadCount, downloadUrl, repo }: RemoteMod) => {
-      const missingAttributes: string[] = [];
-
-      function getAttribute(key: keyof Manifest, isUnique?: boolean) {
-        const value = manifest[key];
-        if (value) {
-          return value;
-        }
-        console.log('pushing missing', missingAttributes);
-        missingAttributes.push(key);
-        return `[Missing ${key}]${isUnique ? uniqueId() : ''}`;
-      }
+    ({
+      manifest: partialManifest,
+      downloadCount,
+      downloadUrl,
+      repo,
+    }: RemoteMod) => {
+      const { manifest, missingAttributes } = manifestPartialToFull(
+        partialManifest,
+      );
 
       const mod: Mod = {
-        name: getAttribute('name'),
-        author: getAttribute('author'),
-        uniqueName: getAttribute('uniqueName'),
-        remoteVersion: getAttribute('version'),
+        name: manifest.name,
+        author: manifest.author,
+        uniqueName: manifest.uniqueName,
+        remoteVersion: manifest.version,
         modPath: `${config.owmlPath}/Mods/${manifest.uniqueName}`,
         errors: [],
         downloadUrl,

@@ -1,10 +1,9 @@
 import fs from 'fs-extra';
 import glob from 'glob-promise';
 import path from 'path';
-import { uniqueId } from 'lodash';
 
 import config from '../config.json';
-import { isEnabled } from '.';
+import { isEnabled, manifestPartialToFull } from '.';
 
 async function getOwml() {
   const owmlManifestPath = `${config.owmlPath}/OWML.Manifest.json`;
@@ -31,24 +30,15 @@ export async function getLocalMods() {
 
   return Promise.allSettled([
     ...manifestPaths.map<Promise<Mod>>(async (manifestPath) => {
-      const manifest: Manifest = await fs.readJson(manifestPath);
-
-      const missingAttributes: string[] = [];
-
-      function getAttribute(key: keyof Manifest, isUnique?: boolean) {
-        const value = manifest[key];
-        if (value) {
-          return value;
-        }
-        missingAttributes.push(key);
-        return `[Missing ${key}]${isUnique ? uniqueId() : ''}`;
-      }
+      const { manifest, missingAttributes } = manifestPartialToFull(
+        await fs.readJson(manifestPath),
+      );
 
       const mod: Mod = {
-        name: getAttribute('name'),
-        author: getAttribute('author'),
-        uniqueName: getAttribute('uniqueName'),
-        localVersion: getAttribute('version'),
+        name: manifest.name,
+        author: manifest.author,
+        uniqueName: manifest.uniqueName,
+        localVersion: manifest.version,
         modPath: path.dirname(manifestPath),
         errors: [],
       };
