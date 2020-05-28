@@ -103,7 +103,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     if (mod.isEnabled) {
       return 'Disable';
     }
-    if (isModInstalled && !isBroken(mod)) {
+    if (isModInstalled) {
       return 'Enable';
     }
     return '';
@@ -127,7 +127,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
       <Tooltip title={getEnableTooltip()}>
         <span>
           <Button
-            disabled={!isModInstalled || mod.isRequired || isBroken(mod)}
+            disabled={!isModInstalled || mod.isRequired}
             onClick={modActionHandlerSync(toggleEnabled)}
           >
             {mod.isEnabled ? <CheckBoxIcon /> : <CheckboxBlankIcon />}
