@@ -82,6 +82,11 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
           ),
         );
         setAppRelease(modManager);
+      } catch (error) {
+        pushNotification({
+          message: `Failed to load mod database: ${error}`,
+          severity: 'error',
+        });
       } finally {
         setLoadingCount((count) => count - 1);
       }
@@ -89,7 +94,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
 
     setLoadingCount((count) => count + 1);
     getMods();
-  }, [modDatabaseUrl]);
+  }, [modDatabaseUrl, pushNotification]);
 
   useEffect(() => {
     setModMap(merge({}, remoteModMap, localModMap));

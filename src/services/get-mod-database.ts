@@ -22,6 +22,11 @@ type ModDatabase = {
 
 export async function getModDatabase(url: string): Promise<ModDatabase> {
   const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`${response.statusText} (${response.status})`);
+  }
+
   const { releases, modManager }: RemoteModDatabase = await response.json();
 
   const mods = releases.map(
