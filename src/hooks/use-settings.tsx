@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 
 import config from '../config.json';
 import { setSettings } from '../services';
@@ -19,12 +19,15 @@ export const useSettings = () => useContext(Settings);
 export const SettingsProvider: React.FunctionComponent = ({ children }) => {
   const settings = useSettingsFileWatcher();
 
-  const setSettingsPartial = (newSettings: Partial<Settings>) => {
-    setSettings({
-      ...settings,
-      ...newSettings,
-    });
-  };
+  const setSettingsPartial = useCallback(
+    (newSettings: Partial<Settings>) => {
+      setSettings({
+        ...settings,
+        ...newSettings,
+      });
+    },
+    [settings],
+  );
 
   return (
     <Settings.Provider

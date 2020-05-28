@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const emptyNotification: AppNotification = {
   message: '',
   severity: 'info',
-  id: -1,
+  id: '',
 };
 
 const Notifications: React.FunctionComponent = () => {

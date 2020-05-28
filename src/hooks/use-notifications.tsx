@@ -1,4 +1,5 @@
-import React, { useContext, useState, useCallback } from 'react';
+import React, { useContext, useState, useCallback, useEffect } from 'react';
+import { uniqueId } from 'lodash';
 
 type NotificationsState = {
   notifications: AppNotification[];
@@ -10,7 +11,7 @@ type BaseNotification = {
 };
 
 export interface AppNotification extends BaseNotification {
-  id: number;
+  id: string;
 }
 
 interface NotificationsContext extends NotificationsState {
@@ -33,28 +34,23 @@ export const useNotifications = () => useContext(Notifications);
 export const NotificationsProvider: React.FunctionComponent = ({
   children,
 }) => {
-  const [, setCount] = useState(0);
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
 
   const pushNotification = useCallback((notification: BaseNotification) => {
-    setCount((prevCount) => {
-      setNotifications((prevNotifications) => {
-        const existing = prevNotifications.find(
-          ({ message }) => message === notification.message,
-        );
-        if (existing) {
-          return prevNotifications;
-        }
-        return [
-          ...prevNotifications,
-          {
-            ...notification,
-            id: prevCount,
-          },
-        ];
-      });
-
-      return prevCount + 1;
+    setNotifications((prevNotifications) => {
+      const existing = prevNotifications.find(
+        ({ message }) => message === notification.message,
+      );
+      if (existing) {
+        return prevNotifications;
+      }
+      return [
+        ...prevNotifications,
+        {
+          ...notification,
+          id: uniqueId(),
+        },
+      ];
     });
   }, []);
 

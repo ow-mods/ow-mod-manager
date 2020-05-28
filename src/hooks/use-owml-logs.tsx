@@ -56,7 +56,7 @@ function getSimpleLine(text: string, type: LogType = 'info'): LogLine {
 
 export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const { notifications } = useNotifications();
-  const [notificationIds, setNotificationIds] = useState<number[]>([]);
+  const [notificationIds, setNotificationIds] = useState<string[]>([]);
   const [lines, setLines] = useState<LogLine[]>([]);
   const [isServerRunning, setIsServerRunning] = useState(false);
   const [serverPort, setServerPort] = useState(0);
