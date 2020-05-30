@@ -2,8 +2,13 @@ import 'regenerator-runtime/runtime';
 import { getLocalMod } from '../get-local-mods';
 import fs from 'fs-extra';
 
-test('get local mods', async () => {
-  const manifestPath = '__TEST MANIFEST PATH__';
+function mockReadJson(response: Record<string, unknown>) {
+  jest
+    .spyOn(fs, 'readJson')
+    .mockImplementation(() => new Promise((resolve) => resolve(response)));
+}
+
+test('Get local mod with correct manifest', async () => {
   const manifest: Partial<Manifest> = {
     author: 'author',
     name: 'name',
@@ -11,28 +16,21 @@ test('get local mods', async () => {
     version: 'version',
   };
 
-  jest
-    .spyOn(fs, 'readJson')
-    .mockImplementation(() => new Promise((resolve) => resolve(manifest)));
-
-  const mod = await getLocalMod(manifestPath);
+  mockReadJson(manifest);
+  const mod = await getLocalMod('');
 
   expect(mod.errors).toHaveLength(0);
 });
 
-test('get local mods', async () => {
-  const manifestPath = '__TEST MANIFEST PATH__';
+test('Get local mod with broken manifest', async () => {
   const manifest: Partial<Manifest> = {
     author: 'author',
     name: 'name',
     version: 'version',
   };
 
-  jest
-    .spyOn(fs, 'readJson')
-    .mockImplementation(() => new Promise((resolve) => resolve(manifest)));
-
-  const mod = await getLocalMod(manifestPath);
+  mockReadJson(manifest);
+  const mod = await getLocalMod('');
 
   expect(mod.errors).toHaveLength(1);
   expect(
