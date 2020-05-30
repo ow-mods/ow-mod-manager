@@ -19,6 +19,7 @@ const brokenManifest: Partial<Manifest> = {
 const paths = {
   correctManifest: 'correct-manifest',
   brokenManifest: ' broken-manifest',
+  missingManifest: 'missing-manifest',
   brokenConfig: 'broken-config',
   disabled: 'disabled',
   defaultConfig: 'default-config',
@@ -45,6 +46,10 @@ beforeEach(() => {
       'manifest.json': JSON.stringify(correctManifest),
       'default-config.json': '{',
     },
+    [paths.brokenDefaultConfig]: {
+      'manifest.json': JSON.stringify(correctManifest),
+      'default-config.json': '{',
+    },
   });
 });
 
@@ -52,52 +57,54 @@ afterEach(() => {
   mockFs.restore();
 });
 
-test('Get local mod with correct manifest', async () => {
-  const mod = await getLocalMod(paths.correctManifest);
+describe('Get local mod', () => {
+  it('has no errors with correct manifest', async () => {
+    const mod = await getLocalMod(paths.correctManifest);
 
-  expect(mod.errors).toHaveLength(0);
-  expect(mod.isEnabled).toEqual(true);
-});
+    expect(mod.errors).toHaveLength(0);
+    expect(mod.isEnabled).toEqual(true);
+  });
 
-test('Get local mod with broken manifest', async () => {
-  const mod = await getLocalMod(paths.brokenManifest);
+  it('has error with broken manifest', async () => {
+    const mod = await getLocalMod(paths.brokenManifest);
 
-  expect(mod.errors).toHaveLength(1);
-  expect(
-    mod.errors.find(
-      (error) => typeof error === 'string' && error.includes('version'),
-    ),
-  ).toBeDefined();
-});
+    expect(mod.errors).toHaveLength(1);
+    expect(
+      mod.errors.find(
+        (error) => typeof error === 'string' && error.includes('version'),
+      ),
+    ).toBeDefined();
+  });
 
-test('Get local mod with broken config', async () => {
-  const mod = await getLocalMod(`${paths.brokenConfig}/manifest.json`);
+  it('has error with broken config', async () => {
+    const mod = await getLocalMod(`${paths.brokenConfig}/manifest.json`);
 
-  expect(mod.errors).toHaveLength(1);
-  expect(mod.errors).toEqual(
-    expect.arrayContaining([expect.stringContaining('config.json')]),
-  );
-});
+    expect(mod.errors).toHaveLength(1);
+    expect(mod.errors).toEqual(
+      expect.arrayContaining([expect.stringContaining('config.json')]),
+    );
+  });
 
-test('Get local mod with config disabled', async () => {
-  const mod = await getLocalMod(`${paths.disabled}/manifest.json`);
+  it('gets enabled state from config', async () => {
+    const mod = await getLocalMod(`${paths.disabled}/manifest.json`);
 
-  expect(mod.errors).toHaveLength(0);
-  expect(mod.isEnabled).toEqual(true);
-});
+    expect(mod.errors).toHaveLength(0);
+    expect(mod.isEnabled).toEqual(false);
+  });
 
-test('Get local mod with default config disabled', async () => {
-  const mod = await getLocalMod(`${paths.defaultConfig}/manifest.json`);
+  it('overrides enabled state from default config', async () => {
+    const mod = await getLocalMod(`${paths.defaultConfig}/manifest.json`);
 
-  expect(mod.errors).toHaveLength(0);
-  expect(mod.isEnabled).toEqual(true);
-});
+    expect(mod.errors).toHaveLength(0);
+    expect(mod.isEnabled).toEqual(true);
+  });
 
-test('Get local mod with broken default config', async () => {
-  const mod = await getLocalMod(`${paths.brokenDefaultConfig}/manifest.json`);
+  it('has error with broken default config', async () => {
+    const mod = await getLocalMod(`${paths.brokenDefaultConfig}/manifest.json`);
 
-  expect(mod.errors).toHaveLength(1);
-  expect(mod.errors).toEqual(
-    expect.arrayContaining([expect.stringContaining('default-config.json')]),
-  );
+    expect(mod.errors).toHaveLength(1);
+    expect(mod.errors).toEqual(
+      expect.arrayContaining([expect.stringContaining('default-config.json')]),
+    );
+  });
 });
