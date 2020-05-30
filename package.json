@@ -12,8 +12,7 @@
     "lint": "eslint --ext .ts,.tsx,.js,.jsx .",
     "lint:fix": "eslint --fix --ext .ts,.tsx,.js,.jsx .",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "test:all": "jest \"--testLocationInResults\" \"--json\" \"--useStderr\" \"--outputFile\" \"C:\\Users\\ricar\\AppData\\Local\\Temp\\jest_runner_mod_installer.json\" \"--watch\" \"--coverage\" \"--no-color\" \"--reporters\" \"default\" \"--reporters\" \"c:\\Users\\ricar\\.vscode\\extensions\\orta.vscode-jest-3.2.0\\out\\reporter.js\""
+    "test:watch": "jest --watch"
   },
   "keywords": [],
   "author": {
