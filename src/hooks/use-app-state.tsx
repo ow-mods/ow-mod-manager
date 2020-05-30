@@ -1,7 +1,11 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { merge } from 'lodash';
 
-import { getLocalMods, getModDatabase } from '../services';
+import {
+  getLocalManifestPaths,
+  getLocalMod,
+  getModDatabase,
+} from '../services';
 import { useModsDirectoryWatcher } from '.';
 import { useSettings } from './use-settings';
 import { useNotifications } from './use-notifications';
@@ -45,23 +49,29 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   useModsDirectoryWatcher(
     useCallback(() => {
       const getMods = async () => {
-        const localModsPromises = await getLocalMods();
-        const newModMap: ModMap = {};
+        try {
+          const manifestPaths = await getLocalManifestPaths();
+          const newModMap: ModMap = {};
 
-        localModsPromises.forEach((result) => {
-          if (result.status === 'fulfilled') {
-            const mod = result.value;
-            newModMap[mod.uniqueName] = mod;
+          for (const path of manifestPaths) {
+            try {
+              const mod = await getLocalMod(path);
+              newModMap[mod.uniqueName] = mod;
+            } catch (error) {
+              pushNotification({
+                message: `Failed to load local mod: ${error}`,
+                severity: 'error',
+              });
+            }
           }
-          if (result.status === 'rejected') {
-            pushNotification({
-              message: `Failed to load local mod: ${result.reason}`,
-              severity: 'error',
-            });
-          }
-        });
 
-        setLocalModMap(newModMap);
+          setLocalModMap(newModMap);
+        } catch (error) {
+          pushNotification({
+            message: `Failed to find local mods: ${error}`,
+            severity: 'error',
+          });
+        }
       };
 
       getMods();

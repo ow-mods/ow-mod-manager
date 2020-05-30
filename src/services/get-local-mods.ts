@@ -25,40 +25,38 @@ async function getOwml() {
   return owml;
 }
 
-export async function getLocalMods() {
-  const manifestPaths = await glob(`${config.owmlPath}/Mods/**/manifest.json`);
+export async function getLocalManifestPaths() {
+  return glob(`${config.owmlPath}/Mods/**/manifest.json`);
+}
 
-  return Promise.allSettled([
-    ...manifestPaths.map<Promise<Mod>>(async (manifestPath) => {
-      const { manifest, missingAttributes } = manifestPartialToFull(
-        await fs.readJson(manifestPath),
-      );
+export async function getLocalMod(manifestPath: string) {
+  const { manifest, missingAttributes } = manifestPartialToFull(
+    await fs.readJson(manifestPath),
+  );
 
-      const mod: Mod = {
-        name: manifest.name,
-        author: manifest.author,
-        uniqueName: manifest.uniqueName,
-        localVersion: manifest.version,
-        modPath: path.dirname(manifestPath),
-        errors: [],
-      };
+  const mod: Mod = {
+    name: manifest.name,
+    author: manifest.author,
+    uniqueName: manifest.uniqueName,
+    localVersion: manifest.version,
+    modPath: path.dirname(manifestPath),
+    errors: [],
+  };
 
-      if (missingAttributes.length > 0) {
-        mod.errors.push(
-          `Manifest ${manifestPath} missing attributes "${missingAttributes.join(
-            '", "',
-          )}"`,
-        );
-      }
+  if (missingAttributes.length > 0) {
+    mod.errors.push(
+      `Manifest ${manifestPath} missing attributes "${missingAttributes.join(
+        '", "',
+      )}"`,
+    );
+  }
 
-      try {
-        mod.isEnabled = isEnabled(mod);
-      } catch (error) {
-        mod.errors.push(error);
-      } finally {
-        return mod;
-      }
-    }),
-    getOwml(),
-  ]);
+  try {
+    mod.isEnabled = isEnabled(mod);
+  } catch (error) {
+    mod.errors.push(error);
+  } finally {
+    return mod;
+  }
+  // TODO GET OWML
 }
