@@ -8,3 +8,4 @@ node_modules
 /out
 /OWML
 /settings.json
+/coverage
