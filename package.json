@@ -10,7 +10,8 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx,.js,.jsx .",
-    "lint:fix": "eslint --fix --ext .ts,.tsx,.js,.jsx ."
+    "lint:fix": "eslint --fix --ext .ts,.tsx,.js,.jsx .",
+    "test": "jest"
   },
   "keywords": [],
   "author": {
@@ -55,11 +56,53 @@
       ]
     }
   },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "browsers": "last 1 version",
+            "node": "current"
+          }
+        }
+      ],
+      "@babel/preset-typescript",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ],
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
+      ],
+      "react-hot-loader/babel"
+    ],
+    "env": {
+      "test": {
+        "presets": [
+          [
+            "@babel/preset-env",
+            {
+              "modules": "commonjs"
+            }
+          ]
+        ]
+      }
+    }
+  },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
+    "@babel/core": "^7.10.1",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-decorators": "^7.8.3",
-    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-env": "^7.10.1",
     "@babel/preset-react": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
     "@electron-forge/cli": "6.0.0-beta.51",
@@ -67,6 +110,7 @@
     "@electron-forge/maker-rpm": "6.0.0-beta.51",
     "@electron-forge/maker-zip": "6.0.0-beta.51",
     "@electron-forge/plugin-webpack": "6.0.0-beta.51",
+    "@hot-loader/react-dom": "^16.13.0",
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
     "@types/fs-extra": "^9.0.1",
     "@types/lodash": "^4.14.152",
@@ -76,28 +120,30 @@
     "@types/unzipper": "^0.10.3",
     "@typescript-eslint/eslint-plugin": "^3.0.0",
     "@typescript-eslint/parser": "^3.0.0",
+    "babel-jest": "^26.0.1",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.5.3",
     "electron": "9.0.0",
     "eslint": "^7.1.0",
     "eslint-config-prettier": "^6.11.0",
+    "eslint-import-resolver-typescript": "^2.0.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.2",
     "fork-ts-checker-webpack-plugin": "^4.1.4",
+    "jest": "^26.0.1",
     "node-loader": "^0.6.0",
     "prettier": "^2.0.5",
+    "react-hot-loader": "^4.12.21",
     "style-loader": "^1.2.1",
     "ts-loader": "^7.0.5",
-    "typescript": "^3.9.3",
-    "react-hot-loader": "^4.12.21",
-    "eslint-import-resolver-typescript": "^2.0.0",
-    "@hot-loader/react-dom": "^16.13.0"
+    "typescript": "^3.9.3"
   },
   "dependencies": {
     "@material-ui/core": "^4.10.0",
     "@material-ui/icons": "^4.9.1",
+    "@types/jest": "^25.2.3",
     "fs-extra": "^9.0.0",
     "glob": "^7.1.6",
     "glob-promise": "^3.4.0",
