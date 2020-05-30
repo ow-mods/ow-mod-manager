@@ -157,7 +157,7 @@
     "glob": "^7.1.6",
     "glob-promise": "^3.4.0",
     "lodash": "^4.17.15",
-    "node-fetch": "^3.0.0-beta.6-exportfix",
+    "node-fetch": "^3.0.0-beta.5",
     "react": "0.0.0-experimental-33c3af284",
     "react-dom": "0.0.0-experimental-33c3af284",
     "regenerator-runtime": "^0.13.5",
