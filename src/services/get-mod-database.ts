@@ -10,12 +10,12 @@ type RemoteMod = {
   repo: string;
 };
 
-type RemoteModDatabase = {
+export type RemoteModDatabase = {
   releases: RemoteMod[];
   modManager: AppRelease;
 };
 
-type ModDatabase = {
+export type ModDatabase = {
   mods: Mod[];
   modManager: AppRelease;
 };
