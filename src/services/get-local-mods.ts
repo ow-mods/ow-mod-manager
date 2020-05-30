@@ -5,26 +5,6 @@ import path from 'path';
 import config from '../config.json';
 import { isEnabled, manifestPartialToFull } from '.';
 
-async function getOwml() {
-  const owmlManifestPath = `${config.owmlPath}/OWML.Manifest.json`;
-  const owmlManifest: Manifest = fs.existsSync(owmlManifestPath)
-    ? await fs.readJSON(owmlManifestPath)
-    : null;
-  const owml: Mod = {
-    name: owmlManifest?.name ?? 'OWML',
-    author: owmlManifest?.author ?? 'Alek',
-    uniqueName: owmlManifest?.uniqueName ?? 'Alek.OWML',
-    modPath: config.owmlPath,
-    localVersion: owmlManifest
-      ? owmlManifest?.version ?? '< 0.3.43'
-      : undefined,
-    isEnabled: true,
-    isRequired: true,
-    errors: [],
-  };
-  return owml;
-}
-
 export async function getLocalManifestPaths() {
   return glob(`${config.owmlPath}/Mods/**/manifest.json`);
 }
@@ -54,7 +34,7 @@ export async function getLocalMod(manifestPath: string) {
   try {
     mod.isEnabled = isEnabled(mod);
   } catch (error) {
-    mod.errors.push(error);
+    mod.errors.push(`${error}`);
   } finally {
     return mod;
   }

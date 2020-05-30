@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { merge } from 'lodash';
 
+import config from '../config.json';
 import {
   getLocalManifestPaths,
   getLocalMod,
@@ -64,6 +65,11 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
               });
             }
           }
+
+          const owmlManifestPath = `${config.owmlPath}/OWML.Manifest.json`;
+          const owml = await getLocalMod(owmlManifestPath);
+          owml.isRequired = true;
+          newModMap[owml.uniqueName] = owml;
 
           setLocalModMap(newModMap);
         } catch (error) {
