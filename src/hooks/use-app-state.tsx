@@ -51,7 +51,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
     useCallback(() => {
       const getMods = async () => {
         try {
-          const manifestPaths = await getLocalManifestPaths();
+          const manifestPaths = await getLocalManifestPaths(config.owmlPath);
           const newModMap: ModMap = {};
 
           for (const path of manifestPaths) {

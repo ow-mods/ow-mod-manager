@@ -2,11 +2,10 @@ import fs from 'fs-extra';
 import glob from 'glob-promise';
 import path from 'path';
 
-import config from '../config.json';
 import { isEnabled, manifestPartialToFull } from '.';
 
-export async function getLocalManifestPaths() {
-  return glob(`${config.owmlPath}/Mods/**/manifest.json`);
+export async function getLocalManifestPaths(owmlPath: string) {
+  return glob(`${owmlPath}/Mods/**/manifest.json`);
 }
 
 export async function getLocalMod(manifestPath: string) {
