@@ -16,15 +16,17 @@ const brokenManifest: Partial<Manifest> = {
   uniqueName: 'uniqueName',
 };
 
+const paths = {
+  correctManifest: 'correct-manifest',
+  brokenManifest: ' broken-manifest',
+  brokenConfig: 'broken-config',
+};
+
 beforeEach(() => {
   mockFs({
-    'correct-manifest': {
-      'manifest.json': JSON.stringify(correctManifest),
-    },
-    'broken-manifest': {
-      'manifest.json': JSON.stringify(brokenManifest),
-    },
-    'broken-config': {
+    [paths.correctManifest]: JSON.stringify(correctManifest),
+    [paths.brokenManifest]: JSON.stringify(brokenManifest),
+    [paths.brokenConfig]: {
       'manifest.json': JSON.stringify(correctManifest),
       'config.json': '{',
     },
@@ -36,13 +38,13 @@ afterEach(() => {
 });
 
 test('Get local mod with correct manifest', async () => {
-  const mod = await getLocalMod('correct-manifest/manifest.json');
+  const mod = await getLocalMod(paths.correctManifest);
 
   expect(mod.errors).toHaveLength(0);
 });
 
 test('Get local mod with broken manifest', async () => {
-  const mod = await getLocalMod('broken-manifest/manifest.json');
+  const mod = await getLocalMod(paths.brokenManifest);
 
   expect(mod.errors).toHaveLength(1);
   expect(
@@ -53,7 +55,7 @@ test('Get local mod with broken manifest', async () => {
 });
 
 test('Get local mod with broken config', async () => {
-  const mod = await getLocalMod('broken-config/manifest.json');
+  const mod = await getLocalMod(`${paths.brokenConfig}/manifest.json`);
 
   expect(mod.errors).toHaveLength(1);
   expect(mod.errors).toEqual(
