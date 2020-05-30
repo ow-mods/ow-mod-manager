@@ -37,5 +37,7 @@ export function getConfig(mod: Mod) {
     saveConfig(mod, defaultConfig);
   }
   const config: ModConfig = fs.readJsonSync(getConfigPath(mod));
+  config.enabled = true;
+  saveConfig(mod, config);
   return config;
 }
