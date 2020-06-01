@@ -66,7 +66,11 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
 
   return (
     <Tooltip title={getRowTooltip()}>
-      <TableRow className={getClassName()} key={mod.uniqueName}>
+      <TableRow
+        className={getClassName()}
+        key={mod.uniqueName}
+        data-testid={`mod-row-${mod.uniqueName}`}
+      >
         <TableCell>{mod.name}</TableCell>
         <TableCell>{mod.author}</TableCell>
         <TableCell align="right">{mod.downloadCount}</TableCell>

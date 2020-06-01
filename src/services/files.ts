@@ -103,7 +103,7 @@ export async function unzipRemoteFile(
   };
 
   const temporaryName = path.basename(destinationPath);
-  const temporaryPath = `${remote.app.getAppPath()}/temp/${temporaryName}-${new Date().getTime()}`;
+  const temporaryPath = `temp/${temporaryName}-${new Date().getTime()}`;
   const zipPath = `${temporaryPath}/${temporaryName}.zip`;
   const unzipPath = `${temporaryPath}/${temporaryName}`;
 
