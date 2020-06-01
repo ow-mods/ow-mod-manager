@@ -160,6 +160,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
               isModOutdated ? update : install,
               'install',
             )}
+            data-testid="mod-action-install"
             disabled={!isModDownloadable}
             variant={isInstallHighlighted ? 'contained' : 'text'}
             color={isInstallHighlighted ? 'secondary' : 'default'}
@@ -180,7 +181,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
       </Tooltip>
       <Tooltip title="More...">
         <span>
-          <Button onClick={handleMoreClick}>
+          <Button onClick={handleMoreClick} data-testid="mod-action-more">
             <MoreIcon />
           </Button>
         </span>

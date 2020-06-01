@@ -103,7 +103,9 @@
     "clearMocks": true,
     "coverageDirectory": "coverage",
     "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": ["./jest.setup.js"]
+    "setupFilesAfterEnv": [
+      "./jest.setup.js"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.10.1",

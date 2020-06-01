@@ -25,7 +25,12 @@ const defaultState: NotificationsState = {
 
 const Notifications = React.createContext<NotificationsContext>({
   ...defaultState,
-  pushNotification: () => {},
+  pushNotification: ({ severity, message }) => {
+    if (severity === 'error') {
+      throw new Error(`Error notification: ${message}`);
+    }
+    console.log(`Notification (${severity}): ${message}`);
+  },
   popNotification: () => {},
 });
 
