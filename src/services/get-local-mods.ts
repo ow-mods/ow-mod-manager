@@ -37,5 +37,4 @@ export async function getLocalMod(manifestPath: string) {
   } finally {
     return mod;
   }
-  // TODO GET OWML
 }
