@@ -2,7 +2,6 @@ import unzip from 'unzipper';
 import fetch from 'node-fetch';
 import fs from 'fs-extra';
 import path from 'path';
-import { remote } from 'electron';
 
 // Defines which portion of the loading bar is for download progress,
 // and the remaining is for unzipping progress.
