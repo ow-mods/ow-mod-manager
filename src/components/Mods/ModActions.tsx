@@ -218,6 +218,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
           <MenuItem
             disabled={!isModInstalled}
             onClick={modActionHandlerSync(uninstall, 'uninstall')}
+            data-testid={`mod-action-uninstall-${mod.uniqueName}`}
           >
             <ListItemIcon>
               <DeleteIcon />

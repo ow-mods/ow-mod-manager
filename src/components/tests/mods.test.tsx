@@ -35,11 +35,18 @@ jest.mock(
 );
 import config from '../../config.json';
 
-const correctModManifest: Manifest = {
-  author: 'TEST_MOD_AUTHOR',
-  name: 'TEST_MOD_NAME',
-  uniqueName: 'uniqueName',
-  version: 'version',
+const localModManifest: Manifest = {
+  author: 'TEST_LOCAL_MOD_AUTHOR',
+  name: 'TEST_LOCAL_MOD_NAME',
+  uniqueName: 'TEST_LOCAL_MOD_UNIQUE_NAME',
+  version: 'TEST_LOCAL_MOD_VERSION',
+};
+
+const remoteModManifest: Manifest = {
+  author: 'TEST_REMOTE_MOD_AUTHOR',
+  name: 'TEST_REMOTE_MOD_NAME',
+  uniqueName: 'TEST_REMOTE_MOD_UNIQUE_NAME',
+  version: 'TEST_REMOTE_MOD_VERSION',
 };
 
 const correctRemoteModDatabase: RemoteModDatabase = {
@@ -49,10 +56,10 @@ const correctRemoteModDatabase: RemoteModDatabase = {
   },
   releases: [
     {
-      downloadUrl: '',
+      downloadUrl: 'TEST_MOD_DOWNLOAD_URL',
       downloadCount: 0,
-      manifest: correctModManifest,
-      repo: '',
+      manifest: remoteModManifest,
+      repo: 'TEST_MOD_REPO',
     },
   ],
 };
@@ -68,7 +75,7 @@ beforeEach(() => {
       }),
       Mods: {
         testMod: {
-          'manifest.json': JSON.stringify(correctModManifest),
+          'manifest.json': JSON.stringify(localModManifest),
           'config.json': JSON.stringify({ enabled: false }),
         },
       },
@@ -95,14 +102,14 @@ describe('Mods page', () => {
     );
 
     const contextCallback = jest.fn();
-    const { findByText } = render(
+    const { findByText, findByTestId } = render(
       <AppStateProvider>
         <ModsPage />
         <ContextHelper spy={contextCallback} />
       </AppStateProvider>,
     );
 
-    const modAuthor = await findByText('TEST_MOD_AUTHOR');
+    const modAuthor = await findByText(localModManifest.author);
     const row = modAuthor.closest('tr') as HTMLElement;
     expect(row).not.toBeNull();
 
@@ -113,7 +120,9 @@ describe('Mods page', () => {
     const more = (await rowFindId('mod-action-more')) as HTMLElement;
     more.click();
 
-    const uninstall = (await findByText('Uninstall')) as HTMLElement;
+    const uninstall = (await findByTestId(
+      `mod-action-uninstall-${localModManifest.uniqueName}`,
+    )) as HTMLElement;
     uninstall.click();
 
     await waitFor(() => {
