@@ -3,9 +3,9 @@ import mockFs from 'mock-fs';
 import fetch from 'node-fetch';
 import { render, waitFor, within } from '@testing-library/react';
 
-import { RemoteModDatabase } from '../../../services';
-import { useAppState, AppStateProvider } from '../../../hooks';
-import ModsPage from '..';
+import { RemoteModDatabase } from '../../services';
+import { useAppState, AppStateProvider } from '../../hooks';
+import ModsPage from '../Mods';
 
 const { Response } = jest.requireActual('node-fetch');
 
@@ -14,7 +14,7 @@ jest.mock('node-fetch', () => jest.fn());
 let mockedConfig: typeof config;
 
 jest.mock(
-  '../../../config.json',
+  '../../config.json',
   () => {
     mockedConfig = {
       settingsPath: 'TEST_SETTINGS_FILE.json',
@@ -33,7 +33,7 @@ jest.mock(
     virtual: true,
   },
 );
-import config from '../../../config.json';
+import config from '../../config.json';
 
 const correctModManifest: Manifest = {
   author: 'TEST_MOD_AUTHOR',
@@ -88,7 +88,7 @@ const ContextHelper: React.FunctionComponent<{ spy: jest.Mock }> = ({
   return null;
 };
 
-describe('Mod actions', () => {
+describe('Mods page', () => {
   it('is able to uninstall mod', async () => {
     (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
       new Response(JSON.stringify(correctRemoteModDatabase)),
