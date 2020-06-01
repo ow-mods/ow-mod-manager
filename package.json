@@ -103,6 +103,7 @@
     "clearMocks": true,
     "coverageDirectory": "coverage",
     "testEnvironment": "jsdom",
+    "modulePathIgnorePatterns": ["<rootDir>/OWML"],
     "setupFilesAfterEnv": [
       "./jest.setup.js"
     ]
