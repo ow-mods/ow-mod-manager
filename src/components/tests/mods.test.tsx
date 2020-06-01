@@ -2,16 +2,8 @@ import React from 'react';
 import { render, waitFor, within } from '@testing-library/react';
 import fs from 'fs-extra';
 
-import { useAppState, AppStateProvider } from '../../hooks';
+import { AppStateProvider } from '../../hooks';
 import ModsPage from '../Mods';
-
-const ContextHelper: React.FunctionComponent<{ spy: jest.Mock }> = ({
-  spy,
-}) => {
-  const contextData = useAppState();
-  spy(contextData);
-  return null;
-};
 
 const modUniqueName = 'Raicuparta.AutoResume';
 
@@ -22,11 +14,9 @@ describe('Mods page', () => {
       fs.removeSync(modsPath);
     }
 
-    const contextCallback = jest.fn();
     const { findByTestId } = render(
       <AppStateProvider>
         <ModsPage />
-        <ContextHelper spy={contextCallback} />
       </AppStateProvider>,
     );
 
