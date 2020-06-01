@@ -1,4 +1,3 @@
-import 'regenerator-runtime/runtime';
 import fetch from 'node-fetch';
 const { Response } = jest.requireActual('node-fetch');
 

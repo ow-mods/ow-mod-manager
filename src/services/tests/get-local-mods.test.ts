@@ -1,4 +1,3 @@
-import 'regenerator-runtime/runtime';
 import mockFs from 'mock-fs';
 
 import { getLocalMod } from '..';

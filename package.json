@@ -102,7 +102,8 @@
   "jest": {
     "clearMocks": true,
     "coverageDirectory": "coverage",
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["./jest.setup.js"]
   },
   "devDependencies": {
     "@babel/core": "^7.10.1",
@@ -153,6 +154,7 @@
   "dependencies": {
     "@material-ui/core": "^4.10.0",
     "@material-ui/icons": "^4.9.1",
+    "@testing-library/jest-dom": "^5.9.0",
     "@types/jest": "^25.2.3",
     "fs-extra": "^9.0.0",
     "glob": "^7.1.6",
