@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { merge } from 'lodash';
+import fs from 'fs-extra';
 
 import config from '../config.json';
 import {
@@ -67,9 +68,11 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
           }
 
           const owmlManifestPath = `${config.owmlPath}/OWML.Manifest.json`;
-          const owml = await getLocalMod(owmlManifestPath);
-          owml.isRequired = true;
-          newModMap[owml.uniqueName] = owml;
+          if (fs.existsSync(owmlManifestPath)) {
+            const owml = await getLocalMod(owmlManifestPath);
+            owml.isRequired = true;
+            newModMap[owml.uniqueName] = owml;
+          }
 
           setLocalModMap(newModMap);
         } catch (error) {

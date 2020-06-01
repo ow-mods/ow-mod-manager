@@ -8,6 +8,7 @@ type RemoteMod = {
   downloadCount: number;
   manifest: Partial<Manifest>;
   repo: string;
+  required?: boolean;
 };
 
 export type RemoteModDatabase = {
@@ -35,6 +36,7 @@ export async function getModDatabase(url: string): Promise<ModDatabase> {
       downloadCount,
       downloadUrl,
       repo,
+      required,
     }: RemoteMod) => {
       const { manifest, missingAttributes } = manifestPartialToFull(
         partialManifest,
@@ -50,6 +52,7 @@ export async function getModDatabase(url: string): Promise<ModDatabase> {
         downloadUrl,
         downloadCount,
         repo,
+        isRequired: required,
       };
 
       if (missingAttributes.length > 0) {
