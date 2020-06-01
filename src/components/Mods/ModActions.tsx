@@ -160,7 +160,6 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
               isModOutdated ? update : install,
               'install',
             )}
-            data-testid="mod-action-install"
             disabled={!isModDownloadable}
             variant={isInstallHighlighted ? 'contained' : 'text'}
             color={isInstallHighlighted ? 'secondary' : 'default'}
@@ -181,7 +180,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
       </Tooltip>
       <Tooltip title="More...">
         <span>
-          <Button onClick={handleMoreClick} data-testid="mod-action-more">
+          <Button onClick={handleMoreClick}>
             <MoreIcon />
           </Button>
         </span>
@@ -218,7 +217,6 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
           <MenuItem
             disabled={!isModInstalled}
             onClick={modActionHandlerSync(uninstall, 'uninstall')}
-            data-testid={`mod-action-uninstall-${mod.uniqueName}`}
           >
             <ListItemIcon>
               <DeleteIcon />
