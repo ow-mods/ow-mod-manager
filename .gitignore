@@ -1,11 +1,10 @@
 node_modules
-temp
-update
-releases-cache.json
 *.tsbuildinfo
 .npm
 .eslintcache
 .webpack
-out
-OWML
-settings.json
+/temp
+/update
+/out
+/OWML
+/settings.json

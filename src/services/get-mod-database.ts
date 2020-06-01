@@ -1,4 +1,4 @@
-import axios from 'axios';
+import fetch from 'node-fetch';
 
 import config from '../config.json';
 
@@ -9,23 +9,39 @@ type RemoteMod = {
   repo: string;
 };
 
-export async function getModDatabase(url: string): Promise<Mod[]> {
-  return axios.get(url).then(({ data }) =>
-    data.releases.map(
-      ({ manifest, downloadCount, downloadUrl, repo }: RemoteMod) => {
-        const mod: Mod = {
-          name: manifest.name,
-          author: manifest.author,
-          uniqueName: manifest.uniqueName,
-          remoteVersion: manifest.version,
-          modPath: `${config.owmlPath}/Mods/${manifest.name}`,
-          downloadUrl,
-          downloadCount,
-          repo,
-        };
+type RemoteModDatabase = {
+  releases: RemoteMod[];
+  modManager: AppRelease;
+};
 
-        return mod;
-      },
-    ),
+type ModDatabase = {
+  mods: Mod[];
+  modManager: AppRelease;
+};
+
+export async function getModDatabase(url: string): Promise<ModDatabase> {
+  const response = await fetch(url);
+  const { releases, modManager }: RemoteModDatabase = await response.json();
+
+  const mods = releases.map(
+    ({ manifest, downloadCount, downloadUrl, repo }: RemoteMod) => {
+      const mod: Mod = {
+        name: manifest.name,
+        author: manifest.author,
+        uniqueName: manifest.uniqueName,
+        remoteVersion: manifest.version,
+        modPath: `${config.owmlPath}/Mods/${manifest.name}`,
+        downloadUrl,
+        downloadCount,
+        repo,
+      };
+
+      return mod;
+    },
   );
+
+  return {
+    mods,
+    modManager,
+  };
 }

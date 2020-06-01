@@ -58,6 +58,11 @@ type Settings = {
   closeOnPlay: boolean;
   logToSocket: boolean;
   logLinesLimit: number;
-  modDatabaseUrl: string;
   showAdvancedSettings: boolean;
+  modDatabaseUrl: string;
+};
+
+type AppRelease = {
+  version: string;
+  downloadUrl: string;
 };

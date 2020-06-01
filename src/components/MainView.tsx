@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { remote } from 'electron';
 import {
   Container,
   Tabs,
@@ -10,13 +11,17 @@ import {
   Build as BuildIcon,
   Dvr as DvrIcon,
   Settings as SettingsIcon,
+  NewReleases as NewReleasesIcon,
 } from '@material-ui/icons';
 
+import { useAppState } from '../hooks';
 import Mods from './Mods';
 import SettingsPage from './Settings';
 import Logs from './Logs';
 import TopBar from './TopBar';
 import LoadingBar from './LoadingBar';
+import UpdatePage from './Update';
+import Notifications from './Notifications';
 
 const useStyles = makeStyles({
   root: {
@@ -28,7 +33,14 @@ const useStyles = makeStyles({
   },
 });
 
-const tabs = [
+type Tab = {
+  name: string;
+  component: typeof Mods;
+  icon: typeof BuildIcon;
+  color?: 'primary' | 'secondary';
+};
+
+const tabs: readonly Tab[] = [
   {
     name: 'Mods',
     component: Mods,
@@ -46,34 +58,48 @@ const tabs = [
   },
 ] as const;
 
-type Tab = typeof tabs[number]['name'];
+const updateTab: Tab = {
+  name: 'Update',
+  component: UpdatePage,
+  icon: NewReleasesIcon,
+  color: 'secondary',
+};
 
 const MainView = () => {
   const styles = useStyles();
-  const [selectedTab, setSelectedTab] = useState<Tab>('Mods');
+  const [selectedTab, setSelectedTab] = useState(0);
+  const { appRelease } = useAppState();
+
+  const isAppOutdated =
+    appRelease && appRelease.version !== remote.app.getVersion();
+  const visibleTabs = isAppOutdated ? [...tabs, updateTab] : tabs;
 
   return (
     <CssBaseline>
       <TopBar>
         <Tabs value={selectedTab}>
-          {tabs.map((tab) => (
+          {visibleTabs.map((tab: Tab, index: number) => (
             <Tab
               key={tab.name}
               label={tab.name}
-              value={tab.name}
+              value={index}
               classes={styles}
-              icon={<tab.icon />}
-              onClick={() => setSelectedTab(tab.name)}
+              icon={<tab.icon color={tab.color} />}
+              onClick={() => setSelectedTab(index)}
             />
           ))}
         </Tabs>
       </TopBar>
       <LoadingBar />
       <Container>
-        {tabs.map(
-          (tab) => selectedTab === tab.name && <tab.component key={tab.name} />,
+        {visibleTabs.map(
+          (tab) =>
+            visibleTabs[selectedTab].name === tab.name && (
+              <tab.component key={tab.name} />
+            ),
         )}
       </Container>
+      <Notifications />
     </CssBaseline>
   );
 };

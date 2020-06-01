@@ -1,32 +1,38 @@
 import unzip from 'unzipper';
-import request from 'request';
+import fetch from 'node-fetch';
 import fs from 'fs-extra';
 import path from 'path';
+import { remote } from 'electron';
+
+// Defines which portion of the loading bar is for download progress,
+// and the remaining is for unzipping progress.
+const progressDownloadPortion = 0.8;
+const progressUnzipPortion = 1 - progressDownloadPortion;
 
 export async function downloadFile(
   url: string,
   filePath: string,
   onProgress: ProgressHandler,
 ) {
-  const writer = fs.createWriteStream(filePath);
-
   let receivedBytes = 0;
-  let totalBytes = 0;
 
-  const fileRequest = request(url);
+  const response = await fetch(url);
 
-  fileRequest.on('response', (response) => {
-    totalBytes = parseInt(response.headers['content-length'] || '0');
-  });
+  return new Promise((resolve, reject) => {
+    if (!response.ok) {
+      reject(response.statusText);
+    }
 
-  fileRequest.on('data', (data) => {
-    receivedBytes += data.length;
-    onProgress(receivedBytes / totalBytes);
-  });
+    const totalBytes = parseInt(response.headers.get('content-length') || '0');
 
-  fileRequest.pipe(writer);
+    const writer = fs.createWriteStream(filePath);
+    response.body.pipe(writer);
 
-  return new Promise((resolve) => {
+    response.body.on('data', (data) => {
+      receivedBytes += data.length;
+      onProgress(receivedBytes / totalBytes);
+    });
+
     writer.on('finish', resolve);
   });
 }
@@ -75,4 +81,30 @@ export async function copyFolder(sourcePath: string, targetPath: string) {
 
 export function deleteFolder(folderPath: string) {
   fs.removeSync(folderPath);
+}
+
+export async function unzipRemoteFile(
+  url: string,
+  destinationPath: string,
+  onProgress: ProgressHandler,
+) {
+  const onDownloadProgress: ProgressHandler = (progress) => {
+    onProgress(progress * progressDownloadPortion);
+  };
+
+  const onUnzipProgress: ProgressHandler = (progress) => {
+    onProgress(progressDownloadPortion + progress * progressUnzipPortion);
+  };
+
+  const temporaryName = path.basename(destinationPath);
+  const temporaryPath = `${remote.app.getAppPath()}/temp/${temporaryName}-${new Date().getTime()}`;
+  const zipPath = `${temporaryPath}/${temporaryName}.zip`;
+  const unzipPath = `${temporaryPath}/${temporaryName}`;
+
+  await createFolders(unzipPath);
+
+  await downloadFile(url, zipPath, onDownloadProgress);
+  await unzipFile(zipPath, unzipPath, onUnzipProgress);
+  await copyFolder(unzipPath, destinationPath);
+  await deleteFolder(temporaryPath);
 }

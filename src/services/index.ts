@@ -4,4 +4,5 @@ export * from './mod-config';
 export * from './mod-manager';
 export * from './run-owml';
 export * from './files';
+export * from './app-update';
 export * from './settings-manager';
