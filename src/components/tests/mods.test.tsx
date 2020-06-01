@@ -16,7 +16,7 @@ const ContextHelper: React.FunctionComponent<{ spy: jest.Mock }> = ({
 const modUniqueName = 'Raicuparta.AutoResume';
 
 describe('Mods page', () => {
-  it('is able to install mod', async () => {
+  it('is able to install and uninstall mod', async () => {
     const modsPath = `OWML/Mods/${modUniqueName}`;
     if (fs.existsSync(modsPath)) {
       fs.removeSync(modsPath);
