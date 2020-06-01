@@ -1,12 +1,7 @@
 import React from 'react';
 import mockFs from 'mock-fs';
 import fetch from 'node-fetch';
-import {
-  render,
-  waitFor,
-  within,
-  waitForElementToBeRemoved,
-} from '@testing-library/react';
+import { render, waitFor, within } from '@testing-library/react';
 
 import { RemoteModDatabase } from '../../../services';
 import { useAppState, AppStateProvider } from '../../../hooks';
@@ -94,7 +89,7 @@ const ContextHelper: React.FunctionComponent<{ spy: jest.Mock }> = ({
 };
 
 describe('Mod actions', () => {
-  it('works mod actions 2', async () => {
+  it('is able to uninstall mod', async () => {
     (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
       new Response(JSON.stringify(correctRemoteModDatabase)),
     );
