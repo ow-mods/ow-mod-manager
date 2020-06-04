@@ -26,7 +26,7 @@ const ResetSettings = () => {
         onClick={handleResetClick}
         startIcon={<RestoreIcon />}
       >
-        Reset all to settings to default
+        Reset all settings to default
       </Button>
     </ListItem>
   );
