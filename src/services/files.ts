@@ -20,7 +20,7 @@ export async function downloadFile(
 
   return new Promise((resolve, reject) => {
     if (!response.ok) {
-      reject(response.statusText);
+      reject(`${response.statusText} (${response.status})`);
     }
 
     const totalBytes = parseInt(response.headers.get('content-length') || '0');
@@ -80,7 +80,13 @@ export async function copyFolder(sourcePath: string, targetPath: string) {
 }
 
 export function deleteFolder(folderPath: string) {
-  fs.removeSync(folderPath);
+  if (fs.existsSync(folderPath)) {
+    fs.removeSync(folderPath);
+  } else {
+    throw new Error(
+      `Trying to delete a non-existing directory: "${folderPath}"`,
+    );
+  }
 }
 
 export async function unzipRemoteFile(

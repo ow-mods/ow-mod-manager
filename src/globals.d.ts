@@ -13,6 +13,7 @@ type Mod = {
   repo?: string;
   isEnabled?: boolean;
   isRequired?: boolean;
+  errors: string[];
 };
 
 type ModMap = { [uniqueName: string]: Mod };
@@ -42,7 +43,7 @@ type SortOrder = 'asc' | 'desc';
 
 type HeadCellID = 'name' | 'author' | 'version' | 'downloadCount';
 
-type LogType = 'log' | 'error' | 'warning' | 'success';
+type LogType = 'error' | 'warning' | 'info' | 'success';
 
 type LogLine = {
   modName: string;

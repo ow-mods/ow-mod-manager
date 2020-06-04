@@ -18,7 +18,7 @@ import {
   FolderOpen as FolderIcon,
 } from '@material-ui/icons';
 
-import { useAppState } from '../../hooks';
+import { useAppState, useNotifications } from '../../hooks';
 import {
   isInstalled,
   install,
@@ -59,6 +59,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const [progress, setProgress] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
   const { startLoading, endLoading } = useAppState();
+  const { pushNotification } = useNotifications();
 
   const handleMoreClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -78,21 +79,40 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
 
   const modActionHandler = (
     handler: ModActionHandler<Promise<void> | void>,
+    actionName: string,
   ) => async () => {
     handleClose();
     if (mod !== undefined) {
       setIsLoading(true);
       startLoading();
-      await handler(mod, setProgress);
-      endLoading();
-      setProgress(0);
-      setIsLoading(false);
+      try {
+        await handler(mod, setProgress);
+      } catch (error) {
+        pushNotification({
+          message: `Error executing mod ${actionName}: ${error}`,
+          severity: 'error',
+        });
+      } finally {
+        endLoading();
+        setProgress(0);
+        setIsLoading(false);
+      }
     }
   };
 
-  const modActionHandlerSync = (handler: ModActionHandlerSync<void>) => () => {
+  const modActionHandlerSync = (
+    handler: ModActionHandlerSync<void>,
+    actionName: string,
+  ) => () => {
     handleClose();
-    handler(mod);
+    try {
+      handler(mod);
+    } catch (error) {
+      pushNotification({
+        message: `Error executing mod ${actionName}: ${error}`,
+        severity: 'error',
+      });
+    }
   };
 
   const getEnableTooltip = () => {
@@ -102,7 +122,10 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     if (mod.isEnabled) {
       return 'Disable';
     }
-    return 'Enable';
+    if (isModInstalled) {
+      return 'Enable';
+    }
+    return '';
   };
 
   const getInstallTooltip = () => {
@@ -124,7 +147,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         <span>
           <Button
             disabled={!isModInstalled || mod.isRequired}
-            onClick={modActionHandlerSync(toggleEnabled)}
+            onClick={modActionHandlerSync(toggleEnabled, 'enable toggle')}
           >
             {mod.isEnabled ? <CheckBoxIcon /> : <CheckboxBlankIcon />}
           </Button>
@@ -133,7 +156,10 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
       <Tooltip title={getInstallTooltip()}>
         <span>
           <Button
-            onClick={modActionHandler(isModOutdated ? update : install)}
+            onClick={modActionHandler(
+              isModOutdated ? update : install,
+              'install',
+            )}
             disabled={!isModDownloadable}
             variant={isInstallHighlighted ? 'contained' : 'text'}
             color={isInstallHighlighted ? 'secondary' : 'default'}
@@ -171,7 +197,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         {isModInstalled && (
           <MenuItem
             disabled={!isModInstalled}
-            onClick={modActionHandlerSync(openDirectory)}
+            onClick={modActionHandlerSync(openDirectory, 'directory open')}
           >
             <ListItemIcon>
               <FolderIcon />
@@ -180,7 +206,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
           </MenuItem>
         )}
         {mod.repo && (
-          <MenuItem onClick={modActionHandlerSync(openRepo)}>
+          <MenuItem onClick={modActionHandlerSync(openRepo, 'repo open')}>
             <ListItemIcon>
               <GitHubIcon />
             </ListItemIcon>
@@ -190,7 +216,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         {!mod.isRequired && (
           <MenuItem
             disabled={!isModInstalled}
-            onClick={modActionHandlerSync(uninstall)}
+            onClick={modActionHandlerSync(uninstall, 'uninstall')}
           >
             <ListItemIcon>
               <DeleteIcon />

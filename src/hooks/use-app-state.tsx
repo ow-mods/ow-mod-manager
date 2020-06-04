@@ -4,6 +4,7 @@ import { merge } from 'lodash';
 import { getLocalMods, getModDatabase } from '../services';
 import { useModsDirectoryWatcher } from '.';
 import { useSettings } from './use-settings';
+import { useNotifications } from './use-notifications';
 
 type AppContext = {
   modMap: ModMap;
@@ -31,6 +32,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   const [modMap, setModMap] = useState<ModMap>({});
   const [loadingCount, setLoadingCount] = useState(0);
   const [appRelease, setAppRelease] = useState<AppRelease>();
+  const { pushNotification } = useNotifications();
 
   const startLoading = useCallback(() => {
     setLoadingCount((count) => count + 1);
@@ -43,12 +45,27 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
   useModsDirectoryWatcher(
     useCallback(() => {
       const getMods = async () => {
-        const localMods = await getLocalMods();
-        setLocalModMap(localMods);
+        const localModsPromises = await getLocalMods();
+        const newModMap: ModMap = {};
+
+        localModsPromises.forEach((result) => {
+          if (result.status === 'fulfilled') {
+            const mod = result.value;
+            newModMap[mod.uniqueName] = mod;
+          }
+          if (result.status === 'rejected') {
+            pushNotification({
+              message: `Failed to load local mod: ${result.reason}`,
+              severity: 'error',
+            });
+          }
+        });
+
+        setLocalModMap(newModMap);
       };
 
       getMods();
-    }, []),
+    }, [pushNotification]),
   );
 
   useEffect(() => {
@@ -65,6 +82,11 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
           ),
         );
         setAppRelease(modManager);
+      } catch (error) {
+        pushNotification({
+          message: `Failed to load mod database: ${error}`,
+          severity: 'error',
+        });
       } finally {
         setLoadingCount((count) => count - 1);
       }
@@ -72,11 +94,24 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
 
     setLoadingCount((count) => count + 1);
     getMods();
-  }, [modDatabaseUrl]);
+  }, [modDatabaseUrl, pushNotification]);
 
   useEffect(() => {
     setModMap(merge({}, remoteModMap, localModMap));
   }, [remoteModMap, localModMap]);
+
+  useEffect(() => {
+    for (const mod of Object.values(modMap)) {
+      if (mod.errors.length > 0) {
+        mod.errors.forEach((error) => {
+          pushNotification({
+            message: `Failed to load local mod: ${error}`,
+            severity: 'error',
+          });
+        });
+      }
+    }
+  }, [modMap, pushNotification]);
 
   return (
     <AppState.Provider

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
 import net from 'net';
+import { useNotifications } from './use-notifications';
 
 type LogsContext = {
   logLines: LogLine[];
@@ -28,7 +29,7 @@ function getLogType(text: string): LogType {
   if (lowerText.includes('success')) {
     return 'success';
   }
-  return 'log';
+  return 'info';
 }
 
 function getLogLine(lineText: string): LogLine {
@@ -43,7 +44,7 @@ function getLogLine(lineText: string): LogLine {
   };
 }
 
-function getSimpleLine(text: string, type: LogType = 'log'): LogLine {
+function getSimpleLine(text: string, type: LogType = 'info'): LogLine {
   return {
     type,
     text,
@@ -54,11 +55,13 @@ function getSimpleLine(text: string, type: LogType = 'log'): LogLine {
 }
 
 export const LogsProvider: React.FunctionComponent = ({ children }) => {
+  const { notifications } = useNotifications();
+  const [notificationIds, setNotificationIds] = useState<string[]>([]);
   const [lines, setLines] = useState<LogLine[]>([]);
   const [isServerRunning, setIsServerRunning] = useState(false);
   const [serverPort, setServerPort] = useState(0);
 
-  function writeLogLine(line: LogLine) {
+  const writeLogLine = useCallback((line: LogLine) => {
     setLines((prevLines) => {
       const lastIndex = prevLines.length - 1;
       const lastItem = prevLines[lastIndex];
@@ -80,17 +83,20 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
         },
       ];
     });
-  }
+  }, []);
+
+  const writeSimpleText = useCallback(
+    (textLine: string, type?: LogType) => {
+      writeLogLine(getSimpleLine(textLine, type));
+    },
+    [writeLogLine],
+  );
 
   const clear = useCallback(() => setLines([]), []);
 
   useEffect(() => {
     function writeLogText(...textLines: string[]) {
       textLines.forEach((textLine) => writeLogLine(getLogLine(textLine)));
-    }
-
-    function writeSimpleText(textLine: string, type?: LogType) {
-      writeLogLine(getSimpleLine(textLine, type));
     }
 
     function signalServerOpen() {
@@ -133,7 +139,16 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     netServer.listen(0, '127.0.0.1');
 
     return signalServerClosed;
-  }, []);
+  }, [writeLogLine, writeSimpleText]);
+
+  useEffect(() => {
+    notifications
+      .filter(({ id }) => !notificationIds.includes(id))
+      .forEach(({ id, severity, message }) => {
+        setNotificationIds((ids) => [...ids, id]);
+        writeSimpleText(message, severity);
+      });
+  }, [notifications, writeSimpleText, notificationIds]);
 
   return (
     <LogsState.Provider

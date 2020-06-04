@@ -10,6 +10,7 @@
     "strict": true,
     "baseUrl": ".",
     "outDir": "dist",
+    "target": "ES2020",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "paths": {

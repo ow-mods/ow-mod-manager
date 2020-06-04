@@ -3,6 +3,7 @@ import { shell } from 'electron';
 
 import { deleteFolder, getConfig, saveConfig } from '.';
 import { unzipRemoteFile } from './files';
+import fs from 'fs-extra';
 
 export function isInstalled(mod: Mod): boolean {
   return Boolean(mod.localVersion);
@@ -47,28 +48,33 @@ export function uninstall(mod: Mod) {
   if (!isInstalled(mod)) {
     throw new Error("Can't uninstall mod because it's not installed");
   }
-  deleteFolder(mod.modPath);
+  return deleteFolder(mod.modPath);
 }
 
 export function openDirectory(mod: Mod) {
   if (!mod.modPath) {
-    throw new Error("Can't open directory mod path is not defined");
+    throw new Error('Mod path is not defined');
+  }
+  if (!fs.existsSync(mod.modPath)) {
+    throw new Error('Trying to open non existing directory');
   }
   shell.openPath(path.resolve(mod.modPath));
 }
 
 export function openRepo(mod: Mod) {
   if (!mod.repo) {
-    throw new Error(
-      "Can't open repository because there's no registered repository URL",
-    );
+    throw new Error('Mod repository URL not defined');
   }
   shell.openExternal(mod.repo);
 }
 
-export function isEnabled(mod: Mod): boolean {
+export function isEnabled(mod: Mod) {
   const config = getConfig(mod);
   return config.enabled;
+}
+
+export function isBroken(mod: Mod) {
+  return mod.errors.length > 0;
 }
 
 export function toggleEnabled(mod: Mod) {
