@@ -23,13 +23,14 @@ import LoadingBar from './LoadingBar';
 import UpdatePage from './Update';
 import Notifications from './Notifications';
 
-const useStyles = makeStyles({
+const useTabStyles = makeStyles({
   root: {
     minHeight: 0,
   },
   wrapper: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    alignItems: 'flex-start',
   },
 });
 
@@ -66,7 +67,7 @@ const updateTab: Tab = {
 };
 
 const MainView = () => {
-  const styles = useStyles();
+  const tabStyles = useTabStyles();
   const [selectedTab, setSelectedTab] = useState(0);
   const { appRelease } = useAppState();
 
@@ -83,7 +84,7 @@ const MainView = () => {
               key={tab.name}
               label={tab.name}
               value={index}
-              classes={styles}
+              classes={tabStyles}
               icon={<tab.icon color={tab.color} />}
               onClick={() => setSelectedTab(index)}
             />
