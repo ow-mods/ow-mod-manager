@@ -43,7 +43,6 @@ const Settings = () => {
   } = useSettings();
   return (
     <List component={Paper}>
-      <ListItem>Update</ListItem>
       {settingsInputs.map(
         ({ key, label, isAdvanced }) =>
           (!isAdvanced || showAdvancedSettings) && (
