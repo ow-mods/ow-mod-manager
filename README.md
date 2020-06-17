@@ -1,3 +1,7 @@
+# Steam version not officially supported yet!
+
+The Mod Manager has been developed for the Epic Store version of the game. Steam version will probably work with some minor adjustments. You'll probably need to configure OWML (Outer Wilds Mod Loader) to find the game's directory. After you've installed OWML with the mod manager, [edit OWML.Config.json with the correct gamePath](https://github.com/amazingalek/owml#configuration).
+
 # Outer Wilds Mod Manager
 
 For all your modding needs! With access to features such as:
