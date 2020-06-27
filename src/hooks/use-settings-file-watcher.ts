@@ -4,14 +4,17 @@ import fs from 'fs-extra';
 import { getSettings } from '../services';
 
 // TODO: no any
-export function useSettingsFileWatcher(path: string, defaultSettings: any) {
-  const [settings, setSettings] = useState(defaultSettings);
+export function useSettingsFileWatcher<TSettings>(
+  path: string,
+  defaultSettings: TSettings,
+) {
+  const [settings, setSettings] = useState<TSettings>(defaultSettings);
 
   useEffect(() => {
     const updateSettings = () => {
       setSettings({
         ...defaultSettings,
-        ...getSettings(),
+        ...getSettings<TSettings>(path),
       });
     };
 

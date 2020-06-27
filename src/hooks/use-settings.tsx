@@ -21,11 +21,14 @@ const Settings = React.createContext<SettingsContext>({
 export const useSettings = () => useContext(Settings);
 
 export const SettingsProvider: React.FunctionComponent = ({ children }) => {
-  const settings = useSettingsFileWatcher(
+  const settings = useSettingsFileWatcher<Settings>(
     config.settingsPath,
     config.defaultSettings,
   );
-  const owmlSettings = useSettingsFileWatcher(config.owmlSettingsPath, {});
+  const owmlSettings = useSettingsFileWatcher<OwmlSettings>(
+    config.owmlSettingsPath,
+    {},
+  );
 
   const setSettingsPartial = useCallback(
     (newSettings: Partial<Settings>) => {
