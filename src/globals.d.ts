@@ -55,6 +55,11 @@ type LogLine = {
 
 type ProgressHandler = (progress: number) => void;
 
+type AppRelease = {
+  version: string;
+  downloadUrl: string;
+};
+
 type Settings = {
   closeOnPlay: boolean;
   logToSocket: boolean;
@@ -63,7 +68,8 @@ type Settings = {
   modDatabaseUrl: string;
 };
 
-type AppRelease = {
-  version: string;
-  downloadUrl: string;
+type OwmlSettings = {
+  verbose?: boolean;
+  gamePath?: string;
+  combinationsBlockInput?: boolean;
 };

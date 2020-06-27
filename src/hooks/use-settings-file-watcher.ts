@@ -1,32 +1,32 @@
 import { useEffect, useState } from 'react';
 import fs from 'fs-extra';
 
-import config from '../config.json';
 import { getSettings } from '../services';
 
-export function useSettingsFileWatcher() {
-  const [settings, setSettings] = useState<Settings>(config.defaultSettings);
-
-  const updateSettings = () => {
-    setSettings({
-      ...config.defaultSettings,
-      ...getSettings(),
-    });
-  };
+// TODO: no any
+export function useSettingsFileWatcher(path: string, defaultSettings: any) {
+  const [settings, setSettings] = useState(defaultSettings);
 
   useEffect(() => {
-    if (!fs.existsSync(config.settingsPath)) {
-      fs.writeJSONSync(config.settingsPath, config.defaultSettings);
+    const updateSettings = () => {
+      setSettings({
+        ...defaultSettings,
+        ...getSettings(),
+      });
+    };
+
+    if (!fs.existsSync(path)) {
+      fs.writeJSONSync(path, defaultSettings);
     }
 
-    const watcher = fs.watch(config.settingsPath, () => {
+    const watcher = fs.watch(path, () => {
       updateSettings();
     });
 
     updateSettings();
 
     return () => watcher.close();
-  }, []);
+  }, [defaultSettings, path]);
 
   return settings;
 }

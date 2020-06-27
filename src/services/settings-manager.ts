@@ -18,3 +18,7 @@ export function setSettings(settings: Settings) {
 
   fs.writeJsonSync(config.settingsPath, constrainedSettings);
 }
+
+export function setOwmlSettings(settings: OwmlSettings) {
+  fs.writeJsonSync(config.owmlSettingsPath, settings);
+}

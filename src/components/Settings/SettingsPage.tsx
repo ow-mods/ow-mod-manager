@@ -1,19 +1,28 @@
 import React from 'react';
-import { List, Paper, Divider, ListItem } from '@material-ui/core';
+import { List, Paper, Divider } from '@material-ui/core';
 
 import { SettingsContext, useSettings } from '../../hooks';
-import SettingFormControl from './SettingFormControl';
 import ResetSettings from './ResetSettings';
+import ModManagerSettingControl from './ModManagerSettingControl';
+import OwmlSettingControl from './OwmlSettingControl';
 
 type SettingKey = keyof SettingsContext['settings'];
+type OwmlSettingKey = keyof SettingsContext['owmlSettings'];
 
 type SettingsInput = {
-  key: SettingKey;
   label: string;
   isAdvanced?: boolean;
 };
 
-const settingsInputs: readonly SettingsInput[] = [
+interface ModManagerSettingsInput extends SettingsInput {
+  key: SettingKey;
+}
+
+interface OwmlSettingsInput extends SettingsInput {
+  key: OwmlSettingKey;
+}
+
+const settingsInputs: readonly ModManagerSettingsInput[] = [
   {
     key: 'closeOnPlay',
     label: 'Close Mod Manager on game start',
@@ -37,6 +46,24 @@ const settingsInputs: readonly SettingsInput[] = [
   },
 ] as const;
 
+const owmlSettingsInputs: readonly OwmlSettingsInput[] = [
+  {
+    key: 'verbose',
+    label: 'Verbose mode',
+    isAdvanced: true,
+  },
+  {
+    key: 'gamePath',
+    label: 'Game path',
+    isAdvanced: true,
+  },
+  {
+    key: 'combinationsBlockInput',
+    label: 'Mod button combinations block game input',
+    isAdvanced: true,
+  },
+] as const;
+
 const Settings = () => {
   const {
     settings: { showAdvancedSettings },
@@ -47,7 +74,16 @@ const Settings = () => {
         ({ key, label, isAdvanced }) =>
           (!isAdvanced || showAdvancedSettings) && (
             <React.Fragment key={key}>
-              <SettingFormControl settingKey={key} label={label} />
+              <ModManagerSettingControl settingKey={key} label={label} />
+              <Divider />
+            </React.Fragment>
+          ),
+      )}
+      {owmlSettingsInputs.map(
+        ({ key, label, isAdvanced }) =>
+          (!isAdvanced || showAdvancedSettings) && (
+            <React.Fragment key={key}>
+              <OwmlSettingControl settingKey={key} label={label} />
               <Divider />
             </React.Fragment>
           ),

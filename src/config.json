@@ -1,5 +1,6 @@
 {
     "settingsPath": "settings.json",
+    "owmlSettingsPath": "OWML/OWML.Config.json",
     "owmlPath": "OWML",
     "defaultSettings": {
         "closeOnPlay": false,
