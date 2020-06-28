@@ -8,7 +8,7 @@ const SettingFormControl: React.FunctionComponent<{
   value?: boolean | string | number;
   onChange: (value: boolean | string | number) => void;
   label: string;
-  isDisabled?: boolean;
+  disabled?: boolean;
 }> = ({ value, ...props }) => {
   if (typeof value === 'boolean') {
     return <SwitchInput value={value} {...props} />;

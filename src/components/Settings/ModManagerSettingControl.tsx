@@ -21,7 +21,7 @@ const ModManagerSettingControl: React.FunctionComponent<{
       value={setting}
       onChange={setSetting}
       label={label}
-      isDisabled={isDisabled}
+      disabled={isDisabled}
     />
   );
 };

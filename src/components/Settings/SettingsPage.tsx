@@ -48,19 +48,17 @@ const settingsInputs: readonly ModManagerSettingsInput[] = [
 
 const owmlSettingsInputs: readonly OwmlSettingsInput[] = [
   {
+    key: 'gamePath',
+    label: 'Game path',
+  },
+  {
     key: 'verbose',
     label: 'Verbose mode',
     isAdvanced: true,
   },
   {
-    key: 'gamePath',
-    label: 'Game path',
-    isAdvanced: true,
-  },
-  {
     key: 'combinationsBlockInput',
     label: 'Mod button combinations block game input',
-    isAdvanced: true,
   },
 ] as const;
 
@@ -75,7 +73,6 @@ const Settings = () => {
           (!isAdvanced || showAdvancedSettings) && (
             <React.Fragment key={key}>
               <ModManagerSettingControl settingKey={key} label={label} />
-              <Divider />
             </React.Fragment>
           ),
       )}
@@ -84,7 +81,6 @@ const Settings = () => {
           (!isAdvanced || showAdvancedSettings) && (
             <React.Fragment key={key}>
               <OwmlSettingControl settingKey={key} label={label} />
-              <Divider />
             </React.Fragment>
           ),
       )}

@@ -21,7 +21,7 @@ type Props = {
 
 const useStyles = makeStyles(({ spacing }) => ({
   textField: {
-    margin: `${spacing(1)}px ${spacing(2)}px`,
+    margin: `${spacing(1)}px 0`,
     width: `calc(100% - ${2 * spacing(2)}px)`,
     flex: 1,
   },
@@ -50,7 +50,6 @@ const TextInput: FunctionComponent<Props> = ({
 
   return (
     <ListItem>
-      <Typography>{label}</Typography>
       <TextField
         className={styles.textField}
         fullWidth
@@ -58,6 +57,7 @@ const TextInput: FunctionComponent<Props> = ({
         onChange={handleChange}
         color="secondary"
         disabled={disabled}
+        label={label}
       />
       {value !== text && <Button onClick={handleSaveClick}>Save</Button>}
     </ListItem>
