@@ -10,6 +10,7 @@ import {
   makeStyles,
   Button,
   Typography,
+  Tooltip,
 } from '@material-ui/core';
 
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
   onChange: (value: string) => void;
   label: string;
   disabled?: boolean;
+  tooltip?: string;
 };
 
 const useStyles = makeStyles(({ spacing }) => ({
@@ -32,6 +34,7 @@ const TextInput: FunctionComponent<Props> = ({
   onChange,
   label,
   disabled,
+  tooltip = '',
 }) => {
   const styles = useStyles();
   const [text, setText] = useState('');
@@ -49,18 +52,20 @@ const TextInput: FunctionComponent<Props> = ({
   }, [value]);
 
   return (
-    <ListItem>
-      <Typography>{label}</Typography>
-      <TextField
-        className={styles.textField}
-        fullWidth
-        value={text}
-        onChange={handleChange}
-        color="secondary"
-        disabled={disabled}
-      />
-      {value !== text && <Button onClick={handleSaveClick}>Save</Button>}
-    </ListItem>
+    <Tooltip title={tooltip} placement="left">
+      <ListItem>
+        <Typography>{label}</Typography>
+        <TextField
+          className={styles.textField}
+          fullWidth
+          value={text}
+          onChange={handleChange}
+          color="secondary"
+          disabled={disabled}
+        />
+        {value !== text && <Button onClick={handleSaveClick}>Save</Button>}
+      </ListItem>
+    </Tooltip>
   );
 };
 

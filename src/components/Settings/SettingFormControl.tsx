@@ -4,12 +4,18 @@ import SwitchInput from './SwitchInput';
 import SliderInput from './SliderInput';
 import TextInput from './TextInput';
 
-const SettingFormControl: React.FunctionComponent<{
+type Props = {
   value?: boolean | string | number;
   onChange: (value: boolean | string | number) => void;
   label: string;
   disabled?: boolean;
-}> = ({ value, ...props }) => {
+  tooltip?: string;
+};
+
+const SettingFormControl: React.FunctionComponent<Props> = ({
+  value,
+  ...props
+}) => {
   if (typeof value === 'boolean') {
     return <SwitchInput value={value} {...props} />;
   }

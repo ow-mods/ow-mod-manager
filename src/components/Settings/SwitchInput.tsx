@@ -1,13 +1,14 @@
 import React, { FunctionComponent } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import { ListItem } from '@material-ui/core';
+import { ListItem, Tooltip } from '@material-ui/core';
 
 type Props = {
   value: boolean;
   onChange: (value: boolean) => void;
   label: string;
   disabled?: boolean;
+  tooltip?: string;
 };
 
 const SwitchInput: FunctionComponent<Props> = ({
@@ -15,6 +16,7 @@ const SwitchInput: FunctionComponent<Props> = ({
   onChange,
   label,
   disabled,
+  tooltip = '',
 }) => {
   const handleSwitchClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -24,13 +26,15 @@ const SwitchInput: FunctionComponent<Props> = ({
   };
 
   return (
-    <ListItem disabled={disabled} button onClick={handleSwitchClick}>
-      <FormControlLabel
-        disabled={disabled}
-        control={<Switch checked={value} />}
-        label={label}
-      />
-    </ListItem>
+    <Tooltip title={tooltip} placement="left">
+      <ListItem disabled={disabled} button onClick={handleSwitchClick}>
+        <FormControlLabel
+          disabled={disabled}
+          control={<Switch checked={value} />}
+          label={label}
+        />
+      </ListItem>
+    </Tooltip>
   );
 };
 
