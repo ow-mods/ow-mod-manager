@@ -18,7 +18,7 @@ const SettingFormControl: React.FunctionComponent<{
     return <TextInput value={value} {...props} />;
   }
 
-  if (typeof value === 'boolean') {
+  if (typeof value === 'number') {
     return <SliderInput value={value} {...props} />;
   }
 

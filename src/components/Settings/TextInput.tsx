@@ -4,13 +4,7 @@ import React, {
   useState,
   useEffect,
 } from 'react';
-import {
-  ListItem,
-  Typography,
-  TextField,
-  makeStyles,
-  Button,
-} from '@material-ui/core';
+import { ListItem, TextField, makeStyles, Button } from '@material-ui/core';
 
 type Props = {
   value: string;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Paper, Divider } from '@material-ui/core';
+import { List, Paper } from '@material-ui/core';
 
 import { SettingsContext, useSettings } from '../../hooks';
 import ResetSettings from './ResetSettings';
@@ -34,26 +34,25 @@ const settingsInputs: readonly SettingsInput[] = [
   {
     key: 'verbose',
     label: 'Verbose mode',
-    isAdvanced: true,
     isOwmlSetting: true,
   },
   {
-    key: 'showAdvancedSettings',
-    label: 'Show Advanced Settings',
+    key: 'gamePath',
+    label: 'Game path',
+    isOwmlSetting: true,
   },
   {
     key: 'logLinesLimit',
     label: 'Log lines per page',
   },
   {
+    key: 'showAdvancedSettings',
+    label: 'Show Advanced Settings',
+  },
+  {
     key: 'modDatabaseUrl',
     label: 'Mod database URL',
     isAdvanced: true,
-  },
-  {
-    key: 'gamePath',
-    label: 'Game path',
-    isOwmlSetting: true,
   },
 ];
 
