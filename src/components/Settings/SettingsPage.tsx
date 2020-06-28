@@ -10,19 +10,13 @@ type SettingKey = keyof SettingsContext['settings'];
 type OwmlSettingKey = keyof SettingsContext['owmlSettings'];
 
 type SettingsInput = {
+  key: SettingKey | OwmlSettingKey;
   label: string;
   isAdvanced?: boolean;
+  isOwmlSetting?: boolean;
 };
 
-interface ModManagerSettingsInput extends SettingsInput {
-  key: SettingKey;
-}
-
-interface OwmlSettingsInput extends SettingsInput {
-  key: OwmlSettingKey;
-}
-
-const settingsInputs: readonly ModManagerSettingsInput[] = [
+const settingsInputs: readonly SettingsInput[] = [
   {
     key: 'closeOnPlay',
     label: 'Close Mod Manager on game start',
@@ -32,35 +26,36 @@ const settingsInputs: readonly ModManagerSettingsInput[] = [
     label: 'Send game logs to Mod Manager',
   },
   {
-    key: 'logLinesLimit',
-    label: 'Log lines per page',
+    key: 'combinationsBlockInput',
+    label: 'Mod button combinations block game input',
+    isOwmlSetting: true,
+  },
+
+  {
+    key: 'verbose',
+    label: 'Verbose mode',
+    isAdvanced: true,
+    isOwmlSetting: true,
   },
   {
     key: 'showAdvancedSettings',
     label: 'Show Advanced Settings',
   },
   {
+    key: 'logLinesLimit',
+    label: 'Log lines per page',
+  },
+  {
     key: 'modDatabaseUrl',
     label: 'Mod database URL',
     isAdvanced: true,
   },
-] as const;
-
-const owmlSettingsInputs: readonly OwmlSettingsInput[] = [
   {
     key: 'gamePath',
     label: 'Game path',
+    isOwmlSetting: true,
   },
-  {
-    key: 'verbose',
-    label: 'Verbose mode',
-    isAdvanced: true,
-  },
-  {
-    key: 'combinationsBlockInput',
-    label: 'Mod button combinations block game input',
-  },
-] as const;
+];
 
 const Settings = () => {
   const {
@@ -69,18 +64,21 @@ const Settings = () => {
   return (
     <List component={Paper}>
       {settingsInputs.map(
-        ({ key, label, isAdvanced }) =>
+        ({ key, label, isAdvanced, isOwmlSetting }) =>
           (!isAdvanced || showAdvancedSettings) && (
             <React.Fragment key={key}>
-              <ModManagerSettingControl settingKey={key} label={label} />
-            </React.Fragment>
-          ),
-      )}
-      {owmlSettingsInputs.map(
-        ({ key, label, isAdvanced }) =>
-          (!isAdvanced || showAdvancedSettings) && (
-            <React.Fragment key={key}>
-              <OwmlSettingControl settingKey={key} label={label} />
+              {isOwmlSetting && (
+                <OwmlSettingControl
+                  settingKey={key as OwmlSettingKey}
+                  label={label}
+                />
+              )}
+              {!isOwmlSetting && (
+                <ModManagerSettingControl
+                  settingKey={key as SettingKey}
+                  label={label}
+                />
+              )}
             </React.Fragment>
           ),
       )}
