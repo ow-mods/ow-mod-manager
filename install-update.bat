@@ -6,7 +6,7 @@ if exist ../../resources/install-update.bat (
   robocopy .. ../.. /e
   echo Running Mod Manager...
   cd ../..
-  start "" "Outer Wilds Mod Manager.exe"
+  start "" "OuterWildsModManager.exe"
   echo Exiting updater...
   exit
 ) else (
