@@ -4,7 +4,13 @@ import React, {
   useState,
   useEffect,
 } from 'react';
-import { ListItem, TextField, makeStyles, Button } from '@material-ui/core';
+import {
+  ListItem,
+  TextField,
+  makeStyles,
+  Button,
+  Typography,
+} from '@material-ui/core';
 
 type Props = {
   value: string;
@@ -15,7 +21,7 @@ type Props = {
 
 const useStyles = makeStyles(({ spacing }) => ({
   textField: {
-    margin: `${spacing(1)}px 0`,
+    margin: `${spacing(1)}px ${spacing(2)}px`,
     width: `calc(100% - ${2 * spacing(2)}px)`,
     flex: 1,
   },
@@ -44,6 +50,7 @@ const TextInput: FunctionComponent<Props> = ({
 
   return (
     <ListItem>
+      <Typography>{label}</Typography>
       <TextField
         className={styles.textField}
         fullWidth
@@ -51,7 +58,6 @@ const TextInput: FunctionComponent<Props> = ({
         onChange={handleChange}
         color="secondary"
         disabled={disabled}
-        label={label}
       />
       {value !== text && <Button onClick={handleSaveClick}>Save</Button>}
     </ListItem>
