@@ -52,9 +52,9 @@ const TextInput: FunctionComponent<Props> = ({
   }, [value]);
 
   return (
-    <Tooltip title={tooltip} placement="left">
-      <ListItem>
-        <Typography>{label}</Typography>
+    <ListItem>
+      <Typography>{label}</Typography>
+      <Tooltip title={tooltip} placement="bottom">
         <TextField
           className={styles.textField}
           fullWidth
@@ -63,9 +63,9 @@ const TextInput: FunctionComponent<Props> = ({
           color="secondary"
           disabled={disabled}
         />
-        {value !== text && <Button onClick={handleSaveClick}>Save</Button>}
-      </ListItem>
-    </Tooltip>
+      </Tooltip>
+      {value !== text && <Button onClick={handleSaveClick}>Save</Button>}
+    </ListItem>
   );
 };
 

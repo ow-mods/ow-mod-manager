@@ -26,7 +26,7 @@ const SwitchInput: FunctionComponent<Props> = ({
   };
 
   return (
-    <Tooltip title={tooltip} placement="left">
+    <Tooltip title={tooltip} placement="bottom">
       <ListItem disabled={disabled} button onClick={handleSwitchClick}>
         <FormControlLabel
           disabled={disabled}

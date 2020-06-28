@@ -38,9 +38,9 @@ const SliderInput: FunctionComponent<Props> = ({
   );
 
   return (
-    <Tooltip title={tooltip} placement="bottom">
-      <ListItem>
-        <Typography>{label}</Typography>
+    <ListItem>
+      <Typography>{label}</Typography>
+      <Tooltip title={tooltip} placement="bottom">
         <Slider
           disabled={disabled}
           className={styles.slider}
@@ -59,8 +59,8 @@ const SliderInput: FunctionComponent<Props> = ({
             { value: 200, label: '200' },
           ]}
         />
-      </ListItem>
-    </Tooltip>
+      </Tooltip>
+    </ListItem>
   );
 };
 
