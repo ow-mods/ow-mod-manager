@@ -2,9 +2,9 @@ import fs from 'fs-extra';
 
 import config from '../config.json';
 
-export function getSettings() {
-  const settings: Settings = fs.existsSync(config.settingsPath)
-    ? fs.readJSONSync(config.settingsPath)
+export function getSettings<TSettings>(path: string) {
+  const settings: TSettings = fs.existsSync(path)
+    ? fs.readJSONSync(path)
     : null;
 
   return settings;
@@ -17,4 +17,8 @@ export function setSettings(settings: Settings) {
   };
 
   fs.writeJsonSync(config.settingsPath, constrainedSettings);
+}
+
+export function setOwmlSettings(settings: OwmlSettings) {
+  fs.writeJsonSync(config.owmlSettingsPath, settings);
 }
