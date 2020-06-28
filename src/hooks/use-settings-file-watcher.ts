@@ -3,7 +3,6 @@ import fs from 'fs-extra';
 
 import { getSettings } from '../services';
 
-// TODO: no any
 export function useSettingsFileWatcher<TSettings>(
   path: string,
   defaultSettings: TSettings,
