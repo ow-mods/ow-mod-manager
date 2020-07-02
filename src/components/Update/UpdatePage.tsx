@@ -14,6 +14,7 @@ import {
   SystemUpdateAlt as UpdateIcon,
 } from '@material-ui/icons';
 
+import { updateText } from '../../static-text';
 import { useAppUpdate, useAppState } from '../../hooks';
 import { installAppUpdate } from '../../services';
 import { remote } from 'electron';
@@ -32,17 +33,17 @@ const UpdatePage: React.FunctionComponent = () => {
   const { appRelease } = useAppState();
 
   if (!appRelease) {
-    <Typography>Unable to get latest app release</Typography>;
+    <Typography>{updateText.unableToGetRelease}</Typography>;
   }
 
   const getStatusText = () => {
     if (isDownloading) {
-      return 'Downloading update...';
+      return updateText.downloading;
     }
     if (isUpdateReady) {
-      return 'Ready to install update';
+      return updateText.installReady;
     }
-    return 'Ready to download update';
+    return updateText.downloadReady;
   };
 
   return (
@@ -55,10 +56,12 @@ const UpdatePage: React.FunctionComponent = () => {
     >
       <Grid item container spacing={1} direction="column" alignItems="center">
         <Grid item>
-          Installed: <Chip label={remote.app.getVersion()} />
+          {updateText.installedVersion}
+          <Chip label={remote.app.getVersion()} />
         </Grid>
         <Grid item>
-          Latest: <Chip label={appRelease?.version} color="secondary" />
+          {updateText.latestVersion}
+          <Chip label={appRelease?.version} color="secondary" />
         </Grid>
       </Grid>
       <Grid item xs={6}>
@@ -77,7 +80,7 @@ const UpdatePage: React.FunctionComponent = () => {
                   disabled={isUpdateReady || isDownloading}
                   fullWidth
                 >
-                  Download update
+                  {updateText.download}
                 </Button>
               </Grid>
               <Grid item>
@@ -96,7 +99,7 @@ const UpdatePage: React.FunctionComponent = () => {
                   disabled={!isUpdateReady}
                   fullWidth
                 >
-                  Install update and restart
+                  {updateText.installAndRestart}
                 </Button>
               </Grid>
             </Grid>

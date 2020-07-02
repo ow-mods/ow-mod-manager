@@ -98,3 +98,14 @@ export const settingsText = {
   textFieldSave: 'Save',
   resetToDefault: 'Reset all settings to default',
 };
+
+export const updateText = {
+  unableToGetRelease: 'Unable to get latest app release',
+  downloading: 'Downloading update...',
+  installReady: 'Ready to install update',
+  downloadReady: 'Ready to download update',
+  installedVersion: 'Installed: ',
+  latestVersion: 'Latest: ',
+  download: 'Download update',
+  installAndRestart: 'Install update and restart',
+};
