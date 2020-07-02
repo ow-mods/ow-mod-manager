@@ -1,9 +1,10 @@
 import path from 'path';
 import { shell } from 'electron';
+import fs from 'fs-extra';
 
+import { modsText } from '../static-text';
 import { deleteFolder, getConfig, saveConfig } from '.';
 import { unzipRemoteFile } from './files';
-import fs from 'fs-extra';
 
 export function isInstalled(mod: Mod): boolean {
   return Boolean(mod.localVersion);
@@ -32,38 +33,38 @@ async function upstall(mod: Mod, onProgress: ProgressHandler) {
 
 export async function install(mod: Mod, onProgress: ProgressHandler) {
   if (isInstalled(mod)) {
-    throw new Error("Can't install mod because it's already installed");
+    throw new Error(modsText.installAlreadyInstalledError);
   }
   await upstall(mod, onProgress);
 }
 
 export async function update(mod: Mod, onProgress: ProgressHandler) {
   if (!isOutdated) {
-    throw new Error("Can't update mod because it's not out of date");
+    throw new Error(modsText.updateNotOutOfDateError);
   }
   await upstall(mod, onProgress);
 }
 
 export function uninstall(mod: Mod) {
   if (!isInstalled(mod)) {
-    throw new Error("Can't uninstall mod because it's not installed");
+    throw new Error(modsText.uninstallNotInstalledError);
   }
   return deleteFolder(mod.modPath);
 }
 
 export function openDirectory(mod: Mod) {
   if (!mod.modPath) {
-    throw new Error('Mod path is not defined');
+    throw new Error(modsText.modPathNotDefinedError);
   }
   if (!fs.existsSync(mod.modPath)) {
-    throw new Error('Trying to open non existing directory');
+    throw new Error(modsText.openNonExistingDirectoryError);
   }
   shell.openPath(path.resolve(mod.modPath));
 }
 
 export function openRepo(mod: Mod) {
   if (!mod.repo) {
-    throw new Error('Mod repository URL not defined');
+    throw new Error(modsText.undefinedRepoUrlError);
   }
   shell.openExternal(mod.repo);
 }

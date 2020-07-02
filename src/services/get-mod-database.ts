@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 
+import { modsText } from '../static-text';
 import config from '../config.json';
 import { manifestPartialToFull } from '.';
 
@@ -54,9 +55,7 @@ export async function getModDatabase(url: string): Promise<ModDatabase> {
 
       if (missingAttributes.length > 0) {
         mod.errors.push(
-          `Manifest ${repo} missing attributes "${missingAttributes.join(
-            '", "',
-          )}"`,
+          modsText.missingManifestAttributesError(repo, missingAttributes),
         );
       }
 

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles, Select, MenuItem } from '@material-ui/core';
 import { uniq } from 'lodash';
 
+import { logsText } from '../../static-text';
+
 const useStyles = makeStyles({
   root: {
     maxWidth: 150,
@@ -45,7 +47,7 @@ const ModNameSelect: React.FunctionComponent<Props> = ({
       onChange={handleModNameChange}
       displayEmpty
     >
-      <MenuItem value={''}>All mods</MenuItem>
+      <MenuItem value={''}>{logsText.allMods}</MenuItem>
       {modNames.map((modName) => (
         <MenuItem value={modName} key={modName}>
           {modName}

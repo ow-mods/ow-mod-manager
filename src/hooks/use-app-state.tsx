@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { merge } from 'lodash';
 
+import { modsText } from '../static-text';
 import { getLocalMods, getModDatabase } from '../services';
 import { useModsDirectoryWatcher } from '.';
 import { useSettings } from './use-settings';
@@ -55,7 +56,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
           }
           if (result.status === 'rejected') {
             pushNotification({
-              message: `Failed to load local mod: ${result.reason}`,
+              message: `${modsText.localModLoadError}: ${result.reason}`,
               severity: 'error',
             });
           }
@@ -84,7 +85,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
         setAppRelease(modManager);
       } catch (error) {
         pushNotification({
-          message: `Failed to load mod database: ${error}`,
+          message: `${modsText.databaseLoadError}: ${error}`,
           severity: 'error',
         });
       } finally {
@@ -105,7 +106,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
       if (mod.errors.length > 0) {
         mod.errors.forEach((error) => {
           pushNotification({
-            message: `Failed to load local mod: ${error}`,
+            message: `${modsText.localModLoadError}: ${error}`,
             severity: 'error',
           });
         });

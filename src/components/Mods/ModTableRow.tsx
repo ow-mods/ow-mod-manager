@@ -8,6 +8,7 @@ import {
   Tooltip,
 } from '@material-ui/core';
 
+import { modsText } from '../../static-text';
 import { isOutdated, isInstalled, isBroken } from '../../services';
 import ModActions from './ModActions';
 
@@ -44,7 +45,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     if (mod.remoteVersion) {
       return mod.remoteVersion;
     }
-    return 'Not Available';
+    return modsText.versionNotAvailable;
   };
 
   const getClassName = () => {
@@ -59,7 +60,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
 
   const getRowTooltip = () => {
     if (isBroken(mod)) {
-      return `Failed to load mod. Errors: ${mod.errors.join(' || ')}`;
+      return modsText.modLoadError(mod.errors);
     }
     return '';
   };

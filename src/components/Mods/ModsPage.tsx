@@ -12,6 +12,7 @@ import {
   TableCell,
 } from '@material-ui/core';
 
+import { modsText } from '../../static-text';
 import { isInstalled, isOutdated } from '../../services';
 import ModTableHead from './ModTableHead';
 import { useAppState } from '../../hooks';
@@ -57,11 +58,11 @@ const useStyles = makeStyles({
 });
 
 enum SelectFilter {
-  All = 'All',
-  Installed = 'Installed',
-  Enabled = 'Enabled',
-  NotInstalled = 'Not installed',
-  Outdated = 'Outdated',
+  All = 'all',
+  Installed = 'installed',
+  Enabled = 'enabled',
+  NotInstalled = 'notInstalled',
+  Outdated = 'outdated',
 }
 
 const filterByText = (filter: string, mod: Mod) => {
@@ -138,7 +139,7 @@ const ModTable: React.FunctionComponent = () => {
           >
             {Object.values(SelectFilter).map((value) => (
               <MenuItem key={value} value={value}>
-                {value}
+                {modsText.selectFilter[value]}
               </MenuItem>
             ))}
           </Select>
@@ -153,7 +154,7 @@ const ModTable: React.FunctionComponent = () => {
         <TableBody>
           {modRows.length === 0 && (
             <TableRow>
-              <TableCell>No mods here! 😱</TableCell>
+              <TableCell>{modsText.emptyModList}</TableCell>
             </TableRow>
           )}
           {modRows.length > 0 &&

@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 import { ClearAll as ClearAllIcon } from '@material-ui/icons';
 
+import { logsText } from '../../static-text';
 import { useOwmlLogs, useSettings } from '../../hooks';
 import FilterInput from '../FilterInput';
 import ModNameSelect from './ModNameSelect';
@@ -141,12 +142,12 @@ const OwmlLog: React.FunctionComponent = () => {
               {logLines.length > 1 && (
                 <Typography variant="subtitle2" color="textSecondary">
                   {hasHiddenLines.current &&
-                    `Showing ${paginatedLines.length} of `}
-                  {logLines.length} entries
-                  {isPaginated.current && `, page ${page + 1}`}
+                    logsText.showingLines(paginatedLines.length)}
+                  {logsText.entries(logLines.length)}
+                  {isPaginated.current && logsText.page(page + 1)}
                 </Typography>
               )}
-              <Tooltip title="Clear log entries">
+              <Tooltip title={logsText.clearLogs}>
                 <IconButton size="small" onClick={clear}>
                   <ClearAllIcon />
                 </IconButton>
@@ -171,7 +172,7 @@ const OwmlLog: React.FunctionComponent = () => {
                   fullWidth
                   variant="outlined"
                 >
-                  Show previous {logLinesLimit}
+                  {logsText.showPrevious(logLinesLimit)}
                 </Button>
               </TableCell>
             </TableRow>
@@ -195,7 +196,7 @@ const OwmlLog: React.FunctionComponent = () => {
                   fullWidth
                   variant="outlined"
                 >
-                  Show next {logLinesLimit}
+                  {logsText.showNext(logLinesLimit)}
                 </Button>
               </TableCell>
             </TableRow>

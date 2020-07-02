@@ -1,5 +1,6 @@
 import React, { useContext, useState, useCallback } from 'react';
 
+import { updateText } from '../static-text';
 import { downloadAppUpdate } from '../services';
 import { useNotifications } from './use-notifications';
 import { useAppState } from './use-app-state';
@@ -35,21 +36,19 @@ export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
       setIsDownloading(true);
       try {
         if (!appRelease) {
-          throw new Error(
-            'Not able to retrieve Mod Manager release from database',
-          );
+          throw new Error(updateText.databaseRetrieveError);
         }
         await downloadAppUpdate(appRelease.downloadUrl, (newProgress) => {
           setProgress(newProgress);
         });
         setIsUpdateReady(true);
         pushNotification({
-          message: `Finished downloading app update`,
+          message: updateText.downloadSuccess,
           severity: 'success',
         });
       } catch (error) {
         pushNotification({
-          message: `Error updating app: ${error}`,
+          message: `${updateText.updateError}: ${error}`,
           severity: 'error',
         });
       } finally {

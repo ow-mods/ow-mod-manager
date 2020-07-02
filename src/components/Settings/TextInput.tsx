@@ -13,6 +13,8 @@ import {
   Tooltip,
 } from '@material-ui/core';
 
+import { settingsText } from '../../static-text';
+
 type Props = {
   value: string;
   onChange: (value: string) => void;
@@ -64,7 +66,11 @@ const TextInput: FunctionComponent<Props> = ({
           disabled={disabled}
         />
       </Tooltip>
-      {value !== text && <Button onClick={handleSaveClick}>Save</Button>}
+      {value !== text && (
+        <Button variant="contained" onClick={handleSaveClick}>
+          {settingsText.textFieldSave}
+        </Button>
+      )}
     </ListItem>
   );
 };

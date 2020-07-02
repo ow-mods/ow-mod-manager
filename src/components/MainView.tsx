@@ -14,6 +14,7 @@ import {
   NewReleases as NewReleasesIcon,
 } from '@material-ui/icons';
 
+import { globalText } from '../static-text';
 import { useAppState } from '../hooks';
 import Mods from './Mods';
 import SettingsPage from './Settings';
@@ -43,24 +44,24 @@ type Tab = {
 
 const tabs: readonly Tab[] = [
   {
-    name: 'Mods',
+    name: globalText.tabs.mods,
     component: Mods,
     icon: BuildIcon,
   },
   {
-    name: 'Logs',
+    name: globalText.tabs.logs,
     component: Logs,
     icon: DvrIcon,
   },
   {
-    name: 'Settings',
+    name: globalText.tabs.settings,
     component: SettingsPage,
     icon: SettingsIcon,
   },
 ] as const;
 
 const updateTab: Tab = {
-  name: 'Update',
+  name: globalText.tabs.update,
   component: UpdatePage,
   icon: NewReleasesIcon,
   color: 'secondary',
@@ -72,7 +73,7 @@ const MainView = () => {
   const { appRelease } = useAppState();
 
   const isAppOutdated =
-    appRelease && appRelease.version !== remote.app.getVersion();
+    appRelease && appRelease?.version !== remote.app.getVersion();
   const visibleTabs = isAppOutdated ? [...tabs, updateTab] : tabs;
 
   return (
