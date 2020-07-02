@@ -16,4 +16,10 @@ export const modsText = {
     outdated: 'outdated',
   },
   emptyModList: 'No mods here! 😱',
+  tableHead: {
+    name: 'Name',
+    author: 'Author',
+    downloadCount: 'Downloads',
+    version: 'Version',
+  },
 };

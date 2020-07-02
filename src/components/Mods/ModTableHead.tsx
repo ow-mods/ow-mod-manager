@@ -4,6 +4,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 
+import { modsText } from '../../static-text';
+
 interface Props {
   onRequestSort: (
     event: React.MouseEvent<unknown>,
@@ -15,8 +17,7 @@ interface Props {
 
 type HeadCell = {
   disablePadding: boolean;
-  id: keyof Mod;
-  label: string;
+  id: keyof Pick<Mod, 'author' | 'name' | 'downloadCount'>;
   numeric: boolean;
 };
 
@@ -25,19 +26,16 @@ const headCells: HeadCell[] = [
     id: 'name',
     numeric: false,
     disablePadding: false,
-    label: 'Name',
   },
   {
     id: 'author',
     numeric: false,
     disablePadding: false,
-    label: 'Author',
   },
   {
     id: 'downloadCount',
     numeric: true,
     disablePadding: false,
-    label: 'Downloads',
   },
 ];
 
@@ -64,11 +62,11 @@ function ModTableHead(props: Props) {
               direction={orderBy === headCell.id ? order : 'asc'}
               onClick={createSortHandler(headCell.id)}
             >
-              {headCell.label}
+              {modsText.tableHead[headCell.id]}
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell>Version</TableCell>
+        <TableCell>{modsText.tableHead.version}</TableCell>
         <TableCell></TableCell>
       </TableRow>
     </TableHead>
