@@ -23,6 +23,21 @@ export const modsText = {
     version: 'Version',
   },
   versionNotAvailable: 'Not Available',
+  actions: {
+    disableRequired: "Required, can't disable",
+    disable: 'Disable',
+    enable: 'Enable',
+    loading: 'Loading...',
+    update: (version: string) => `Update to ${version}`,
+    alreadyInstalled: 'Already installed',
+    install: 'Install',
+    more: 'More...',
+    openDirectory: 'Show in explorer',
+    openRepo: 'More info on GitHub',
+    uninstall: 'Uninstall',
+  },
   modLoadError: (errors: string[]) =>
     `Failed to load mod. Errors: ${errors.join(' || ')}`,
+  actionError: (action: string, error: string) =>
+    `Error executing mod ${action}: ${error}`,
 };

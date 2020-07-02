@@ -18,6 +18,7 @@ import {
   FolderOpen as FolderIcon,
 } from '@material-ui/icons';
 
+import { modsText } from '../../static-text';
 import { useAppState, useNotifications } from '../../hooks';
 import {
   isInstalled,
@@ -89,7 +90,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         await handler(mod, setProgress);
       } catch (error) {
         pushNotification({
-          message: `Error executing mod ${actionName}: ${error}`,
+          message: modsText.actionError(actionName, error),
           severity: 'error',
         });
       } finally {
@@ -109,7 +110,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
       handler(mod);
     } catch (error) {
       pushNotification({
-        message: `Error executing mod ${actionName}: ${error}`,
+        message: modsText.actionError(actionName, error),
         severity: 'error',
       });
     }
@@ -117,28 +118,28 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
 
   const getEnableTooltip = () => {
     if (mod.isRequired) {
-      return 'Required, can\'t disable';
+      return modsText.actions.disableRequired;
     }
     if (mod.isEnabled) {
-      return 'Disable';
+      return modsText.actions.disable;
     }
     if (isModInstalled) {
-      return 'Enable';
+      return modsText.actions.enable;
     }
     return '';
   };
 
   const getInstallTooltip = () => {
     if (isLoading) {
-      return 'Loading...';
+      return modsText.actions.loading;
     }
-    if (isModOutdated) {
-      return `Update to ${mod.remoteVersion}`;
+    if (isModOutdated && mod.remoteVersion) {
+      return modsText.actions.update(mod.remoteVersion);
     }
     if (isModInstalled) {
-      return 'Already installed';
+      return modsText.actions.alreadyInstalled;
     }
-    return 'Install';
+    return modsText.actions.install;
   };
 
   return (
@@ -178,7 +179,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
           </Button>
         </span>
       </Tooltip>
-      <Tooltip title="More...">
+      <Tooltip title={modsText.actions.more}>
         <span>
           <Button onClick={handleMoreClick}>
             <MoreIcon />
@@ -202,7 +203,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
             <ListItemIcon>
               <FolderIcon />
             </ListItemIcon>
-            Show in explorer
+            {modsText.actions.openDirectory}
           </MenuItem>
         )}
         {mod.repo && (
@@ -210,7 +211,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
             <ListItemIcon>
               <GitHubIcon />
             </ListItemIcon>
-            More info on GitHub
+            {modsText.actions.openRepo}
           </MenuItem>
         )}
         {!mod.isRequired && (
@@ -221,7 +222,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
             <ListItemIcon>
               <DeleteIcon />
             </ListItemIcon>
-            Uninstall
+            {modsText.actions.uninstall}
           </MenuItem>
         )}
       </Menu>
