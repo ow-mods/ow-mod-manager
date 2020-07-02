@@ -41,3 +41,58 @@ export const modsText = {
   actionError: (action: string, error: string) =>
     `Error executing mod ${action}: ${error}`,
 };
+
+export const settingsText = {
+  closeOnPlay: {
+    label: 'Close Mod Manager on game start',
+    tooltip:
+      "If you don't have a lot of ram to spare, closing the Mod Manager might improve game performance.",
+  },
+  logToSocket: {
+    label: 'Send game logs to Mod Manager',
+    tooltip:
+      'If enabled, logs show in "Logs" tab. Otherwise, they will show in a separate console window. Disabling this might improve game performance.',
+  },
+  combinationsBlockInput: {
+    label: 'Mod button combinations block game input',
+    tooltip:
+      'Some mods allow you to define custom button combinations for certain actions. Enabling this setting will block the default game input when one of these button combinations is detected.',
+    isOwmlSetting: true,
+  },
+  verbose: {
+    label: 'Verbose mode',
+    tooltip: 'Shows more detailed info on logs',
+    isOwmlSetting: true,
+  },
+  openVRParameter: {
+    label: 'Force OpenVR mode',
+    tooltip:
+      'Runs game with -vrmode openvr flag. Required to make VR work in some rare cases',
+  },
+  gamePath: {
+    label: 'Game path',
+    tooltip:
+      'Game path will be determined automatically when you launch the game. Only change this if automatic detection fails.',
+    isOwmlSetting: true,
+  },
+  logLinesLimit: {
+    label: 'Log lines per page',
+    tooltip:
+      'Lower log line count might help with performance. Only has an effect if "Send game logs to Mod Manager" is enabled',
+  },
+  showAdvancedSettings: {
+    label: 'Show Advanced Settings',
+    tooltip: '',
+  },
+  modDatabaseUrl: {
+    label: 'Mod database URL',
+    tooltip: '',
+    isAdvanced: true,
+  },
+  disableParameterWarning: {
+    label: 'Disable Steam parameter warning',
+    tooltip:
+      'Disables warning in the Mod Manager that warns you about the Steam warning. Yeah.',
+    isAdvanced: true,
+  },
+};
