@@ -7,6 +7,7 @@
         "logToSocket": true,
         "logLinesLimit": 50,
         "showAdvancedSettings": false,
+        "openVRParameter": false,
         "modDatabaseUrl": "https://raw.githubusercontent.com/Raicuparta/outer-wilds-mod-db/master/database.json"
     }
 }

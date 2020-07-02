@@ -44,6 +44,12 @@ const settingsInputs: readonly SettingsInput[] = [
     isOwmlSetting: true,
   },
   {
+    key: 'openVRParameter',
+    label: 'Force OpenVR mode',
+    tooltip:
+      'Runs game with -vrmode openvr flag. Required to make VR work in some rare cases',
+  },
+  {
     key: 'gamePath',
     label: 'Game path',
     tooltip:

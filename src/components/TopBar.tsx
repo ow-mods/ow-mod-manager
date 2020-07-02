@@ -38,6 +38,7 @@ const TopBar: React.FunctionComponent = ({ children }) => {
     runOwml(
       settings.closeOnPlay,
       settings.logToSocket ? serverPort : undefined,
+      settings.openVRParameter,
     );
   }
 
