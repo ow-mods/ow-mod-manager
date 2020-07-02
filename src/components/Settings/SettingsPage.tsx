@@ -71,6 +71,13 @@ const settingsInputs: readonly SettingsInput[] = [
     label: 'Mod database URL',
     isAdvanced: true,
   },
+  {
+    key: 'disableParameterWarning',
+    label: 'Disable Steam parameter warning',
+    tooltip:
+      'Disables warning in the Mod Manager that warns you about the Steam warning. Yeah.',
+    isAdvanced: true,
+  },
 ];
 
 const Settings = () => {
