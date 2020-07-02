@@ -22,4 +22,7 @@ export const modsText = {
     downloadCount: 'Downloads',
     version: 'Version',
   },
+  versionNotAvailable: 'Not Available',
+  modLoadError: (errors: string[]) =>
+    `Failed to load mod. Errors: ${errors.join(' || ')}`,
 };
