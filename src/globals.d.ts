@@ -67,6 +67,7 @@ type Settings = {
   showAdvancedSettings: boolean;
   modDatabaseUrl: string;
   openVRParameter: boolean;
+  disableParameterWarning: boolean;
 };
 
 type OwmlSettings = {

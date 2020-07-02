@@ -16,8 +16,10 @@ function waitAndQuit() {
 
 export async function runOwml(
   closeManager: boolean,
+  disableParameterWarningCallback: () => void,
   port?: number,
   openVR = false,
+  disableParameterWarning = false,
 ) {
   const params = [];
   // TODO improve this
@@ -31,7 +33,7 @@ export async function runOwml(
     paramNames.push('Force OpenVR mode');
   }
 
-  if (params.length > 0) {
+  if (!disableParameterWarning && params.length > 0) {
     const warningDetail = `You enabled "${paramNames.join('" and "')}".
 
 If you own the Steam version of the game, Steam might show a warning about custom parameters.
@@ -53,6 +55,10 @@ If you want Steam to stop bothering you about this, you'll have to disable these
 
     if (response === 1) {
       return;
+    }
+
+    if (checkboxChecked) {
+      disableParameterWarningCallback();
     }
   }
 
