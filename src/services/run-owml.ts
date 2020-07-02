@@ -15,20 +15,23 @@ function waitAndQuit() {
 }
 
 export async function runOwml(
-  closeManager: boolean,
+  {
+    closeOnPlay,
+    logToSocket,
+    openVRParameter,
+    disableParameterWarning,
+  }: Settings,
+  port: number,
   disableParameterWarningCallback: () => void,
-  port?: number,
-  openVR = false,
-  disableParameterWarning = false,
 ) {
   const params = [];
-  // TODO improve this
+  // TODO improve this. If static text were saved in a central location, would be cleaner.
   const paramNames = [];
-  if (!closeManager && port !== undefined) {
+  if (!closeOnPlay && logToSocket) {
     params.push(`-consolePort ${port}`);
     paramNames.push('Send game logs to Mod Manager');
   }
-  if (openVR) {
+  if (openVRParameter) {
     params.push(`-vrmode openvr`);
     paramNames.push('Force OpenVR mode');
   }
@@ -68,7 +71,7 @@ If you want Steam to stop bothering you about this, you'll have to disable these
     detached: true,
   });
 
-  if (closeManager) {
+  if (closeOnPlay) {
     waitAndQuit();
   }
 }

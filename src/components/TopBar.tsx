@@ -39,13 +39,7 @@ const TopBar: React.FunctionComponent = ({ children }) => {
   }
 
   async function handleStartGameClick() {
-    runOwml(
-      settings.closeOnPlay,
-      setDisableParameterWarnings,
-      settings.logToSocket ? serverPort : undefined,
-      settings.openVRParameter,
-      settings.disableParameterWarning,
-    );
+    runOwml(settings, serverPort, setDisableParameterWarnings);
   }
 
   const requiredMods = Object.values(modMap).filter((mod) => mod.isRequired);
