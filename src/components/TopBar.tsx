@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { PlayArrow as PlayIcon } from '@material-ui/icons';
 
+import { globalText } from '../static-text';
 import { runOwml } from '../services';
 import { useAppState, useOwmlLogs, useSettings } from '../hooks';
 
@@ -46,15 +47,15 @@ const TopBar: React.FunctionComponent = ({ children }) => {
   const isMissingRequiredMod = requiredMods.some(
     (mod) => mod.localVersion === undefined,
   );
-  const requiredModNames = requiredMods.map((mod) => mod.name).join(', ');
+  const requiredModNames = requiredMods.map((mod) => mod.name);
   const isStartDisabled = isMissingRequiredMod || isServerRunning;
 
   function getStartGameTooltip() {
     if (isMissingRequiredMod) {
-      return `Please install ${requiredModNames} before starting the game`;
+      return globalText.missingRequiredMod(requiredModNames);
     }
     if (isServerRunning) {
-      return 'Already running';
+      return globalText.gameRunning;
     }
     return '';
   }
@@ -75,7 +76,7 @@ const TopBar: React.FunctionComponent = ({ children }) => {
                   disabled={isStartDisabled}
                   startIcon={<PlayIcon />}
                 >
-                  Start Game
+                  {globalText.startGame}
                 </Button>
               </span>
             </Tooltip>

@@ -2,6 +2,8 @@ import React, { useCallback } from 'react';
 import { Input, InputAdornment, IconButton } from '@material-ui/core';
 import { Close as CloseIcon, Search as SearchIcon } from '@material-ui/icons';
 
+import { globalText } from '../static-text';
+
 type Props = {
   value: string;
   onChange: (value: string) => void;
@@ -23,7 +25,7 @@ const FilterInput: React.FunctionComponent<Props> = ({ value, onChange }) => {
     <Input
       onChange={handleChange}
       value={value}
-      placeholder="Find"
+      placeholder={globalText.find}
       color="secondary"
       startAdornment={
         <InputAdornment position="start">

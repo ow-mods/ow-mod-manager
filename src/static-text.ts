@@ -1,3 +1,17 @@
+export const globalText = {
+  find: 'Find',
+  tabs: {
+    mods: 'Mods',
+    logs: 'Logs',
+    settings: 'Settings',
+    update: 'Update',
+  },
+  startGame: 'Start Game',
+  gameRunning: 'Already running',
+  missingRequiredMod: (modNames: string[]) =>
+    `Please install ${modNames.join()} before starting the game`,
+};
+
 export const logsText = {
   showingLines: (count: number) => `Showing ${count} of `,
   entries: (count: number) => `${count} entries`,
