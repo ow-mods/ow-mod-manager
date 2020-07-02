@@ -19,6 +19,11 @@ export const logsText = {
   showPrevious: (count: number) => `Show previous ${count}`,
   showNext: (count: number) => `Show previous ${count}`,
   clearLogs: 'Clear log entries',
+  connectedToConsole: 'Client connected to console',
+  disconnectedFromConsole: 'Client disconnected from console',
+  consoleServerStart: (port: number) =>
+    `Started console server on port ${port}`,
+  socketError: 'SOCKET ERROR',
 };
 
 export const modsText = {
@@ -50,6 +55,8 @@ export const modsText = {
     openRepo: 'More info on GitHub',
     uninstall: 'Uninstall',
   },
+  localModLoadError: 'Failed to load local mod',
+  databaseLoadError: 'Failed to load mod database',
   modLoadError: (errors: string[]) =>
     `Failed to load mod. Errors: ${errors.join(' || ')}`,
   actionError: (action: string, error: string) =>
@@ -122,4 +129,8 @@ export const updateText = {
   latestVersion: 'Latest: ',
   download: 'Download update',
   installAndRestart: 'Install update and restart',
+  downloadSuccess: 'Finished downloading app update',
+  databaseRetrieveError:
+    'Not able to retrieve Mod Manager release from database',
+  updateError: 'Error updating app',
 };

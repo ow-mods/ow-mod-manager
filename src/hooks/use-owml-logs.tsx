@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
 import net from 'net';
+
+import { logsText } from '../static-text';
 import { useNotifications } from './use-notifications';
 
 type LogsContext = {
@@ -101,12 +103,12 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
 
     function signalServerOpen() {
       setIsServerRunning(true);
-      writeSimpleText('Client connected to console', 'success');
+      writeSimpleText(logsText.connectedToConsole, 'success');
     }
 
     function signalServerClosed() {
       setIsServerRunning(false);
-      writeSimpleText('Client disconnected from console', 'warning');
+      writeSimpleText(logsText.disconnectedFromConsole, 'warning');
     }
 
     const netServer = net.createServer((socket) => {
@@ -119,7 +121,10 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
         writeLogText(...dataLines);
       });
       socket.on('error', (error) => {
-        writeSimpleText(`SOCKET ERROR: ${error.toString()}`, 'error');
+        writeSimpleText(
+          `${logsText.socketError}: ${error.toString()}`,
+          'error',
+        );
         signalServerClosed();
       });
       socket.on('end', () => {
@@ -132,7 +137,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     netServer.on('close', signalServerClosed);
     netServer.on('listening', () => {
       const port = (netServer.address() as net.AddressInfo).port;
-      writeSimpleText(`Started console server on port ${port}`, 'success');
+      writeSimpleText(logsText.consoleServerStart(port), 'success');
       setServerPort(port);
     });
 
