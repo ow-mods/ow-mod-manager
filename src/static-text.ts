@@ -6,3 +6,14 @@ export const logsText = {
   showNext: (count: number) => `Show previous ${count}`,
   clearLogs: 'Clear log entries',
 };
+
+export const modsText = {
+  selectFilter: {
+    all: 'All',
+    installed: 'Installed',
+    enabled: 'enabled',
+    notInstalled: 'notInstalled',
+    outdated: 'outdated',
+  },
+  emptyModList: 'No mods here! 😱',
+};
