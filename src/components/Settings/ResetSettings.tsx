@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { Button, ListItem, makeStyles } from '@material-ui/core';
 import { SettingsBackupRestore as RestoreIcon } from '@material-ui/icons';
 
+import { settingsText } from '../../static-text';
 import config from '../../config.json';
 import { useSettings } from '../../hooks';
 
@@ -26,7 +27,7 @@ const ResetSettings = () => {
         onClick={handleResetClick}
         startIcon={<RestoreIcon />}
       >
-        Reset all settings to default
+        {settingsText.resetToDefault}
       </Button>
     </ListItem>
   );
