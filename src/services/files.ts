@@ -4,6 +4,8 @@ import fs from 'fs-extra';
 import path from 'path';
 import { remote } from 'electron';
 
+import { modsText } from '../static-text';
+
 // Defines which portion of the loading bar is for download progress,
 // and the remaining is for unzipping progress.
 const progressDownloadPortion = 0.8;
@@ -83,9 +85,7 @@ export function deleteFolder(folderPath: string) {
   if (fs.existsSync(folderPath)) {
     fs.removeSync(folderPath);
   } else {
-    throw new Error(
-      `Trying to delete a non-existing directory: "${folderPath}"`,
-    );
+    throw new Error(`${modsText.deleteNonExistingError}: "${folderPath}"`);
   }
 }
 

@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import glob from 'glob-promise';
 import path from 'path';
 
+import { modsText } from '../static-text';
 import config from '../config.json';
 import { isEnabled, manifestPartialToFull } from '.';
 
@@ -45,9 +46,10 @@ export async function getLocalMods() {
 
       if (missingAttributes.length > 0) {
         mod.errors.push(
-          `Manifest ${manifestPath} missing attributes "${missingAttributes.join(
-            '", "',
-          )}"`,
+          modsText.missingManifestAttributesError(
+            manifestPath,
+            missingAttributes,
+          ),
         );
       }
 

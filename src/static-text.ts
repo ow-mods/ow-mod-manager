@@ -57,6 +57,16 @@ export const modsText = {
   },
   localModLoadError: 'Failed to load local mod',
   databaseLoadError: 'Failed to load mod database',
+  deleteNonExistingError: 'Trying to delete a non-existing directory',
+  installAlreadyInstalledError:
+    "Can't install mod because it's already installed",
+  updateNotOutOfDateError: "Can't update mod because it's not out of date",
+  uninstallNotInstalledError: "Can't uninstall mod because it's not installed",
+  modPathNotDefinedError: 'Mod path is not defined',
+  openNonExistingDirectoryError: 'Trying to open non existing directory',
+  undefinedRepoUrlError: 'Mod repository URL not defined',
+  missingManifestAttributesError: (path: string, attributes: string[]) =>
+    `Manifest ${path} missing attributes "${attributes.join('", "')}"`,
   modLoadError: (errors: string[]) =>
     `Failed to load mod. Errors: ${errors.join(' || ')}`,
   actionError: (action: string, error: string) =>
@@ -118,6 +128,23 @@ export const settingsText = {
   },
   textFieldSave: 'Save',
   resetToDefault: 'Reset all settings to default',
+  steamParamsWarning: {
+    message: 'Steam might show a warning before starting the game',
+    dontShowAgain: "Don't show this again",
+    ok: 'OK',
+    cancel: 'Cancel',
+    detail: (paramNames: string[]) => `You enabled "${paramNames.join(
+      '" and "',
+    )}".
+  
+If you own the Steam version of the game, Steam might show a warning about custom parameters.
+    
+The warning might not be visible until you open a Steam window.
+    
+If you have SteamVR running, the warning might only be visible while you're using your VR headset.
+    
+If you want Steam to stop bothering you about this, you'll have to disable these options in the Mod Manager settings.`,
+  },
 };
 
 export const updateText = {
