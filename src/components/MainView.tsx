@@ -72,7 +72,7 @@ const MainView = () => {
   const { appRelease } = useAppState();
 
   const isAppOutdated =
-    true || (appRelease && appRelease.version !== remote.app.getVersion());
+    appRelease && appRelease?.version !== remote.app.getVersion();
   const visibleTabs = isAppOutdated ? [...tabs, updateTab] : tabs;
 
   return (
