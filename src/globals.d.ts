@@ -66,6 +66,8 @@ type Settings = {
   logLinesLimit: number;
   showAdvancedSettings: boolean;
   modDatabaseUrl: string;
+  openVRParameter: boolean;
+  disableParameterWarning: boolean;
 };
 
 type OwmlSettings = {

@@ -32,13 +32,14 @@ const TopBar: React.FunctionComponent = ({ children }) => {
   const classes = useStyles();
   const { modMap } = useAppState();
   const { serverPort, isServerRunning } = useOwmlLogs();
-  const { settings } = useSettings();
+  const { settings, setSettings } = useSettings();
+
+  function setDisableParameterWarnings() {
+    setSettings({ disableParameterWarning: true });
+  }
 
   async function handleStartGameClick() {
-    runOwml(
-      settings.closeOnPlay,
-      settings.logToSocket ? serverPort : undefined,
-    );
+    runOwml(settings, serverPort, setDisableParameterWarnings);
   }
 
   const requiredMods = Object.values(modMap).filter((mod) => mod.isRequired);

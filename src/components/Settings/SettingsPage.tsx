@@ -44,6 +44,12 @@ const settingsInputs: readonly SettingsInput[] = [
     isOwmlSetting: true,
   },
   {
+    key: 'openVRParameter',
+    label: 'Force OpenVR mode',
+    tooltip:
+      'Runs game with -vrmode openvr flag. Required to make VR work in some rare cases',
+  },
+  {
     key: 'gamePath',
     label: 'Game path',
     tooltip:
@@ -63,6 +69,13 @@ const settingsInputs: readonly SettingsInput[] = [
   {
     key: 'modDatabaseUrl',
     label: 'Mod database URL',
+    isAdvanced: true,
+  },
+  {
+    key: 'disableParameterWarning',
+    label: 'Disable Steam parameter warning',
+    tooltip:
+      'Disables warning in the Mod Manager that warns you about the Steam warning. Yeah.',
     isAdvanced: true,
   },
 ];
