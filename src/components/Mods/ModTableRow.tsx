@@ -4,7 +4,6 @@ import {
   TableCell,
   TableRow,
   Chip,
-  PropTypes as MaterialProps,
   Tooltip,
 } from '@material-ui/core';
 
@@ -28,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const styles = useStyles();
 
-  const getVersionColor = (): MaterialProps.Color => {
+  const getVersionColor = () => {
     if (isOutdated(mod)) {
       return 'secondary';
     }
