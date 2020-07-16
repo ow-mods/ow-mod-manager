@@ -13,6 +13,7 @@ const createWindow = () => {
       enableRemoteModule: true,
     },
     backgroundColor: '#212121',
+    title: `Outer Wilds Mod Manager ${app.getVersion()}`,
   });
 
   // Load the index.html of the app.
