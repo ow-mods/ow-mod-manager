@@ -2,7 +2,6 @@ import { spawn } from 'child_process';
 import { remote } from 'electron';
 
 import { settingsText } from '../static-text';
-import config from '../config.json';
 
 const EXE_FILE = 'OWML.Launcher.exe';
 
@@ -21,6 +20,7 @@ export async function runOwml(
     logToSocket,
     openVRParameter,
     disableParameterWarning,
+    owmlPath,
   }: Settings,
   port: number,
   disableParameterWarningCallback: () => void,
@@ -57,7 +57,7 @@ export async function runOwml(
 
   spawn(EXE_FILE, params, {
     shell: true,
-    cwd: config.owmlPath,
+    cwd: owmlPath,
     detached: true,
   });
 

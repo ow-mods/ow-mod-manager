@@ -127,6 +127,11 @@ export const settingsText = {
       'Disables warning in the Mod Manager that warns you about the Steam warning. Yeah.',
     isAdvanced: true,
   },
+  owmlPath: {
+    label: 'OWML path',
+    tooltip:
+      "Directory where OWML is installed. All mods are installed in a 'Mods' folder inside this.",
+  },
   textFieldSave: 'Save',
   resetToDefault: 'Reset all settings to default',
   steamParamsWarning: {

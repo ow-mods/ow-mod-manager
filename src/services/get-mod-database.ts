@@ -1,7 +1,6 @@
 import fetch from 'node-fetch';
 
 import { modsText } from '../static-text';
-import config from '../config.json';
 import { manifestPartialToFull } from '.';
 
 type RemoteMod = {
@@ -21,7 +20,10 @@ type ModDatabase = {
   modManager: AppRelease;
 };
 
-export async function getModDatabase(url: string): Promise<ModDatabase> {
+export async function getModDatabase(
+  url: string,
+  owmlPath: string,
+): Promise<ModDatabase> {
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -46,7 +48,7 @@ export async function getModDatabase(url: string): Promise<ModDatabase> {
         author: manifest.author,
         uniqueName: manifest.uniqueName,
         remoteVersion: manifest.version,
-        modPath: `${config.owmlPath}/Mods/${manifest.uniqueName}`,
+        modPath: `${owmlPath}/Mods/${manifest.uniqueName}`,
         errors: [],
         downloadUrl,
         downloadCount,

@@ -1,8 +1,8 @@
 {
     "settingsPath": "settings.json",
     "owmlSettingsPath": "OWML/OWML.Config.json",
-    "owmlPath": "OWML",
     "defaultSettings": {
+        "owmlPath": "OWML",
         "closeOnPlay": false,
         "logToSocket": false,
         "logLinesLimit": 50,
