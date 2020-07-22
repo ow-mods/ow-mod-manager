@@ -68,6 +68,7 @@ type Settings = {
   modDatabaseUrl: string;
   openVRParameter: boolean;
   disableParameterWarning: boolean;
+  owmlPath: string;
 };
 
 type OwmlSettings = {

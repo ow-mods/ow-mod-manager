@@ -118,7 +118,8 @@ export const settingsText = {
   },
   modDatabaseUrl: {
     label: 'Mod database URL',
-    tooltip: '',
+    tooltip:
+      'URL used to check for updates for mods, OWML, and the Mod Manager.',
     isAdvanced: true,
   },
   disableParameterWarning: {
@@ -126,6 +127,11 @@ export const settingsText = {
     tooltip:
       'Disables warning in the Mod Manager that warns you about the Steam warning. Yeah.',
     isAdvanced: true,
+  },
+  owmlPath: {
+    label: 'OWML path',
+    tooltip:
+      "Can be relative to Mod Manager or an absolute path. All mods are installed in a 'Mods' folder inside this.",
   },
   textFieldSave: 'Save',
   resetToDefault: 'Reset all settings to default',

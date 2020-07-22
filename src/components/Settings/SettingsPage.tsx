@@ -52,6 +52,10 @@ const settingsInputs: readonly SettingsInput[] = [
     key: 'disableParameterWarning',
     isAdvanced: true,
   },
+  {
+    key: 'owmlPath',
+    isAdvanced: true,
+  },
 ];
 
 const Settings = () => {

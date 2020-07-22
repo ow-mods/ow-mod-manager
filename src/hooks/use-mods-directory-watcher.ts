@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 import fs from 'fs-extra';
 
-import config from '../config.json';
-
 type Handler = () => void;
 
-export function useModsDirectoryWatcher(handler: Handler) {
+export function useModsDirectoryWatcher(owmlPath: string, handler: Handler) {
   useEffect(() => {
-    const path = `${config.owmlPath}/Mods`;
+    const path = `${owmlPath}/Mods`;
 
     if (!fs.existsSync(path)) {
       fs.mkdirSync(path, { recursive: true });
@@ -21,5 +19,5 @@ export function useModsDirectoryWatcher(handler: Handler) {
     handler();
 
     return () => watcher.close();
-  }, [handler]);
+  }, [handler, owmlPath]);
 }
