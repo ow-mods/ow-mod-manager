@@ -118,7 +118,8 @@ export const settingsText = {
   },
   modDatabaseUrl: {
     label: 'Mod database URL',
-    tooltip: '',
+    tooltip:
+      'URL used to check for updates for mods, OWML, and the Mod Manager.',
     isAdvanced: true,
   },
   disableParameterWarning: {
@@ -130,7 +131,7 @@ export const settingsText = {
   owmlPath: {
     label: 'OWML path',
     tooltip:
-      "Directory where OWML is installed. All mods are installed in a 'Mods' folder inside this.",
+      "Can be relative to Mod Manager or an absolute path. All mods are installed in a 'Mods' folder inside this.",
   },
   textFieldSave: 'Save',
   resetToDefault: 'Reset all settings to default',
