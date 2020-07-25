@@ -20,33 +20,18 @@ const LogsState = React.createContext<LogsContext>({
 
 export const useOwmlLogs = () => useContext(LogsState);
 
-function getLogType(text: string): LogType {
-  const lowerText = text.toLowerCase();
-  if (lowerText.includes('error') || lowerText.includes('exception')) {
-    return 'error';
-  }
-  if (lowerText.includes('warning') || lowerText.includes('disabled')) {
-    return 'warning';
-  }
-  if (lowerText.includes('success')) {
-    return 'success';
-  }
-  return 'info';
-}
-
 function getLogLine(lineText: string): LogLine {
-  const [modName, text] = lineText.split(';;');
-
+  const socketMessage: SocketMessage = JSON.parse(lineText);
   return {
-    type: getLogType(text),
+    type: socketMessage.type,
     count: 1,
     id: 0,
-    text,
-    modName,
+    text: socketMessage.message,
+    modName: socketMessage.senderName,
   };
 }
 
-function getSimpleLine(text: string, type: LogType = 'info'): LogLine {
+function getSimpleLine(text: string, type: LogType = 'Message'): LogLine {
   return {
     type,
     text,
@@ -103,12 +88,12 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
 
     function signalServerOpen() {
       setIsServerRunning(true);
-      writeSimpleText(logsText.connectedToConsole, 'success');
+      writeSimpleText(logsText.connectedToConsole, 'Success');
     }
 
     function signalServerClosed() {
       setIsServerRunning(false);
-      writeSimpleText(logsText.disconnectedFromConsole, 'warning');
+      writeSimpleText(logsText.disconnectedFromConsole, 'Warning');
     }
 
     const netServer = net.createServer((socket) => {
@@ -123,7 +108,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
       socket.on('error', (error) => {
         writeSimpleText(
           `${logsText.socketError}: ${error.toString()}`,
-          'error',
+          'Error',
         );
         signalServerClosed();
       });
@@ -137,7 +122,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     netServer.on('close', signalServerClosed);
     netServer.on('listening', () => {
       const port = (netServer.address() as net.AddressInfo).port;
-      writeSimpleText(logsText.consoleServerStart(port), 'success');
+      writeSimpleText(logsText.consoleServerStart(port), 'Success');
       setServerPort(port);
     });
 

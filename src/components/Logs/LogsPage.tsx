@@ -21,16 +21,22 @@ import FilterInput from '../FilterInput';
 import ModNameSelect from './ModNameSelect';
 
 const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
-  error: {
+  Error: {
     color: palette.error.light,
   },
-  warning: {
+  Quit: {
+    color: palette.error.light,
+  },
+  Warning: {
     color: palette.warning.light,
   },
-  success: {
+  Success: {
     color: palette.success.light,
   },
-  info: {},
+  Info: {
+    color: palette.info.light,
+  },
+  Message: {},
   wrapper: {
     maxHeight: `calc(100vh - ${mixins.toolbar.minHeight}px - ${
       spacing(2) * 2
