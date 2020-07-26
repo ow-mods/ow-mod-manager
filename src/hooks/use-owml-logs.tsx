@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
 import net from 'net';
 
+import config from '../config.json';
 import { logsText } from '../static-text';
 import { useNotifications } from './use-notifications';
 import { SocketMessage, SocketMessageType, LogLine, LogType } from '../types';
@@ -69,7 +70,14 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
           ...line,
           id: prevLines.length + 1,
         },
-      ];
+      ].filter((line) => {
+        for (const ignoredError of config.ignoredErrors) {
+          if (line.text.includes(ignoredError)) {
+            return false;
+          }
+        }
+        return true;
+      });
     });
   }, []);
 
@@ -108,6 +116,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
         writeLogText(...dataLines);
       });
       socket.on('error', (error) => {
+        console.log('error name', error.name);
         writeSimpleText(
           `${logsText.socketError}: ${error.toString()}`,
           'Error',
