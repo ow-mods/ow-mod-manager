@@ -2,23 +2,14 @@ import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 import { modsText } from '../../static-text';
 
-interface Props {
-  onRequestSort: (
-    event: React.MouseEvent<unknown>,
-    property: keyof Mod,
-  ) => void;
-  order: SortOrder;
-  orderBy: string;
-}
-
 type HeadCell = {
   disablePadding: boolean;
-  id: keyof Pick<Mod, 'author' | 'name' | 'downloadCount'>;
+  id: keyof typeof modsText.tableHead;
   numeric: boolean;
+  width?: string;
 };
 
 const headCells: HeadCell[] = [
@@ -31,46 +22,43 @@ const headCells: HeadCell[] = [
     id: 'author',
     numeric: false,
     disablePadding: false,
+    width: '20%',
   },
   {
     id: 'downloadCount',
     numeric: true,
     disablePadding: false,
+    width: '100px',
+  },
+  {
+    id: 'version',
+    numeric: false,
+    disablePadding: false,
+    width: '120px',
+  },
+  {
+    id: 'actions',
+    numeric: false,
+    disablePadding: false,
+    width: '200px',
   },
 ];
 
-function ModTableHead(props: Props) {
-  const { order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property: keyof Mod) => (
-    event: React.MouseEvent<unknown>,
-  ) => {
-    onRequestSort(event, property);
-  };
-
-  return (
-    <TableHead>
-      <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'default'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {modsText.tableHead[headCell.id]}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-        <TableCell>{modsText.tableHead.version}</TableCell>
-        <TableCell></TableCell>
-      </TableRow>
-    </TableHead>
-  );
-}
+const ModTableHead: React.FunctionComponent = () => (
+  <TableHead>
+    <TableRow>
+      {headCells.map((headCell) => (
+        <TableCell
+          key={headCell.id}
+          align={headCell.numeric ? 'right' : 'left'}
+          padding={headCell.disablePadding ? 'none' : 'default'}
+          width={headCell.width}
+        >
+          {modsText.tableHead[headCell.id]}
+        </TableCell>
+      ))}
+    </TableRow>
+  </TableHead>
+);
 
 export default ModTableHead;
