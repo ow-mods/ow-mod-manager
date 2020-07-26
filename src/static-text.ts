@@ -104,7 +104,7 @@ export const settingsText = {
   gamePath: {
     label: 'Game path',
     tooltip:
-      'Game path will be determined automatically when you launch the game. Only change this if automatic detection fails.',
+      'Game path will be determined automatically when you launch the game. Leave empty for automatic detection on launch.',
     isOwmlSetting: true,
   },
   logLinesLimit: {
