@@ -28,10 +28,6 @@ const settingsInputs: readonly SettingsInput[] = [
     isOwmlSetting: true,
   },
   {
-    key: 'verbose',
-    isOwmlSetting: true,
-  },
-  {
     key: 'openVRParameter',
   },
   {

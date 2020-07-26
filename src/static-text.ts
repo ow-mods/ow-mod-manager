@@ -91,11 +91,6 @@ export const settingsText = {
       'Some mods allow you to define custom button combinations for certain actions. Enabling this setting will block the default game input when one of these button combinations is detected.',
     isOwmlSetting: true,
   },
-  verbose: {
-    label: 'Verbose mode',
-    tooltip: 'Shows more detailed info on logs',
-    isOwmlSetting: true,
-  },
   openVRParameter: {
     label: 'Force OpenVR mode',
     tooltip:
