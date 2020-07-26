@@ -91,7 +91,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
       } catch (error) {
         pushNotification({
           message: modsText.actionError(actionName, error),
-          severity: 'error',
+          severity: 'Error',
         });
       } finally {
         endLoading();
@@ -111,7 +111,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     } catch (error) {
       pushNotification({
         message: modsText.actionError(actionName, error),
-        severity: 'error',
+        severity: 'Error',
       });
     }
   };

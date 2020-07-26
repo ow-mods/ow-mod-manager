@@ -3,6 +3,7 @@ import net from 'net';
 
 import { logsText } from '../static-text';
 import { useNotifications } from './use-notifications';
+import { SocketMessage, SocketMessageType, LogLine, LogType } from '../types';
 
 type LogsContext = {
   logLines: LogLine[];
@@ -23,7 +24,7 @@ export const useOwmlLogs = () => useContext(LogsState);
 function getLogLine(lineText: string): LogLine {
   const socketMessage: SocketMessage = JSON.parse(lineText);
   return {
-    type: socketMessage.type,
+    type: SocketMessageType[socketMessage.type] as LogType,
     count: 1,
     id: 0,
     text: socketMessage.message,
@@ -99,6 +100,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     const netServer = net.createServer((socket) => {
       socket.pipe(socket);
       socket.on('data', (data) => {
+        console.log('data', data.toString());
         const dataLines = data
           .toString()
           .split('\n')

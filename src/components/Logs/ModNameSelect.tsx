@@ -3,6 +3,7 @@ import { makeStyles, Select, MenuItem } from '@material-ui/core';
 import { uniq } from 'lodash';
 
 import { logsText } from '../../static-text';
+import { LogLine } from '../../types';
 
 const useStyles = makeStyles({
   root: {

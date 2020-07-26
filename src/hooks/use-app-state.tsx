@@ -61,7 +61,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
           if (result.status === 'rejected') {
             pushNotification({
               message: `${modsText.localModLoadError}: ${result.reason}`,
-              severity: 'error',
+              severity: 'Error',
             });
           }
         });
@@ -93,7 +93,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
       } catch (error) {
         pushNotification({
           message: `${modsText.databaseLoadError}: ${error}`,
-          severity: 'error',
+          severity: 'Error',
         });
       } finally {
         setLoadingCount((count) => count - 1);
@@ -114,7 +114,7 @@ export const AppStateProvider: React.FunctionComponent = ({ children }) => {
         mod.errors.forEach((error) => {
           pushNotification({
             message: `${modsText.localModLoadError}: ${error}`,
-            severity: 'error',
+            severity: 'Error',
           });
         });
       }
