@@ -91,11 +91,6 @@ export const settingsText = {
       'Some mods allow you to define custom button combinations for certain actions. Enabling this setting will block the default game input when one of these button combinations is detected.',
     isOwmlSetting: true,
   },
-  verbose: {
-    label: 'Verbose mode',
-    tooltip: 'Shows more detailed info on logs',
-    isOwmlSetting: true,
-  },
   openVRParameter: {
     label: 'Force OpenVR mode',
     tooltip:
@@ -104,7 +99,7 @@ export const settingsText = {
   gamePath: {
     label: 'Game path',
     tooltip:
-      'Game path will be determined automatically when you launch the game. Only change this if automatic detection fails.',
+      'Game path will be determined automatically when you launch the game. Leave empty for automatic detection on launch.',
     isOwmlSetting: true,
   },
   logLinesLimit: {
@@ -135,6 +130,10 @@ export const settingsText = {
   },
   textFieldSave: 'Save',
   resetToDefault: 'Reset all settings to default',
+  getSettingsError: (path: string) =>
+    `Error while getting settings file in ${path}: `,
+  setInvalidSettingsError: 'Trying to set invalid settings',
+  setInvalidOwmlSettingsError: 'Trying to set invalid OWML settings',
   steamParamsWarning: {
     message: 'Steam might show a warning before starting the game',
     dontShowAgain: "Don't show this again",

@@ -1,8 +1,14 @@
 import React, { useContext, useCallback } from 'react';
 
 import config from '../config.json';
-import { setSettings, setOwmlSettings } from '../services';
+import {
+  setSettings,
+  setOwmlSettings,
+  getOwmlSettingsPath,
+  getOwmlDefaultSettingsPath,
+} from '../services';
 import { useSettingsFileWatcher } from './use-settings-file-watcher';
+import { useFileWatcher } from './use-file-watcher';
 
 export type SettingsContext = {
   settings: Settings;
@@ -20,16 +26,19 @@ const Settings = React.createContext<SettingsContext>({
 
 export const useSettings = () => useContext(Settings);
 
-const owmlDefaultSettings = {};
-
 export const SettingsProvider: React.FunctionComponent = ({ children }) => {
   const settings = useSettingsFileWatcher<Settings>(
     config.settingsPath,
     config.defaultSettings,
   );
+
+  const defaultOwmlSettings = useFileWatcher<OwmlSettings>(
+    getOwmlDefaultSettingsPath(settings.owmlPath),
+  );
+
   const owmlSettings = useSettingsFileWatcher<OwmlSettings>(
-    config.owmlSettingsPath,
-    owmlDefaultSettings,
+    getOwmlSettingsPath(settings.owmlPath),
+    defaultOwmlSettings,
   );
 
   const setSettingsPartial = useCallback(
@@ -44,12 +53,12 @@ export const SettingsProvider: React.FunctionComponent = ({ children }) => {
 
   const setOwmlSettingsPartial = useCallback(
     (newSettings: Partial<OwmlSettings>) => {
-      setOwmlSettings({
+      setOwmlSettings(getOwmlSettingsPath(settings.owmlPath), {
         ...owmlSettings,
         ...newSettings,
       });
     },
-    [owmlSettings],
+    [owmlSettings, settings.owmlPath],
   );
 
   return (

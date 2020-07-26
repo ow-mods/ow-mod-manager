@@ -62,7 +62,6 @@ type Settings = {
 };
 
 type OwmlSettings = {
-  verbose?: boolean;
   gamePath?: string;
   combinationsBlockInput?: boolean;
 };
