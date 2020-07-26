@@ -6,7 +6,6 @@ import { useFileWatcher } from './use-file-watcher';
 export function useSettingsFileWatcher<
   TSettings extends Record<string, unknown>
 >(path: string, defaultSettings?: TSettings) {
-  console.log('use-settings-file-watcher');
   const settings = useFileWatcher<TSettings>(path, defaultSettings);
 
   useEffect(() => {

@@ -25,6 +25,7 @@ export const logsText = {
   consoleServerStart: (port: number) =>
     `Started console server on port ${port}`,
   socketError: 'SOCKET ERROR',
+  messageParseError: 'Error parsing OWML log message',
 };
 
 export const modsText = {

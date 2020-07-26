@@ -22,8 +22,28 @@ const LogsState = React.createContext<LogsContext>({
 
 export const useOwmlLogs = () => useContext(LogsState);
 
+function tryJsonParse<T>(fileText: string) {
+  try {
+    return JSON.parse(fileText) as T;
+  } catch (error) {
+    console.error(`${logsText.messageParseError}: ${error}`);
+    return fileText;
+  }
+}
+
 function getLogLine(lineText: string): LogLine {
-  const socketMessage: SocketMessage = JSON.parse(lineText);
+  const socketMessage = tryJsonParse<SocketMessage>(lineText);
+
+  if (typeof socketMessage === 'string') {
+    return {
+      type: 'Message',
+      count: 1,
+      id: 0,
+      text: socketMessage,
+      modName: 'Unknown',
+    };
+  }
+
   return {
     type: SocketMessageType[socketMessage.type] as LogType,
     count: 1,
