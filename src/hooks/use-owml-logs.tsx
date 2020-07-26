@@ -100,7 +100,6 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
     const netServer = net.createServer((socket) => {
       socket.pipe(socket);
       socket.on('data', (data) => {
-        console.log('data', data.toString());
         const dataLines = data
           .toString()
           .split('\n')

@@ -25,23 +25,22 @@ export async function runOwml(
   port: number,
   disableParameterWarningCallback: () => void,
 ) {
-  const params = [];
-  const paramNames = [];
+  const owmlParams = [];
+  const gameParamNames = [];
   if (!closeOnPlay && logToSocket) {
-    params.push(`-consolePort ${port}`);
-    paramNames.push(settingsText.logToSocket.label);
+    owmlParams.push(`-consolePort ${port}`);
   }
   if (openVRParameter) {
-    params.push(`-vrmode openvr`);
-    paramNames.push(settingsText.openVRParameter.label);
+    owmlParams.push(`-vrmode openvr`);
+    gameParamNames.push(settingsText.openVRParameter.label);
   }
 
-  if (!disableParameterWarning && params.length > 0) {
+  if (!disableParameterWarning && gameParamNames.length > 0) {
     const { response, checkboxChecked } = await remote.dialog.showMessageBox({
       type: 'warning',
       title: remote.app.name,
       message: settingsText.steamParamsWarning.message,
-      detail: settingsText.steamParamsWarning.detail(paramNames),
+      detail: settingsText.steamParamsWarning.detail(gameParamNames),
       checkboxLabel: settingsText.steamParamsWarning.dontShowAgain,
       buttons: ['OK', 'Cancel'],
     });
@@ -55,7 +54,7 @@ export async function runOwml(
     }
   }
 
-  spawn(EXE_FILE, params, {
+  spawn(EXE_FILE, owmlParams, {
     shell: true,
     cwd: owmlPath,
     detached: true,
