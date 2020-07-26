@@ -9,27 +9,29 @@ import {
 import { Close as CloseIcon } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
-  error: {
+  Error: {
     background: theme.palette.error.dark,
     color: theme.palette.text.primary,
   },
-  warning: {
+  Warning: {
     background: theme.palette.warning.dark,
     color: theme.palette.text.primary,
   },
-  info: {
+  Info: {
     background: theme.palette.info.dark,
     color: theme.palette.text.primary,
   },
-  success: {
+  Success: {
     background: theme.palette.success.dark,
     color: theme.palette.text.primary,
   },
+  Quit: {},
+  Message: {},
 }));
 
 const emptyNotification: AppNotification = {
   message: '',
-  severity: 'info',
+  severity: 'Info',
   id: '',
 };
 

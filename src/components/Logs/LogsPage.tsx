@@ -16,6 +16,7 @@ import {
 import { ClearAll as ClearAllIcon } from '@material-ui/icons';
 
 import { logsText } from '../../static-text';
+import { LogLine } from '../../types';
 import { useOwmlLogs, useSettings } from '../../hooks';
 import FilterInput from '../FilterInput';
 import ModNameSelect from './ModNameSelect';

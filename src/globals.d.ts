@@ -43,23 +43,6 @@ type SortOrder = 'asc' | 'desc';
 
 type HeadCellID = 'name' | 'author' | 'version' | 'downloadCount';
 
-type LogType = 'Error' | 'Warning' | 'Message' | 'Info' | 'Success' | 'Quit';
-
-type LogLine = {
-  modName: string;
-  text: string;
-  type: LogType;
-  count: number;
-  id: number;
-};
-
-type SocketMessage = {
-  senderName: string;
-  senderType: string;
-  type: LogType;
-  message: string;
-};
-
 type ProgressHandler = (progress: number) => void;
 
 type AppRelease = {

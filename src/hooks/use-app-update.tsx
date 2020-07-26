@@ -44,12 +44,12 @@ export const AppUpdateProvider: React.FunctionComponent = ({ children }) => {
         setIsUpdateReady(true);
         pushNotification({
           message: updateText.downloadSuccess,
-          severity: 'success',
+          severity: 'Success',
         });
       } catch (error) {
         pushNotification({
           message: `${updateText.updateError}: ${error}`,
-          severity: 'error',
+          severity: 'Error',
         });
       } finally {
         setIsDownloading(false);

@@ -1,6 +1,8 @@
 import React, { useContext, useState, useCallback } from 'react';
 import { uniqueId } from 'lodash';
 
+import { LogType } from '../types';
+
 type NotificationsState = {
   notifications: AppNotification[];
 };
