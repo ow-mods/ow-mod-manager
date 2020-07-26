@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useCallback } from 'react';
+import React, {
+  FunctionComponent,
+  useCallback,
+  useState,
+  useEffect,
+} from 'react';
 import {
   ListItem,
   Typography,
@@ -30,12 +35,25 @@ const SliderInput: FunctionComponent<Props> = ({
   disabled,
   tooltip = '',
 }) => {
+  const [displayValue, setDisplayValue] = useState(value);
   const styles = useStyles();
-  const handleChange = useCallback(
+  const handleChangeCommitted = useCallback(
     (_: React.ChangeEvent<unknown>, changeValue: number | number[]) =>
       onChange(typeof changeValue === 'number' ? changeValue : changeValue[0]),
     [onChange],
   );
+
+  const handleChange = useCallback(
+    (_: React.ChangeEvent<unknown>, changeValue: number | number[]) =>
+      setDisplayValue(
+        typeof changeValue === 'number' ? changeValue : changeValue[0],
+      ),
+    [],
+  );
+
+  useEffect(() => {
+    setDisplayValue(value);
+  }, [value]);
 
   return (
     <ListItem>
@@ -44,7 +62,8 @@ const SliderInput: FunctionComponent<Props> = ({
         <Slider
           disabled={disabled}
           className={styles.slider}
-          value={value}
+          value={displayValue}
+          onChangeCommitted={handleChangeCommitted}
           onChange={handleChange}
           step={10}
           min={10}
