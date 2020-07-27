@@ -13,7 +13,7 @@ import {
   Typography,
   Tooltip,
 } from '@material-ui/core';
-
+import { Save as SaveIcon, Folder as FolderIcon } from '@material-ui/icons';
 import { settingsText } from '../../static-text';
 
 type Props = {
@@ -42,18 +42,18 @@ const PathInput: FunctionComponent<Props> = ({
   tooltip = '',
 }) => {
   const styles = useStyles();
-  const [text, setText] = useState('');
+  const [path, setPath] = useState('');
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-      setText(event.target.value),
+      setPath(event.target.value),
     [],
   );
   const handleSaveClick = () => {
-    onChange(text);
+    onChange(path);
   };
 
   useEffect(() => {
-    setText(value);
+    setPath(value);
   }, [value]);
 
   const handleFindClick = async () => {
@@ -69,9 +69,9 @@ const PathInput: FunctionComponent<Props> = ({
       ],
     });
 
-    const path = openedValue.filePaths[0].replace(FILE_NAME, '');
-    onChange(path);
-    setText(path);
+    const pathResult = openedValue.filePaths[0].replace(FILE_NAME, '');
+    onChange(pathResult);
+    setPath(pathResult);
   };
 
   return (
@@ -80,20 +80,31 @@ const PathInput: FunctionComponent<Props> = ({
       <Tooltip title={tooltip} placement="bottom">
         <TextField
           className={styles.textField}
+          variant="outlined"
+          margin="dense"
           fullWidth
-          value={text}
+          value={path}
           onChange={handleChange}
           color="secondary"
           disabled={disabled}
         />
       </Tooltip>
-      {value !== text && (
-        <Button variant="contained" color="secondary" onClick={handleSaveClick}>
+      {value !== path && (
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleSaveClick}
+          startIcon={<SaveIcon />}
+        >
           {settingsText.textFieldSave}
         </Button>
       )}
-      {value === text && (
-        <Button variant="contained" onClick={handleFindClick}>
+      {value === path && (
+        <Button
+          variant="contained"
+          onClick={handleFindClick}
+          startIcon={<FolderIcon />}
+        >
           {settingsText.pathFindButton}
         </Button>
       )}

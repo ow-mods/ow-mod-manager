@@ -42,15 +42,19 @@ const theme = createMuiStrictTheme({
         },
         '*::-webkit-scrollbar': {
           width: '1em',
+          cursor: 'pointer',
         },
         '*::-webkit-scrollbar-track': {
-          background: grey[900],
+          background: grey[800],
           borderRadius: 0,
         },
         '*::-webkit-scrollbar-thumb': {
-          background: grey[800],
-          border: `2px solid ${grey[900]}`,
+          background: grey[700],
+          border: `2px solid ${grey[800]}`,
           borderRadius: 0,
+          '&:hover': {
+            background: grey[600],
+          },
         },
       },
     },

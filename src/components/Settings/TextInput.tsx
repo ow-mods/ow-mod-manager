@@ -59,6 +59,8 @@ const TextInput: FunctionComponent<Props> = ({
       <Tooltip title={tooltip} placement="bottom">
         <TextField
           className={styles.textField}
+          variant="outlined"
+          margin="dense"
           fullWidth
           value={text}
           onChange={handleChange}

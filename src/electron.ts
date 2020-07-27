@@ -4,7 +4,7 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 1000,
-    height: 800,
+    height: 850,
     minWidth: 900,
     minHeight: 400,
     webPreferences: {
