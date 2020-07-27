@@ -40,9 +40,7 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   },
   Message: {},
   wrapper: {
-    maxHeight: `calc(100vh - ${mixins.toolbar.minHeight}px - ${
-      spacing(2) * 2
-    }px)`,
+    flex: 1,
     overflowY: 'auto',
     background: palette.grey[900],
   },
@@ -163,7 +161,11 @@ const OwmlLog: React.FunctionComponent = () => {
         <TableHead>
           <TableRow>
             <LogCell className={styles.nameHeader}>
-              <FilterInput onChange={setFilter} value={filter} />
+              <FilterInput
+                onChange={setFilter}
+                value={filter}
+                label={logsText.filterLogsLabel}
+              />
               {logLines.length > 1 && (
                 <Typography variant="subtitle2" color="textSecondary">
                   {hasHiddenLines.current &&

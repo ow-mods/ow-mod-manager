@@ -43,6 +43,8 @@ const ModNameSelect: React.FunctionComponent<Props> = ({
 
   return (
     <Select
+      variant="outlined"
+      margin="dense"
       className={styles.root}
       value={value}
       onChange={handleModNameChange}

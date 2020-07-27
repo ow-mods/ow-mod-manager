@@ -1,5 +1,4 @@
 export const globalText = {
-  find: 'Find',
   tabs: {
     mods: 'Mods',
     logs: 'Logs',
@@ -17,7 +16,8 @@ export const logsText = {
   entries: (count: number) => `${count} entries`,
   page: (count: number) => `, page ${count}`,
   showPrevious: (count: number) => `Show previous ${count}`,
-  showNext: (count: number) => `Show previous ${count}`,
+  showNext: (count: number) => `Show next ${count}`,
+  filterLogsLabel: 'Filter logs',
   clearLogs: 'Clear log entries',
   connectedToConsole: 'Client connected to console',
   allMods: 'All logs',
@@ -36,6 +36,7 @@ export const modsText = {
     notInstalled: 'Not Installed',
     outdated: 'Outdated',
   },
+  findModsLabel: 'Find by mods',
   emptyModList: 'No mods here! 😱',
   tableHead: {
     name: 'Name',

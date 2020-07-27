@@ -16,9 +16,9 @@ import {
 
 import { globalText } from '../static-text';
 import { useAppState } from '../hooks';
-import Mods from './Mods';
+import ModsPage from './Mods';
 import SettingsPage from './Settings';
-import Logs from './Logs';
+import LogsPage from './Logs';
 import TopBar from './TopBar';
 import LoadingBar from './LoadingBar';
 import UpdatePage from './Update';
@@ -45,13 +45,15 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
     flex: 1,
-    overflow: 'hidden visible',
+    overflow: 'hidden scroll',
+    display: 'flex',
+    flexDirection: 'column',
   },
 }));
 
 type Tab = {
   name: string;
-  component: typeof Mods;
+  component: typeof ModsPage;
   icon: typeof BuildIcon;
   color?: 'primary' | 'secondary';
 };
@@ -59,12 +61,12 @@ type Tab = {
 const tabs: readonly Tab[] = [
   {
     name: globalText.tabs.mods,
-    component: Mods,
+    component: ModsPage,
     icon: BuildIcon,
   },
   {
     name: globalText.tabs.logs,
-    component: Logs,
+    component: LogsPage,
     icon: DvrIcon,
   },
   {
