@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     border: `solid 3px ${theme.palette.secondary.light}`,
   },
   wrapper: {
-    flex: 1,
+    flex: 0,
   },
 }));
 

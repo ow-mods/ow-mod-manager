@@ -1,12 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { remote } from 'electron';
-import {
-  Container,
-  Tabs,
-  Tab,
-  CssBaseline,
-  makeStyles,
-} from '@material-ui/core';
+import { Tabs, Tab, CssBaseline, makeStyles } from '@material-ui/core';
 import {
   Build as BuildIcon,
   Dvr as DvrIcon,
@@ -35,21 +29,13 @@ const useTabStyles = makeStyles({
   },
 });
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   wrapper: {
     display: 'flex',
     height: '100vh',
     flexDirection: 'column',
   },
-  container: {
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
-    flex: 1,
-    overflow: 'hidden scroll',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-}));
+});
 
 type Tab = {
   name: string;
@@ -115,14 +101,12 @@ const MainView = () => {
           </Tabs>
         </TopBar>
         <LoadingBar />
-        <Container className={styles.container}>
-          {visibleTabs.map(
-            (tab) =>
-              visibleTabs[selectedTab].name === tab.name && (
-                <tab.component key={tab.name} />
-              ),
-          )}
-        </Container>
+        {visibleTabs.map(
+          (tab) =>
+            visibleTabs[selectedTab].name === tab.name && (
+              <tab.component key={tab.name} />
+            ),
+        )}
       </div>
       <Notifications />
     </CssBaseline>

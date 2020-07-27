@@ -7,7 +7,6 @@ import {
   MenuItem,
   TableRow,
   TableCell,
-  Box,
 } from '@material-ui/core';
 
 import { modsText } from '../../static-text';
@@ -15,12 +14,11 @@ import { isInstalled, isOutdated } from '../../services';
 import { useAppState } from '../../hooks';
 import FilterInput from '../FilterInput';
 import ModRowSection from './ModRowSection';
+import PageContainer from '../PageContainer';
 
 const useStyles = makeStyles((theme) => ({
   toolBar: {
-    display: 'flex',
     justifyContent: 'space-between',
-    minHeight: 0,
     padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
   },
 }));
@@ -99,7 +97,7 @@ const ModTable: React.FunctionComponent = () => {
   const isEmpty = installedMods.length + notInstalledMods.length === 0;
 
   return (
-    <Box flex="1">
+    <PageContainer>
       <Toolbar component={Paper} className={styles.toolBar}>
         <FilterInput
           value={filter}
@@ -138,7 +136,7 @@ const ModTable: React.FunctionComponent = () => {
         title={modsText.modSections.notInstalled}
         mods={notInstalledMods}
       />
-    </Box>
+    </PageContainer>
   );
 };
 

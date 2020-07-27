@@ -21,8 +21,9 @@ import { LogLine } from '../../types';
 import { useOwmlLogs, useSettings } from '../../hooks';
 import FilterInput from '../FilterInput';
 import ModNameSelect from './ModNameSelect';
+import PageContainer from '../PageContainer';
 
-const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
+const useStyles = makeStyles(({ palette, spacing }) => ({
   Error: {
     color: palette.error.light,
   },
@@ -40,6 +41,9 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
   },
   Message: {},
   wrapper: {
+    padding: spacing(3),
+  },
+  container: {
     flex: 1,
     overflowY: 'auto',
     background: palette.grey[900],
@@ -152,83 +156,87 @@ const OwmlLog: React.FunctionComponent = () => {
   }
 
   return (
-    <TableContainer
-      component={Paper}
-      className={styles.wrapper}
-      ref={containerRef}
-    >
-      <Table size="small" stickyHeader>
-        <TableHead>
-          <TableRow>
-            <LogCell className={styles.nameHeader}>
-              <FilterInput
-                onChange={setFilter}
-                value={filter}
-                label={logsText.filterLogsLabel}
-              />
-              {logLines.length > 1 && (
-                <Typography variant="subtitle2" color="textSecondary">
-                  {hasHiddenLines.current &&
-                    logsText.showingLines(paginatedLines.length)}
-                  {logsText.entries(logLines.length)}
-                  {isPaginated.current && logsText.page(page + 1)}
-                </Typography>
-              )}
-              <Tooltip title={logsText.clearLogs}>
-                <IconButton size="small" onClick={clear}>
-                  <ClearAllIcon />
-                </IconButton>
-              </Tooltip>
-            </LogCell>
-            <LogCell className={styles.modSelectHeader}>
-              <ModNameSelect
-                value={selectedModName}
-                onChange={setSelectedModName}
-                logLines={logLines}
-              />
-            </LogCell>
-            <LogCell className={styles.logCountHeader}>#</LogCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {isPreviousPageVisible.current && (
+    <PageContainer maxWidth={false}>
+      <TableContainer
+        component={Paper}
+        className={styles.container}
+        ref={containerRef}
+      >
+        <Table size="small" stickyHeader>
+          <TableHead>
             <TableRow>
-              <LogCell colSpan={3}>
-                <Button
-                  onClick={handlePreviousPageClick}
-                  fullWidth
-                  variant="outlined"
-                >
-                  {logsText.showPrevious(logLinesLimit)}
-                </Button>
+              <LogCell className={styles.nameHeader}>
+                <FilterInput
+                  onChange={setFilter}
+                  value={filter}
+                  label={logsText.filterLogsLabel}
+                />
+                {logLines.length > 1 && (
+                  <Typography variant="subtitle2" color="textSecondary">
+                    {hasHiddenLines.current &&
+                      logsText.showingLines(paginatedLines.length)}
+                    {logsText.entries(logLines.length)}
+                    {isPaginated.current && logsText.page(page + 1)}
+                  </Typography>
+                )}
+                <Tooltip title={logsText.clearLogs}>
+                  <IconButton size="small" onClick={clear}>
+                    <ClearAllIcon />
+                  </IconButton>
+                </Tooltip>
               </LogCell>
+              <LogCell className={styles.modSelectHeader}>
+                <ModNameSelect
+                  value={selectedModName}
+                  onChange={setSelectedModName}
+                  logLines={logLines}
+                />
+              </LogCell>
+              <LogCell className={styles.logCountHeader}>#</LogCell>
             </TableRow>
-          )}
-          {paginatedLines.map((line: LogLine) => (
-            <React.Fragment key={line.id}>
+          </TableHead>
+          <TableBody>
+            {isPreviousPageVisible.current && (
               <TableRow>
-                <LogCell className={styles[line.type]}>{line.text}</LogCell>
-                <LogCell className={styles.modNameCell}>{line.modName}</LogCell>
-                <LogCell>{line.count > 1 ? line.count : ''}</LogCell>
+                <LogCell colSpan={3}>
+                  <Button
+                    onClick={handlePreviousPageClick}
+                    fullWidth
+                    variant="outlined"
+                  >
+                    {logsText.showPrevious(logLinesLimit)}
+                  </Button>
+                </LogCell>
               </TableRow>
-            </React.Fragment>
-          ))}
-          {isNextPageVisible && (
-            <TableRow>
-              <LogCell colSpan={3}>
-                <Button
-                  onClick={handleNextPageClick}
-                  fullWidth
-                  variant="outlined"
-                >
-                  {logsText.showNext(logLinesLimit)}
-                </Button>
-              </LogCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            )}
+            {paginatedLines.map((line: LogLine) => (
+              <React.Fragment key={line.id}>
+                <TableRow>
+                  <LogCell className={styles[line.type]}>{line.text}</LogCell>
+                  <LogCell className={styles.modNameCell}>
+                    {line.modName}
+                  </LogCell>
+                  <LogCell>{line.count > 1 ? line.count : ''}</LogCell>
+                </TableRow>
+              </React.Fragment>
+            ))}
+            {isNextPageVisible && (
+              <TableRow>
+                <LogCell colSpan={3}>
+                  <Button
+                    onClick={handleNextPageClick}
+                    fullWidth
+                    variant="outlined"
+                  >
+                    {logsText.showNext(logLinesLimit)}
+                  </Button>
+                </LogCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </PageContainer>
   );
 };
 
