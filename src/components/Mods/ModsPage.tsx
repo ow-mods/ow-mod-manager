@@ -70,9 +70,13 @@ const ModTable: React.FunctionComponent = () => {
   const [requiredMods, setRequiredMods] = useState<Mod[]>([]);
 
   useEffect(() => {
-    const filteredMods = Object.values(modMap).filter((mod) => {
-      return filterByText(filter, mod) && filterBySelect(selectFilter, mod);
-    });
+    const filteredMods = Object.values(modMap)
+      .filter((mod) => {
+        return filterByText(filter, mod) && filterBySelect(selectFilter, mod);
+      })
+      .sort(
+        (modA, modB) => (modB.downloadCount ?? 0) - (modA.downloadCount ?? 0),
+      );
 
     setInstalledMods(filteredMods.filter((mod) => mod.localVersion));
     setNotInstalledMods(
