@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
 } from 'react';
+import { remote } from 'electron';
 import {
   ListItem,
   TextField,
@@ -31,7 +32,9 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
 }));
 
-const TextInput: FunctionComponent<Props> = ({
+const FILE_NAME = 'OuterWilds.exe';
+
+const PathInput: FunctionComponent<Props> = ({
   value,
   onChange,
   label,
@@ -53,6 +56,24 @@ const TextInput: FunctionComponent<Props> = ({
     setText(value);
   }, [value]);
 
+  const handleFindClick = async () => {
+    const openedValue = await remote.dialog.showOpenDialog({
+      properties: ['openFile'],
+      title: settingsText.pathFindTitle(FILE_NAME),
+      defaultPath: `${value}\\${FILE_NAME}`,
+      filters: [
+        {
+          name: FILE_NAME,
+          extensions: ['exe'],
+        },
+      ],
+    });
+
+    const path = openedValue.filePaths[0].replace(FILE_NAME, '');
+    onChange(path);
+    setText(path);
+  };
+
   return (
     <ListItem>
       <Typography>{label}</Typography>
@@ -71,8 +92,13 @@ const TextInput: FunctionComponent<Props> = ({
           {settingsText.textFieldSave}
         </Button>
       )}
+      {value === text && (
+        <Button variant="contained" onClick={handleFindClick}>
+          {settingsText.pathFindButton}
+        </Button>
+      )}
     </ListItem>
   );
 };
 
-export default TextInput;
+export default PathInput;

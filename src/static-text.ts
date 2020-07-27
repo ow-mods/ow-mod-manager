@@ -136,6 +136,8 @@ export const settingsText = {
       "Can be relative to Mod Manager or an absolute path. All mods are installed in a 'Mods' folder inside this.",
   },
   textFieldSave: 'Save',
+  pathFindButton: 'Find...',
+  pathFindTitle: (fileName: string) => `Find ${fileName}...`,
   resetToDefault: 'Reset all settings to default',
   getSettingsError: (path: string) =>
     `Error while getting settings file in ${path}: `,
