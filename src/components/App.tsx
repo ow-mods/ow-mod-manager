@@ -38,7 +38,7 @@ const theme = createMuiStrictTheme({
     MuiCssBaseline: {
       '@global': {
         body: {
-          overflowY: 'scroll',
+          overflowY: 'hidden',
         },
         '*::-webkit-scrollbar': {
           width: '1em',

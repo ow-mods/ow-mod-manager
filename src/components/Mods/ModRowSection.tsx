@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
   required: {
     border: `solid 3px ${theme.palette.secondary.light}`,
   },
+  wrapper: {
+    flex: 1,
+  },
 }));
 
 const ModRowSection: React.FunctionComponent<Props> = ({
@@ -34,7 +37,7 @@ const ModRowSection: React.FunctionComponent<Props> = ({
   const styles = useStyles();
 
   return mods.length > 0 ? (
-    <>
+    <div className={styles.wrapper}>
       <Typography
         className={styles.sectionTitle}
         variant="h6"
@@ -56,7 +59,7 @@ const ModRowSection: React.FunctionComponent<Props> = ({
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </div>
   ) : (
     <></>
   );

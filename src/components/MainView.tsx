@@ -6,6 +6,7 @@ import {
   Tab,
   CssBaseline,
   makeStyles,
+  Box,
 } from '@material-ui/core';
 import {
   Build as BuildIcon,
@@ -34,6 +35,20 @@ const useTabStyles = makeStyles({
     alignItems: 'flex-start',
   },
 });
+
+const useStyles = makeStyles((theme) => ({
+  wrapper: {
+    display: 'flex',
+    height: '100vh',
+    flexDirection: 'column',
+  },
+  container: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+    flex: 1,
+    overflow: 'hidden visible',
+  },
+}));
 
 type Tab = {
   name: string;
@@ -69,6 +84,7 @@ const updateTab: Tab = {
 
 const MainView = () => {
   const tabStyles = useTabStyles();
+  const styles = useStyles();
   const [selectedTab, setSelectedTab] = useState(0);
   const { appRelease } = useAppState();
 
@@ -78,29 +94,31 @@ const MainView = () => {
 
   return (
     <CssBaseline>
-      <TopBar>
-        <Tabs value={selectedTab}>
-          {visibleTabs.map((tab: Tab, index: number) => (
-            <Tab
-              key={tab.name}
-              label={tab.name}
-              value={index}
-              classes={tabStyles}
-              icon={<tab.icon color={tab.color} />}
-              onClick={() => setSelectedTab(index)}
-            />
-          ))}
-        </Tabs>
-      </TopBar>
-      <LoadingBar />
-      <Container>
-        {visibleTabs.map(
-          (tab) =>
-            visibleTabs[selectedTab].name === tab.name && (
-              <tab.component key={tab.name} />
-            ),
-        )}
-      </Container>
+      <div className={styles.wrapper}>
+        <TopBar>
+          <Tabs value={selectedTab}>
+            {visibleTabs.map((tab: Tab, index: number) => (
+              <Tab
+                key={tab.name}
+                label={tab.name}
+                value={index}
+                classes={tabStyles}
+                icon={<tab.icon color={tab.color} />}
+                onClick={() => setSelectedTab(index)}
+              />
+            ))}
+          </Tabs>
+        </TopBar>
+        <LoadingBar />
+        <Container className={styles.container}>
+          {visibleTabs.map(
+            (tab) =>
+              visibleTabs[selectedTab].name === tab.name && (
+                <tab.component key={tab.name} />
+              ),
+          )}
+        </Container>
+      </div>
       <Notifications />
     </CssBaseline>
   );

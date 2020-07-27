@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: {
     padding: 0,
-    marginBottom: theme.spacing(3),
+    //marginBottom: theme.spacing(3),
     backgroundColor: theme.palette.grey[900],
   },
 }));
@@ -60,27 +60,25 @@ const TopBar: React.FunctionComponent = ({ children }) => {
   }
 
   return (
-    <>
-      <Toolbar className={classes.toolbar}>
-        <Container className={classes.container}>
-          {children}
-          <Tooltip title={getStartGameTooltip()}>
-            <span>
-              <Button
-                onClick={handleStartGameClick}
-                size="large"
-                variant="contained"
-                color="primary"
-                disabled={isStartDisabled}
-                startIcon={<PlayIcon />}
-              >
-                {globalText.startGame}
-              </Button>
-            </span>
-          </Tooltip>
-        </Container>
-      </Toolbar>
-    </>
+    <Toolbar className={classes.toolbar}>
+      <Container className={classes.container}>
+        {children}
+        <Tooltip title={getStartGameTooltip()}>
+          <span>
+            <Button
+              onClick={handleStartGameClick}
+              size="large"
+              variant="contained"
+              color="primary"
+              disabled={isStartDisabled}
+              startIcon={<PlayIcon />}
+            >
+              {globalText.startGame}
+            </Button>
+          </span>
+        </Tooltip>
+      </Container>
+    </Toolbar>
   );
 };
 

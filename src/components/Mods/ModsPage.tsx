@@ -7,6 +7,7 @@ import {
   MenuItem,
   TableRow,
   TableCell,
+  Box,
 } from '@material-ui/core';
 
 import { modsText } from '../../static-text';
@@ -92,7 +93,7 @@ const ModTable: React.FunctionComponent = () => {
   const isEmpty = installedMods.length + notInstalledMods.length === 0;
 
   return (
-    <>
+    <Box flex="1">
       <Toolbar component={Paper} className={styles.toolBar}>
         <FilterInput value={filter} onChange={setFilter} />
         <div>
@@ -127,7 +128,7 @@ const ModTable: React.FunctionComponent = () => {
         title={modsText.modSections.notInstalled}
         mods={notInstalledMods}
       />
-    </>
+    </Box>
   );
 };
 
