@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
 } from 'react';
+import { remote } from 'electron';
 import {
   ListItem,
   TextField,
@@ -12,7 +13,7 @@ import {
   Typography,
   Tooltip,
 } from '@material-ui/core';
-
+import { Save as SaveIcon, Folder as FolderIcon } from '@material-ui/icons';
 import { settingsText } from '../../static-text';
 
 type Props = {
@@ -31,7 +32,9 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
 }));
 
-const TextInput: FunctionComponent<Props> = ({
+const FILE_NAME = 'OuterWilds.exe';
+
+const PathInput: FunctionComponent<Props> = ({
   value,
   onChange,
   label,
@@ -39,19 +42,37 @@ const TextInput: FunctionComponent<Props> = ({
   tooltip = '',
 }) => {
   const styles = useStyles();
-  const [text, setText] = useState('');
+  const [path, setPath] = useState('');
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-      setText(event.target.value),
+      setPath(event.target.value),
     [],
   );
   const handleSaveClick = () => {
-    onChange(text);
+    onChange(path);
   };
 
   useEffect(() => {
-    setText(value);
+    setPath(value);
   }, [value]);
+
+  const handleFindClick = async () => {
+    const openedValue = await remote.dialog.showOpenDialog({
+      properties: ['openFile'],
+      title: settingsText.pathFindTitle(FILE_NAME),
+      defaultPath: `${value}\\${FILE_NAME}`,
+      filters: [
+        {
+          name: FILE_NAME,
+          extensions: ['exe'],
+        },
+      ],
+    });
+
+    const pathResult = openedValue.filePaths[0].replace(FILE_NAME, '');
+    onChange(pathResult);
+    setPath(pathResult);
+  };
 
   return (
     <ListItem>
@@ -62,19 +83,33 @@ const TextInput: FunctionComponent<Props> = ({
           variant="outlined"
           margin="dense"
           fullWidth
-          value={text}
+          value={path}
           onChange={handleChange}
           color="secondary"
           disabled={disabled}
         />
       </Tooltip>
-      {value !== text && (
-        <Button variant="contained" color="secondary" onClick={handleSaveClick}>
+      {value !== path && (
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleSaveClick}
+          startIcon={<SaveIcon />}
+        >
           {settingsText.textFieldSave}
+        </Button>
+      )}
+      {value === path && (
+        <Button
+          variant="contained"
+          onClick={handleFindClick}
+          startIcon={<FolderIcon />}
+        >
+          {settingsText.pathFindButton}
         </Button>
       )}
     </ListItem>
   );
 };
 
-export default TextInput;
+export default PathInput;

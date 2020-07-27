@@ -1,18 +1,20 @@
 import React, { useCallback } from 'react';
 
 import { useSettings } from '../../hooks';
-import SettingFormControl from './SettingFormControl';
+import SettingFormControl, { SettingType } from './SettingFormControl';
 
 type Props = {
   settingKey: keyof OwmlSettings;
   label: string;
   tooltip?: string;
+  type: SettingType;
 };
 
 const OwmlSettingControl: React.FunctionComponent<Props> = ({
   settingKey,
   label,
   tooltip,
+  type,
 }) => {
   const { owmlSettings, setOwmlSettings } = useSettings();
   const setting = owmlSettings[settingKey];
@@ -29,6 +31,7 @@ const OwmlSettingControl: React.FunctionComponent<Props> = ({
       onChange={setSetting}
       label={label}
       tooltip={tooltip}
+      type={type}
     />
   );
 };

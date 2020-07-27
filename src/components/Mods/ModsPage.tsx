@@ -101,20 +101,24 @@ const ModTable: React.FunctionComponent = () => {
   return (
     <Box flex="1">
       <Toolbar component={Paper} className={styles.toolBar}>
-        <FilterInput value={filter} onChange={setFilter} />
-        <div>
-          <Select
-            value={selectFilter}
-            onChange={handleSelectFilterChange}
-            color="secondary"
-          >
-            {Object.values(SelectFilter).map((value) => (
-              <MenuItem key={value} value={value}>
-                {modsText.selectFilter[value]}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
+        <FilterInput
+          value={filter}
+          onChange={setFilter}
+          label={modsText.findModsLabel}
+        />
+        <Select
+          value={selectFilter}
+          onChange={handleSelectFilterChange}
+          color="secondary"
+          variant="outlined"
+          margin="dense"
+        >
+          {Object.values(SelectFilter).map((value) => (
+            <MenuItem key={value} value={value}>
+              {modsText.selectFilter[value]}
+            </MenuItem>
+          ))}
+        </Select>
       </Toolbar>
       <ModRowSection
         title={modsText.modSections.required}
