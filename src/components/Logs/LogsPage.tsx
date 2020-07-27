@@ -75,6 +75,7 @@ const LogCell = withStyles((theme) => ({
     borderBottom: `1px solid rgba(255, 255, 255, 0.05)`,
   },
   stickyHeader: {
+    paddingTop: theme.spacing(1),
     background: theme.palette.background.paper,
   },
 }))(TableCell);
