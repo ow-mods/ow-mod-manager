@@ -6,6 +6,7 @@ import {
   Button,
   makeStyles,
   Tooltip,
+  Paper,
 } from '@material-ui/core';
 import { PlayArrow as PlayIcon } from '@material-ui/icons';
 
@@ -14,10 +15,6 @@ import { runOwml } from '../services';
 import { useAppState, useOwmlLogs, useSettings } from '../hooks';
 
 const useStyles = makeStyles((theme) => ({
-  offset: {
-    ...theme.mixins.toolbar,
-    marginBottom: theme.spacing(3),
-  },
   container: {
     display: 'flex',
     flexDirection: 'row',
@@ -26,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: {
     padding: 0,
+    marginBottom: theme.spacing(3),
+    backgroundColor: theme.palette.grey[900],
   },
 }));
 
@@ -62,28 +61,25 @@ const TopBar: React.FunctionComponent = ({ children }) => {
 
   return (
     <>
-      <AppBar color="default">
-        <Toolbar className={classes.toolbar}>
-          <Container className={classes.container}>
-            {children}
-            <Tooltip title={getStartGameTooltip()}>
-              <span>
-                <Button
-                  onClick={handleStartGameClick}
-                  size="large"
-                  variant="contained"
-                  color="primary"
-                  disabled={isStartDisabled}
-                  startIcon={<PlayIcon />}
-                >
-                  {globalText.startGame}
-                </Button>
-              </span>
-            </Tooltip>
-          </Container>
-        </Toolbar>
-      </AppBar>
-      <div className={classes.offset} />
+      <Toolbar className={classes.toolbar}>
+        <Container className={classes.container}>
+          {children}
+          <Tooltip title={getStartGameTooltip()}>
+            <span>
+              <Button
+                onClick={handleStartGameClick}
+                size="large"
+                variant="contained"
+                color="primary"
+                disabled={isStartDisabled}
+                startIcon={<PlayIcon />}
+              >
+                {globalText.startGame}
+              </Button>
+            </span>
+          </Tooltip>
+        </Container>
+      </Toolbar>
     </>
   );
 };
