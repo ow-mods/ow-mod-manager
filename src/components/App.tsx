@@ -38,18 +38,19 @@ const theme = createMuiStrictTheme({
     MuiCssBaseline: {
       '@global': {
         body: {
-          overflowY: 'scroll',
+          overflowY: 'hidden',
         },
         '*::-webkit-scrollbar': {
           width: '1em',
         },
         '*::-webkit-scrollbar-track': {
           background: grey[900],
+          borderRadius: 0,
         },
         '*::-webkit-scrollbar-thumb': {
           background: grey[800],
-          border: 0,
-          borderRadius: 10,
+          border: `2px solid ${grey[900]}`,
+          borderRadius: 0,
         },
       },
     },

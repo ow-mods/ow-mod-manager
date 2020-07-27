@@ -19,7 +19,6 @@ export function isOutdated(mod: Mod): boolean {
     return false;
   }
 
-  // TODO actually check if remote version is superior instead of just different.
   return mod.remoteVersion !== mod.localVersion;
 }
 

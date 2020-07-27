@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { remote } from 'electron';
 import {
   Container,
@@ -35,6 +35,20 @@ const useTabStyles = makeStyles({
   },
 });
 
+const useStyles = makeStyles((theme) => ({
+  wrapper: {
+    display: 'flex',
+    height: '100vh',
+    flexDirection: 'column',
+  },
+  container: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+    flex: 1,
+    overflow: 'hidden visible',
+  },
+}));
+
 type Tab = {
   name: string;
   component: typeof Mods;
@@ -69,6 +83,7 @@ const updateTab: Tab = {
 
 const MainView = () => {
   const tabStyles = useTabStyles();
+  const styles = useStyles();
   const [selectedTab, setSelectedTab] = useState(0);
   const { appRelease } = useAppState();
 
@@ -76,31 +91,37 @@ const MainView = () => {
     appRelease && appRelease?.version !== remote.app.getVersion();
   const visibleTabs = isAppOutdated ? [...tabs, updateTab] : tabs;
 
+  const handleStartGameClick = useCallback(() => {
+    setSelectedTab(1);
+  }, []);
+
   return (
     <CssBaseline>
-      <TopBar>
-        <Tabs value={selectedTab}>
-          {visibleTabs.map((tab: Tab, index: number) => (
-            <Tab
-              key={tab.name}
-              label={tab.name}
-              value={index}
-              classes={tabStyles}
-              icon={<tab.icon color={tab.color} />}
-              onClick={() => setSelectedTab(index)}
-            />
-          ))}
-        </Tabs>
-      </TopBar>
-      <LoadingBar />
-      <Container>
-        {visibleTabs.map(
-          (tab) =>
-            visibleTabs[selectedTab].name === tab.name && (
-              <tab.component key={tab.name} />
-            ),
-        )}
-      </Container>
+      <div className={styles.wrapper}>
+        <TopBar onStartGameClick={handleStartGameClick}>
+          <Tabs value={selectedTab}>
+            {visibleTabs.map((tab: Tab, index: number) => (
+              <Tab
+                key={tab.name}
+                label={tab.name}
+                value={index}
+                classes={tabStyles}
+                icon={<tab.icon color={tab.color} />}
+                onClick={() => setSelectedTab(index)}
+              />
+            ))}
+          </Tabs>
+        </TopBar>
+        <LoadingBar />
+        <Container className={styles.container}>
+          {visibleTabs.map(
+            (tab) =>
+              visibleTabs[selectedTab].name === tab.name && (
+                <tab.component key={tab.name} />
+              ),
+          )}
+        </Container>
+      </div>
       <Notifications />
     </CssBaseline>
   );

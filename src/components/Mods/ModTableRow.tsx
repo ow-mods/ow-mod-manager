@@ -16,9 +16,6 @@ type Props = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  requiredRow: {
-    background: theme.palette.background.default,
-  },
   brokenRow: {
     background: theme.palette.error.dark,
   },
@@ -48,9 +45,6 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   };
 
   const getClassName = () => {
-    if (mod.isRequired) {
-      return styles.requiredRow;
-    }
     if (isBroken(mod)) {
       return styles.brokenRow;
     }

@@ -20,7 +20,7 @@ export const logsText = {
   showNext: (count: number) => `Show previous ${count}`,
   clearLogs: 'Clear log entries',
   connectedToConsole: 'Client connected to console',
-  allMods: 'All mods',
+  allMods: 'All logs',
   disconnectedFromConsole: 'Client disconnected from console',
   consoleServerStart: (port: number) =>
     `Started console server on port ${port}`,
@@ -30,7 +30,7 @@ export const logsText = {
 
 export const modsText = {
   selectFilter: {
-    all: 'All',
+    all: 'All mods',
     installed: 'Installed',
     enabled: 'Enabled',
     notInstalled: 'Not Installed',
@@ -42,6 +42,12 @@ export const modsText = {
     author: 'Author',
     downloadCount: 'Downloads',
     version: 'Version',
+    actions: '',
+  },
+  modSections: {
+    required: 'Required: install before starting the game',
+    installed: 'Installed',
+    notInstalled: 'Available mods',
   },
   versionNotAvailable: 'Not Available',
   actions: {
