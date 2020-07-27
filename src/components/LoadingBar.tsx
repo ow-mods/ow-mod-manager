@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: -theme.spacing(1),
     position: 'relative',
     top: theme.spacing(2),
+    zIndex: 1,
   },
 }));
 
