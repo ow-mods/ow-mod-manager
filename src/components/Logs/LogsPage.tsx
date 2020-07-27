@@ -12,6 +12,7 @@ import {
   Tooltip,
   Typography,
   Button,
+  withStyles,
 } from '@material-ui/core';
 import { ClearAll as ClearAllIcon } from '@material-ui/icons';
 
@@ -43,6 +44,13 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
       spacing(2) * 2
     }px)`,
     overflowY: 'auto',
+    background: palette.grey[900],
+  },
+  logRow: {
+    border: 0,
+  },
+  header: {
+    backgroundColor: 'white',
   },
   modSelectHeader: {
     width: 150,
@@ -61,6 +69,15 @@ const useStyles = makeStyles(({ palette, mixins, spacing }) => ({
     width: 1,
   },
 }));
+
+const LogCell = withStyles((theme) => ({
+  body: {
+    borderBottom: `1px solid rgba(255, 255, 255, 0.05)`,
+  },
+  stickyHeader: {
+    background: theme.palette.background.paper,
+  },
+}))(TableCell);
 
 const OwmlLog: React.FunctionComponent = () => {
   const styles = useStyles();
@@ -144,7 +161,7 @@ const OwmlLog: React.FunctionComponent = () => {
       <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell className={styles.nameHeader}>
+            <LogCell className={styles.nameHeader}>
               <FilterInput onChange={setFilter} value={filter} />
               {logLines.length > 1 && (
                 <Typography variant="subtitle2" color="textSecondary">
@@ -159,21 +176,21 @@ const OwmlLog: React.FunctionComponent = () => {
                   <ClearAllIcon />
                 </IconButton>
               </Tooltip>
-            </TableCell>
-            <TableCell className={styles.modSelectHeader}>
+            </LogCell>
+            <LogCell className={styles.modSelectHeader}>
               <ModNameSelect
                 value={selectedModName}
                 onChange={setSelectedModName}
                 logLines={logLines}
               />
-            </TableCell>
-            <TableCell className={styles.logCountHeader}>#</TableCell>
+            </LogCell>
+            <LogCell className={styles.logCountHeader}>#</LogCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {isPreviousPageVisible.current && (
             <TableRow>
-              <TableCell colSpan={3}>
+              <LogCell colSpan={3}>
                 <Button
                   onClick={handlePreviousPageClick}
                   fullWidth
@@ -181,23 +198,21 @@ const OwmlLog: React.FunctionComponent = () => {
                 >
                   {logsText.showPrevious(logLinesLimit)}
                 </Button>
-              </TableCell>
+              </LogCell>
             </TableRow>
           )}
           {paginatedLines.map((line: LogLine) => (
             <React.Fragment key={line.id}>
               <TableRow>
-                <TableCell className={styles[line.type]}>{line.text}</TableCell>
-                <TableCell className={styles.modNameCell}>
-                  {line.modName}
-                </TableCell>
-                <TableCell>{line.count > 1 ? line.count : ''}</TableCell>
+                <LogCell className={styles[line.type]}>{line.text}</LogCell>
+                <LogCell className={styles.modNameCell}>{line.modName}</LogCell>
+                <LogCell>{line.count > 1 ? line.count : ''}</LogCell>
               </TableRow>
             </React.Fragment>
           ))}
           {isNextPageVisible && (
             <TableRow>
-              <TableCell colSpan={3}>
+              <LogCell colSpan={3}>
                 <Button
                   onClick={handleNextPageClick}
                   fullWidth
@@ -205,7 +220,7 @@ const OwmlLog: React.FunctionComponent = () => {
                 >
                   {logsText.showNext(logLinesLimit)}
                 </Button>
-              </TableCell>
+              </LogCell>
             </TableRow>
           )}
         </TableBody>
