@@ -5,8 +5,8 @@ import {
   makeStyles,
   Select,
   MenuItem,
-  TableRow,
-  TableCell,
+  Typography,
+  Card,
 } from '@material-ui/core';
 
 import { modsText } from '../../static-text';
@@ -19,6 +19,7 @@ import PageContainer from '../PageContainer';
 const useStyles = makeStyles((theme) => ({
   toolBar: {
     justifyContent: 'space-between',
+    minHeight: 0,
     padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
   },
 }));
@@ -94,39 +95,44 @@ const ModTable: React.FunctionComponent = () => {
     setSelectFilter(target.value as SelectFilter);
   };
 
-  const isEmpty = installedMods.length + notInstalledMods.length === 0;
+  const isEmpty =
+    requiredMods.length + installedMods.length + notInstalledMods.length === 0;
 
   return (
     <PageContainer>
-      <Toolbar component={Paper} className={styles.toolBar}>
-        <FilterInput
-          value={filter}
-          onChange={setFilter}
-          label={modsText.findModsLabel}
-        />
-        <Select
-          value={selectFilter}
-          onChange={handleSelectFilterChange}
-          color="secondary"
-          variant="outlined"
-          margin="dense"
-        >
-          {Object.values(SelectFilter).map((value) => (
-            <MenuItem key={value} value={value}>
-              {modsText.selectFilter[value]}
-            </MenuItem>
-          ))}
-        </Select>
-      </Toolbar>
+      <Paper>
+        <Toolbar className={styles.toolBar}>
+          <FilterInput
+            value={filter}
+            onChange={setFilter}
+            label={modsText.findModsLabel}
+          />
+          <Select
+            value={selectFilter}
+            onChange={handleSelectFilterChange}
+            color="secondary"
+            variant="outlined"
+            margin="dense"
+          >
+            {Object.values(SelectFilter).map((value) => (
+              <MenuItem key={value} value={value}>
+                {modsText.selectFilter[value]}
+              </MenuItem>
+            ))}
+          </Select>
+        </Toolbar>
+      </Paper>
       <ModRowSection
         title={modsText.modSections.required}
         mods={requiredMods}
         highlighted
       />
       {isEmpty && (
-        <TableRow>
-          <TableCell>{modsText.emptyModList}</TableCell>
-        </TableRow>
+        <Card>
+          <Typography variant="h6" align="center">
+            {modsText.emptyModList}
+          </Typography>
+        </Card>
       )}
       <ModRowSection
         title={modsText.modSections.installed}
