@@ -74,6 +74,8 @@ export const modsText = {
   modPathNotDefinedError: 'Mod path is not defined',
   openNonExistingDirectoryError: 'Trying to open non existing directory',
   undefinedRepoUrlError: 'Mod repository URL not defined',
+  missingDependencyWarning: (modName: string, dependencyNames: string[]) =>
+    `Mod "${modName}" depends on "${dependencyNames.join(', ')}"`,
   missingManifestAttributesError: (path: string, attributes: string[]) =>
     `Manifest ${path} missing attributes "${attributes.join('", "')}"`,
   modLoadError: (errors: string[]) =>

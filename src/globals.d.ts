@@ -14,6 +14,7 @@ type Mod = {
   isEnabled?: boolean;
   isRequired?: boolean;
   errors: string[];
+  dependencies: string[];
 };
 
 type ModMap = { [uniqueName: string]: Mod };
@@ -33,6 +34,7 @@ type Manifest = {
   author: string;
   uniqueName: string;
   version: string;
+  dependencies?: string[];
 };
 
 type ModConfig = {

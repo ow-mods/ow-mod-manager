@@ -77,6 +77,19 @@ export function isBroken(mod: Mod) {
   return mod.errors.length > 0;
 }
 
+export const isModDependencyMissing = (modMap: ModMap, mod: Mod) => {
+  if (!mod.localVersion) {
+    return false;
+  }
+  for (const dependencyName of mod.dependencies) {
+    const dependency = modMap[dependencyName];
+    if (!dependency || !dependency.localVersion) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export function toggleEnabled(mod: Mod) {
   const config = getConfig(mod);
   config.enabled = !config.enabled;

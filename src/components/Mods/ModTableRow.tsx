@@ -8,7 +8,13 @@ import {
 } from '@material-ui/core';
 
 import { modsText } from '../../static-text';
-import { isOutdated, isInstalled, isBroken } from '../../services';
+import { useAppState } from '../../hooks';
+import {
+  isOutdated,
+  isInstalled,
+  isBroken,
+  isModDependencyMissing,
+} from '../../services';
 import ModActions from './ModActions';
 
 type Props = {
@@ -19,10 +25,16 @@ const useStyles = makeStyles((theme) => ({
   brokenRow: {
     background: theme.palette.error.dark,
   },
+  missingDependencyRow: {
+    background: theme.palette.warning.dark,
+  },
 }));
 
 const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const styles = useStyles();
+  const { modMap } = useAppState();
+
+  const isDependencyMissing = isModDependencyMissing(modMap, mod);
 
   const getVersionColor = () => {
     if (isOutdated(mod)) {
@@ -48,12 +60,18 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     if (isBroken(mod)) {
       return styles.brokenRow;
     }
+    if (isDependencyMissing) {
+      return styles.missingDependencyRow;
+    }
     return undefined;
   };
 
   const getRowTooltip = () => {
     if (isBroken(mod)) {
       return modsText.modLoadError(mod.errors);
+    }
+    if (isDependencyMissing) {
+      return modsText.missingDependencyWarning(mod.name, mod.dependencies);
     }
     return '';
   };

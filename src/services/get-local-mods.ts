@@ -21,6 +21,7 @@ async function getOwml(owmlPath: string) {
     isEnabled: true,
     isRequired: true,
     errors: [],
+    dependencies: [],
   };
   return owml;
 }
@@ -41,6 +42,7 @@ export async function getLocalMods(owmlPath: string) {
         localVersion: manifest.version,
         modPath: path.dirname(manifestPath),
         errors: [],
+        dependencies: manifest.dependencies ?? [],
       };
 
       if (missingAttributes.length > 0) {
