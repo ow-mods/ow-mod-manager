@@ -5,6 +5,7 @@ export enum SocketMessageType {
   Info = 3,
   Success = 4,
   Quit = 5,
+  Fatal = 6,
 }
 
 export type SocketMessage = {

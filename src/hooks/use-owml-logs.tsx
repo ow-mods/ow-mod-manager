@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
 import net from 'net';
+import { remote } from 'electron';
 
 import config from '../config.json';
 import { logsText } from '../static-text';
@@ -63,6 +64,21 @@ function getSimpleLine(text: string, type: LogType = 'Message'): LogLine {
   };
 }
 
+async function showFatalMessageDialog(line: LogLine) {
+  const browserWindow = new remote.BrowserWindow({
+    show: false,
+    alwaysOnTop: true,
+  });
+
+  await remote.dialog.showMessageBox(browserWindow, {
+    type: 'error',
+    title: line.modName,
+    message: line.text,
+  });
+
+  browserWindow.destroy();
+}
+
 export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const { notifications } = useNotifications();
   const [notificationIds, setNotificationIds] = useState<string[]>([]);
@@ -71,6 +87,10 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const [serverPort, setServerPort] = useState(0);
 
   const writeLogLine = useCallback((line: LogLine) => {
+    if (line.type === SocketMessageType[SocketMessageType.Fatal]) {
+      showFatalMessageDialog(line);
+    }
+
     setLines((prevLines) => {
       const lastIndex = prevLines.length - 1;
       const lastItem = prevLines[lastIndex];
