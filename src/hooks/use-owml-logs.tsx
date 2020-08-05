@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
 import net from 'net';
+import { remote } from 'electron';
 
 import config from '../config.json';
 import { logsText } from '../static-text';
@@ -71,6 +72,14 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const [serverPort, setServerPort] = useState(0);
 
   const writeLogLine = useCallback((line: LogLine) => {
+    if (line.type === SocketMessageType[SocketMessageType.Fatal]) {
+      remote.dialog.showMessageBox({
+        type: 'error',
+        title: line.modName,
+        message: line.text,
+      });
+    }
+
     setLines((prevLines) => {
       const lastIndex = prevLines.length - 1;
       const lastItem = prevLines[lastIndex];

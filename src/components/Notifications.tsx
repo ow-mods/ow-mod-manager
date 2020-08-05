@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.success.dark,
     color: theme.palette.text.primary,
   },
+  Fatal: {},
   Quit: {},
   Message: {},
 }));
