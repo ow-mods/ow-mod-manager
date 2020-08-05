@@ -46,7 +46,7 @@ export const modsText = {
     actions: '',
   },
   modSections: {
-    required: 'Required: install before starting the game',
+    required: 'Required',
     installed: 'Installed',
     notInstalled: 'Available mods',
   },
@@ -74,8 +74,8 @@ export const modsText = {
   modPathNotDefinedError: 'Mod path is not defined',
   openNonExistingDirectoryError: 'Trying to open non existing directory',
   undefinedRepoUrlError: 'Mod repository URL not defined',
-  missingDependencyWarning: (modName: string, dependencyNames: string[]) =>
-    `Mod "${modName}" depends on "${dependencyNames.join(', ')}"`,
+  missingDependencyWarning: (modName: string, dependencyNames: string) =>
+    `${modName} requires ${dependencyNames}`,
   missingManifestAttributesError: (path: string, attributes: string[]) =>
     `Manifest ${path} missing attributes "${attributes.join('", "')}"`,
   modLoadError: (errors: string[]) =>

@@ -69,6 +69,9 @@ export function openRepo(mod: Mod) {
 }
 
 export function isEnabled(mod: Mod) {
+  if (!isInstalled(mod)) {
+    return false;
+  }
   const config = getConfig(mod);
   return config.enabled;
 }
@@ -77,16 +80,34 @@ export function isBroken(mod: Mod) {
   return mod.errors.length > 0;
 }
 
-export const isModDependencyMissing = (modMap: ModMap, mod: Mod) => {
-  if (!mod.localVersion) {
-    return false;
+export const getMissingDependencies = (modMap: ModMap, mod: Mod) => {
+  if (!isEnabled(mod)) {
+    return '';
   }
+  const missingDependencies = [];
   for (const dependencyName of mod.dependencies) {
     const dependency = modMap[dependencyName];
     if (!dependency || !dependency.localVersion) {
+      missingDependencies.push(dependency?.name ?? dependencyName);
+    }
+  }
+  return missingDependencies.join(', ');
+};
+
+export const isModNeededDependency = (modMap: ModMap, mod: Mod) => {
+  if (mod.localVersion) {
+    return false;
+  }
+
+  for (const otherMod of Object.values(modMap)) {
+    if (!isEnabled(otherMod)) {
+      continue;
+    }
+    if (otherMod.dependencies.includes(mod.uniqueName)) {
       return true;
     }
   }
+
   return false;
 };
 

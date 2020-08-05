@@ -13,7 +13,7 @@ import {
   isOutdated,
   isInstalled,
   isBroken,
-  isModDependencyMissing,
+  getMissingDependencies,
 } from '../../services';
 import ModActions from './ModActions';
 
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.error.dark,
   },
   missingDependencyRow: {
-    background: theme.palette.warning.dark,
+    background: theme.palette.secondary.dark,
   },
 }));
 
@@ -34,7 +34,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const styles = useStyles();
   const { modMap } = useAppState();
 
-  const isDependencyMissing = isModDependencyMissing(modMap, mod);
+  const missingDependencies = getMissingDependencies(modMap, mod);
 
   const getVersionColor = () => {
     if (isOutdated(mod)) {
@@ -60,7 +60,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     if (isBroken(mod)) {
       return styles.brokenRow;
     }
-    if (isDependencyMissing) {
+    if (missingDependencies) {
       return styles.missingDependencyRow;
     }
     return undefined;
@@ -70,8 +70,8 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     if (isBroken(mod)) {
       return modsText.modLoadError(mod.errors);
     }
-    if (isDependencyMissing) {
-      return modsText.missingDependencyWarning(mod.name, mod.dependencies);
+    if (missingDependencies) {
+      return modsText.missingDependencyWarning(mod.name, missingDependencies);
     }
     return '';
   };
