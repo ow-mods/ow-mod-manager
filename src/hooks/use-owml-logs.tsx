@@ -64,6 +64,21 @@ function getSimpleLine(text: string, type: LogType = 'Message'): LogLine {
   };
 }
 
+async function showFatalMessageDialog(line: LogLine) {
+  const browserWindow = new remote.BrowserWindow({
+    show: false,
+    alwaysOnTop: true,
+  });
+
+  await remote.dialog.showMessageBox(browserWindow, {
+    type: 'error',
+    title: line.modName,
+    message: line.text,
+  });
+
+  browserWindow.destroy();
+}
+
 export const LogsProvider: React.FunctionComponent = ({ children }) => {
   const { notifications } = useNotifications();
   const [notificationIds, setNotificationIds] = useState<string[]>([]);
@@ -73,11 +88,7 @@ export const LogsProvider: React.FunctionComponent = ({ children }) => {
 
   const writeLogLine = useCallback((line: LogLine) => {
     if (line.type === SocketMessageType[SocketMessageType.Fatal]) {
-      remote.dialog.showMessageBox({
-        type: 'error',
-        title: line.modName,
-        message: line.text,
-      });
+      showFatalMessageDialog(line);
     }
 
     setLines((prevLines) => {
