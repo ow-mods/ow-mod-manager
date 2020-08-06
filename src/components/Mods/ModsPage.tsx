@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 
 import { modsText } from '../../static-text';
-import { isInstalled, isOutdated } from '../../services';
+import { isInstalled, isOutdated, isModNeededDependency } from '../../services';
 import { useAppState } from '../../hooks';
 import FilterInput from '../FilterInput';
 import ModRowSection from './ModRowSection';
@@ -82,7 +82,11 @@ const ModTable: React.FunctionComponent = () => {
       filteredMods.filter((mod) => !mod.localVersion && !mod.isRequired),
     );
     setRequiredMods(
-      filteredMods.filter((mod) => mod.isRequired && !mod.localVersion),
+      filteredMods.filter(
+        (mod) =>
+          (mod.isRequired || isModNeededDependency(modMap, mod)) &&
+          !isInstalled(mod),
+      ),
     );
   }, [filter, selectFilter, modMap]);
 

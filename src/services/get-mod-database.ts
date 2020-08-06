@@ -53,6 +53,7 @@ export async function getModDatabase(
         downloadUrl,
         downloadCount,
         repo,
+        dependencies: manifest.dependencies ?? [],
       };
 
       if (missingAttributes.length > 0) {

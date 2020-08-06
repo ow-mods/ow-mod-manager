@@ -3,10 +3,10 @@ import { uniqueId } from 'lodash';
 export function manifestPartialToFull(partialManifest: Partial<Manifest>) {
   const missingAttributes: string[] = [];
 
-  function getAttribute(key: keyof Manifest, isUnique?: boolean) {
+  function getAttribute(key: keyof Manifest, isUnique?: boolean): string {
     const value = partialManifest[key];
     if (value) {
-      return value;
+      return value as string;
     }
     missingAttributes.push(key);
     return `[Missing ${key}]${isUnique ? uniqueId() : ''}`;
@@ -17,6 +17,7 @@ export function manifestPartialToFull(partialManifest: Partial<Manifest>) {
     author: getAttribute('author'),
     uniqueName: getAttribute('uniqueName', true),
     version: getAttribute('version'),
+    dependencies: partialManifest.dependencies ?? [],
   };
 
   return {

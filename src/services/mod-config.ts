@@ -32,10 +32,15 @@ export function saveConfig(mod: Mod, config: ModConfig) {
 }
 
 export function getConfig(mod: Mod) {
-  if (!isConfigExisting(mod)) {
-    const defaultConfig = getDefaultConfig(mod);
-    saveConfig(mod, defaultConfig);
+  try {
+    if (!isConfigExisting(mod)) {
+      const defaultConfig = getDefaultConfig(mod);
+      saveConfig(mod, defaultConfig);
+    }
+    const config: ModConfig = fs.readJsonSync(getConfigPath(mod));
+    return config;
+  } catch (error) {
+    console.error('error trying to get config', error);
+    return undefined;
   }
-  const config: ModConfig = fs.readJsonSync(getConfigPath(mod));
-  return config;
 }

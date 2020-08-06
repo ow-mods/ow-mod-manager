@@ -7,6 +7,9 @@ import { deleteFolder, getConfig, saveConfig } from '.';
 import { unzipRemoteFile } from './files';
 
 export function isInstalled(mod: Mod): boolean {
+  if (!mod) {
+    return false;
+  }
   return Boolean(mod.localVersion);
 }
 
@@ -69,16 +72,53 @@ export function openRepo(mod: Mod) {
 }
 
 export function isEnabled(mod: Mod) {
+  if (!isInstalled(mod)) {
+    return false;
+  }
   const config = getConfig(mod);
-  return config.enabled;
+  return config?.enabled ?? false;
 }
 
 export function isBroken(mod: Mod) {
   return mod.errors.length > 0;
 }
 
+export const getMissingDependencies = (modMap: ModMap, mod: Mod) => {
+  if (!isEnabled(mod)) {
+    return '';
+  }
+  const missingDependencies = [];
+  for (const dependencyName of mod.dependencies) {
+    const dependency = modMap[dependencyName];
+    if (!isEnabled(dependency)) {
+      missingDependencies.push(dependency?.name ?? dependencyName);
+    }
+  }
+  return missingDependencies.join(', ');
+};
+
+export const isModNeededDependency = (modMap: ModMap, mod: Mod) => {
+  if (isEnabled(mod)) {
+    return false;
+  }
+
+  for (const otherMod of Object.values(modMap)) {
+    if (!isEnabled(otherMod)) {
+      continue;
+    }
+    if (otherMod.dependencies.includes(mod.uniqueName)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 export function toggleEnabled(mod: Mod) {
   const config = getConfig(mod);
+  if (!config) {
+    return;
+  }
   config.enabled = !config.enabled;
   saveConfig(mod, config);
 }
