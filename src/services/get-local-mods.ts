@@ -1,5 +1,5 @@
 import fs from 'fs-extra';
-import glob from 'glob-promise';
+import globby from 'globby';
 import path from 'path';
 
 import { modsText } from '../static-text';
@@ -27,7 +27,7 @@ async function getOwml(owmlPath: string) {
 }
 
 export async function getLocalMods(owmlPath: string) {
-  const manifestPaths = await glob(`${owmlPath}/Mods/**/manifest.json`);
+  const manifestPaths = await globby(`${owmlPath}/Mods/**/manifest.json`);
 
   return Promise.allSettled([
     ...manifestPaths.map<Promise<Mod>>(async (manifestPath) => {
