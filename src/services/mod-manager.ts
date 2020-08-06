@@ -7,6 +7,9 @@ import { deleteFolder, getConfig, saveConfig } from '.';
 import { unzipRemoteFile } from './files';
 
 export function isInstalled(mod: Mod): boolean {
+  if (!mod) {
+    return false;
+  }
   return Boolean(mod.localVersion);
 }
 
@@ -73,7 +76,7 @@ export function isEnabled(mod: Mod) {
     return false;
   }
   const config = getConfig(mod);
-  return config.enabled;
+  return config?.enabled ?? false;
 }
 
 export function isBroken(mod: Mod) {
@@ -87,7 +90,7 @@ export const getMissingDependencies = (modMap: ModMap, mod: Mod) => {
   const missingDependencies = [];
   for (const dependencyName of mod.dependencies) {
     const dependency = modMap[dependencyName];
-    if (!dependency || !dependency.localVersion) {
+    if (!isEnabled(dependency)) {
       missingDependencies.push(dependency?.name ?? dependencyName);
     }
   }
@@ -95,7 +98,7 @@ export const getMissingDependencies = (modMap: ModMap, mod: Mod) => {
 };
 
 export const isModNeededDependency = (modMap: ModMap, mod: Mod) => {
-  if (mod.localVersion) {
+  if (isEnabled(mod)) {
     return false;
   }
 
@@ -113,6 +116,9 @@ export const isModNeededDependency = (modMap: ModMap, mod: Mod) => {
 
 export function toggleEnabled(mod: Mod) {
   const config = getConfig(mod);
+  if (!config) {
+    return;
+  }
   config.enabled = !config.enabled;
   saveConfig(mod, config);
 }

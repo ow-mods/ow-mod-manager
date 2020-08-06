@@ -85,7 +85,7 @@ const ModTable: React.FunctionComponent = () => {
       filteredMods.filter(
         (mod) =>
           (mod.isRequired || isModNeededDependency(modMap, mod)) &&
-          !mod.localVersion,
+          !isInstalled(mod),
       ),
     );
   }, [filter, selectFilter, modMap]);
