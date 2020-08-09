@@ -45,9 +45,14 @@
       "main.prod.js.map",
       "package.json"
     ],
+    "nsis": {
+      "artifactName": "${productName}-Installer.${ext}"
+    },
     "win": {
+      "artifactName": "${productName}-Portable.${ext}",
       "target": [
-        "nsis"
+        "nsis",
+        "zip"
       ]
     },
     "directories": {
