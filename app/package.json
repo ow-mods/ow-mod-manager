@@ -1,0 +1,18 @@
+{
+  "name": "ow-mod-manager",
+  "productName": "OuterWildsModManager",
+  "version": "0.5.5",
+  "description": "Outer Wilds Mod Manager",
+  "main": "./main.prod.js",
+  "author": {
+    "name": "Raicuparta",
+    "email": "raicuparta@outerwildsmods.com",
+    "url": "https://outerwildsmods.com"
+  },
+  "scripts": {
+    "electron-rebuild": "node -r ../internals/scripts/BabelRegister.js ../internals/scripts/ElectronRebuild.js",
+    "postinstall": "yarn electron-rebuild"
+  },
+  "license": "MIT",
+  "dependencies": {}
+}
