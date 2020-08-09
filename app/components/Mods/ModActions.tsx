@@ -95,7 +95,6 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     if (mod !== undefined) {
       setIsLoading(true);
       startLoading();
-      setProgress(0.05);
       try {
         await handler(mod, setProgress);
       } catch (error) {
