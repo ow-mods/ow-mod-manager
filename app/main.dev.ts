@@ -69,3 +69,5 @@ autoUpdater.on('update-downloaded', () => {
 
   if (response === 0) autoUpdater.quitAndInstall();
 });
+
+app.commandLine.appendSwitch('disable-http-cache');
