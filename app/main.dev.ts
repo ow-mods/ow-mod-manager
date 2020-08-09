@@ -6,7 +6,7 @@ import { app, BrowserWindow, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 
-console.log('########### NODE VERSION ##########', process.version);
+app.commandLine.appendSwitch('disable-http-cache');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -35,7 +35,7 @@ const createWindow = async () => {
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   if (isProduction) {
-    mainWindow.setMenu(null);
+    // mainWindow.setMenu(null);
   }
 
   mainWindow.webContents.on('did-finish-load', () => {
@@ -67,5 +67,3 @@ autoUpdater.on('update-downloaded', () => {
 
   if (response === 0) autoUpdater.quitAndInstall();
 });
-
-app.commandLine.appendSwitch('disable-http-cache');

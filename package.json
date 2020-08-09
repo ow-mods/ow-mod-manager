@@ -1,5 +1,5 @@
 {
-  "name": "ow-mod-manager",
+  "name": "owmm",
   "productName": "OuterWildsModManager",
   "version": "1.0.0",
   "description": "Outer Wilds Mod Manager",
@@ -62,13 +62,13 @@
     "publish": {
       "provider": "github",
       "owner": "Raicuparta",
-      "repo": "ow-mod-manager",
+      "repo": "owmm",
       "private": false
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Raicuparta/ow-mod-manager.git"
+    "url": "git+https://github.com/Raicuparta/owmm.git"
   },
   "author": {
     "name": "Raicuparta",
@@ -77,7 +77,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Raicuparta/ow-mod-manager/issues"
+    "url": "https://github.com/Raicuparta/owmm/issues"
   },
   "keywords": [
     "outer-wilds",
@@ -162,8 +162,6 @@
     "webpack-merge": "^5.1.1"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.14.0",
-    "@hot-loader/react-dom": "^16.13.0",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "cpy": "^8.1.0",
@@ -175,7 +173,6 @@
     "node-fetch": "3.0.0-beta.5",
     "react": "^0.0.0-experimental-f77c7b9d7",
     "react-dom": "^0.0.0-experimental-f77c7b9d7",
-    "react-hot-loader": "^4.12.21",
     "recoil": "^0.0.10",
     "regenerator-runtime": "^0.13.7",
     "unzipper": "^0.10.11"
