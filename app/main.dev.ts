@@ -63,8 +63,7 @@ autoUpdater.on('update-downloaded', () => {
     buttons: ['Update', 'Not now'],
     title: 'App update',
     message: 'Update available',
-    detail:
-      'New update available. App restart is required to install this update.',
+    detail: 'New update available. Restart the app to install this update.',
   });
 
   if (response === 0) autoUpdater.quitAndInstall();
