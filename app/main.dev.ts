@@ -26,7 +26,6 @@ const createWindow = async () => {
     webPreferences: {
       nodeIntegration: !isProduction,
       enableRemoteModule: true,
-      // webSecurity: false,
       preload: isProduction
         ? path.join(__dirname, 'dist/renderer.prod.js')
         : undefined,
