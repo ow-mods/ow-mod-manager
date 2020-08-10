@@ -18,9 +18,7 @@ function isConfigExisting(mod: Mod) {
 
 function getDefaultConfig(mod: Mod) {
   if (isDefaultConfigExisting(mod)) {
-    const defaultConfig: ModConfig = fs.readJsonSync(getDefaultConfigPath(mod));
-    defaultConfig.enabled = true;
-    return defaultConfig;
+    return fs.readJsonSync(getDefaultConfigPath(mod)) as ModConfig;
   }
   return {
     enabled: true,
