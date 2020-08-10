@@ -36,7 +36,7 @@ const createWindow = async () => {
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   if (isProduction) {
-    // mainWindow.setMenu(null);
+    mainWindow.setMenu(null);
   }
 
   mainWindow.webContents.on('did-finish-load', () => {
