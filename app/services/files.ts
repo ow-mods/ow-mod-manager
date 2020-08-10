@@ -96,7 +96,7 @@ export async function copyFolder(
     overwrite: true,
     recursive: true,
   });
-  const copy = cpy(innerPath, targetPath, { overwrite: true, deep: true });
+  const copy = cpy(innerPath, targetPath, { overwrite: true, parents: true });
   if (onProgress) {
     copy.on('progress', (progress) => onProgress(progress.percent));
   }
