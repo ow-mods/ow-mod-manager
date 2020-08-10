@@ -3,10 +3,10 @@ import fs from 'fs-extra';
 import config from '../config.json';
 import { settingsText } from '../static-text';
 
-export function getSettings<TSettings>(path: string) {
+export async function getSettings<TSettings>(path: string) {
   try {
     if (fs.existsSync(path)) {
-      return fs.readJSONSync(path) as TSettings;
+      return (await fs.readJson(path)) as TSettings;
     }
   } catch (error) {
     console.error(settingsText.getSettingsError(path) + error);

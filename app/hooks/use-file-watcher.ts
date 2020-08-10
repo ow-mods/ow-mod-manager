@@ -9,9 +9,9 @@ export function useFileWatcher<TFile>(filePath: string, defaultFile?: TFile) {
 
   useEffect(() => {
     console.log('useEffect: UseFileWatcher');
-    const updateFile = () => {
+    const updateFile = async (updateFilePath: string) => {
       console.log('useEffect: UseFileWatcher updateFile');
-      setFile(getSettings<TFile>(filePath));
+      setFile(await getSettings<TFile>(updateFilePath));
     };
     const directory = path.dirname(filePath);
     if (!fs.pathExistsSync(directory)) {
@@ -21,9 +21,9 @@ export function useFileWatcher<TFile>(filePath: string, defaultFile?: TFile) {
       fs.writeJSONSync(filePath, defaultFile ?? {});
     }
     const watcher = fs.watch(filePath, () => {
-      updateFile();
+      updateFile(filePath);
     });
-    updateFile();
+    updateFile(filePath);
     return () => watcher.close();
   }, [filePath, defaultFile]);
 
