@@ -5,6 +5,7 @@ import path from 'path';
 import { app, BrowserWindow, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import { updateText } from './static-text';
 
 app.commandLine.appendSwitch('disable-http-cache');
 
@@ -54,15 +55,15 @@ app.on('window-all-closed', () => {
 
 app.on('ready', createWindow);
 
-autoUpdater.on('update-downloaded', () => {
+autoUpdater.signals.updateDownloaded(({ version }) => {
   log.info('CALLED update-available');
 
   const response = dialog.showMessageBoxSync({
     type: 'info',
-    buttons: ['Update', 'Not now'],
-    title: 'App update',
-    message: 'Update available',
-    detail: 'New update available. Restart the app to install this update.',
+    buttons: [updateText.dialogYes, updateText.dialogNo],
+    title: updateText.dialogTitle,
+    message: updateText.dialogMessage,
+    detail: updateText.dialogDetail(version),
   });
 
   if (response === 0) autoUpdater.quitAndInstall();

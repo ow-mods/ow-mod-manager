@@ -166,16 +166,10 @@ If you want Steam to stop bothering you about this, you'll have to disable these
 };
 
 export const updateText = {
-  unableToGetRelease: 'Unable to get latest app release',
-  downloading: 'Downloading update...',
-  installReady: 'Ready to install update',
-  downloadReady: 'Ready to download update',
-  installedVersion: 'Installed: ',
-  latestVersion: 'Latest: ',
-  download: 'Download update',
-  installAndRestart: 'Install update and restart',
-  downloadSuccess: 'Finished downloading app update',
-  databaseRetrieveError:
-    'Not able to retrieve Mod Manager release from database',
-  updateError: 'Error updating app',
+  dialogYes: 'Restart app and update',
+  dialogNo: 'Not now, update later',
+  dialogTitle: 'Outer Wilds Mod Manager',
+  dialogMessage: 'Update available',
+  dialogDetail: (version: string) =>
+    `An update is available for version ${version} of the Mod Manager.`,
 };
