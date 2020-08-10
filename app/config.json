@@ -1,0 +1,16 @@
+{
+  "settingsPath": "settings.json",
+  "owmlSettingsFile": "OWML.Config.json",
+  "owmlDefaultSettingsFile": "OWML.DefaultConfig.json",
+  "defaultSettings": {
+    "owmlPath": "OWML",
+    "closeOnPlay": false,
+    "logToSocket": true,
+    "logLinesLimit": 50,
+    "showAdvancedSettings": false,
+    "openVRParameter": false,
+    "disableParameterWarning": false,
+    "modDatabaseUrl": "https://raw.githubusercontent.com/Raicuparta/outer-wilds-mod-db/master/database.json"
+  },
+  "ignoredErrors": ["ECONNRESET"]
+}
