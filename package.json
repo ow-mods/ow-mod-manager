@@ -1,5 +1,5 @@
 {
-  "name": "owmm",
+  "name": "ow-mod-manager",
   "productName": "OuterWildsModManager",
   "version": "1.0.0",
   "description": "Outer Wilds Mod Manager",
@@ -62,13 +62,13 @@
     "publish": {
       "provider": "github",
       "owner": "Raicuparta",
-      "repo": "owmm",
+      "repo": "ow-mod-manager",
       "private": false
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Raicuparta/owmm.git"
+    "url": "git+https://github.com/Raicuparta/ow-mod-manager.git"
   },
   "author": {
     "name": "Raicuparta",
@@ -77,7 +77,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Raicuparta/owmm/issues"
+    "url": "https://github.com/Raicuparta/ow-mod-manager/issues"
   },
   "keywords": [
     "outer-wilds",
