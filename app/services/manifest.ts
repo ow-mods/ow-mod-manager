@@ -18,7 +18,12 @@ export function manifestPartialToFull(partialManifest: Partial<Manifest>) {
     uniqueName: getAttribute('uniqueName', true),
     version: getAttribute('version'),
     dependencies: partialManifest.dependencies ?? [],
+    requireVR: partialManifest.requireVR ?? false,
   };
+
+  if (manifest.requireVR) {
+    console.log('manifest.ts requires vr');
+  }
 
   return {
     manifest,
