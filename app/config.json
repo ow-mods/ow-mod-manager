@@ -10,6 +10,7 @@
     "showAdvancedSettings": false,
     "openVRParameter": false,
     "disableParameterWarning": false,
+    "disableVrWarning": false,
     "modDatabaseUrl": "https://raw.githubusercontent.com/Raicuparta/outer-wilds-mod-db/master/database.json"
   },
   "ignoredErrors": ["ECONNRESET"]

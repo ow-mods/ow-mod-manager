@@ -2,15 +2,15 @@ import React from 'react';
 import { List, Paper } from '@material-ui/core';
 
 import { settingsText } from '../../static-text';
-import { SettingsContext, useSettings } from '../../hooks';
+import { useSettings } from '../../hooks';
 import ResetSettings from './ResetSettings';
 import ModManagerSettingControl from './ModManagerSettingControl';
 import OwmlSettingControl from './OwmlSettingControl';
 import { SettingType } from './SettingFormControl';
 import PageContainer from '../PageContainer';
 
-type SettingKey = keyof SettingsContext['settings'];
-type OwmlSettingKey = keyof SettingsContext['owmlSettings'];
+type SettingKey = keyof Settings;
+type OwmlSettingKey = keyof OwmlSettings;
 
 type SettingsInput = {
   key: SettingKey | OwmlSettingKey;
@@ -57,6 +57,11 @@ const settingsInputs: readonly SettingsInput[] = [
   },
   {
     key: 'disableParameterWarning',
+    type: SettingType.Switch,
+    isAdvanced: true,
+  },
+  {
+    key: 'disableVrWarning',
     type: SettingType.Switch,
     isAdvanced: true,
   },

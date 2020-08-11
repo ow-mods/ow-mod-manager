@@ -82,6 +82,18 @@ export const modsText = {
     `Failed to load mod. Errors: ${errors.join(' || ')}`,
   actionError: (action: string, error: string) =>
     `Error executing mod ${action}: ${error}`,
+  vrModWarning: {
+    message: 'Follow these steps before starting the game in VR:',
+    detail: `- Close SteamVR (let the game open SteamVR automatically);
+
+- Make sure your headset and both of your VR controllers are connected and working;
+
+- If you have the game on Steam:
+--- Right-click Outer Wilds on your Steam library
+--- Select "Properties..."
+--- Disable "Use Desktop Game Theatre."`,
+    dontShowAgain: "Don't show this again",
+  },
 };
 
 export const settingsText = {
@@ -131,6 +143,11 @@ export const settingsText = {
     label: 'Disable Steam parameter warning',
     tooltip:
       'Disables warning in the Mod Manager that warns you about the Steam warning. Yeah.',
+    isAdvanced: true,
+  },
+  disableVrWarning: {
+    label: 'Disable VR steps warning',
+    tooltip: 'Disables warning about preparation steps for playing in VR',
     isAdvanced: true,
   },
   owmlPath: {
