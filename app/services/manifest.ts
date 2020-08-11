@@ -21,10 +21,6 @@ export function manifestPartialToFull(partialManifest: Partial<Manifest>) {
     requireVR: partialManifest.requireVR ?? false,
   };
 
-  if (manifest.requireVR) {
-    console.log('manifest.ts requires vr');
-  }
-
   return {
     manifest,
     missingAttributes,

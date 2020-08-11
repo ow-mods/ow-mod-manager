@@ -145,6 +145,11 @@ export const settingsText = {
       'Disables warning in the Mod Manager that warns you about the Steam warning. Yeah.',
     isAdvanced: true,
   },
+  disableVrWarning: {
+    label: 'Disable VR steps warning',
+    tooltip: 'Disables warning about preparation steps for playing in VR',
+    isAdvanced: true,
+  },
   owmlPath: {
     label: 'OWML path',
     tooltip:

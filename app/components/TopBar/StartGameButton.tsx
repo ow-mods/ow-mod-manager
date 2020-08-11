@@ -22,13 +22,16 @@ const StartGameButton: React.FunctionComponent = () => {
   const settings = useRecoilValue(settingsState);
   const setSelectedTab = useSetRecoilState(selectedTabState);
   const isVrModEnabled = useRecoilValue(isVrModEnabledState);
-  console.log('isVrModEnabled', isVrModEnabled);
 
   function setDisableParameterWarnings() {
     writeSettings({ ...settings, disableParameterWarning: true });
   }
 
   async function showVrWarning() {
+    if (!isVrModEnabled || settings.disableVrWarning) {
+      return true;
+    }
+
     const { response, checkboxChecked } = await remote.dialog.showMessageBox({
       type: 'warning',
       title: remote.app.name,
@@ -39,17 +42,20 @@ const StartGameButton: React.FunctionComponent = () => {
     });
 
     if (response === 1) {
-      return;
+      return false;
     }
 
     if (checkboxChecked) {
-      // save swetting
+      writeSettings({ ...settings, disableVrWarning: true });
     }
+
+    return true;
   }
 
   async function handleStartGameClick() {
-    if (isVrModEnabled) {
-      await showVrWarning();
+    const shouldStartGame = await showVrWarning();
+    if (!shouldStartGame) {
+      return;
     }
     runOwml(settings, logServerPort, setDisableParameterWarnings);
     if (settings.logToSocket) {
