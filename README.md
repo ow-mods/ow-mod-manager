@@ -12,12 +12,20 @@ It also lets you install / update the [Outer Wilds Mod Loader](https://github.co
 
 ## How do I use this?
 
-* [Download the latest release](https://github.com/Raicuparta/ow-mod-manager/releases/latest);
-* Extract it anywhere;
+* [Download the Outer Wilds Mod Manager installer](https://outerwildsmods.com/);
+* Run the downloaded .exe (you might need to ignore some Chrome / Windows warnings);
+* The Mod Manager should start automatically;
+* Shortcuts are added to desktop and start menu, use them next time you want to run the manager;
 * Install OWML;
 * Install any mods you want;
 * Press the big green button that says "Start Game";
 * You won't believe what happens next.
+
+## How do I uninstall it?
+
+First, remember that uninstalling the Mod Manager won't uninstall your mods. Make sure to remove all mods and run the game once before uninstalling.
+
+You can uninstall the Mod Manager by searching for "Add or remove programs" in the start menu (or in the control panel), and then finding OuterWildsModManager in the list.
 
 ## It doesn't work / I found a bug / I have a request
 
