@@ -1,7 +1,12 @@
 import fs from 'fs-extra';
+import { remote } from 'electron';
 
 import config from '../config.json';
 import { settingsText } from '../static-text';
+
+export function getSettingsPath() {
+  return `${remote.app.getPath('userData')}\\${config.settingsPath}`;
+}
 
 export async function getSettings<TSettings>(path: string) {
   try {
@@ -23,7 +28,7 @@ export function writeSettings(settings: Settings) {
     logToSocket: settings.closeOnPlay ? false : settings.logToSocket,
   };
 
-  fs.writeJsonSync(config.settingsPath, constrainedSettings);
+  fs.writeJsonSync(getSettingsPath(), constrainedSettings);
 }
 
 export function writeOwmlSettings(path: string, settings: OwmlSettings) {

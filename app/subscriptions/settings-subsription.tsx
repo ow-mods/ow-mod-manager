@@ -8,15 +8,18 @@ import {
   getOwmlDefaultSettingsPath,
   getOwmlSettingsPath,
   writeSettings,
+  getSettingsPath,
 } from '../services';
 import { useFileWatcher, useSettingsFileWatcher } from '../hooks';
+
+const userDataDirectory = remote.app.getPath('userData');
 
 export const SettingsSubscription: React.FunctionComponent = () => {
   const [settings, setSettings] = useRecoilState(settingsState);
   const setOwmlSettings = useSetRecoilState(owmlSettingsState);
 
   const settingsFile = useSettingsFileWatcher<Settings>(
-    config.settingsPath,
+    getSettingsPath(),
     config.defaultSettings
   );
 
@@ -39,7 +42,7 @@ export const SettingsSubscription: React.FunctionComponent = () => {
     if (!settingsFile.owmlPath) {
       writeSettings({
         ...settingsFile,
-        owmlPath: `${remote.app.getPath('userData')}\\OWML`,
+        owmlPath: `${userDataDirectory}\\OWML`,
       });
     }
 

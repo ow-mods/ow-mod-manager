@@ -3,7 +3,6 @@ import fetch from 'node-fetch';
 import fs from 'fs-extra';
 import path from 'path';
 import { remote } from 'electron';
-import cpy from 'cpy';
 
 import { modsText } from '../static-text';
 
@@ -11,9 +10,8 @@ fetch.bind(window);
 
 // Defines which portion of the loading bar is for download progress,
 // and the remaining is for unzipping progress.
-const progressDownloadPortion = 0.5;
-const progressUnzipPortion = 0.25;
-const progressCopyPortion = 0.25;
+const progressDownloadPortion = 0.7;
+const progressUnzipPortion = 0.3;
 
 export async function downloadFile(
   url: string,
@@ -80,11 +78,8 @@ export async function createFolders(dir: string) {
   await fs.mkdirs(dir);
 }
 
-export async function copyFolder(
-  sourcePath: string,
-  targetPath: string,
-  onProgress?: ProgressHandler
-) {
+export async function copyFolder(sourcePath: string, targetPath: string) {
+  console.log('copy folder from', sourcePath, 'to', targetPath);
   const sourceContents = fs.readdirSync(sourcePath);
   const innerPath =
     sourceContents.length === 1 &&
@@ -96,23 +91,14 @@ export async function copyFolder(
     overwrite: true,
     recursive: true,
   });
-  const copy = cpy(innerPath, targetPath, { overwrite: true, parents: true });
-  if (onProgress) {
-    copy.on('progress', (progress) => onProgress(progress.percent));
-  }
-  return copy;
 }
 
 export function deleteFolder(folderPath: string) {
   if (fs.existsSync(folderPath)) {
-    fs.removeSync(folderPath);
+    fs.emptyDirSync(folderPath);
   } else {
     throw new Error(`${modsText.deleteNonExistingError}: "${folderPath}"`);
   }
-}
-
-function getAppPath() {
-  return path.dirname(remote.app.getAppPath());
 }
 
 export async function unzipRemoteFile(
@@ -120,6 +106,8 @@ export async function unzipRemoteFile(
   destinationPath: string,
   onProgress: ProgressHandler
 ) {
+  console.log('unzip remote file from', url, 'to', destinationPath);
+
   const onDownloadProgress: ProgressHandler = (progress) => {
     console.log('onDownloadProgress', progress);
     onProgress(progress * progressDownloadPortion);
@@ -130,17 +118,9 @@ export async function unzipRemoteFile(
     onProgress(progressDownloadPortion + progress * progressUnzipPortion);
   };
 
-  const onCopyProgress: ProgressHandler = (progress) => {
-    console.log('onCopyProgress', progress);
-    onProgress(
-      progressDownloadPortion +
-        progressUnzipPortion +
-        progress * progressCopyPortion
-    );
-  };
-
   const temporaryName = path.basename(destinationPath);
-  const temporaryPath = `${getAppPath()}/temp/${temporaryName}-${new Date().getTime()}`;
+  const userDataPath = remote.app.getPath('userData');
+  const temporaryPath = `${userDataPath}/temp/${temporaryName}-${new Date().getTime()}`;
   const zipPath = `${temporaryPath}/${temporaryName}.zip`;
   const unzipPath = `${temporaryPath}/${temporaryName}`;
 
@@ -148,6 +128,6 @@ export async function unzipRemoteFile(
 
   await downloadFile(url, zipPath, onDownloadProgress);
   await unzipFile(zipPath, unzipPath, onUnzipProgress);
-  await copyFolder(unzipPath, destinationPath, onCopyProgress);
+  await copyFolder(unzipPath, destinationPath);
   await deleteFolder(temporaryPath);
 }
