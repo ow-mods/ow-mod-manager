@@ -11,3 +11,8 @@ export const owmlSettingsState = atom<OwmlSettings>({
   key: 'OwmlSettings',
   default: {},
 });
+
+export const defaultOwmlSettingsState = atom<OwmlSettings>({
+  key: 'DefaultOwmlSettings',
+  default: {},
+});

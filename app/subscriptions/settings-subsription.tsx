@@ -1,7 +1,11 @@
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useEffect } from 'react';
 
-import { settingsState, owmlSettingsState } from '../store';
+import {
+  settingsState,
+  owmlSettingsState,
+  defaultOwmlSettingsState,
+} from '../store';
 import {
   getOwmlDefaultSettingsPath,
   getOwmlSettingsPath,
@@ -13,12 +17,14 @@ import { useFileWatcher, useSettingsFileWatcher } from '../hooks';
 export const SettingsSubscription: React.FunctionComponent = () => {
   const [settings, setSettings] = useRecoilState(settingsState);
   const setOwmlSettings = useSetRecoilState(owmlSettingsState);
+  const setDefaultOwmlSettings = useSetRecoilState(defaultOwmlSettingsState);
 
   const settingsFile = useSettingsFileWatcher<Settings>(
     getSettingsPath(),
     getDefaultAppSettings()
   );
 
+  // TODO: this should be only in global state, not here.
   const defaultOwmlSettings = useFileWatcher<OwmlSettings>(
     getOwmlDefaultSettingsPath(settingsFile.owmlPath)
   );
@@ -37,6 +43,13 @@ export const SettingsSubscription: React.FunctionComponent = () => {
     console.log('useEffect: SettingsSubscription setSettings');
     setSettings(settingsFile);
   }, [settingsFile, setSettings]);
+
+  useEffect(() => {
+    console.log('ueEffect: set defaultOwmlSettingsState');
+    if (defaultOwmlSettings) {
+      setDefaultOwmlSettings(defaultOwmlSettings);
+    }
+  }, [defaultOwmlSettings, setDefaultOwmlSettings]);
 
   return null;
 };
