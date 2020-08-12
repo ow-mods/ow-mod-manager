@@ -8,7 +8,11 @@ export function useFileWatcher<TFile>(filePath: string, defaultFile?: TFile) {
   const [file, setFile] = useState<TFile>();
 
   useEffect(() => {
-    console.log('useEffect: UseFileWatcher');
+    if (!filePath) {
+      return undefined;
+    }
+
+    console.log('useEffect: UseFileWatcher', filePath);
     const updateFile = async (updateFilePath: string) => {
       console.log('useEffect: UseFileWatcher updateFile');
       setFile(await getSettings<TFile>(updateFilePath));

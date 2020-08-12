@@ -12,6 +12,10 @@ export function useSettingsFileWatcher<
   const settings = useFileWatcher<TSettings>(path, defaultSettings);
 
   useEffect(() => {
+    if (!path) {
+      return;
+    }
+
     console.log('useEffect: useSettingsFileWatcher defaults check');
     const copyDefaults = () => {
       console.log('useEffect: useSettingsFileWatcher copyDefaults');

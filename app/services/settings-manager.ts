@@ -34,9 +34,9 @@ export function writeOwmlSettings(path: string, settings: OwmlSettings) {
 }
 
 export function getOwmlSettingsPath(owmlPath: string) {
-  return `${owmlPath}/${config.owmlSettingsFile}`;
+  return owmlPath ? `${owmlPath}/${config.owmlSettingsFile}` : '';
 }
 
 export function getOwmlDefaultSettingsPath(owmlPath: string) {
-  return `${owmlPath}/${config.owmlDefaultSettingsFile}`;
+  return owmlPath ? `${owmlPath}/${config.owmlDefaultSettingsFile}` : '';
 }
