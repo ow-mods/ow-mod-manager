@@ -1,10 +1,10 @@
 import { atom } from 'recoil';
 
-import config from '../config.json';
+import { getDefaultAppSettings } from '../services';
 
 export const settingsState = atom<Settings>({
   key: 'Settings',
-  default: config.defaultSettings,
+  default: getDefaultAppSettings(),
 });
 
 export const owmlSettingsState = atom<OwmlSettings>({

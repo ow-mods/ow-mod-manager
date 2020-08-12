@@ -23,6 +23,9 @@ export function writeSettings(settings: Settings) {
   if (!settings) {
     throw new Error(settingsText.setInvalidSettingsError);
   }
+
+  console.log('writing app settings');
+
   const constrainedSettings: Settings = {
     ...settings,
     logToSocket: settings.closeOnPlay ? false : settings.logToSocket,
@@ -44,4 +47,11 @@ export function getOwmlSettingsPath(owmlPath: string) {
 
 export function getOwmlDefaultSettingsPath(owmlPath: string) {
   return owmlPath ? `${owmlPath}/${config.owmlDefaultSettingsFile}` : '';
+}
+
+export function getDefaultAppSettings(): Settings {
+  return {
+    ...config.defaultSettings,
+    owmlPath: `${remote.app.getPath('userData')}\\OWML`,
+  };
 }

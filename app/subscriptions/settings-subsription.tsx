@@ -1,18 +1,14 @@
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useEffect } from 'react';
-import { remote } from 'electron';
 
-import config from '../config.json';
 import { settingsState, owmlSettingsState } from '../store';
 import {
   getOwmlDefaultSettingsPath,
   getOwmlSettingsPath,
-  writeSettings,
   getSettingsPath,
+  getDefaultAppSettings,
 } from '../services';
 import { useFileWatcher, useSettingsFileWatcher } from '../hooks';
-
-const userDataDirectory = remote.app.getPath('userData');
 
 export const SettingsSubscription: React.FunctionComponent = () => {
   const [settings, setSettings] = useRecoilState(settingsState);
@@ -20,7 +16,7 @@ export const SettingsSubscription: React.FunctionComponent = () => {
 
   const settingsFile = useSettingsFileWatcher<Settings>(
     getSettingsPath(),
-    config.defaultSettings
+    getDefaultAppSettings()
   );
 
   const defaultOwmlSettings = useFileWatcher<OwmlSettings>(
@@ -39,13 +35,6 @@ export const SettingsSubscription: React.FunctionComponent = () => {
 
   useEffect(() => {
     console.log('useEffect: SettingsSubscription setSettings');
-    if (!settingsFile.owmlPath) {
-      writeSettings({
-        ...settingsFile,
-        owmlPath: `${userDataDirectory}\\OWML`,
-      });
-    }
-
     setSettings(settingsFile);
   }, [settingsFile, setSettings]);
 
