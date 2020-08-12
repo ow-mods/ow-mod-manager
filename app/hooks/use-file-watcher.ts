@@ -22,6 +22,7 @@ export function useFileWatcher<TFile>(filePath: string, defaultFile?: TFile) {
       fs.mkdirSync(directory, { recursive: true });
     }
     if (!fs.existsSync(filePath)) {
+      console.log('useFileWatcher: writing defaults');
       fs.writeJSONSync(filePath, defaultFile ?? {});
     }
     const watcher = fs.watch(filePath, () => {

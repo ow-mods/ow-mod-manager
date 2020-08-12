@@ -3,8 +3,8 @@ import { Button, ListItem, makeStyles } from '@material-ui/core';
 import { SettingsBackupRestore as RestoreIcon } from '@material-ui/icons';
 
 import { settingsText } from '../../static-text';
-import config from '../../config.json';
 import { useSettings } from '../../hooks';
+import { getDefaultAppSettings } from '../../services';
 
 const useStyles = makeStyles({
   root: {
@@ -17,7 +17,7 @@ const ResetSettings = () => {
   const { setSettings } = useSettings();
 
   const handleResetClick = useCallback(() => {
-    setSettings(config.defaultSettings);
+    setSettings(getDefaultAppSettings());
   }, [setSettings]);
 
   return (
