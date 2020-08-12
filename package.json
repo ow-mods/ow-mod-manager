@@ -46,7 +46,10 @@
       "package.json"
     ],
     "nsis": {
-      "artifactName": "${productName}-Installer.${ext}"
+      "artifactName": "${productName}-Installer.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": true
     },
     "win": {
       "artifactName": "${productName}-Portable.${ext}",
