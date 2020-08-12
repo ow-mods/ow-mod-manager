@@ -28,42 +28,51 @@ function getOwmlSync(owmlPath: string) {
 }
 
 export function getLocalModsSync(owmlPath: string) {
-  const manifestPaths = globby.sync(`${owmlPath}/Mods/**/manifest.json`);
+  if (!owmlPath) {
+    return [];
+  }
+
+  const manifestPaths = globby.sync(`**/manifest.json`, {
+    cwd: `${owmlPath}/Mods`,
+    absolute: true,
+  });
 
   return [
-    ...manifestPaths.map<Mod>((manifestPath) => {
-      const { manifest, missingAttributes } = manifestPartialToFull(
-        fs.readJsonSync(manifestPath)
-      );
-
-      const mod: Mod = {
-        name: manifest.name,
-        author: manifest.author,
-        uniqueName: manifest.uniqueName,
-        localVersion: manifest.version,
-        modPath: path.dirname(manifestPath),
-        errors: [],
-        dependencies: manifest.dependencies ?? [],
-        requireVR: manifest.requireVR,
-      };
-
-      if (missingAttributes.length > 0) {
-        mod.errors.push(
-          modsText.missingManifestAttributesError(
-            manifestPath,
-            missingAttributes
-          )
+    ...manifestPaths
+      .map<Mod>((manifestPath) => {
+        const { manifest, missingAttributes } = manifestPartialToFull(
+          fs.readJsonSync(manifestPath)
         );
-      }
 
-      try {
-        mod.isEnabled = isEnabled(mod);
-      } catch (error) {
-        mod.isEnabled = true;
-        console.error(error);
-      }
-      return mod;
-    }),
+        const mod: Mod = {
+          name: manifest.name,
+          author: manifest.author,
+          uniqueName: manifest.uniqueName,
+          localVersion: manifest.version,
+          modPath: path.dirname(manifestPath),
+          errors: [],
+          dependencies: manifest.dependencies ?? [],
+          requireVR: manifest.requireVR,
+        };
+
+        if (missingAttributes.length > 0) {
+          mod.errors.push(
+            modsText.missingManifestAttributesError(
+              manifestPath,
+              missingAttributes
+            )
+          );
+        }
+
+        try {
+          mod.isEnabled = isEnabled(mod);
+        } catch (error) {
+          mod.isEnabled = true;
+          console.error(error);
+        }
+        return mod;
+      })
+      .filter((mod) => mod),
     getOwmlSync(owmlPath),
   ];
 }
