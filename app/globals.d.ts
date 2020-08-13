@@ -28,6 +28,7 @@ type ModDbItem = {
 type Release = {
   downloadUrl: string;
   downloadCount: number;
+  version: string;
 };
 
 type Manifest = {

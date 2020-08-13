@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import globby from 'globby';
 import path from 'path';
+import { coerce } from 'semver';
 
 import { modsText } from '../static-text';
 import { isEnabled } from './mod-manager';
@@ -48,7 +49,7 @@ export function getLocalModsSync(owmlPath: string) {
           name: manifest.name,
           author: manifest.author,
           uniqueName: manifest.uniqueName,
-          localVersion: manifest.version,
+          localVersion: coerce(manifest.version)?.version ?? manifest.version,
           modPath: path.dirname(manifestPath),
           errors: [],
           dependencies: manifest.dependencies ?? [],

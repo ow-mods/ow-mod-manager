@@ -177,6 +177,7 @@
     "react-dom": "^0.0.0-experimental-f77c7b9d7",
     "recoil": "^0.0.10",
     "regenerator-runtime": "^0.13.7",
+    "semver": "^7.3.2",
     "unzipper": "^0.10.11"
   },
   "devEngines": {

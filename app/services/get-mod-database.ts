@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import { coerce } from 'semver';
 
 import { modsText } from '../static-text';
 import { manifestPartialToFull } from './manifest';
@@ -11,6 +12,7 @@ type RemoteMod = {
   manifest: Partial<Manifest>;
   repo: string;
   required?: boolean;
+  version: string;
 };
 
 type RemoteModDatabase = {
@@ -41,6 +43,7 @@ export async function getModDatabase(
       downloadUrl,
       required,
       repo,
+      version,
     }: RemoteMod) => {
       const { manifest, missingAttributes } = manifestPartialToFull(
         partialManifest
@@ -50,7 +53,7 @@ export async function getModDatabase(
         name: manifest.name,
         author: manifest.author,
         uniqueName: manifest.uniqueName,
-        remoteVersion: manifest.version,
+        remoteVersion: coerce(version)?.version ?? version,
         // TODO doesnt make sense for this to be here in remote mods
         modPath: `${owmlPath}/Mods/${manifest.uniqueName}`,
         errors: [],
