@@ -10,7 +10,7 @@ import {
   getOwmlDefaultSettingsPath,
   getOwmlSettingsPath,
   getSettingsPath,
-  getDefaultAppSettings,
+  defaultAppSettings,
 } from '../services';
 import { useFileWatcher, useSettingsFileWatcher } from '../hooks';
 
@@ -21,7 +21,7 @@ export const SettingsSubscription: React.FunctionComponent = () => {
 
   const settingsFile = useSettingsFileWatcher<Settings>(
     getSettingsPath(),
-    getDefaultAppSettings()
+    defaultAppSettings
   );
 
   // TODO: this should be only in global state, not here.

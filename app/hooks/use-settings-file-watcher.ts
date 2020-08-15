@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import fs from 'fs-extra';
 
+import { isEqual } from 'lodash';
 import { useFileWatcher } from './use-file-watcher';
 
 export function useSettingsFileWatcher<

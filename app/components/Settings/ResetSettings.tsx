@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 
 import { settingsText } from '../../static-text';
 import { useSettings } from '../../hooks';
-import { getDefaultAppSettings } from '../../services';
+import { defaultAppSettings } from '../../services';
 import { defaultOwmlSettingsState } from '../../store';
 
 const useStyles = makeStyles({
@@ -20,7 +20,7 @@ const ResetSettings = () => {
   const defaultOwmlSettings = useRecoilValue(defaultOwmlSettingsState);
 
   const handleResetClick = useCallback(() => {
-    setSettings(getDefaultAppSettings());
+    setSettings(defaultAppSettings);
     setOwmlSettings(defaultOwmlSettings);
   }, [setSettings, setOwmlSettings, defaultOwmlSettings]);
 

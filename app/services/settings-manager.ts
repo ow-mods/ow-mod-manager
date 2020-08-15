@@ -4,6 +4,11 @@ import { remote } from 'electron';
 import config from '../config.json';
 import { settingsText } from '../static-text';
 
+export const defaultAppSettings = {
+  ...config.defaultSettings,
+  owmlPath: `${remote.app.getPath('userData')}\\OWML`,
+};
+
 export function getSettingsPath() {
   return `${remote.app.getPath('userData')}\\${config.settingsPath}`;
 }
@@ -47,11 +52,4 @@ export function getOwmlSettingsPath(owmlPath: string) {
 
 export function getOwmlDefaultSettingsPath(owmlPath: string) {
   return owmlPath ? `${owmlPath}/${config.owmlDefaultSettingsFile}` : '';
-}
-
-export function getDefaultAppSettings(): Settings {
-  return {
-    ...config.defaultSettings,
-    owmlPath: `${remote.app.getPath('userData')}\\OWML`,
-  };
 }
