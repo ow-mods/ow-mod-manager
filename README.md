@@ -21,6 +21,20 @@ It also lets you install / update the [Outer Wilds Mod Loader](https://github.co
 * Press the big green button that says "Start Game";
 * You won't believe what happens next.
 
+## "Installation Aborted" error
+
+If you're trying to reinstall the Mod Manager, you might get an error aying "Installation aborted: Setup was not completed succesfully". If that happens, follow these steps:
+
+* Open the Start menu;
+* Search for "Control Panel" and open it;
+* Under "Propgrams", click "Uninstall a program";
+* Search for "OuterWildsModManager" in the list;
+* Double click it;
+* Windows should show you an error message saying it failed to uninstall, and asking if you want to remove the program from the list. Say yes;
+* Try installing the Mod Manager again.
+
+**Note**: This is not possible to do via the modern Windows 10 settings panel. You need to use the old ugly Control Panel.
+
 ## How do I uninstall it?
 
 First, remember that uninstalling the Mod Manager won't uninstall your mods. Make sure to remove all mods and run the game once before uninstalling.
