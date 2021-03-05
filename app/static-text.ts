@@ -84,7 +84,9 @@ export const modsText = {
     `Error executing mod ${action}: ${error}`,
   vrModWarning: {
     message: 'Follow these steps before starting the game in VR:',
-    detail: `- Close SteamVR (let the game open SteamVR automatically);
+    detail: `- Disable all other mods (can heavily affect performance);
+    
+- Close SteamVR (let the game open SteamVR automatically);
 
 - Make sure your headset and both of your VR controllers are connected and working;
 
