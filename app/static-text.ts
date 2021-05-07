@@ -39,7 +39,7 @@ export const modsText = {
   findModsLabel: 'Find mods',
   emptyModList: 'No mods here! 😱',
   tableHead: {
-    name: 'Name',
+    name: 'Mod',
     author: 'Author',
     downloadCount: 'Downloads',
     version: 'Version',

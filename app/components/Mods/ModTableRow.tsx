@@ -5,6 +5,7 @@ import {
   TableRow,
   Chip,
   Tooltip,
+  Typography,
 } from '@material-ui/core';
 
 import { useRecoilValue } from 'recoil';
@@ -23,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
   },
   missingDependencyRow: {
     background: theme.palette.secondary.dark,
+  },
+  modDescription: {
+    color: theme.palette.text.disabled,
   },
 }));
 
@@ -76,7 +80,14 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   return (
     <Tooltip title={getRowTooltip()}>
       <TableRow className={getClassName()} key={mod.uniqueName}>
-        <TableCell>{mod.name}</TableCell>
+        <TableCell>
+          <Typography variant="subtitle1">
+            {mod.name}
+          </Typography>
+          <Typography className={styles.modDescription} variant="caption">
+            {mod.description}
+          </Typography>
+        </TableCell>
         <TableCell>{mod.author}</TableCell>
         <TableCell align="right">{mod.downloadCount}</TableCell>
         <TableCell>

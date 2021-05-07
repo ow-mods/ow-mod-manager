@@ -24,6 +24,7 @@ function getOwmlSync(owmlPath: string) {
     isRequired: true,
     errors: [],
     dependencies: [],
+    description: owmlManifest?.description,
   };
   return owml;
 }
@@ -54,6 +55,7 @@ export function getLocalModsSync(owmlPath: string) {
           errors: [],
           dependencies: manifest.dependencies ?? [],
           requireVR: manifest.requireVR,
+          description: manifest.description,
         };
 
         if (missingAttributes.length > 0) {
