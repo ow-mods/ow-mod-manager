@@ -13,6 +13,10 @@ type RemoteMod = {
   repo: string;
   required?: boolean;
   version: string;
+  prerelease?: {
+    downloadUrl: string;
+    version: string;
+  };
 };
 
 type RemoteModDatabase = {
@@ -44,6 +48,7 @@ export async function getModDatabase(
       required,
       repo,
       version,
+      prerelease,
     }: RemoteMod) => {
       const { manifest, missingAttributes } = manifestPartialToFull(
         partialManifest
@@ -63,6 +68,7 @@ export async function getModDatabase(
         dependencies: manifest.dependencies ?? [],
         isRequired: required,
         description: manifest.description,
+        prerelease,
       };
 
       if (missingAttributes.length > 0) {

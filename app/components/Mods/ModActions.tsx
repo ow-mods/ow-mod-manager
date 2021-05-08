@@ -30,6 +30,7 @@ import {
   openRepo,
   toggleEnabled,
   getLocalModsSync,
+  installPrerelease,
 } from '../../services';
 import { localModList, settingsState } from '../../store';
 import { useLoading } from '../../store/loading-state';
@@ -226,6 +227,17 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
               <DeleteIcon />
             </ListItemIcon>
             {modsText.actions.uninstall}
+          </MenuItem>
+        )}
+        {mod.prerelease && (
+          <MenuItem
+            disabled={mod.localVersion === mod.prerelease.version}
+            onClick={modActionHandler(installPrerelease, 'install prerelease')}
+          >
+            <ListItemIcon>
+              <SaveIcon />
+            </ListItemIcon>
+            {modsText.actions.installPrerelease(mod.prerelease.version)}
           </MenuItem>
         )}
       </Menu>

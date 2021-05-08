@@ -33,11 +33,23 @@ async function upstall(mod: Mod, onProgress: ProgressHandler) {
   await unzipRemoteFile(mod.downloadUrl, mod.modPath, onProgress);
 }
 
+async function upstallPrerelease(mod: Mod, onProgress: ProgressHandler) {
+  if (!mod.prerelease) {
+    return;
+  }
+
+  await unzipRemoteFile(mod.prerelease.downloadUrl, mod.modPath, onProgress);
+}
+
 export async function install(mod: Mod, onProgress: ProgressHandler) {
   if (isInstalled(mod)) {
     throw new Error(modsText.installAlreadyInstalledError);
   }
   await upstall(mod, onProgress);
+}
+
+export async function installPrerelease(mod: Mod, onProgress: ProgressHandler) {
+  await upstallPrerelease(mod, onProgress);
 }
 
 export async function update(mod: Mod, onProgress: ProgressHandler) {

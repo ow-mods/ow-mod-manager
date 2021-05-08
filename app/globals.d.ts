@@ -17,20 +17,13 @@ type Mod = {
   dependencies: string[];
   requireVR?: boolean;
   description?: string;
+  prerelease?: {
+    downloadUrl: string;
+    version: string;
+  };
 };
 
 type ModMap = { [uniqueName: string]: Mod };
-
-type ModDbItem = {
-  repo: string;
-  manifest: string;
-};
-
-type Release = {
-  downloadUrl: string;
-  downloadCount: number;
-  version: string;
-};
 
 type Manifest = {
   name: string;

@@ -63,6 +63,7 @@ export const modsText = {
     openDirectory: 'Show in explorer',
     openRepo: 'More info on GitHub',
     uninstall: 'Uninstall',
+    installPrerelease: (version: string) => `Install Prerelease (${version})`,
   },
   localModLoadError: 'Failed to load local mod',
   databaseLoadError: 'Failed to load mod database',
