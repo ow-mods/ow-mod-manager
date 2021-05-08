@@ -5,34 +5,6 @@ import TableRow from '@material-ui/core/TableRow';
 
 import { modsText } from '../../static-text';
 
-type HeadCell = {
-  disablePadding: boolean;
-  id: keyof typeof modsText.tableHead;
-  numeric: boolean;
-  width?: string;
-};
-
-const headCells: HeadCell[] = [
-  {
-    id: 'downloadCount',
-    numeric: true,
-    disablePadding: false,
-    width: '100px',
-  },
-  {
-    id: 'version',
-    numeric: false,
-    disablePadding: false,
-    width: '110px',
-  },
-  {
-    id: 'actions',
-    numeric: false,
-    disablePadding: false,
-    width: '200px',
-  },
-];
-
 type Props = {
   title: string;
 };
@@ -43,17 +15,13 @@ const ModTableHead: React.FunctionComponent<Props> = ({ title }) => (
       <TableCell>
         {title}
       </TableCell>
-      {headCells.map((headCell) => (
-        <TableCell
-          key={headCell.id}
-          align={headCell.numeric ? 'right' : 'left'}
-          padding={headCell.disablePadding ? 'none' : 'default'}
-          width={headCell.width}
-          style={{ maxWidth: headCell.width }}
-        >
-          {modsText.tableHead[headCell.id]}
-        </TableCell>
-      ))}
+      <TableCell width="100px">
+        {modsText.tableHead.downloadCount}
+      </TableCell>
+      <TableCell width="110px" align="center">
+        {modsText.tableHead.version}
+      </TableCell>
+      <TableCell width="200px" />
     </TableRow>
   </TableHead>
 );
