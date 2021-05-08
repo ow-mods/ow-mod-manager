@@ -16,20 +16,29 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     backgroundColor: theme.palette.grey[900],
   },
+  wrapper: {
+    overflowY: 'scroll',
+    '&::-webkit-scrollbar-track': {
+      background: theme.palette.grey[900],
+      borderRadius: 0,
+    },
+  },
 }));
 
 const TopBar: React.FunctionComponent = () => {
-  const classes = useStyles();
+  const styles = useStyles();
 
   return (
-    <Toolbar className={classes.toolbar}>
-      <Container className={classes.container}>
-        <AppTabs />
-        <LoadingSuspense>
-          <StartGameButton />
-        </LoadingSuspense>
-      </Container>
-    </Toolbar>
+    <div className={styles.wrapper}>
+      <Toolbar className={styles.toolbar}>
+        <Container maxWidth="md" className={styles.container}>
+          <AppTabs />
+          <LoadingSuspense>
+            <StartGameButton />
+          </LoadingSuspense>
+        </Container>
+      </Toolbar>
+    </div>
   );
 };
 

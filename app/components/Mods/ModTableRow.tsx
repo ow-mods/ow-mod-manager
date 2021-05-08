@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.disabled,
   },
   tableCell: {
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
     borderBottom: 0,
   },
   tableRow: {
@@ -49,8 +49,12 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: 0,
     },
   },
+  modDescription: {
+    display: 'block',
+    marginTop: -5,
+    marginBottom: -theme.spacing(0),
+  },
   outdatedChip: {
-    // position: 'relative',
     ...theme.typography.caption,
     textAlign: 'center',
     width: '100%',
@@ -119,7 +123,10 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
             <Typography variant="subtitle1">
               {mod.name}
               <Box ml={2} display="inline-block">
-                <Typography className={styles.mutedText} variant="caption">
+                <Typography
+                  className={styles.mutedText}
+                  variant="caption"
+                >
                   {' by '}
                   {mod.author}
                 </Typography>
@@ -127,7 +134,11 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
                 </Typography>
               </Box>
             </Typography>
-            <Typography color="textSecondary" variant="caption">
+            <Typography
+              className={styles.modDescription}
+              color="textSecondary"
+              variant="caption"
+            >
               {mod.description}
             </Typography>
           </TableCell>
