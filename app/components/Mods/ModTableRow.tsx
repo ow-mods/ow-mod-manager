@@ -89,7 +89,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
           </Typography>
         </TableCell>
         <TableCell>{mod.author}</TableCell>
-        <TableCell align="right">{mod.downloadCount}</TableCell>
+        <TableCell align="right">{mod.downloadCount || '-'}</TableCell>
         <TableCell>
           <Chip color={getVersionColor()} label={getVersion()} />
         </TableCell>

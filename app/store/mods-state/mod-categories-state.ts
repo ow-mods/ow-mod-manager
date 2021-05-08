@@ -1,11 +1,26 @@
 import { selector } from 'recoil';
+import { remote } from 'electron';
+import packageJson from '../../../package.json';
 
 import { filteredModList } from './mod-filter-state';
 import { requiredDependencyIdsState } from './mod-dependencies-state';
 
 export const installedModList = selector({
   key: 'InstalledMods',
-  get: ({ get }) => get(filteredModList).filter((mod) => mod.localVersion),
+  get: ({ get }) => get(filteredModList).filter((mod) => mod.localVersion).concat({
+    name: 'Outer Wilds Mod Manager',
+    author: 'Raicuparta & Alek',
+    uniqueName: 'ow-mod-manager',
+    isRequired: true,
+    isEnabled: true,
+    localVersion: remote.app.getVersion(),
+    remoteVersion: remote.app.getVersion(),
+    repo: packageJson.repository.url,
+    modPath: '.',
+    downloadUrl: '',
+    errors: [],
+    dependencies: [],
+  }),
 });
 
 export const notInstalledModList = selector({
