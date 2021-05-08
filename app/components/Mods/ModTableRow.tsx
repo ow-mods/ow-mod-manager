@@ -6,6 +6,7 @@ import {
   Chip,
   Tooltip,
   Typography,
+  Box,
 } from '@material-ui/core';
 
 import { useRecoilValue } from 'recoil';
@@ -25,14 +26,52 @@ const useStyles = makeStyles((theme) => ({
   missingDependencyRow: {
     background: theme.palette.secondary.dark,
   },
-  modDescription: {
+  mutedText: {
     color: theme.palette.text.disabled,
+  },
+  tableCell: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+    borderBottom: 0,
+  },
+  tableRow: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: '#4b4b4b',
+    },
+  },
+  versionChip: {
+    width: "100%",
+    padding: 0,
+    paddingLeft: 0,
+    paddingRight: 0,
+    '& span': {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
+  },
+  modDescription: {
+    display: 'block',
+    marginTop: -5,
+    marginBottom: -theme.spacing(0),
+  },
+  outdatedChip: {
+    ...theme.typography.caption,
+    textAlign: 'center',
+    width: '100%',
+    lineHeight: 0,
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(2),
+    marginTop: - theme.spacing(4),
+    borderRadius: 16,
+    background: theme.palette.secondary.main,
+    fontWeight: theme.typography.fontWeightBold,
   },
 }));
 
 const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const styles = useStyles();
   const missingDependencyNames = useRecoilValue(missingDependencyIdsState(mod));
+  const isModOutdated = isOutdated(mod);
 
   const getVersionColor = () => {
     if (isOutdated(mod)) {
@@ -55,13 +94,13 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   };
 
   const getClassName = () => {
+    let className = styles.tableRow;
     if (isBroken(mod)) {
-      return styles.brokenRow;
+      className += ` ${styles.brokenRow}`;
+    } else if (missingDependencyNames.length > 0) {
+      className += ` ${styles.missingDependencyRow}`;
     }
-    if (missingDependencyNames.length > 0) {
-      return styles.missingDependencyRow;
-    }
-    return undefined;
+    return className;
   };
 
   const getRowTooltip = () => {
@@ -80,22 +119,48 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   return (
     <Tooltip title={getRowTooltip()}>
       <TableRow className={getClassName()} key={mod.uniqueName}>
-        <TableCell>
-          <Typography variant="subtitle1">
-            {mod.name}
-          </Typography>
-          <Typography className={styles.modDescription} variant="caption">
-            {mod.description}
-          </Typography>
-        </TableCell>
-        <TableCell>{mod.author}</TableCell>
-        <TableCell align="right">{mod.downloadCount || '-'}</TableCell>
-        <TableCell>
-          <Chip color={getVersionColor()} label={getVersion()} />
-        </TableCell>
-        <TableCell padding="none">
-          <ModActions mod={mod} />
-        </TableCell>
+          <TableCell className={styles.tableCell}>
+            <Typography variant="subtitle1">
+              {mod.name}
+              <Box ml={2} display="inline-block">
+                <Typography
+                  className={styles.mutedText}
+                  variant="caption"
+                >
+                  {' by '}
+                  {mod.author}
+                </Typography>
+                <Typography variant="caption">
+                </Typography>
+              </Box>
+            </Typography>
+            <Typography
+              className={styles.modDescription}
+              color="textSecondary"
+              variant="caption"
+            >
+              {mod.description}
+            </Typography>
+          </TableCell>
+          <TableCell className={styles.tableCell} align="right">
+            {mod.downloadCount || '-'}
+          </TableCell>
+          <TableCell className={styles.tableCell}>
+
+            <Chip
+              color={getVersionColor()}
+              label={getVersion()}
+              className={styles.versionChip}
+            />
+            {isModOutdated && (
+              <div className={styles.outdatedChip}>
+                {modsText.outdated}
+              </div>
+            )}
+          </TableCell>
+          <TableCell className={styles.tableCell}>
+            <ModActions mod={mod} />
+          </TableCell>
       </TableRow>
     </Tooltip>
   );

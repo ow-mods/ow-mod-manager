@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Typography,
   makeStyles,
   TableBody,
   Table,
@@ -18,14 +17,15 @@ type Props = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  sectionTitle: {
-    marginTop: theme.spacing(2),
-  },
   required: {
     border: `solid 3px ${theme.palette.secondary.light}`,
   },
   wrapper: {
     flex: 0,
+    marginTop: theme.spacing(3),
+  },
+  modsTable: {
+    tableLayout: "fixed",
   },
 }));
 
@@ -38,20 +38,15 @@ const ModRowSection: React.FunctionComponent<Props> = ({
 
   return mods.length > 0 ? (
     <div className={styles.wrapper}>
-      <Typography
-        className={styles.sectionTitle}
-        variant="h6"
-        color={highlighted ? 'secondary' : 'textSecondary'}
-        align="center"
-      >
-        {title}
-      </Typography>
       <TableContainer
         component={Paper}
         className={highlighted ? styles.required : ''}
       >
-        <Table size="small">
-          <ModTableHead />
+        <Table
+          className={styles.modsTable}
+          size="small"
+        >
+          <ModTableHead title={title} />
           <TableBody>
             {mods.map((mod: Mod) => (
               <ModTableRow mod={mod} key={mod.uniqueName} />

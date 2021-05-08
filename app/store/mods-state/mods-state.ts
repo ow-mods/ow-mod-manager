@@ -1,5 +1,9 @@
 import { atom, selector } from 'recoil';
 import { merge, keyBy } from 'lodash';
+import { remote } from 'electron';
+
+import packageJson from '../../../package.json';
+import { modsText } from '../../static-text';
 
 export const remoteModList = atom<Mod[]>({
   key: 'RemoteModList',
@@ -9,6 +13,13 @@ export const remoteModList = atom<Mod[]>({
 export const localModList = atom<Mod[]>({
   key: 'LocalModList',
   default: [],
+});
+
+export const modManager = atom<ModManager>({
+  key: 'ModManager',
+  default: {
+    downloadCount: 0,
+  },
 });
 
 const remoteModMap = selector({
@@ -29,7 +40,20 @@ const modMapState = selector({
 
 export const modList = selector({
   key: 'ModList',
-  get: ({ get }) => Object.values(get(modMapState)),
+  get: ({ get }) => Object.values(get(modMapState)).concat({
+    ...modsText.modManager,
+    uniqueName: 'ow-mod-manager',
+    isRequired: true,
+    isEnabled: true,
+    localVersion: remote.app.getVersion(),
+    remoteVersion: remote.app.getVersion(),
+    repo: packageJson.repository.url,
+    modPath: '.',
+    downloadUrl: '',
+    downloadCount: get(modManager).downloadCount,
+    errors: [],
+    dependencies: [],
+  }),
 });
 
 export const isVrModEnabledState = selector({

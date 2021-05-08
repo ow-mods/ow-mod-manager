@@ -39,18 +39,23 @@ export const modsText = {
   findModsLabel: 'Find mods',
   emptyModList: 'No mods here! 😱',
   tableHead: {
-    name: 'Mod',
     author: 'Author',
     downloadCount: 'Downloads',
     version: 'Version',
     actions: '',
   },
   modSections: {
-    required: 'Required',
-    installed: 'Installed',
+    required: 'Required mods',
+    installed: 'Installed mods',
     notInstalled: 'Available mods',
   },
+  modManager: {
+    name: 'Outer Wilds Mod Manager',
+    description: `The app you're currently looking at.`,
+    author: 'Raicuparta & Alek',
+  },
   versionNotAvailable: 'Not Available',
+  outdated: 'Outdated',
   actions: {
     disableRequired: "Required, can't disable",
     disable: 'Disable',

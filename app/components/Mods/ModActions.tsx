@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import {
-  Button,
   Tooltip,
   Menu,
   MenuItem,
   ListItemIcon,
   CircularProgress,
   makeStyles,
+  IconButton,
 } from '@material-ui/core';
 import {
   MoreVert as MoreIcon,
@@ -16,6 +16,7 @@ import {
   CheckBoxOutlineBlank as CheckboxBlankIcon,
   GitHub as GitHubIcon,
   FolderOpen as FolderIcon,
+  Update as UpdateIcon,
 } from '@material-ui/icons';
 
 import { useSetRecoilState, useRecoilValue } from 'recoil';
@@ -150,23 +151,22 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     <>
       <Tooltip title={getEnableTooltip()}>
         <span>
-          <Button
+          <IconButton edge="start"
             disabled={!isModInstalled || mod.isRequired}
             onClick={modActionHandlerSync(toggleEnabled, 'enable toggle')}
           >
             {mod.isEnabled ? <CheckBoxIcon /> : <CheckboxBlankIcon />}
-          </Button>
+          </IconButton>
         </span>
       </Tooltip>
       <Tooltip title={getInstallTooltip()}>
         <span>
-          <Button
+          <IconButton edge="start"
             onClick={modActionHandler(
               isModOutdated ? update : install,
               'install'
             )}
             disabled={!isModDownloadable}
-            variant={isInstallHighlighted ? 'contained' : 'text'}
             color={isInstallHighlighted ? 'secondary' : 'default'}
           >
             {isLoading && (
@@ -179,15 +179,21 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
                 className={styles.circularProgress}
               />
             )}
-            {!isLoading && <SaveIcon />}
-          </Button>
+            {!isLoading && (
+              isModOutdated ? (
+                <UpdateIcon />
+              ) : (
+                <SaveIcon />
+              )
+            )}
+          </IconButton>
         </span>
       </Tooltip>
       <Tooltip title={modsText.actions.more}>
         <span>
-          <Button onClick={handleMoreClick}>
+          <IconButton edge="start" onClick={handleMoreClick}>
             <MoreIcon />
-          </Button>
+          </IconButton>
         </span>
       </Tooltip>
       <Menu
@@ -199,36 +205,6 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         TransitionComponent={undefined}
         transitionDuration={0}
       >
-        {isModInstalled && (
-          <MenuItem
-            disabled={!isModInstalled}
-            onClick={modActionHandlerSync(openDirectory, 'directory open')}
-          >
-            <ListItemIcon>
-              <FolderIcon />
-            </ListItemIcon>
-            {modsText.actions.openDirectory}
-          </MenuItem>
-        )}
-        {mod.repo && (
-          <MenuItem onClick={modActionHandlerSync(openRepo, 'repo open')}>
-            <ListItemIcon>
-              <GitHubIcon />
-            </ListItemIcon>
-            {modsText.actions.openRepo}
-          </MenuItem>
-        )}
-        {!mod.isRequired && (
-          <MenuItem
-            disabled={!isModInstalled}
-            onClick={modActionHandlerSync(uninstall, 'uninstall')}
-          >
-            <ListItemIcon>
-              <DeleteIcon />
-            </ListItemIcon>
-            {modsText.actions.uninstall}
-          </MenuItem>
-        )}
         {mod.prerelease && (
           <MenuItem
             disabled={mod.localVersion === mod.prerelease.version}
@@ -240,6 +216,35 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
             {modsText.actions.installPrerelease(mod.prerelease.version)}
           </MenuItem>
         )}
+        {isModInstalled && (
+          <MenuItem
+            disabled={!isModInstalled}
+            onClick={modActionHandlerSync(openDirectory, 'directory open')}
+          >
+            <ListItemIcon>
+              <FolderIcon />
+            </ListItemIcon>
+            {modsText.actions.openDirectory}
+          </MenuItem>
+        )}
+        <MenuItem
+          disabled={!mod.repo}
+          onClick={modActionHandlerSync(openRepo, 'repo open')}
+        >
+          <ListItemIcon>
+            <GitHubIcon />
+          </ListItemIcon>
+          {modsText.actions.openRepo}
+        </MenuItem>
+        <MenuItem
+          disabled={mod.isRequired || !isModInstalled}
+          onClick={modActionHandlerSync(uninstall, 'uninstall')}
+        >
+          <ListItemIcon>
+            <DeleteIcon />
+          </ListItemIcon>
+          {modsText.actions.uninstall}
+        </MenuItem>
       </Menu>
     </>
   );
