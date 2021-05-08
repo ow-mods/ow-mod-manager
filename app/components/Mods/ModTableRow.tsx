@@ -6,6 +6,7 @@ import {
   Chip,
   Tooltip,
   Typography,
+  Box,
 } from '@material-ui/core';
 
 import { useRecoilValue } from 'recoil';
@@ -25,8 +26,18 @@ const useStyles = makeStyles((theme) => ({
   missingDependencyRow: {
     background: theme.palette.secondary.dark,
   },
-  modDescription: {
+  mutedText: {
     color: theme.palette.text.disabled,
+  },
+  tableCell: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    borderBottom: 0,
+  },
+  tableRow: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: '#4b4b4b',
+    },
   },
 }));
 
@@ -55,13 +66,13 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   };
 
   const getClassName = () => {
+    let className = styles.tableRow;
     if (isBroken(mod)) {
-      return styles.brokenRow;
+      className += ` ${styles.brokenRow}`;
+    } else if (missingDependencyNames.length > 0) {
+      className += ` ${styles.missingDependencyRow}`;
     }
-    if (missingDependencyNames.length > 0) {
-      return styles.missingDependencyRow;
-    }
-    return undefined;
+    return className;
   };
 
   const getRowTooltip = () => {
@@ -80,22 +91,31 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   return (
     <Tooltip title={getRowTooltip()}>
       <TableRow className={getClassName()} key={mod.uniqueName}>
-        <TableCell>
-          <Typography variant="subtitle1">
-            {mod.name}
-          </Typography>
-          <Typography className={styles.modDescription} variant="caption">
-            {mod.description}
-          </Typography>
-        </TableCell>
-        <TableCell>{mod.author}</TableCell>
-        <TableCell align="right">{mod.downloadCount || '-'}</TableCell>
-        <TableCell>
-          <Chip color={getVersionColor()} label={getVersion()} />
-        </TableCell>
-        <TableCell padding="none">
-          <ModActions mod={mod} />
-        </TableCell>
+          <TableCell className={styles.tableCell}>
+            <Typography variant="subtitle1">
+              {mod.name}
+              <Box ml={2} display="inline-block">
+                <Typography className={styles.mutedText} variant="caption">
+                  {' by '}
+                  {mod.author}
+                </Typography>
+                <Typography variant="caption">
+                </Typography>
+              </Box>
+            </Typography>
+            <Typography color="textSecondary" variant="caption">
+              {mod.description}
+            </Typography>
+          </TableCell>
+          <TableCell className={styles.tableCell} align="right">
+            {mod.downloadCount || '-'}
+          </TableCell>
+          <TableCell className={styles.tableCell}>
+            <Chip color={getVersionColor()} label={getVersion()} />
+          </TableCell>
+          <TableCell className={styles.tableCell} padding="none">
+            <ModActions mod={mod} />
+          </TableCell>
       </TableRow>
     </Tooltip>
   );

@@ -39,15 +39,14 @@ export const modsText = {
   findModsLabel: 'Find mods',
   emptyModList: 'No mods here! 😱',
   tableHead: {
-    name: 'Mod',
     author: 'Author',
     downloadCount: 'Downloads',
     version: 'Version',
     actions: '',
   },
   modSections: {
-    required: 'Required',
-    installed: 'Installed',
+    required: 'Required mods',
+    installed: 'Installed mods',
     notInstalled: 'Available mods',
   },
   modManager: {

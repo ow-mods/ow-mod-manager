@@ -14,17 +14,6 @@ type HeadCell = {
 
 const headCells: HeadCell[] = [
   {
-    id: 'name',
-    numeric: false,
-    disablePadding: false,
-  },
-  {
-    id: 'author',
-    numeric: false,
-    disablePadding: false,
-    width: '20%',
-  },
-  {
     id: 'downloadCount',
     numeric: true,
     disablePadding: false,
@@ -44,9 +33,16 @@ const headCells: HeadCell[] = [
   },
 ];
 
-const ModTableHead: React.FunctionComponent = () => (
+type Props = {
+  title: string;
+};
+
+const ModTableHead: React.FunctionComponent<Props> = ({ title }) => (
   <TableHead>
     <TableRow>
+      <TableCell>
+        {title}
+      </TableCell>
       {headCells.map((headCell) => (
         <TableCell
           key={headCell.id}
