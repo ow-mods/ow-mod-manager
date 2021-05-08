@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Card } from '@material-ui/core';
+import { Typography, Card, Container } from '@material-ui/core';
 import { useRecoilValue } from 'recoil';
 
 import { modsText } from '../../static-text';
@@ -21,28 +21,30 @@ const ModsPage: React.FunctionComponent = () => {
     requiredMods.length + installedMods.length + notInstalledMods.length === 0;
 
   return (
-    <PageContainer>
-      <ModsToolbar />
-      <ModRowSection
-        title={modsText.modSections.required}
-        mods={requiredMods}
-        highlighted
-      />
-      {isEmpty && (
-        <Card>
-          <Typography variant="h6" align="center">
-            {modsText.emptyModList}
-          </Typography>
-        </Card>
-      )}
-      <ModRowSection
-        title={modsText.modSections.installed}
-        mods={installedMods}
-      />
-      <ModRowSection
-        title={modsText.modSections.notInstalled}
-        mods={notInstalledMods}
-      />
+    <PageContainer maxWidth={false}>
+      <Container maxWidth="md">
+        <ModsToolbar />
+        <ModRowSection
+          title={modsText.modSections.required}
+          mods={requiredMods}
+          highlighted
+        />
+        {isEmpty && (
+          <Card>
+            <Typography variant="h6" align="center">
+              {modsText.emptyModList}
+            </Typography>
+          </Card>
+        )}
+        <ModRowSection
+          title={modsText.modSections.installed}
+          mods={installedMods}
+        />
+        <ModRowSection
+          title={modsText.modSections.notInstalled}
+          mods={notInstalledMods}
+        />
+      </Container>
     </PageContainer>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Paper } from '@material-ui/core';
+import { Container, List, Paper } from '@material-ui/core';
 
 import { settingsText } from '../../static-text';
 import { useSettings } from '../../hooks';
@@ -77,33 +77,35 @@ const Settings = () => {
     settings: { showAdvancedSettings },
   } = useSettings();
   return (
-    <PageContainer>
-      <List component={Paper}>
-        {settingsInputs.map(
-          ({ key, isAdvanced, isOwmlSetting, type }) =>
-            (!isAdvanced || showAdvancedSettings) && (
-              <React.Fragment key={key}>
-                {isOwmlSetting && (
-                  <OwmlSettingControl
-                    settingKey={key as OwmlSettingKey}
-                    label={settingsText[key].label}
-                    tooltip={settingsText[key].tooltip}
-                    type={type}
-                  />
-                )}
-                {!isOwmlSetting && (
-                  <ModManagerSettingControl
-                    settingKey={key as SettingKey}
-                    label={settingsText[key].label}
-                    tooltip={settingsText[key].tooltip}
-                    type={type}
-                  />
-                )}
-              </React.Fragment>
-            )
-        )}
-        <ResetSettings />
-      </List>
+    <PageContainer maxWidth={false}>
+      <Container maxWidth="md">
+        <List component={Paper}>
+          {settingsInputs.map(
+            ({ key, isAdvanced, isOwmlSetting, type }) =>
+              (!isAdvanced || showAdvancedSettings) && (
+                <React.Fragment key={key}>
+                  {isOwmlSetting && (
+                    <OwmlSettingControl
+                      settingKey={key as OwmlSettingKey}
+                      label={settingsText[key].label}
+                      tooltip={settingsText[key].tooltip}
+                      type={type}
+                    />
+                  )}
+                  {!isOwmlSetting && (
+                    <ModManagerSettingControl
+                      settingKey={key as SettingKey}
+                      label={settingsText[key].label}
+                      tooltip={settingsText[key].tooltip}
+                      type={type}
+                    />
+                  )}
+                </React.Fragment>
+              )
+          )}
+          <ResetSettings />
+        </List>
+      </Container>
     </PageContainer>
   );
 };
