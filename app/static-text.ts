@@ -50,6 +50,11 @@ export const modsText = {
     installed: 'Installed',
     notInstalled: 'Available mods',
   },
+  modManager: {
+    name: 'Outer Wilds Mod Manager',
+    description: `The app you're currently looking at.`,
+    author: 'Raicuparta & Alek',
+  },
   versionNotAvailable: 'Not Available',
   actions: {
     disableRequired: "Required, can't disable",

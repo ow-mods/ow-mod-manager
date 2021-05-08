@@ -23,6 +23,10 @@ type Mod = {
   };
 };
 
+type ModManager = {
+  downloadCount: number;
+};
+
 type ModMap = { [uniqueName: string]: Mod };
 
 type Manifest = {

@@ -21,10 +21,12 @@ type RemoteMod = {
 
 type RemoteModDatabase = {
   releases: RemoteMod[];
+  modManager: ModManager;
 };
 
 export type ModDatabase = {
   mods: Mod[];
+  modManager: ModManager;
 };
 
 // eslint-disable-next-line import/prefer-default-export
@@ -38,7 +40,7 @@ export async function getModDatabase(
     throw new Error(`${response.statusText} (${response.status})`);
   }
 
-  const { releases } = (await response.json()) as RemoteModDatabase;
+  const { releases, modManager} = (await response.json()) as RemoteModDatabase;
 
   const mods = releases.map(
     ({
@@ -83,5 +85,6 @@ export async function getModDatabase(
 
   return {
     mods,
+    modManager,
   };
 }
