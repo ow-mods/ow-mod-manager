@@ -55,6 +55,7 @@ export const modsText = {
     author: 'Raicuparta & Alek',
   },
   versionNotAvailable: 'Not Available',
+  outdated: 'Outdated',
   actions: {
     disableRequired: "Required, can't disable",
     disable: 'Disable',
@@ -67,7 +68,6 @@ export const modsText = {
     openDirectory: 'Show in explorer',
     openRepo: 'More info on GitHub',
     uninstall: 'Uninstall',
-    reinstall: 'Delete settings and reinstall',
     installPrerelease: (version: string) => `Install Prerelease (${version})`,
   },
   localModLoadError: 'Failed to load local mod',

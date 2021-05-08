@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Button,
   Tooltip,
   Menu,
   MenuItem,
@@ -17,7 +16,7 @@ import {
   CheckBoxOutlineBlank as CheckboxBlankIcon,
   GitHub as GitHubIcon,
   FolderOpen as FolderIcon,
-  Replay as ReplayIcon,
+  Update as UpdateIcon,
 } from '@material-ui/icons';
 
 import { useSetRecoilState, useRecoilValue } from 'recoil';
@@ -168,7 +167,6 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
               'install'
             )}
             disabled={!isModDownloadable}
-            // variant={isInstallHighlighted ? 'contained' : 'text'}
             color={isInstallHighlighted ? 'secondary' : 'default'}
           >
             {isLoading && (
@@ -181,7 +179,13 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
                 className={styles.circularProgress}
               />
             )}
-            {!isLoading && <SaveIcon />}
+            {!isLoading && (
+              isModOutdated ? (
+                <UpdateIcon />
+              ) : (
+                <SaveIcon />
+              )
+            )}
           </IconButton>
         </span>
       </Tooltip>
@@ -231,12 +235,6 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
             <GitHubIcon />
           </ListItemIcon>
           {modsText.actions.openRepo}
-        </MenuItem>
-        <MenuItem disabled={mod.isRequired}>
-          <ListItemIcon>
-            <ReplayIcon />
-          </ListItemIcon>
-          {modsText.actions.reinstall}
         </MenuItem>
         <MenuItem
           disabled={mod.isRequired || !isModInstalled}

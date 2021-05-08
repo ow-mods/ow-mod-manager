@@ -49,11 +49,25 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: 0,
     },
   },
+  outdatedChip: {
+    // position: 'relative',
+    ...theme.typography.caption,
+    textAlign: 'center',
+    width: '100%',
+    lineHeight: 0,
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(2),
+    marginTop: - theme.spacing(4),
+    borderRadius: 16,
+    background: theme.palette.secondary.main,
+    fontWeight: theme.typography.fontWeightBold,
+  },
 }));
 
 const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const styles = useStyles();
   const missingDependencyNames = useRecoilValue(missingDependencyIdsState(mod));
+  const isModOutdated = isOutdated(mod);
 
   const getVersionColor = () => {
     if (isOutdated(mod)) {
@@ -121,11 +135,17 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
             {mod.downloadCount || '-'}
           </TableCell>
           <TableCell className={styles.tableCell}>
+
             <Chip
               color={getVersionColor()}
               label={getVersion()}
               className={styles.versionChip}
             />
+            {isModOutdated && (
+              <div className={styles.outdatedChip}>
+                {modsText.outdated}
+              </div>
+            )}
           </TableCell>
           <TableCell className={styles.tableCell}>
             <ModActions mod={mod} />
