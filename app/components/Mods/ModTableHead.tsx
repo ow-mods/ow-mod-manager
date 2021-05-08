@@ -21,7 +21,7 @@ const ModTableHead: React.FunctionComponent<Props> = ({ title }) => (
       <TableCell width="110px" align="center">
         {modsText.tableHead.version}
       </TableCell>
-      <TableCell width="200px" />
+      <TableCell width="140px" />
     </TableRow>
   </TableHead>
 );

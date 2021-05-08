@@ -22,7 +22,7 @@ const createWindow = async () => {
   const mainWindow = new BrowserWindow({
     width: 1000,
     height: 850,
-    minWidth: 900,
+    minWidth: 700,
     minHeight: 400,
     webPreferences: {
       nodeIntegration: !isProduction,

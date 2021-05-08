@@ -7,6 +7,7 @@ import {
   ListItemIcon,
   CircularProgress,
   makeStyles,
+  IconButton,
 } from '@material-ui/core';
 import {
   MoreVert as MoreIcon,
@@ -151,23 +152,23 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     <>
       <Tooltip title={getEnableTooltip()}>
         <span>
-          <Button
+          <IconButton edge="start"
             disabled={!isModInstalled || mod.isRequired}
             onClick={modActionHandlerSync(toggleEnabled, 'enable toggle')}
           >
             {mod.isEnabled ? <CheckBoxIcon /> : <CheckboxBlankIcon />}
-          </Button>
+          </IconButton>
         </span>
       </Tooltip>
       <Tooltip title={getInstallTooltip()}>
         <span>
-          <Button
+          <IconButton edge="start"
             onClick={modActionHandler(
               isModOutdated ? update : install,
               'install'
             )}
             disabled={!isModDownloadable}
-            variant={isInstallHighlighted ? 'contained' : 'text'}
+            // variant={isInstallHighlighted ? 'contained' : 'text'}
             color={isInstallHighlighted ? 'secondary' : 'default'}
           >
             {isLoading && (
@@ -181,14 +182,14 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
               />
             )}
             {!isLoading && <SaveIcon />}
-          </Button>
+          </IconButton>
         </span>
       </Tooltip>
       <Tooltip title={modsText.actions.more}>
         <span>
-          <Button onClick={handleMoreClick}>
+          <IconButton edge="start" onClick={handleMoreClick}>
             <MoreIcon />
-          </Button>
+          </IconButton>
         </span>
       </Tooltip>
       <Menu

@@ -127,7 +127,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
               className={styles.versionChip}
             />
           </TableCell>
-          <TableCell className={styles.tableCell} padding="none">
+          <TableCell className={styles.tableCell}>
             <ModActions mod={mod} />
           </TableCell>
       </TableRow>
