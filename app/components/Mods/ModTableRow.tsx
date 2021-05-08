@@ -39,6 +39,16 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: '#4b4b4b',
     },
   },
+  versionChip: {
+    width: "100%",
+    padding: 0,
+    paddingLeft: 0,
+    paddingRight: 0,
+    '& span': {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
+  },
 }));
 
 const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
@@ -111,7 +121,11 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
             {mod.downloadCount || '-'}
           </TableCell>
           <TableCell className={styles.tableCell}>
-            <Chip color={getVersionColor()} label={getVersion()} />
+            <Chip
+              color={getVersionColor()}
+              label={getVersion()}
+              className={styles.versionChip}
+            />
           </TableCell>
           <TableCell className={styles.tableCell} padding="none">
             <ModActions mod={mod} />

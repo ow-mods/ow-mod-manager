@@ -67,6 +67,7 @@ export const modsText = {
     openDirectory: 'Show in explorer',
     openRepo: 'More info on GitHub',
     uninstall: 'Uninstall',
+    reinstall: 'Delete settings and reinstall',
     installPrerelease: (version: string) => `Install Prerelease (${version})`,
   },
   localModLoadError: 'Failed to load local mod',

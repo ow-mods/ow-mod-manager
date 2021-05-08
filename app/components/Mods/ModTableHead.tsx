@@ -23,7 +23,7 @@ const headCells: HeadCell[] = [
     id: 'version',
     numeric: false,
     disablePadding: false,
-    width: '120px',
+    width: '110px',
   },
   {
     id: 'actions',
@@ -49,6 +49,7 @@ const ModTableHead: React.FunctionComponent<Props> = ({ title }) => (
           align={headCell.numeric ? 'right' : 'left'}
           padding={headCell.disablePadding ? 'none' : 'default'}
           width={headCell.width}
+          style={{ maxWidth: headCell.width }}
         >
           {modsText.tableHead[headCell.id]}
         </TableCell>
