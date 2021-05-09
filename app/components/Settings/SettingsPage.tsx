@@ -61,11 +61,6 @@ const settingsInputs: readonly SettingsInput[] = [
     isAdvanced: true,
   },
   {
-    key: 'disableVrWarning',
-    type: SettingType.Switch,
-    isAdvanced: true,
-  },
-  {
     key: 'owmlPath',
     type: SettingType.Text,
     isAdvanced: true,
@@ -82,8 +77,7 @@ const Settings = () => {
         <List component={Paper}>
           {settingsInputs.map(
             ({ key, isAdvanced, isOwmlSetting, type }) =>
-              (!isAdvanced || showAdvancedSettings) &&
-              settingsText[key] && (
+              (!isAdvanced || showAdvancedSettings) && (
                 <React.Fragment key={key}>
                   {isOwmlSetting && (
                     <OwmlSettingControl
