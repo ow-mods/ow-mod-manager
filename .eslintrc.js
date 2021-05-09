@@ -20,6 +20,7 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     'react/jsx-wrap-multilines': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'react/jsx-curly-newline': 'off',
     'no-param-reassign': ['error', { props: false }],
     'react-hooks/exhaustive-deps': [
       'warn',

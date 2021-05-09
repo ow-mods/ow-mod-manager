@@ -145,6 +145,11 @@ export const settingsText = {
     tooltip:
       "Can be relative to Mod Manager or an absolute path. All mods are installed in a 'Mods' folder inside this.",
   },
+  disableModWarnings: {
+    label: 'Disable warning for mod',
+    tooltip:
+      'Prevents this mod from showing warnings in the Mod Manager when starting the game',
+  },
   textFieldSave: 'Save',
   pathFindButton: 'Find...',
   pathFindTitle: (fileName: string) => `Find ${fileName}...`,

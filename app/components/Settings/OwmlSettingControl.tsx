@@ -1,7 +1,10 @@
 import React, { useCallback } from 'react';
 
 import { useSettings } from '../../hooks';
-import SettingFormControl, { SettingType } from './SettingFormControl';
+import SettingFormControl, {
+  SettingType,
+  SettingValue,
+} from './SettingFormControl';
 
 type Props = {
   settingKey: keyof OwmlSettings;
@@ -20,8 +23,7 @@ const OwmlSettingControl: React.FunctionComponent<Props> = ({
   const setting = owmlSettings[settingKey];
 
   const setSetting = useCallback(
-    (value: boolean | string | number) =>
-      setOwmlSettings({ [settingKey]: value }),
+    (value: SettingValue) => setOwmlSettings({ [settingKey]: value }),
     [settingKey, setOwmlSettings]
   );
 

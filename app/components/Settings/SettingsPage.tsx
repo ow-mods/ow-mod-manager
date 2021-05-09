@@ -61,6 +61,11 @@ const settingsInputs: readonly SettingsInput[] = [
     isAdvanced: true,
   },
   {
+    key: 'disableModWarnings',
+    type: SettingType.SwitchList,
+    isAdvanced: true,
+  },
+  {
     key: 'owmlPath',
     type: SettingType.Text,
     isAdvanced: true,

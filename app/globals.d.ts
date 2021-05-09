@@ -65,6 +65,7 @@ type Settings = {
   openVRParameter: boolean;
   disableParameterWarning: boolean;
   owmlPath: string;
+  disableModWarnings: Record<string, boolean>;
 };
 
 type OwmlSettings = {
