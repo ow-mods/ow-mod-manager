@@ -82,7 +82,8 @@ const Settings = () => {
         <List component={Paper}>
           {settingsInputs.map(
             ({ key, isAdvanced, isOwmlSetting, type }) =>
-              (!isAdvanced || showAdvancedSettings) && (
+              (!isAdvanced || showAdvancedSettings) &&
+              settingsText[key] && (
                 <React.Fragment key={key}>
                   {isOwmlSetting && (
                     <OwmlSettingControl
