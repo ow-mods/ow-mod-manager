@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   modsTable: {
-    tableLayout: "fixed",
+    tableLayout: 'fixed',
   },
 }));
 
@@ -42,10 +42,7 @@ const ModRowSection: React.FunctionComponent<Props> = ({
         component={Paper}
         className={highlighted ? styles.required : ''}
       >
-        <Table
-          className={styles.modsTable}
-          size="small"
-        >
+        <Table className={styles.modsTable} size="small">
           <ModTableHead title={title} />
           <TableBody>
             {mods.map((mod: Mod) => (

@@ -1,6 +1,11 @@
 /// <reference types="react-dom/experimental" />
 /// <reference types="react/experimental" />
 
+type Warning = {
+  title?: string;
+  body?: string;
+};
+
 type Mod = {
   name: string;
   author: string;
@@ -21,6 +26,7 @@ type Mod = {
     downloadUrl: string;
     version: string;
   };
+  warning?: Warning;
 };
 
 type ModManager = {
@@ -37,6 +43,7 @@ type Manifest = {
   dependencies?: string[];
   requireVR?: boolean;
   description?: string;
+  warning?: Warning;
 };
 
 type ModConfig = {
@@ -58,7 +65,6 @@ type Settings = {
   openVRParameter: boolean;
   disableParameterWarning: boolean;
   owmlPath: string;
-  disableVrWarning: boolean;
 };
 
 type OwmlSettings = {

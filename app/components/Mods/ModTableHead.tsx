@@ -12,12 +12,8 @@ type Props = {
 const ModTableHead: React.FunctionComponent<Props> = ({ title }) => (
   <TableHead>
     <TableRow>
-      <TableCell>
-        {title}
-      </TableCell>
-      <TableCell width="100px">
-        {modsText.tableHead.downloadCount}
-      </TableCell>
+      <TableCell>{title}</TableCell>
+      <TableCell width="100px">{modsText.tableHead.downloadCount}</TableCell>
       <TableCell width="110px" align="center">
         {modsText.tableHead.version}
       </TableCell>

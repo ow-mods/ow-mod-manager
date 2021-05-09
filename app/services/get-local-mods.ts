@@ -56,6 +56,7 @@ export function getLocalModsSync(owmlPath: string) {
           dependencies: manifest.dependencies ?? [],
           requireVR: manifest.requireVR,
           description: manifest.description,
+          warning: manifest.warning,
         };
 
         if (missingAttributes.length > 0) {

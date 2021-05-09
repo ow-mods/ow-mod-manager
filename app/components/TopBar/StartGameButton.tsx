@@ -13,6 +13,7 @@ import {
   settingsState,
   selectedTabState,
   isVrModEnabledState,
+  enabledModList,
 } from '../../store';
 
 const StartGameButton: React.FunctionComponent = () => {
@@ -22,22 +23,19 @@ const StartGameButton: React.FunctionComponent = () => {
   const settings = useRecoilValue(settingsState);
   const setSelectedTab = useSetRecoilState(selectedTabState);
   const isVrModEnabled = useRecoilValue(isVrModEnabledState);
+  const enabledMods = useRecoilValue(enabledModList);
 
   function setDisableParameterWarnings() {
     writeSettings({ ...settings, disableParameterWarning: true });
   }
 
-  async function showVrWarning() {
-    if (!isVrModEnabled || settings.disableVrWarning) {
-      return true;
-    }
-
+  async function showVrWarning(modName: string, warning: Warning) {
     const { response, checkboxChecked } = await remote.dialog.showMessageBox({
       type: 'warning',
-      title: remote.app.name,
-      message: modsText.vrModWarning.message,
-      detail: modsText.vrModWarning.detail,
-      checkboxLabel: modsText.vrModWarning.dontShowAgain,
+      title: modName,
+      message: warning.title ?? '',
+      detail: warning.body,
+      checkboxLabel: modsText.warningDontShowAgain,
       buttons: ['OK', 'Cancel'],
     });
 
@@ -45,18 +43,39 @@ const StartGameButton: React.FunctionComponent = () => {
       return false;
     }
 
-    if (checkboxChecked) {
-      writeSettings({ ...settings, disableVrWarning: true });
-    }
+    // if (checkboxChecked) {
+    //   writeSettings({ ...settings, disableVrWarning: true });
+    // }
 
     return true;
   }
 
   async function handleStartGameClick() {
-    const shouldStartGame = await showVrWarning();
-    if (!shouldStartGame) {
-      return;
+    // const modsWithWarnings = enabledMods.filter(
+    //   ({ warning }) => warning && (warning.body || warning.title)
+    // );
+
+    for (let i = 0; i < enabledMods.length; i += 1) {
+      const { warning, name } = enabledMods[i];
+      if (warning && (warning.body || warning.title)) {
+        // eslint-disable-next-line no-await-in-loop
+        const shouldStartGame = await showVrWarning(name, warning);
+        if (!shouldStartGame) {
+          return;
+        }
+      }
     }
+
+    // enabledMods.forEach(async ({ warning }) => {
+    //   if (warning && (warning.body || warning.title)) {
+    //     const shouldStartGame = await showVrWarning(warning);
+    //   }
+    // });
+
+    // const shouldStartGame = await showVrWarning();
+    // if (!shouldStartGame) {
+    //   return;
+    // }
     runOwml(settings, logServerPort, setDisableParameterWarnings);
     if (settings.logToSocket) {
       setSelectedTab(1);

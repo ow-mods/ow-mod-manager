@@ -42,7 +42,10 @@ export async function runOwml(
       message: settingsText.steamParamsWarning.message,
       detail: settingsText.steamParamsWarning.detail(gameParamNames),
       checkboxLabel: settingsText.steamParamsWarning.dontShowAgain,
-      buttons: [settingsText.steamParamsWarning.ok, settingsText.steamParamsWarning.cancel],
+      buttons: [
+        settingsText.steamParamsWarning.ok,
+        settingsText.steamParamsWarning.cancel,
+      ],
     });
 
     if (response === 1) {

@@ -40,20 +40,21 @@ const modMapState = selector({
 
 export const modList = selector({
   key: 'ModList',
-  get: ({ get }) => Object.values(get(modMapState)).concat({
-    ...modsText.modManager,
-    uniqueName: 'ow-mod-manager',
-    isRequired: true,
-    isEnabled: true,
-    localVersion: remote.app.getVersion(),
-    remoteVersion: remote.app.getVersion(),
-    repo: packageJson.repository.url,
-    modPath: '.',
-    downloadUrl: '',
-    downloadCount: get(modManager).downloadCount,
-    errors: [],
-    dependencies: [],
-  }),
+  get: ({ get }) =>
+    Object.values(get(modMapState)).concat({
+      ...modsText.modManager,
+      uniqueName: 'ow-mod-manager',
+      isRequired: true,
+      isEnabled: true,
+      localVersion: remote.app.getVersion(),
+      remoteVersion: remote.app.getVersion(),
+      repo: packageJson.repository.url,
+      modPath: '.',
+      downloadUrl: '',
+      downloadCount: get(modManager).downloadCount,
+      errors: [],
+      dependencies: [],
+    }),
 });
 
 export const isVrModEnabledState = selector({
