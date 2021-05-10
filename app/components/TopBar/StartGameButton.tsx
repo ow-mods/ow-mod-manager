@@ -12,7 +12,6 @@ import {
   logServerPortState,
   settingsState,
   selectedTabState,
-  isVrModEnabledState,
   enabledModList,
 } from '../../store';
 
@@ -22,60 +21,47 @@ const StartGameButton: React.FunctionComponent = () => {
   const logServerPort = useRecoilValue(logServerPortState);
   const settings = useRecoilValue(settingsState);
   const setSelectedTab = useSetRecoilState(selectedTabState);
-  const isVrModEnabled = useRecoilValue(isVrModEnabledState);
   const enabledMods = useRecoilValue(enabledModList);
 
   function setDisableParameterWarnings() {
     writeSettings({ ...settings, disableParameterWarning: true });
   }
 
-  async function showVrWarning(modName: string, warning: Warning) {
-    const { response, checkboxChecked } = await remote.dialog.showMessageBox({
-      type: 'warning',
-      title: modName,
-      message: warning.title ?? '',
-      detail: warning.body,
-      checkboxLabel: modsText.warningDontShowAgain,
-      buttons: ['OK', 'Cancel'],
-    });
-
-    if (response === 1) {
-      return false;
-    }
-
-    // if (checkboxChecked) {
-    //   writeSettings({ ...settings, disableVrWarning: true });
-    // }
-
-    return true;
-  }
-
   async function handleStartGameClick() {
-    // const modsWithWarnings = enabledMods.filter(
-    //   ({ warning }) => warning && (warning.body || warning.title)
-    // );
+    let newSettings = { ...settings };
 
     for (let i = 0; i < enabledMods.length; i += 1) {
-      const { warning, name } = enabledMods[i];
+      const { warning, name, uniqueName } = enabledMods[i];
       if (warning && (warning.body || warning.title)) {
-        // eslint-disable-next-line no-await-in-loop
-        const shouldStartGame = await showVrWarning(name, warning);
-        if (!shouldStartGame) {
+        const {
+          response,
+          checkboxChecked,
+          // eslint-disable-next-line no-await-in-loop
+        } = await remote.dialog.showMessageBox({
+          type: 'warning',
+          title: name,
+          message: warning.title ?? '',
+          detail: warning.body,
+          checkboxLabel: modsText.warningDontShowAgain,
+          buttons: ['OK', 'Cancel'],
+        });
+
+        if (response === 1) {
           return;
         }
+
+        newSettings = {
+          ...newSettings,
+          disableModWarnings: {
+            ...newSettings.disableModWarnings,
+            [uniqueName]: checkboxChecked,
+          },
+        };
       }
     }
 
-    // enabledMods.forEach(async ({ warning }) => {
-    //   if (warning && (warning.body || warning.title)) {
-    //     const shouldStartGame = await showVrWarning(warning);
-    //   }
-    // });
+    writeSettings(newSettings);
 
-    // const shouldStartGame = await showVrWarning();
-    // if (!shouldStartGame) {
-    //   return;
-    // }
     runOwml(settings, logServerPort, setDisableParameterWarnings);
     if (settings.logToSocket) {
       setSelectedTab(1);

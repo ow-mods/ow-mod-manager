@@ -56,9 +56,3 @@ export const modList = selector({
       dependencies: [],
     }),
 });
-
-export const isVrModEnabledState = selector({
-  key: 'IsVRModEnabled',
-  get: ({ get }) =>
-    Boolean(get(localModList).find((mod) => mod.isEnabled && mod.requireVR)),
-});
