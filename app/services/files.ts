@@ -96,6 +96,7 @@ export async function copyFolder(sourcePath: string, targetPath: string) {
 export function deleteFolder(folderPath: string) {
   if (fs.existsSync(folderPath)) {
     fs.emptyDirSync(folderPath);
+    fs.removeSync(folderPath);
   } else {
     throw new Error(`${modsText.deleteNonExistingError}: "${folderPath}"`);
   }
