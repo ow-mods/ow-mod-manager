@@ -9,6 +9,10 @@ export const globalText = {
   gameRunning: 'Already running',
   missingRequiredMod: (modNames: string[]) =>
     `Please install ${modNames.join(', ')} before starting the game`,
+  dialog: {
+    ok: 'OK',
+    cancel: 'Cancel',
+  },
 };
 
 export const logsText = {
@@ -161,8 +165,6 @@ export const settingsText = {
   steamParamsWarning: {
     message: 'Steam might show a warning before starting the game',
     dontShowAgain: "Don't show this again",
-    ok: 'OK',
-    cancel: 'Cancel',
     detail: (paramNames: string[]) => `You enabled "${paramNames.join(
       '" and "'
     )}".

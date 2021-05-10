@@ -32,7 +32,12 @@ const StartGameButton: React.FunctionComponent = () => {
 
     for (let i = 0; i < enabledMods.length; i += 1) {
       const { warning, name, uniqueName } = enabledMods[i];
-      if (warning && (warning.body || warning.title)) {
+
+      if (
+        warning &&
+        (warning.body || warning.title) &&
+        !settings.disableModWarnings[uniqueName]
+      ) {
         const {
           response,
           checkboxChecked,
@@ -43,7 +48,7 @@ const StartGameButton: React.FunctionComponent = () => {
           message: warning.title ?? '',
           detail: warning.body,
           checkboxLabel: modsText.warningDontShowAgain,
-          buttons: ['OK', 'Cancel'],
+          buttons: [globalText.dialog.ok, globalText.dialog.cancel],
         });
 
         if (response === 1) {
