@@ -12,6 +12,7 @@ export const globalText = {
   dialog: {
     ok: 'OK',
     cancel: 'Cancel',
+    dontShowAgain: "Don't show this again",
   },
 };
 
@@ -92,7 +93,6 @@ export const modsText = {
     `Failed to load mod. Errors: ${errors.join(' || ')}`,
   actionError: (action: string, error: string) =>
     `Error executing mod ${action}: ${error}`,
-  warningDontShowAgain: "Don't show this again",
 };
 
 export const settingsText = {
@@ -164,7 +164,6 @@ export const settingsText = {
   setInvalidOwmlSettingsError: 'Trying to set invalid OWML settings',
   steamParamsWarning: {
     message: 'Steam might show a warning before starting the game',
-    dontShowAgain: "Don't show this again",
     detail: (paramNames: string[]) => `You enabled "${paramNames.join(
       '" and "'
     )}".

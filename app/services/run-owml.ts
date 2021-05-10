@@ -41,7 +41,7 @@ export async function runOwml(
       title: remote.app.name,
       message: settingsText.steamParamsWarning.message,
       detail: settingsText.steamParamsWarning.detail(gameParamNames),
-      checkboxLabel: settingsText.steamParamsWarning.dontShowAgain,
+      checkboxLabel: globalText.dialog.dontShowAgain,
       buttons: [globalText.dialog.ok, globalText.dialog.cancel],
     });
 

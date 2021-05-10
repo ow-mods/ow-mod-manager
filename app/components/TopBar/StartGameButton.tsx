@@ -4,7 +4,7 @@ import { PlayArrow as PlayIcon } from '@material-ui/icons';
 
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { remote } from 'electron';
-import { globalText, modsText } from '../../static-text';
+import { globalText } from '../../static-text';
 import { runOwml, writeSettings } from '../../services';
 import {
   requiredModNamesState,
@@ -47,7 +47,7 @@ const StartGameButton: React.FunctionComponent = () => {
           title: name,
           message: warning.title ?? '',
           detail: warning.body,
-          checkboxLabel: modsText.warningDontShowAgain,
+          checkboxLabel: globalText.dialog.dontShowAgain,
           buttons: [globalText.dialog.ok, globalText.dialog.cancel],
         });
 
