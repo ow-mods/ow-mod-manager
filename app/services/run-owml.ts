@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import { remote } from 'electron';
 
-import { settingsText } from '../static-text';
+import { globalText, settingsText } from '../static-text';
 
 const EXE_FILE = 'OWML.Launcher.exe';
 
@@ -42,10 +42,7 @@ export async function runOwml(
       message: settingsText.steamParamsWarning.message,
       detail: settingsText.steamParamsWarning.detail(gameParamNames),
       checkboxLabel: settingsText.steamParamsWarning.dontShowAgain,
-      buttons: [
-        settingsText.steamParamsWarning.ok,
-        settingsText.steamParamsWarning.cancel,
-      ],
+      buttons: [globalText.dialog.ok, globalText.dialog.cancel],
     });
 
     if (response === 1) {
