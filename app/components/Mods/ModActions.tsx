@@ -27,7 +27,7 @@ import {
   uninstall,
   update,
   isOutdated,
-  openDirectory,
+  openModDirectory,
   openRepo,
   toggleEnabled,
   getLocalModsSync,
@@ -215,7 +215,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         {isModInstalled && (
           <MenuItem
             disabled={!isModInstalled}
-            onClick={modActionHandlerSync(openDirectory, 'directory open')}
+            onClick={modActionHandlerSync(openModDirectory, 'directory open')}
           >
             <ListItemIcon>
               <FolderIcon />

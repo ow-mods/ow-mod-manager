@@ -34,14 +34,10 @@ export const logsText = {
 };
 
 export const modsText = {
-  selectFilter: {
-    all: 'All mods',
-    installed: 'Installed',
-    enabled: 'Enabled',
-    notInstalled: 'Not Installed',
-    outdated: 'Outdated',
+  toolbar: {
+    findModsLabel: 'Find mods',
+    modsDirectory: 'Mods directory',
   },
-  findModsLabel: 'Find mods',
   emptyModList: 'No mods here! 😱',
   tableHead: {
     author: 'Author',

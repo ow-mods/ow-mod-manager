@@ -2,7 +2,7 @@ import unzip from 'unzipper';
 import fetch from 'node-fetch';
 import fs from 'fs-extra';
 import path from 'path';
-import { remote } from 'electron';
+import { remote, shell } from 'electron';
 
 import { modsText } from '../static-text';
 
@@ -131,4 +131,14 @@ export async function unzipRemoteFile(
   await unzipFile(zipPath, unzipPath, onUnzipProgress);
   await copyFolder(unzipPath, destinationPath);
   await deleteFolder(temporaryPath);
+}
+
+export function openDirectory(directoryPath: string) {
+  if (!directoryPath) {
+    throw new Error(modsText.modPathNotDefinedError);
+  }
+  if (!fs.existsSync(directoryPath)) {
+    throw new Error(modsText.openNonExistingDirectoryError);
+  }
+  shell.openPath(path.resolve(directoryPath));
 }
