@@ -88,13 +88,15 @@ export const modsText = {
   missingManifestAttributesError: (path: string, attributes: string[]) =>
     `Manifest ${path} missing attributes "${attributes.join('", "')}"`,
   modLoadError: (errors: string[]) =>
-    `Failed to load mod. Errors: ${errors.join(' || ')}`,
+    `Encountered problems loading the mod: ${errors.join(' || ')}`,
   actionError: (action: string, error: string) =>
     `Error executing mod ${action}: ${error}`,
   duplicateModError: (modUniqueName: string) =>
     `Found multiple mods with the same uniqueName (${modUniqueName}). Open the mods directory and make sure you only have one copy of each mod.`,
   brokenManifestError: (directoryName: string) =>
     `Failed to read manifest.json in mod directory "${directoryName}". Reinstall the mod or contact the mod author to fix this issue.`,
+  brokenConfigError: (error: string) =>
+    `Failed to read mod configuration files: "${error}"`,
 };
 
 export const settingsText = {
