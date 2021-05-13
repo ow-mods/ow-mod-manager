@@ -89,6 +89,8 @@ export const modsText = {
     `Failed to load mod. Errors: ${errors.join(' || ')}`,
   actionError: (action: string, error: string) =>
     `Error executing mod ${action}: ${error}`,
+  duplicateModError: (modUniqueName: string) =>
+    `Found multiple mods with the same uniqueName (${modUniqueName}). Open the mods directory and make sure you only have one copy of each mod.`,
 };
 
 export const settingsText = {

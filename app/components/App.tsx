@@ -57,6 +57,11 @@ const theme = createMuiStrictTheme({
         },
       },
     },
+    MuiTooltip: {
+      tooltip: {
+        fontSize: '1em',
+      },
+    },
   },
 });
 

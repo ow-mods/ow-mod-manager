@@ -40,44 +40,51 @@ export function getLocalMods(owmlPath: string) {
     absolute: true,
   });
 
-  return [
-    ...manifestPaths
-      .map<Mod>((manifestPath) => {
-        const { manifest, missingAttributes } = manifestPartialToFull(
-          fs.readJsonSync(manifestPath)
-        );
+  const localMods: Mod[] = [getOwmlSync(owmlPath)];
 
-        const mod: Mod = {
-          name: manifest.name,
-          author: manifest.author,
-          uniqueName: manifest.uniqueName,
-          localVersion: coerce(manifest.version)?.version ?? manifest.version,
-          modPath: path.dirname(manifestPath),
-          errors: [],
-          dependencies: manifest.dependencies ?? [],
-          requireVR: manifest.requireVR,
-          description: manifest.description,
-          warning: manifest.warning,
-        };
+  manifestPaths.forEach((manifestPath) => {
+    const { manifest, missingAttributes } = manifestPartialToFull(
+      fs.readJsonSync(manifestPath)
+    );
 
-        if (missingAttributes.length > 0) {
-          mod.errors.push(
-            modsText.missingManifestAttributesError(
-              manifestPath,
-              missingAttributes
-            )
-          );
-        }
+    const modWithSameId = localMods.find(
+      (localMod) => localMod.uniqueName === manifest.uniqueName
+    );
+    if (modWithSameId) {
+      modWithSameId.errors.push(
+        modsText.duplicateModError(manifest.uniqueName)
+      );
+      return;
+    }
 
-        try {
-          mod.isEnabled = isEnabled(mod);
-        } catch (error) {
-          mod.isEnabled = true;
-          debugConsole.error(error);
-        }
-        return mod;
-      })
-      .filter((mod) => mod),
-    getOwmlSync(owmlPath),
-  ];
+    const mod: Mod = {
+      name: manifest.name,
+      author: manifest.author,
+      uniqueName: manifest.uniqueName,
+      localVersion: coerce(manifest.version)?.version ?? manifest.version,
+      modPath: path.dirname(manifestPath),
+      errors: [],
+      dependencies: manifest.dependencies ?? [],
+      requireVR: manifest.requireVR,
+      description: manifest.description,
+      warning: manifest.warning,
+    };
+
+    if (missingAttributes.length > 0) {
+      mod.errors.push(
+        modsText.missingManifestAttributesError(manifestPath, missingAttributes)
+      );
+    }
+
+    try {
+      mod.isEnabled = isEnabled(mod);
+    } catch (error) {
+      mod.isEnabled = true;
+      debugConsole.error(error);
+    }
+
+    localMods.push(mod);
+  });
+
+  return [...localMods].filter((mod) => mod);
 }

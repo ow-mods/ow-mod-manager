@@ -21,10 +21,16 @@ type Props = {
 
 const useStyles = makeStyles((theme) => ({
   brokenRow: {
-    background: theme.palette.error.dark,
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.error.dark,
+    },
+    backgroundColor: theme.palette.error.dark,
   },
   missingDependencyRow: {
-    background: theme.palette.secondary.dark,
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.secondary.dark,
+    },
+    backgroundColor: theme.palette.secondary.dark,
   },
   mutedText: {
     color: theme.palette.text.disabled,
@@ -36,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tableRow: {
     '&:nth-of-type(odd)': {
-      backgroundColor: '#4b4b4b',
+      opacity: '#4b4b4b',
     },
   },
   versionChip: {
