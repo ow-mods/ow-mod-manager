@@ -29,7 +29,7 @@ function getOwmlSync(owmlPath: string) {
   return owml;
 }
 
-export function getLocalModsSync(owmlPath: string) {
+export function getLocalMods(owmlPath: string) {
   if (!owmlPath) {
     return [];
   }

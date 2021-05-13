@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { useSetRecoilState } from 'recoil';
-import { getLocalModsSync } from '../services';
+import { getLocalMods } from '../services';
 import { useModsDirectoryWatcher, useSettings } from '../hooks';
 import { localModList } from '../store';
 
@@ -14,7 +14,7 @@ export const LocalModsSubscription: React.FunctionComponent = () => {
   useModsDirectoryWatcher(
     owmlPath,
     useCallback(() => {
-      setLocalMods(getLocalModsSync(owmlPath));
+      setLocalMods(getLocalMods(owmlPath));
     }, [owmlPath, setLocalMods])
   );
 

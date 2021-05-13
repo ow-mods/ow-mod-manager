@@ -30,7 +30,7 @@ import {
   openModDirectory,
   openRepo,
   toggleEnabled,
-  getLocalModsSync,
+  getLocalMods,
   installPrerelease,
 } from '../../services';
 import { localModList, settingsState } from '../../store';
@@ -86,7 +86,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
 
   const handleActionError = (actionName: string, error: string) => {
     console.error('error in action', actionName, error);
-    setLocalMods(getLocalModsSync(owmlPath));
+    setLocalMods(getLocalMods(owmlPath));
   };
 
   const modActionHandler = (
