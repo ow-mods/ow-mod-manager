@@ -10,7 +10,7 @@ const log = (method: ConsoleLog): ConsoleLog => (
     return;
   }
 
-  method(params);
+  method(...params);
 };
 
 export const debugConsole = {
