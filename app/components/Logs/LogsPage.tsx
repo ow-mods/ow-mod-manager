@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 import { ClearAll as ClearAllIcon } from '@material-ui/icons';
 
-import { logsText } from '../../static-text';
+import { logsText } from '../../helpers/static-text';
 import { LogLine } from '../../types';
 import { useSettings } from '../../hooks';
 import FilterInput from '../FilterInput';
@@ -24,6 +24,7 @@ import ModNameSelect from './ModNameSelect';
 import PageContainer from '../PageContainer';
 import { useRecoilState } from 'recoil';
 import { logLinesState } from '../../store';
+import { debugConsole } from '../../helpers/console-log';
 
 const useStyles = makeStyles(({ palette, spacing }) => ({
   Error: {
@@ -109,12 +110,12 @@ const OwmlLog: React.FunctionComponent = () => {
     if (!containerRef.current) {
       return;
     }
-    console.log('useEffect: LogsPage scroll reset');
+    debugConsole.log('useEffect: LogsPage scroll reset');
     containerRef.current.scrollTo(0, containerRef.current.scrollHeight);
   }, [paginatedLines]);
 
   useEffect(() => {
-    console.log('useEffect: LogsPage filter');
+    debugConsole.log('useEffect: LogsPage filter');
     const lowerCaseFilter = filter.toLowerCase();
     const isFilteringByName = filter !== '';
     const isFilteringByMod = selectedModName !== '';
@@ -151,7 +152,7 @@ const OwmlLog: React.FunctionComponent = () => {
   }, [filter, logLines, selectedModName, page, logLinesLimit]);
 
   useEffect(() => {
-    console.log('useEffect: LogsPage pagination reset');
+    debugConsole.log('useEffect: LogsPage pagination reset');
     setPage(0);
   }, [filter, selectedModName]);
 

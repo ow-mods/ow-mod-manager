@@ -3,9 +3,10 @@ import globby from 'globby';
 import path from 'path';
 import { coerce } from 'semver';
 
-import { modsText } from '../static-text';
+import { modsText } from '../helpers/static-text';
 import { isEnabled } from './mod-manager';
 import { manifestPartialToFull } from './manifest';
+import { debugConsole } from '../helpers/console-log';
 
 function getOwmlSync(owmlPath: string) {
   const owmlManifestPath = `${owmlPath}/OWML.Manifest.json`;
@@ -29,7 +30,7 @@ function getOwmlSync(owmlPath: string) {
   return owml;
 }
 
-export function getLocalModsSync(owmlPath: string) {
+export function getLocalMods(owmlPath: string) {
   if (!owmlPath) {
     return [];
   }
@@ -72,7 +73,7 @@ export function getLocalModsSync(owmlPath: string) {
           mod.isEnabled = isEnabled(mod);
         } catch (error) {
           mod.isEnabled = true;
-          console.error(error);
+          debugConsole.error(error);
         }
         return mod;
       })

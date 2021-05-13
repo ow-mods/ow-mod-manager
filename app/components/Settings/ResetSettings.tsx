@@ -3,7 +3,7 @@ import { Button, ListItem, makeStyles } from '@material-ui/core';
 import { SettingsBackupRestore as RestoreIcon } from '@material-ui/icons';
 import { useRecoilValue } from 'recoil';
 
-import { settingsText } from '../../static-text';
+import { settingsText } from '../../helpers/static-text';
 import { useSettings } from '../../hooks';
 import { defaultAppSettings } from '../../services';
 import { defaultOwmlSettingsState } from '../../store';

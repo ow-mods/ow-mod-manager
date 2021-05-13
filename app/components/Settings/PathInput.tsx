@@ -14,7 +14,8 @@ import {
   Tooltip,
 } from '@material-ui/core';
 import { Save as SaveIcon, Folder as FolderIcon } from '@material-ui/icons';
-import { settingsText } from '../../static-text';
+import { settingsText } from '../../helpers/static-text';
+import { debugConsole } from '../../helpers/console-log';
 
 type Props = {
   value: string;
@@ -53,7 +54,7 @@ const PathInput: FunctionComponent<Props> = ({
   };
 
   useEffect(() => {
-    console.log('useEffect: PathInput set path');
+    debugConsole.log('useEffect: PathInput set path');
     setPath(value);
   }, [value]);
 

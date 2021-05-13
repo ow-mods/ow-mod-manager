@@ -3,7 +3,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-import { modsText } from '../../static-text';
+import { modsText } from '../../helpers/static-text';
 
 type Props = {
   title: string;

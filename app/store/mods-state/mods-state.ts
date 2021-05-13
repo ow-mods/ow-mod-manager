@@ -3,7 +3,7 @@ import { merge, keyBy } from 'lodash';
 import { remote } from 'electron';
 
 import packageJson from '../../../package.json';
-import { modsText } from '../../static-text';
+import { modsText } from '../../helpers/static-text';
 
 export const remoteModList = atom<Mod[]>({
   key: 'RemoteModList',

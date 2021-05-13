@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import fs from 'fs-extra';
 
 import { useFileWatcher } from './use-file-watcher';
+import { debugConsole } from '../helpers/console-log';
 
 export function useSettingsFileWatcher<
   TSettings extends Record<string, unknown>
@@ -16,9 +17,9 @@ export function useSettingsFileWatcher<
       return;
     }
 
-    console.log('useEffect: useSettingsFileWatcher defaults check');
+    debugConsole.log('useEffect: useSettingsFileWatcher defaults check');
     const copyDefaults = () => {
-      console.log('useEffect: useSettingsFileWatcher copyDefaults');
+      debugConsole.log('useEffect: useSettingsFileWatcher copyDefaults');
       fs.writeJSONSync(path, {
         ...defaultSettings,
         settings,
@@ -41,7 +42,7 @@ export function useSettingsFileWatcher<
   }, [defaultSettings, settings, path]);
 
   useEffect(() => {
-    console.log('useEffect: useSettingsFileWatcher setSettingsResult');
+    debugConsole.log('useEffect: useSettingsFileWatcher setSettingsResult');
     setSettingsResult({
       ...defaultSettings,
       ...settings,

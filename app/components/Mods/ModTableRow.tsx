@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 
 import { useRecoilValue } from 'recoil';
-import { modsText } from '../../static-text';
+import { modsText } from '../../helpers/static-text';
 import { isOutdated, isInstalled, isBroken } from '../../services';
 import ModActions from './ModActions';
 import { missingDependencyIdsState } from '../../store';

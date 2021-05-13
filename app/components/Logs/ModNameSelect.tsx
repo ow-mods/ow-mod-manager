@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles, Select, MenuItem } from '@material-ui/core';
 import { uniq } from 'lodash';
 
-import { logsText } from '../../static-text';
+import { logsText } from '../../helpers/static-text';
 import { LogLine } from '../../types';
+import { debugConsole } from '../../helpers/console-log';
 
 const useStyles = makeStyles({
   root: {
@@ -29,7 +30,7 @@ const ModNameSelect: React.FunctionComponent<Props> = ({
   const [modNames, setModNames] = useState<string[]>([]);
 
   useEffect(() => {
-    console.log('useEffect: ModNameSelect set mod names');
+    debugConsole.log('useEffect: ModNameSelect set mod names');
     setModNames(uniq(logLines.map((line) => line.modName)));
   }, [logLines]);
 

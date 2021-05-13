@@ -13,7 +13,8 @@ import {
   Tooltip,
 } from '@material-ui/core';
 
-import { settingsText } from '../../static-text';
+import { settingsText } from '../../helpers/static-text';
+import { debugConsole } from '../../helpers/console-log';
 
 type Props = {
   value: string;
@@ -50,7 +51,7 @@ const TextInput: FunctionComponent<Props> = ({
   };
 
   useEffect(() => {
-    console.log('useEffect: TextInput setText');
+    debugConsole.log('useEffect: TextInput setText');
     setText(value);
   }, [value]);
 

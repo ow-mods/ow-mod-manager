@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs-extra';
 
 import { getSettings } from '../services';
+import { debugConsole } from '../helpers/console-log';
 
 export function useFileWatcher<TFile>(filePath: string, defaultFile?: TFile) {
   const [file, setFile] = useState<TFile>();
@@ -12,9 +13,9 @@ export function useFileWatcher<TFile>(filePath: string, defaultFile?: TFile) {
       return undefined;
     }
 
-    console.log('useEffect: UseFileWatcher', filePath);
+    debugConsole.log('useEffect: UseFileWatcher', filePath);
     const updateFile = async (updateFilePath: string) => {
-      console.log('useEffect: UseFileWatcher updateFile');
+      debugConsole.log('useEffect: UseFileWatcher updateFile');
       setFile(await getSettings<TFile>(updateFilePath));
     };
     const directory = path.dirname(filePath);
@@ -22,7 +23,7 @@ export function useFileWatcher<TFile>(filePath: string, defaultFile?: TFile) {
       fs.mkdirSync(directory, { recursive: true });
     }
     if (!fs.existsSync(filePath)) {
-      console.log('useFileWatcher: writing defaults');
+      debugConsole.log('useFileWatcher: writing defaults');
       fs.writeJSONSync(filePath, defaultFile ?? {});
     }
     const watcher = fs.watch(filePath, () => {

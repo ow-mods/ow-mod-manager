@@ -1,15 +1,9 @@
 import React from 'react';
-import {
-  Paper,
-  Toolbar,
-  makeStyles,
-  IconButton,
-  Button,
-} from '@material-ui/core';
+import { Paper, Toolbar, makeStyles, Button } from '@material-ui/core';
 import { Folder as FolderIcon } from '@material-ui/icons';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { modsText } from '../../static-text';
+import { modsText } from '../../helpers/static-text';
 import FilterInput from '../FilterInput';
 import { modFilterState, settingsState } from '../../store';
 import { openDirectory } from '../../services';

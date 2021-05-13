@@ -4,7 +4,7 @@ import { PlayArrow as PlayIcon } from '@material-ui/icons';
 
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { remote } from 'electron';
-import { globalText } from '../../static-text';
+import { globalText } from '../../helpers/static-text';
 import { runOwml, writeSettings } from '../../services';
 import {
   requiredModNamesState,
