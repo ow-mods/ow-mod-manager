@@ -2,7 +2,8 @@ import unzip from 'unzipper';
 import fetch from 'node-fetch';
 import fs from 'fs-extra';
 import path from 'path';
-import { remote, shell } from 'electron';
+import { remote } from 'electron';
+import { exec } from 'child_process';
 
 import { modsText } from '../static-text';
 
@@ -140,5 +141,6 @@ export function openDirectory(directoryPath: string) {
   if (!fs.existsSync(directoryPath)) {
     throw new Error(modsText.openNonExistingDirectoryError);
   }
-  shell.openPath(path.resolve(directoryPath));
+
+  exec(`start ${path.resolve(directoryPath)}`);
 }
