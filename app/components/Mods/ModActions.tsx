@@ -26,7 +26,6 @@ import {
   isInstalled,
   install,
   uninstall,
-  update,
   isOutdated,
   openModDirectory,
   openRepo,
@@ -34,6 +33,7 @@ import {
   getLocalMods,
   installPrerelease,
   isBroken,
+  reinstall,
 } from '../../services';
 import { localModList, settingsState } from '../../store';
 import { useLoading } from '../../store/loading-state';
@@ -88,7 +88,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const isModOutdated = isOutdated(mod);
   const isModInstallable = mod.downloadUrl !== undefined;
   const isModDownloadable =
-    !isLoading && (isModInstalled ? isModOutdated : isModInstallable);
+    !isLoading && isModBroken ? isModInstallable : isModOutdated;
   const isInstallHighlighted =
     !isLoading &&
     !isModBroken &&
@@ -179,7 +179,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         <span>
           <IconButton
             onClick={modActionHandler(
-              isModOutdated ? update : install,
+              isModBroken ? reinstall : install,
               'install'
             )}
             disabled={!isModDownloadable}

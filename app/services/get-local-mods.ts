@@ -94,8 +94,7 @@ export function getLocalMods(owmlPath: string) {
       localMods.push({
         author: modDirectoryName,
         dependencies: [],
-        description: error.message,
-        errors: [modsText.brokenManifestError(modDirectoryName)],
+        errors: [modsText.brokenManifestError(modDirectoryName, error)],
         modPath,
         name: modDirectoryName,
         uniqueName: modDirectoryName,

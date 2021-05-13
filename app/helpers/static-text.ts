@@ -76,9 +76,6 @@ export const modsText = {
   localModLoadError: 'Failed to load local mod',
   databaseLoadError: 'Failed to load mod database',
   deleteNonExistingError: 'Trying to delete a non-existing directory',
-  installAlreadyInstalledError:
-    "Can't install mod because it's already installed",
-  updateNotOutOfDateError: "Can't update mod because it's not out of date",
   uninstallNotInstalledError: "Can't uninstall mod because it's not installed",
   modPathNotDefinedError: 'Mod path is not defined',
   openNonExistingDirectoryError: 'Trying to open non existing directory',
@@ -93,8 +90,8 @@ export const modsText = {
     `Error executing mod ${action}: ${error}`,
   duplicateModError: (modUniqueName: string) =>
     `Found multiple mods with the same uniqueName (${modUniqueName}). Open the mods directory and make sure you only have one copy of each mod.`,
-  brokenManifestError: (directoryName: string) =>
-    `Failed to read manifest.json in mod directory "${directoryName}". Reinstall the mod or contact the mod author to fix this issue.`,
+  brokenManifestError: (directoryName: string, error: string) =>
+    `Failed to read manifest.json in mod directory "${directoryName}". Reinstall the mod or contact the mod author to fix this issue. Error: ${error}`,
   brokenConfigError: (error: string) =>
     `Failed to read mod configuration files: "${error}"`,
 };
