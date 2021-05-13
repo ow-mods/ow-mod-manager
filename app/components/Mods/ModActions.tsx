@@ -7,6 +7,7 @@ import {
   CircularProgress,
   makeStyles,
   IconButton,
+  Box,
 } from '@material-ui/core';
 import {
   MoreVert as MoreIcon,
@@ -58,6 +59,10 @@ const useStyles = makeStyles((theme) => ({
     borderStyle: 'solid',
     borderColor: theme.palette.background.default,
     boxShadow: `0 0 5px 0 ${theme.palette.grey[300]}`,
+  },
+  highlightedButton: {
+    color: theme.palette.secondary.light,
+    boxShadow: `0 0 10px ${theme.palette.common.white}`,
   },
 }));
 
@@ -158,11 +163,11 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   };
 
   return (
-    <>
+    <Box display="flex" justifyContent="space-between">
       <Tooltip title={getEnableTooltip()}>
         <span>
           <IconButton
-            edge="start"
+            size="small"
             disabled={!isModInstalled || mod.isRequired}
             onClick={modActionHandlerSync(toggleEnabled, 'enable toggle')}
           >
@@ -173,13 +178,13 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
       <Tooltip title={getInstallTooltip()}>
         <span>
           <IconButton
-            edge="start"
             onClick={modActionHandler(
               isModOutdated ? update : install,
               'install'
             )}
             disabled={!isModDownloadable}
-            color={isInstallHighlighted ? 'secondary' : 'default'}
+            size="small"
+            className={isInstallHighlighted ? styles.highlightedButton : ''}
           >
             {isLoading && (
               <CircularProgress
@@ -197,7 +202,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
       </Tooltip>
       <Tooltip title={modsText.actions.more}>
         <span>
-          <IconButton edge="start" onClick={handleMoreClick}>
+          <IconButton size="small" onClick={handleMoreClick}>
             <MoreIcon />
           </IconButton>
         </span>
@@ -252,7 +257,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
           {modsText.actions.uninstall}
         </MenuItem>
       </Menu>
-    </>
+    </Box>
   );
 };
 

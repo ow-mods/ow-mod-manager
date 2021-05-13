@@ -32,8 +32,9 @@ const useStyles = makeStyles((theme) => ({
     },
     backgroundColor: theme.palette.secondary.dark,
   },
-  mutedText: {
+  modAuthor: {
     color: theme.palette.text.disabled,
+    display: 'inline-block',
   },
   tableCell: {
     paddingTop: theme.spacing(1),
@@ -55,10 +56,11 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: 0,
     },
   },
-  modDescription: {
+  modText: {
     display: 'block',
     marginTop: -5,
     marginBottom: -theme.spacing(0),
+    wordWrap: 'break-word',
   },
   outdatedChip: {
     ...theme.typography.caption,
@@ -113,7 +115,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     return className;
   };
 
-  const getRowTooltip = () => {
+  const getModText = () => {
     if (isModBroken) {
       return modsText.modLoadError(mod.errors);
     }
@@ -123,49 +125,47 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
         missingDependencyNames.join(', ')
       );
     }
-    return '';
+    return mod.description;
   };
 
   return (
-    <Tooltip title={getRowTooltip()}>
-      <TableRow className={getClassName()} key={mod.uniqueName}>
-        <TableCell className={styles.tableCell}>
-          <Typography variant="subtitle1">
+    <TableRow className={getClassName()} key={mod.uniqueName}>
+      <TableCell className={styles.tableCell}>
+        <Typography variant="subtitle1">
+          <Box display="inline-block" mr={2}>
             {mod.name}
-            <Box ml={2} display="inline-block">
-              <Typography className={styles.mutedText} variant="caption">
-                {' by '}
-                {mod.author}
-              </Typography>
-              <Typography variant="caption" />
-            </Box>
+          </Box>
+          <Typography className={styles.modAuthor} variant="caption">
+            {' by '}
+            {mod.author}
           </Typography>
-          <Typography
-            className={styles.modDescription}
-            color="textSecondary"
-            variant="caption"
-          >
-            {mod.description}
-          </Typography>
-        </TableCell>
-        <TableCell className={styles.tableCell} align="right">
-          {mod.downloadCount || '-'}
-        </TableCell>
-        <TableCell className={styles.tableCell}>
-          <Chip
-            color={getVersionColor()}
-            label={getVersion()}
-            className={styles.versionChip}
-          />
-          {!isModBroken && isModOutdated && (
-            <div className={styles.outdatedChip}>{modsText.outdated}</div>
-          )}
-        </TableCell>
-        <TableCell className={styles.tableCell}>
-          <ModActions mod={mod} />
-        </TableCell>
-      </TableRow>
-    </Tooltip>
+          <Typography variant="caption" />
+        </Typography>
+        <Typography
+          className={styles.modText}
+          color="textSecondary"
+          variant="caption"
+        >
+          {getModText()}
+        </Typography>
+      </TableCell>
+      <TableCell className={styles.tableCell} align="right">
+        {mod.downloadCount || '-'}
+      </TableCell>
+      <TableCell className={styles.tableCell}>
+        <Chip
+          color={getVersionColor()}
+          label={getVersion()}
+          className={styles.versionChip}
+        />
+        {!isModBroken && isModOutdated && (
+          <div className={styles.outdatedChip}>{modsText.outdated}</div>
+        )}
+      </TableCell>
+      <TableCell className={styles.tableCell}>
+        <ModActions mod={mod} />
+      </TableCell>
+    </TableRow>
   );
 };
 

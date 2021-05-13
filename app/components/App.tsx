@@ -8,7 +8,7 @@ import {
   // @ts-ignore
   unstable_createMuiStrictModeTheme as unstableCreateMuiStrictModeTheme,
 } from '@material-ui/core/styles';
-import { green, orange, grey } from '@material-ui/core/colors';
+import { green, orange, grey, red } from '@material-ui/core/colors';
 import { RecoilRoot } from 'recoil';
 
 import React from 'react';
@@ -30,7 +30,13 @@ const theme = createMuiStrictTheme({
       main: green[700],
     },
     secondary: {
-      main: orange[800],
+      main: '#bb7900',
+      dark: '#885b18',
+      light: '#ffd53c',
+    },
+    error: {
+      main: red[500],
+      dark: '#7e1e1e',
     },
   },
   overrides: {

@@ -84,7 +84,7 @@ export const modsText = {
   openNonExistingDirectoryError: 'Trying to open non existing directory',
   undefinedRepoUrlError: 'Mod repository URL not defined',
   missingDependencyWarning: (modName: string, dependencyNames: string) =>
-    `${modName} requires ${dependencyNames}`,
+    `${modName} requires ${dependencyNames}. Install it from the top of the mod list.`,
   missingManifestAttributesError: (path: string, attributes: string[]) =>
     `Manifest ${path} missing attributes "${attributes.join('", "')}"`,
   modLoadError: (errors: string[]) =>
