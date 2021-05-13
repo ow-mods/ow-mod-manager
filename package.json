@@ -49,7 +49,9 @@
       "artifactName": "${productName}-Installer.${ext}",
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "perMachine": true
+      "perMachine": true,
+      "shortcutName": "Outer Wilds Mod Manager",
+      "uninstallDisplayName": "Outer Wilds Mod Manager"
     },
     "win": {
       "artifactName": "${productName}-Portable.${ext}",
