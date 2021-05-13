@@ -8,7 +8,7 @@ import { isEnabled } from './mod-manager';
 import { manifestPartialToFull } from './manifest';
 import { debugConsole } from '../helpers/console-log';
 
-function getOwmlSync(owmlPath: string) {
+function getOwml(owmlPath: string) {
   const owmlManifestPath = `${owmlPath}/OWML.Manifest.json`;
   const owmlManifest: Manifest = fs.existsSync(owmlManifestPath)
     ? fs.readJSONSync(owmlManifestPath)
@@ -40,7 +40,7 @@ export function getLocalMods(owmlPath: string) {
     absolute: true,
   });
 
-  const localMods: Mod[] = [getOwmlSync(owmlPath)];
+  const localMods: Mod[] = [getOwml(owmlPath)];
 
   manifestPaths.forEach((manifestPath) => {
     const { manifest, missingAttributes } = manifestPartialToFull(
