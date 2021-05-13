@@ -1,10 +1,18 @@
 import React from 'react';
-import { Paper, Toolbar, makeStyles } from '@material-ui/core';
-import { useRecoilState } from 'recoil';
+import {
+  Paper,
+  Toolbar,
+  makeStyles,
+  IconButton,
+  Button,
+} from '@material-ui/core';
+import { Folder as FolderIcon } from '@material-ui/icons';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { modsText } from '../../static-text';
 import FilterInput from '../FilterInput';
-import { modFilterState } from '../../store';
+import { modFilterState, settingsState } from '../../store';
+import { openDirectory } from '../../services';
 
 const useStyles = makeStyles((theme) => ({
   toolBar: {
@@ -17,14 +25,22 @@ const useStyles = makeStyles((theme) => ({
 const ModsToolbar: React.FunctionComponent = () => {
   const styles = useStyles();
   const [filter, setFilter] = useRecoilState(modFilterState);
+  const { owmlPath } = useRecoilValue(settingsState);
   return (
     <Paper>
       <Toolbar className={styles.toolBar}>
         <FilterInput
           value={filter}
           onChange={setFilter}
-          label={modsText.findModsLabel}
+          label={modsText.toolbar.findModsLabel}
         />
+        <Button
+          startIcon={<FolderIcon />}
+          onClick={() => openDirectory(`${owmlPath}/Mods`)}
+          variant="outlined"
+        >
+          {modsText.toolbar.modsDirectory}
+        </Button>
       </Toolbar>
     </Paper>
   );

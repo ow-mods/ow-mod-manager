@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 
 import { modsText } from '../static-text';
 import { getConfig, saveConfig } from './mod-config';
-import { unzipRemoteFile, deleteFolder } from './files';
+import { unzipRemoteFile, deleteFolder, openDirectory } from './files';
 
 export function isInstalled(mod: Mod): boolean {
   if (!mod) {
@@ -66,14 +66,8 @@ export function uninstall(mod: Mod) {
   return deleteFolder(mod.modPath);
 }
 
-export function openDirectory(mod: Mod) {
-  if (!mod.modPath) {
-    throw new Error(modsText.modPathNotDefinedError);
-  }
-  if (!fs.existsSync(mod.modPath)) {
-    throw new Error(modsText.openNonExistingDirectoryError);
-  }
-  shell.openPath(path.resolve(mod.modPath));
+export function openModDirectory(mod: Mod) {
+  openDirectory(mod.modPath);
 }
 
 export function openRepo(mod: Mod) {

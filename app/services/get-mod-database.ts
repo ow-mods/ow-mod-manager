@@ -40,7 +40,7 @@ export async function getModDatabase(
     throw new Error(`${response.statusText} (${response.status})`);
   }
 
-  const { releases, modManager} = (await response.json()) as RemoteModDatabase;
+  const { releases, modManager } = (await response.json()) as RemoteModDatabase;
 
   const mods = releases.map(
     ({
@@ -71,6 +71,7 @@ export async function getModDatabase(
         isRequired: required,
         description: manifest.description,
         prerelease,
+        warning: manifest.warning,
       };
 
       if (missingAttributes.length > 0) {

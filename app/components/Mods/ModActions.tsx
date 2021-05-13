@@ -27,7 +27,7 @@ import {
   uninstall,
   update,
   isOutdated,
-  openDirectory,
+  openModDirectory,
   openRepo,
   toggleEnabled,
   getLocalModsSync,
@@ -151,7 +151,8 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     <>
       <Tooltip title={getEnableTooltip()}>
         <span>
-          <IconButton edge="start"
+          <IconButton
+            edge="start"
             disabled={!isModInstalled || mod.isRequired}
             onClick={modActionHandlerSync(toggleEnabled, 'enable toggle')}
           >
@@ -161,7 +162,8 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
       </Tooltip>
       <Tooltip title={getInstallTooltip()}>
         <span>
-          <IconButton edge="start"
+          <IconButton
+            edge="start"
             onClick={modActionHandler(
               isModOutdated ? update : install,
               'install'
@@ -179,13 +181,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
                 className={styles.circularProgress}
               />
             )}
-            {!isLoading && (
-              isModOutdated ? (
-                <UpdateIcon />
-              ) : (
-                <SaveIcon />
-              )
-            )}
+            {!isLoading && (isModOutdated ? <UpdateIcon /> : <SaveIcon />)}
           </IconButton>
         </span>
       </Tooltip>
@@ -219,7 +215,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         {isModInstalled && (
           <MenuItem
             disabled={!isModInstalled}
-            onClick={modActionHandlerSync(openDirectory, 'directory open')}
+            onClick={modActionHandlerSync(openModDirectory, 'directory open')}
           >
             <ListItemIcon>
               <FolderIcon />

@@ -4,7 +4,7 @@ import { PlayArrow as PlayIcon } from '@material-ui/icons';
 
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { remote } from 'electron';
-import { globalText, modsText } from '../../static-text';
+import { globalText } from '../../static-text';
 import { runOwml, writeSettings } from '../../services';
 import {
   requiredModNamesState,
@@ -12,7 +12,7 @@ import {
   logServerPortState,
   settingsState,
   selectedTabState,
-  isVrModEnabledState,
+  enabledModList,
 } from '../../store';
 
 const StartGameButton: React.FunctionComponent = () => {
@@ -21,42 +21,52 @@ const StartGameButton: React.FunctionComponent = () => {
   const logServerPort = useRecoilValue(logServerPortState);
   const settings = useRecoilValue(settingsState);
   const setSelectedTab = useSetRecoilState(selectedTabState);
-  const isVrModEnabled = useRecoilValue(isVrModEnabledState);
+  const enabledMods = useRecoilValue(enabledModList);
 
   function setDisableParameterWarnings() {
     writeSettings({ ...settings, disableParameterWarning: true });
   }
 
-  async function showVrWarning() {
-    if (!isVrModEnabled || settings.disableVrWarning) {
-      return true;
-    }
-
-    const { response, checkboxChecked } = await remote.dialog.showMessageBox({
-      type: 'warning',
-      title: remote.app.name,
-      message: modsText.vrModWarning.message,
-      detail: modsText.vrModWarning.detail,
-      checkboxLabel: modsText.vrModWarning.dontShowAgain,
-      buttons: ['OK', 'Cancel'],
-    });
-
-    if (response === 1) {
-      return false;
-    }
-
-    if (checkboxChecked) {
-      writeSettings({ ...settings, disableVrWarning: true });
-    }
-
-    return true;
-  }
-
   async function handleStartGameClick() {
-    const shouldStartGame = await showVrWarning();
-    if (!shouldStartGame) {
-      return;
+    let newSettings = { ...settings };
+
+    for (let i = 0; i < enabledMods.length; i += 1) {
+      const { warning, name, uniqueName } = enabledMods[i];
+
+      if (
+        warning &&
+        (warning.body || warning.title) &&
+        !settings.disableModWarnings[uniqueName]
+      ) {
+        const {
+          response,
+          checkboxChecked,
+          // eslint-disable-next-line no-await-in-loop
+        } = await remote.dialog.showMessageBox({
+          type: 'warning',
+          title: name,
+          message: warning.title ?? '',
+          detail: warning.body,
+          checkboxLabel: globalText.dialog.dontShowAgain,
+          buttons: [globalText.dialog.ok, globalText.dialog.cancel],
+        });
+
+        if (response === 1) {
+          return;
+        }
+
+        newSettings = {
+          ...newSettings,
+          disableModWarnings: {
+            ...newSettings.disableModWarnings,
+            [uniqueName]: checkboxChecked,
+          },
+        };
+      }
     }
+
+    writeSettings(newSettings);
+
     runOwml(settings, logServerPort, setDisableParameterWarnings);
     if (settings.logToSocket) {
       setSelectedTab(1);

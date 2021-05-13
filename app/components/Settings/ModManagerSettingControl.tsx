@@ -1,7 +1,10 @@
 import React, { useCallback } from 'react';
 
 import { useSettings } from '../../hooks';
-import SettingFormControl, { SettingType } from './SettingFormControl';
+import SettingFormControl, {
+  SettingType,
+  SettingValue,
+} from './SettingFormControl';
 
 type Props = {
   settingKey: keyof Settings;
@@ -23,7 +26,7 @@ const ModManagerSettingControl: React.FunctionComponent<Props> = ({
     (settingKey === 'logLinesLimit' && !settings.logToSocket);
 
   const setSetting = useCallback(
-    (value: boolean | string | number) => setSettings({ [settingKey]: value }),
+    (value: SettingValue) => setSettings({ [settingKey]: value }),
     [settingKey, setSettings]
   );
 

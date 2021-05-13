@@ -4,17 +4,21 @@ import SwitchInput from './SwitchInput';
 import SliderInput from './SliderInput';
 import TextInput from './TextInput';
 import PathInput from './PathInput';
+import SwitchListInput from './SwitchListInput';
 
 export enum SettingType {
   Text,
   Switch,
   Path,
   Slider,
+  SwitchList,
 }
 
+export type SettingValue = boolean | string | number | Record<string, boolean>;
+
 type Props = {
-  value?: boolean | string | number;
-  onChange: (value: boolean | string | number) => void;
+  value?: SettingValue;
+  onChange: (value: SettingValue) => void;
   label: string;
   type: SettingType;
   disabled?: boolean;
@@ -40,6 +44,10 @@ const SettingFormControl: React.FunctionComponent<Props> = ({
 
   if (type === SettingType.Slider && typeof value === 'number') {
     return <SliderInput value={value} {...props} />;
+  }
+
+  if (type === SettingType.SwitchList && typeof value === 'object') {
+    return <SwitchListInput value={value} {...props} />;
   }
 
   return null;

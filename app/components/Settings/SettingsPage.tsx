@@ -61,8 +61,8 @@ const settingsInputs: readonly SettingsInput[] = [
     isAdvanced: true,
   },
   {
-    key: 'disableVrWarning',
-    type: SettingType.Switch,
+    key: 'disableModWarnings',
+    type: SettingType.SwitchList,
     isAdvanced: true,
   },
   {
