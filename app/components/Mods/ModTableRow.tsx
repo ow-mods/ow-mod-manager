@@ -77,10 +77,14 @@ const useStyles = makeStyles((theme) => ({
 const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const styles = useStyles();
   const missingDependencyNames = useRecoilValue(missingDependencyIdsState(mod));
+  const isModBroken = isBroken(mod);
   const isModOutdated = isOutdated(mod);
 
   const getVersionColor = () => {
-    if (isOutdated(mod)) {
+    if (isModBroken) {
+      return 'default';
+    }
+    if (isModOutdated) {
       return 'secondary';
     }
     if (isInstalled(mod)) {
@@ -101,7 +105,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
 
   const getClassName = () => {
     let className = styles.tableRow;
-    if (isBroken(mod)) {
+    if (isModBroken) {
       className += ` ${styles.brokenRow}`;
     } else if (missingDependencyNames.length > 0) {
       className += ` ${styles.missingDependencyRow}`;
@@ -110,7 +114,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   };
 
   const getRowTooltip = () => {
-    if (isBroken(mod)) {
+    if (isModBroken) {
       return modsText.modLoadError(mod.errors);
     }
     if (missingDependencyNames.length > 0) {
@@ -153,7 +157,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
             label={getVersion()}
             className={styles.versionChip}
           />
-          {isModOutdated && (
+          {!isModBroken && isModOutdated && (
             <div className={styles.outdatedChip}>{modsText.outdated}</div>
           )}
         </TableCell>

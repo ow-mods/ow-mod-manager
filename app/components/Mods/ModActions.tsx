@@ -32,6 +32,7 @@ import {
   toggleEnabled,
   getLocalMods,
   installPrerelease,
+  isBroken,
 } from '../../services';
 import { localModList, settingsState } from '../../store';
 import { useLoading } from '../../store/loading-state';
@@ -77,13 +78,16 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     setAnchorEl(null);
   };
 
+  const isModBroken = isBroken(mod);
   const isModInstalled = mod !== undefined && isInstalled(mod);
   const isModOutdated = isOutdated(mod);
   const isModInstallable = mod.downloadUrl !== undefined;
   const isModDownloadable =
     !isLoading && (isModInstalled ? isModOutdated : isModInstallable);
   const isInstallHighlighted =
-    !isLoading && (isModOutdated || (mod.isRequired && !isModInstalled));
+    !isLoading &&
+    !isModBroken &&
+    (isModOutdated || (mod.isRequired && !isModInstalled));
 
   const handleActionError = (actionName: string, error: string) => {
     debugConsole.error('error in action', actionName, error);
@@ -138,6 +142,11 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const getInstallTooltip = () => {
     if (isLoading) {
       return modsText.actions.loading;
+    }
+    if (isModBroken) {
+      return mod.remoteVersion
+        ? modsText.actions.reinstall
+        : modsText.actions.cantReinstall;
     }
     if (isModOutdated && mod.remoteVersion) {
       return modsText.actions.update(mod.remoteVersion);

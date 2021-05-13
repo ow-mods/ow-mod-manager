@@ -43,47 +43,65 @@ export function getLocalMods(owmlPath: string) {
   const localMods: Mod[] = [getOwml(owmlPath)];
 
   manifestPaths.forEach((manifestPath) => {
-    const { manifest, missingAttributes } = manifestPartialToFull(
-      fs.readJsonSync(manifestPath)
-    );
-
-    const modWithSameId = localMods.find(
-      (localMod) => localMod.uniqueName === manifest.uniqueName
-    );
-    if (modWithSameId) {
-      modWithSameId.errors.push(
-        modsText.duplicateModError(manifest.uniqueName)
-      );
-      return;
-    }
-
-    const mod: Mod = {
-      name: manifest.name,
-      author: manifest.author,
-      uniqueName: manifest.uniqueName,
-      localVersion: coerce(manifest.version)?.version ?? manifest.version,
-      modPath: path.dirname(manifestPath),
-      errors: [],
-      dependencies: manifest.dependencies ?? [],
-      requireVR: manifest.requireVR,
-      description: manifest.description,
-      warning: manifest.warning,
-    };
-
-    if (missingAttributes.length > 0) {
-      mod.errors.push(
-        modsText.missingManifestAttributesError(manifestPath, missingAttributes)
-      );
-    }
-
+    const modPath = path.dirname(manifestPath);
     try {
-      mod.isEnabled = isEnabled(mod);
-    } catch (error) {
-      mod.isEnabled = true;
-      debugConsole.error(error);
-    }
+      const { manifest, missingAttributes } = manifestPartialToFull(
+        fs.readJsonSync(manifestPath)
+      );
 
-    localMods.push(mod);
+      const modWithSameId = localMods.find(
+        (localMod) => localMod.uniqueName === manifest.uniqueName
+      );
+      if (modWithSameId) {
+        modWithSameId.errors.push(
+          modsText.duplicateModError(manifest.uniqueName)
+        );
+        return;
+      }
+
+      const mod: Mod = {
+        name: manifest.name,
+        author: manifest.author,
+        uniqueName: manifest.uniqueName,
+        localVersion: coerce(manifest.version)?.version ?? manifest.version,
+        modPath,
+        errors: [],
+        dependencies: manifest.dependencies ?? [],
+        requireVR: manifest.requireVR,
+        description: manifest.description,
+        warning: manifest.warning,
+      };
+
+      if (missingAttributes.length > 0) {
+        mod.errors.push(
+          modsText.missingManifestAttributesError(
+            manifestPath,
+            missingAttributes
+          )
+        );
+      }
+
+      try {
+        mod.isEnabled = isEnabled(mod);
+      } catch (error) {
+        mod.isEnabled = true;
+        debugConsole.error(error);
+      }
+
+      localMods.push(mod);
+    } catch (error) {
+      const modDirectoryName = path.basename(modPath);
+      localMods.push({
+        author: modDirectoryName,
+        dependencies: [],
+        description: error.message,
+        errors: [modsText.brokenManifestError(modDirectoryName)],
+        modPath,
+        name: modDirectoryName,
+        uniqueName: modDirectoryName,
+        localVersion: '-',
+      });
+    }
   });
 
   return [...localMods].filter((mod) => mod);

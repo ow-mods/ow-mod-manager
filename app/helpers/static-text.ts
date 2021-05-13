@@ -62,8 +62,10 @@ export const modsText = {
     disable: 'Disable',
     enable: 'Enable',
     loading: 'Loading...',
+    reinstall: 'Reinstall',
+    cantReinstall: 'Could not find mod in database',
     update: (version: string) => `Update to ${version}`,
-    alreadyInstalled: 'Already installed',
+    alreadyInstalled: 'Installed and up to date',
     install: 'Install',
     more: 'More...',
     openDirectory: 'Show in explorer',
@@ -91,6 +93,8 @@ export const modsText = {
     `Error executing mod ${action}: ${error}`,
   duplicateModError: (modUniqueName: string) =>
     `Found multiple mods with the same uniqueName (${modUniqueName}). Open the mods directory and make sure you only have one copy of each mod.`,
+  brokenManifestError: (directoryName: string) =>
+    `Failed to read manifest.json in mod directory "${directoryName}". Reinstall the mod or contact the mod author to fix this issue.`,
 };
 
 export const settingsText = {
