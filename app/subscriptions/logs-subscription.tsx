@@ -10,14 +10,15 @@ import {
 } from '../store';
 
 import config from '../config.json';
-import { logsText } from '../static-text';
+import { logsText } from '../helpers/static-text';
 import { SocketMessage, SocketMessageType, LogLine, LogType } from '../types';
+import { debugConsole } from '../helpers/console-log';
 
 function tryJsonParse<T>(fileText: string) {
   try {
     return JSON.parse(fileText) as T;
   } catch (error) {
-    console.error(`${logsText.messageParseError}: ${error}`);
+    debugConsole.error(`${logsText.messageParseError}: ${error}`);
     return fileText;
   }
 }
@@ -120,7 +121,7 @@ export const LogsSubscription: React.FunctionComponent = () => {
   );
 
   useEffect(() => {
-    console.log('useEffect: LogsSubscription create server');
+    debugConsole.log('useEffect: LogsSubscription create server');
     function writeLogText(...textLines: string[]) {
       textLines.forEach((textLine) => writeLogLine(getLogLine(textLine)));
     }

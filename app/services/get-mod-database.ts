@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { coerce } from 'semver';
 
-import { modsText } from '../static-text';
+import { modsText } from '../helpers/static-text';
 import { manifestPartialToFull } from './manifest';
 
 fetch.bind(window);

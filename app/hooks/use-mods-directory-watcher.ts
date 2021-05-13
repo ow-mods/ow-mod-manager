@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import fs from 'fs-extra';
 import { useLoading } from '../store/loading-state';
+import { debugConsole } from '../helpers/console-log';
 
 type Handler = () => void;
 
@@ -12,7 +13,7 @@ export function useModsDirectoryWatcher(owmlPath: string, handler: Handler) {
       return undefined;
     }
 
-    console.log('useEffect: useModsDirectoryWatcher');
+    debugConsole.log('useEffect: useModsDirectoryWatcher');
     const path = `${owmlPath}/Mods`;
 
     if (!fs.existsSync(path)) {
@@ -23,7 +24,7 @@ export function useModsDirectoryWatcher(owmlPath: string, handler: Handler) {
       path,
       { recursive: true },
       (eventType, fileName) => {
-        console.log(
+        debugConsole.log(
           'useEffect: useModsDirectoryWatcher callback. eventType:',
           eventType,
           'fileName:',

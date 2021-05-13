@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, List, Paper } from '@material-ui/core';
 
-import { settingsText } from '../../static-text';
+import { settingsText } from '../../helpers/static-text';
 import { useSettings } from '../../hooks';
 import ResetSettings from './ResetSettings';
 import ModManagerSettingControl from './ModManagerSettingControl';

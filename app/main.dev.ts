@@ -5,7 +5,7 @@ import path from 'path';
 import { app, BrowserWindow, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import { updateText } from './static-text';
+import { updateText } from './helpers/static-text';
 
 app.commandLine.appendSwitch('disable-http-cache');
 

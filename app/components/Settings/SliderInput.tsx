@@ -11,6 +11,7 @@ import {
   makeStyles,
   Tooltip,
 } from '@material-ui/core';
+import { debugConsole } from '../../helpers/console-log';
 
 type Props = {
   value: number;
@@ -52,7 +53,7 @@ const SliderInput: FunctionComponent<Props> = ({
   );
 
   useEffect(() => {
-    console.log('useEffect: SliderInput setDisplayValue');
+    debugConsole.log('useEffect: SliderInput setDisplayValue');
     setDisplayValue(value);
   }, [value]);
 

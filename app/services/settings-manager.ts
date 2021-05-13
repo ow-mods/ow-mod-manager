@@ -2,7 +2,8 @@ import fs from 'fs-extra';
 import { remote } from 'electron';
 
 import config from '../config.json';
-import { settingsText } from '../static-text';
+import { settingsText } from '../helpers/static-text';
+import { debugConsole } from '../helpers/console-log';
 
 export const defaultAppSettings = {
   ...config.defaultSettings,
@@ -19,7 +20,7 @@ export async function getSettings<TSettings>(path: string) {
       return (await fs.readJson(path)) as TSettings;
     }
   } catch (error) {
-    console.error(settingsText.getSettingsError(path) + error);
+    debugConsole.error(settingsText.getSettingsError(path) + error);
   }
   return undefined;
 }
@@ -29,7 +30,7 @@ export function writeSettings(settings: Settings) {
     throw new Error(settingsText.setInvalidSettingsError);
   }
 
-  console.log('writing app settings');
+  debugConsole.log('writing app settings');
 
   const constrainedSettings: Settings = {
     ...settings,

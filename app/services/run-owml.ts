@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import { remote } from 'electron';
 
-import { globalText, settingsText } from '../static-text';
+import { globalText, settingsText } from '../helpers/static-text';
 
 const EXE_FILE = 'OWML.Launcher.exe';
 

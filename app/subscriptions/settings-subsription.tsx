@@ -13,6 +13,7 @@ import {
   defaultAppSettings,
 } from '../services';
 import { useFileWatcher, useSettingsFileWatcher } from '../hooks';
+import { debugConsole } from '../helpers/console-log';
 
 export const SettingsSubscription: React.FunctionComponent = () => {
   const [settings, setSettings] = useRecoilState(settingsState);
@@ -35,17 +36,17 @@ export const SettingsSubscription: React.FunctionComponent = () => {
   );
 
   useEffect(() => {
-    console.log('useEffect: SettingsSubscription setOwmlSettings');
+    debugConsole.log('useEffect: SettingsSubscription setOwmlSettings');
     setOwmlSettings(owmlSettingsFile);
   }, [owmlSettingsFile, setOwmlSettings]);
 
   useEffect(() => {
-    console.log('useEffect: SettingsSubscription setSettings');
+    debugConsole.log('useEffect: SettingsSubscription setSettings');
     setSettings(settingsFile);
   }, [settingsFile, setSettings]);
 
   useEffect(() => {
-    console.log('ueEffect: set defaultOwmlSettingsState');
+    debugConsole.log('ueEffect: set defaultOwmlSettingsState');
     if (defaultOwmlSettings) {
       setDefaultOwmlSettings(defaultOwmlSettings);
     }

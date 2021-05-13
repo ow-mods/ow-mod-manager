@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography, Card, Container } from '@material-ui/core';
 import { useRecoilValue } from 'recoil';
 
-import { modsText } from '../../static-text';
+import { modsText } from '../../helpers/static-text';
 import ModRowSection from './ModRowSection';
 import PageContainer from '../PageContainer';
 import {

@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import { debugConsole } from '../helpers/console-log';
 
 function getDefaultConfigPath(mod: Mod) {
   return `${mod.modPath}/default-config.json`;
@@ -38,7 +39,7 @@ export function getConfig(mod: Mod) {
     const config: ModConfig = fs.readJsonSync(getConfigPath(mod));
     return config;
   } catch (error) {
-    console.error('error trying to get config', error);
+    debugConsole.error('error trying to get config', error);
     return undefined;
   }
 }

@@ -1,8 +1,6 @@
-import path from 'path';
 import { shell } from 'electron';
-import fs from 'fs-extra';
 
-import { modsText } from '../static-text';
+import { modsText } from '../helpers/static-text';
 import { getConfig, saveConfig } from './mod-config';
 import { unzipRemoteFile, deleteFolder, openDirectory } from './files';
 

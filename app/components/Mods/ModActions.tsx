@@ -20,7 +20,7 @@ import {
 } from '@material-ui/icons';
 
 import { useSetRecoilState, useRecoilValue } from 'recoil';
-import { modsText } from '../../static-text';
+import { modsText } from '../../helpers/static-text';
 import {
   isInstalled,
   install,
@@ -35,6 +35,7 @@ import {
 } from '../../services';
 import { localModList, settingsState } from '../../store';
 import { useLoading } from '../../store/loading-state';
+import { debugConsole } from '../../helpers/console-log';
 
 interface Props {
   mod: Mod;
@@ -85,7 +86,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     !isLoading && (isModOutdated || (mod.isRequired && !isModInstalled));
 
   const handleActionError = (actionName: string, error: string) => {
-    console.error('error in action', actionName, error);
+    debugConsole.error('error in action', actionName, error);
     setLocalMods(getLocalMods(owmlPath));
   };
 

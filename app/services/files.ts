@@ -5,7 +5,8 @@ import path from 'path';
 import { remote } from 'electron';
 import { exec } from 'child_process';
 
-import { modsText } from '../static-text';
+import { modsText } from '../helpers/static-text';
+import { debugConsole } from '../helpers/console-log';
 
 fetch.bind(window);
 
@@ -80,7 +81,7 @@ export async function createFolders(dir: string) {
 }
 
 export async function copyFolder(sourcePath: string, targetPath: string) {
-  console.log('copy folder from', sourcePath, 'to', targetPath);
+  debugConsole.log('copy folder from', sourcePath, 'to', targetPath);
   const sourceContents = fs.readdirSync(sourcePath);
   const innerPath =
     sourceContents.length === 1 &&
@@ -108,15 +109,15 @@ export async function unzipRemoteFile(
   destinationPath: string,
   onProgress: ProgressHandler
 ) {
-  console.log('unzip remote file from', url, 'to', destinationPath);
+  debugConsole.log('unzip remote file from', url, 'to', destinationPath);
 
   const onDownloadProgress: ProgressHandler = (progress) => {
-    console.log('onDownloadProgress', progress);
+    debugConsole.log('onDownloadProgress', progress);
     onProgress(progress * progressDownloadPortion);
   };
 
   const onUnzipProgress: ProgressHandler = (progress) => {
-    console.log('onUnzipProgress', progress);
+    debugConsole.log('onUnzipProgress', progress);
     onProgress(progressDownloadPortion + progress * progressUnzipPortion);
   };
 

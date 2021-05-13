@@ -7,7 +7,7 @@ import {
   Settings as SettingsIcon,
 } from '@material-ui/icons';
 
-import { globalText } from '../../static-text';
+import { globalText } from '../../helpers/static-text';
 import { selectedTabState } from '../../store';
 import ModsPage from '../Mods';
 import SettingsPage from '../Settings';
