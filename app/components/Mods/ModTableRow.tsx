@@ -4,7 +4,6 @@ import {
   TableCell,
   TableRow,
   Chip,
-  Tooltip,
   Typography,
   Box,
 } from '@material-ui/core';

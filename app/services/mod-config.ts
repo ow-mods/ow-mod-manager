@@ -1,5 +1,4 @@
 import fs from 'fs-extra';
-import { debugConsole } from '../helpers/console-log';
 import { modsText } from '../helpers/static-text';
 
 function getDefaultConfigPath(mod: Mod) {
