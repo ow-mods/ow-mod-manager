@@ -4,7 +4,7 @@ import path from 'path';
 import { coerce } from 'semver';
 
 import { modsText } from '../helpers/static-text';
-import { isEnabled } from './mod-manager';
+import { isEnabled } from './mods';
 import { manifestPartialToFull } from './manifest';
 import { debugConsole } from '../helpers/console-log';
 
