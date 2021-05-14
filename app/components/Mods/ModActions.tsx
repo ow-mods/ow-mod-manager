@@ -88,7 +88,9 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const isModOutdated = isOutdated(mod);
   const isModInstallable = mod.downloadUrl !== undefined;
   const isModDownloadable =
-    !isLoading && isModBroken ? isModInstallable : isModOutdated;
+    !isLoading &&
+    isModInstallable &&
+    (!isModInstalled || isModBroken || isModOutdated);
   const isInstallHighlighted =
     !isLoading &&
     !isModBroken &&
