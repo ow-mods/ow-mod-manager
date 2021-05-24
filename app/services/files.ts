@@ -143,5 +143,5 @@ export function openDirectory(directoryPath: string) {
     throw new Error(modsText.openNonExistingDirectoryError);
   }
 
-  exec(`start ${path.resolve(directoryPath)}`);
+  exec(`start "open directory" "${path.resolve(directoryPath)}"`);
 }
