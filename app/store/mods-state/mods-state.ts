@@ -2,7 +2,6 @@ import { atom, selector } from 'recoil';
 import { merge, keyBy } from 'lodash';
 import { remote } from 'electron';
 
-import packageJson from '../../../package.json';
 import { modsText } from '../../helpers/static-text';
 
 export const remoteModList = atom<Mod[]>({
@@ -48,7 +47,7 @@ export const modList = selector({
       isEnabled: true,
       localVersion: remote.app.getVersion(),
       remoteVersion: remote.app.getVersion(),
-      repo: packageJson.repository.url,
+      repo: 'https://github.com/Raicuparta/ow-mod-manager',
       modPath: '.',
       downloadUrl: '',
       downloadCount: get(modManager).downloadCount,
