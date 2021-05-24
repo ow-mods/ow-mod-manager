@@ -23,7 +23,7 @@ It also lets you install / update the [Outer Wilds Mod Loader](https://github.co
 
 ## "Installation Aborted" error
 
-If you're trying to reinstall the Mod Manager, you might get an error aying "Installation aborted: Setup was not completed succesfully". If that happens, follow these steps:
+If you're trying to reinstall the Mod Manager, you might get an error saying "Installation aborted: Setup was not completed succesfully". If that happens, follow these steps:
 
 * Open the Start menu;
 * Search for "Control Panel" and open it;
