@@ -162,6 +162,8 @@ export const settingsText = {
   getSettingsError: (path: string) =>
     `Error while getting settings file in ${path}: `,
   setInvalidSettingsError: 'Trying to set invalid settings',
+  owmlChildOfManagerError:
+    "OWML can't be in a sub-path of the Mod Manager. Move OWML elsewhere.",
   setInvalidOwmlSettingsError: 'Trying to set invalid OWML settings',
   steamParamsWarning: {
     message: 'Steam might show a warning before starting the game',
