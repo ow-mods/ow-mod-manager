@@ -120,7 +120,6 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     }
     if (missingDependencyNames.length > 0) {
       return modsText.missingDependencyWarning(
-        mod.name,
         missingDependencyNames.join(', ')
       );
     }
