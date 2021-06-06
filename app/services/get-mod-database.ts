@@ -1,10 +1,10 @@
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch';
 import { coerce } from 'semver';
 
 import { modsText } from '../helpers/static-text';
 import { manifestPartialToFull } from './manifest';
 
-fetch.bind(window);
+// fetch.bind(window);
 
 type RemoteMod = {
   downloadUrl: string;

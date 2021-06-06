@@ -1,14 +1,15 @@
 import unzip from 'unzipper';
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch';
 import fs from 'fs-extra';
 import path from 'path';
 import { remote } from 'electron';
 import { exec } from 'child_process';
 
+import { Readable } from 'stream';
 import { modsText } from '../helpers/static-text';
 import { debugConsole } from '../helpers/console-log';
 
-fetch.bind(window);
+// fetch.bind(window);
 
 // Defines which portion of the loading bar is for download progress,
 // and the remaining is for unzipping progress.
@@ -41,9 +42,20 @@ export async function downloadFile(
     }
 
     const writer = fs.createWriteStream(filePath);
-    response.body.pipe(writer);
+    const reader = response.body.getReader();
+    const readable = new Readable();
+    // eslint-disable-next-line no-underscore-dangle
+    readable._read = async () => {
+      const result = await reader.read();
+      if (!result.done) {
+        readable.push(Buffer.from(result.value));
+      } else {
+        readable.push(null);
+      }
+    };
+    readable.pipe(writer);
 
-    response.body.on('data', (data) => {
+    readable.on('data', (data) => {
       receivedBytes += data.length;
       onProgress(receivedBytes / totalBytes);
     });
