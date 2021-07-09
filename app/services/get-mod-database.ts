@@ -29,6 +29,7 @@ export type ModDatabase = {
   modManager: ModManager;
 };
 
+// eslint-disable-next-line import/prefer-default-export
 export async function getModDatabase(
   url: string,
   owmlPath: string

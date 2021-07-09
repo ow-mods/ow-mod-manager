@@ -1,5 +1,4 @@
 import fs from 'fs-extra';
-import { relative } from 'path';
 import { remote } from 'electron';
 
 import config from '../config.json';
@@ -27,30 +26,18 @@ export async function getSettings<TSettings>(path: string) {
 }
 
 export function writeSettings(settings: Settings) {
-  try {
-    if (!settings) {
-      throw new Error(settingsText.setInvalidSettingsError);
-    }
-
-    debugConsole.log('writing app settings');
-
-    if (!relative('.', settings.owmlPath).startsWith('..')) {
-      throw new Error(settingsText.owmlChildOfManagerError);
-    }
-
-    const constrainedSettings: Settings = {
-      ...settings,
-      logToSocket: settings.closeOnPlay ? false : settings.logToSocket,
-    };
-
-    fs.writeJsonSync(getSettingsPath(), constrainedSettings);
-  } catch (error) {
-    remote.dialog.showMessageBox({
-      type: 'error',
-      title: remote.app.name,
-      message: error.message,
-    });
+  if (!settings) {
+    throw new Error(settingsText.setInvalidSettingsError);
   }
+
+  debugConsole.log('writing app settings');
+
+  const constrainedSettings: Settings = {
+    ...settings,
+    logToSocket: settings.closeOnPlay ? false : settings.logToSocket,
+  };
+
+  fs.writeJsonSync(getSettingsPath(), constrainedSettings);
 }
 
 export function writeOwmlSettings(path: string, settings: OwmlSettings) {

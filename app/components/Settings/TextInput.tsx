@@ -48,7 +48,6 @@ const TextInput: FunctionComponent<Props> = ({
   );
   const handleSaveClick = () => {
     onChange(text);
-    setText(value);
   };
 
   useEffect(() => {
