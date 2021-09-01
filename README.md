@@ -51,7 +51,7 @@ The mod database is stored in a separate repository. [Go here to find out how to
 
 ## I feel a deep emotional connection with you, can we chat?
 
-Sure! You can find us in the [Outer Wilds unofficial Discord server](https://discord.gg/wkttTG), over at the `#modding` channel.
+Sure! You can find us in the [Outer Wilds unofficial Discord server](https://discord.gg/RaSjRbm), over at the `#modding` channel.
 
 ## Development setup
 
