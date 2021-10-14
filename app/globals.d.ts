@@ -42,7 +42,6 @@ type Manifest = {
   version: string;
   dependencies?: string[];
   requireVR?: boolean;
-  description?: string;
   warning?: Warning;
 };
 
