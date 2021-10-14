@@ -3,7 +3,6 @@ import { coerce } from 'semver';
 type RemoteMod = {
   downloadUrl: string;
   downloadCount: number;
-  // manifest: Partial<Manifest>;
   name: string;
   author: string;
   uniqueName: string;
@@ -27,7 +26,6 @@ export type ModDatabase = {
   modManager: ModManager;
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export async function getModDatabase(
   url: string,
   owmlPath: string
