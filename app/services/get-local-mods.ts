@@ -25,7 +25,6 @@ function getOwml(owmlPath: string) {
     isRequired: true,
     errors: [],
     dependencies: [],
-    description: owmlManifest?.description,
   };
   return owml;
 }
@@ -68,7 +67,6 @@ export function getLocalMods(owmlPath: string) {
         errors: [],
         dependencies: manifest.dependencies ?? [],
         requireVR: manifest.requireVR,
-        description: manifest.description,
         warning: manifest.warning,
       };
 
