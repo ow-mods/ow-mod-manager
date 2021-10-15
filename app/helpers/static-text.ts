@@ -135,8 +135,12 @@ export const settingsText = {
   },
   modDatabaseUrl: {
     label: 'Mod database URL',
-    tooltip:
-      'URL used to check for updates for mods, OWML, and the Mod Manager.',
+    tooltip: 'URL used to check for updates for mods and OWML',
+    isAdvanced: true,
+  },
+  alertSourceUrl: {
+    label: 'Alert source URL',
+    tooltip: 'URL used to get alerts to display in the Mod Manager.',
     isAdvanced: true,
   },
   disableParameterWarning: {

@@ -56,6 +56,11 @@ const settingsInputs: readonly SettingsInput[] = [
     isAdvanced: true,
   },
   {
+    key: 'alertSourceUrl',
+    type: SettingType.Text,
+    isAdvanced: true,
+  },
+  {
     key: 'disableParameterWarning',
     type: SettingType.Switch,
     isAdvanced: true,

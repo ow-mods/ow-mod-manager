@@ -7,6 +7,7 @@ import LoadingBar from './LoadingBar';
 import { tabList } from './TopBar/AppTabs';
 import { selectedTabState } from '../store';
 import LoadingSuspense from './LoadingSuspense';
+import { AppAlert } from './AppAlert';
 
 const useStyles = makeStyles({
   wrapper: {
@@ -24,6 +25,7 @@ const MainView = () => {
     <CssBaseline>
       <div className={styles.wrapper}>
         <TopBar />
+        <AppAlert />
         <LoadingBar />
         {tabList.map(
           (tab) =>
