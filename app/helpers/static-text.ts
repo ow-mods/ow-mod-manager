@@ -68,6 +68,7 @@ export const modsText = {
     alreadyInstalled: 'Installed and up to date',
     install: 'Install',
     more: 'More...',
+    readme: 'Readme',
     openDirectory: 'Show in explorer',
     openRepo: 'More info on GitHub',
     uninstall: 'Uninstall',

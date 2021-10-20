@@ -18,6 +18,7 @@ import {
   GitHub as GitHubIcon,
   FolderOpen as FolderIcon,
   Update as UpdateIcon,
+  Description as DescriptionIcon,
 } from '@material-ui/icons';
 
 import { useSetRecoilState, useRecoilValue } from 'recoil';
@@ -34,6 +35,7 @@ import {
   installPrerelease,
   isBroken,
   reinstall,
+  openReadme,
 } from '../../services';
 import { localModList, settingsState } from '../../store';
 import { useLoading } from '../../store/loading-state';
@@ -199,6 +201,17 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
               />
             )}
             {!isLoading && (isModOutdated ? <UpdateIcon /> : <SaveIcon />)}
+          </IconButton>
+        </span>
+      </Tooltip>
+      <Tooltip title={modsText.actions.readme}>
+        <span>
+          <IconButton
+            disabled={!mod.repo}
+            size="small"
+            onClick={modActionHandlerSync(openReadme, 'repo open')}
+          >
+            <DescriptionIcon />
           </IconButton>
         </span>
       </Tooltip>

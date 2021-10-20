@@ -66,6 +66,13 @@ export function openRepo(mod: Mod) {
   shell.openExternal(mod.repo);
 }
 
+export function openReadme(mod: Mod) {
+  if (!mod.repo) {
+    throw new Error(modsText.undefinedRepoUrlError);
+  }
+  shell.openExternal(`${mod.repo}#readme`);
+}
+
 export function isEnabled(mod: Mod) {
   if (!isInstalled(mod)) {
     return false;
