@@ -18,7 +18,6 @@ export function manifestPartialToFull(partialManifest: Partial<Manifest>) {
     uniqueName: getAttribute('uniqueName', true),
     version: getAttribute('version'),
     dependencies: partialManifest.dependencies ?? [],
-    requireVR: partialManifest.requireVR ?? false,
     warning: partialManifest.warning,
   };
 

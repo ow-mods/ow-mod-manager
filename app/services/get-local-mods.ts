@@ -66,7 +66,6 @@ export function getLocalMods(owmlPath: string) {
         modPath,
         errors: [],
         dependencies: manifest.dependencies ?? [],
-        requireVR: manifest.requireVR,
         warning: manifest.warning,
       };
 

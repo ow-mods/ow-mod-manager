@@ -20,7 +20,6 @@ type Mod = {
   isRequired?: boolean;
   errors: string[];
   dependencies: string[];
-  requireVR?: boolean;
   description?: string;
   prerelease?: {
     downloadUrl: string;
@@ -41,7 +40,6 @@ type Manifest = {
   uniqueName: string;
   version: string;
   dependencies?: string[];
-  requireVR?: boolean;
   warning?: Warning;
 };
 
