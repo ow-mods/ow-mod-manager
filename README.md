@@ -37,9 +37,11 @@ If you're trying to reinstall the Mod Manager, you might get an error saying "In
 
 ## How do I uninstall it?
 
-First, remember that uninstalling the Mod Manager won't uninstall your mods. Make sure to remove all mods and run the game once before uninstalling.
+You can uninstall the Mod Manager by searching for "Add or remove programs" in the start menu (or in the control panel), and then finding "Outer Wilds Mod Manager" in the list. However, this won't uninstall your mods.
 
-You can uninstall the Mod Manager by searching for "Add or remove programs" in the start menu (or in the control panel), and then finding "Outer Wilds Mod Manager" in the list.
+To revert the game to its original state, verify the game files integrity:
+  - **Steam**: Library > Right-click Outer Wilds > Properties > Local Files > Verify integrity of game files.
+  - **Epic**: Library > Click three dots under Outer Wilds > Verify.
 
 ## It doesn't work / I found a bug / I have a request
 
