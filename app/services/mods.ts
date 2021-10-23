@@ -61,7 +61,7 @@ export async function uninstall(mod: Mod, isReinstall = false) {
     throw new Error(modsText.uninstallNotInstalledError);
   }
 
-  if (!isReinstall && !showPatcherWarning(mod)) {
+  if (!isReinstall && !(await showPatcherWarning(mod))) {
     return;
   }
 

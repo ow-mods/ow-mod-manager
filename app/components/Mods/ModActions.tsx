@@ -173,7 +173,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
           <IconButton
             size="small"
             disabled={!isModInstalled || mod.isRequired}
-            onClick={modActionHandler(toggleEnabled, 'enable toggle')}
+            onClick={modActionHandlerSync(toggleEnabled, 'enable toggle')}
           >
             {mod.isEnabled ? <CheckBoxIcon /> : <CheckboxBlankIcon />}
           </IconButton>
@@ -264,7 +264,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         </MenuItem>
         <MenuItem
           disabled={mod.isRequired || !isModInstalled}
-          onClick={modActionHandler(uninstall, 'uninstall')}
+          onClick={modActionHandlerSync(uninstall, 'uninstall')}
         >
           <ListItemIcon>
             <DeleteIcon />
