@@ -67,6 +67,7 @@ export function getLocalMods(owmlPath: string) {
         errors: [],
         dependencies: manifest.dependencies ?? [],
         warning: manifest.warning,
+        patcher: manifest.patcher,
       };
 
       if (missingAttributes.length > 0) {
