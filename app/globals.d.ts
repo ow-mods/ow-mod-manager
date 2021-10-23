@@ -26,6 +26,7 @@ type Mod = {
     version: string;
   };
   warning?: Warning;
+  patcher?: string;
 };
 
 type ModManager = {
@@ -41,6 +42,7 @@ type Manifest = {
   version: string;
   dependencies?: string[];
   warning?: Warning;
+  patcher?: string;
 };
 
 type ModConfig = {

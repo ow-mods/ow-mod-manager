@@ -19,6 +19,7 @@ export function manifestPartialToFull(partialManifest: Partial<Manifest>) {
     version: getAttribute('version'),
     dependencies: partialManifest.dependencies ?? [],
     warning: partialManifest.warning,
+    patcher: partialManifest.patcher,
   };
 
   return {

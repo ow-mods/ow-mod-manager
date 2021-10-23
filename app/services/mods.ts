@@ -1,6 +1,6 @@
-import { shell } from 'electron';
+import { shell, remote } from 'electron';
 
-import { modsText } from '../helpers/static-text';
+import { modsText, globalText } from '../helpers/static-text';
 import { getConfig, saveConfig } from './mod-config';
 import { unzipRemoteFile, deleteFolder, openDirectory } from './files';
 
@@ -43,15 +43,33 @@ export async function installPrerelease(mod: Mod, onProgress: ProgressHandler) {
   await upstallPrerelease(mod, onProgress);
 }
 
-export function uninstall(mod: Mod) {
+async function showPatcherWarning(mod: Mod): Promise<boolean> {
+  if (!mod.patcher) return true;
+
+  const { response } = await remote.dialog.showMessageBox({
+    type: 'warning',
+    title: mod.name,
+    message: modsText.patcherWarning(mod.name),
+    buttons: [globalText.dialog.ok, globalText.dialog.cancel],
+  });
+
+  return response === 0;
+}
+
+export async function uninstall(mod: Mod, isReinstall = false) {
   if (!isInstalled(mod)) {
     throw new Error(modsText.uninstallNotInstalledError);
   }
-  return deleteFolder(mod.modPath);
+
+  if (!isReinstall && !showPatcherWarning(mod)) {
+    return;
+  }
+
+  deleteFolder(mod.modPath);
 }
 
 export async function reinstall(mod: Mod, onProgress: ProgressHandler) {
-  uninstall(mod);
+  uninstall(mod, true);
   install(mod, onProgress);
 }
 
@@ -85,9 +103,9 @@ export function isBroken(mod: Mod) {
   return mod.errors.length > 0;
 }
 
-export function toggleEnabled(mod: Mod) {
+export async function toggleEnabled(mod: Mod) {
   const config = getConfig(mod);
-  if (!config) {
+  if (!config || (config.enabled && !(await showPatcherWarning(mod)))) {
     return;
   }
   config.enabled = !config.enabled;

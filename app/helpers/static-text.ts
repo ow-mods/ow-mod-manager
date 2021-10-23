@@ -81,6 +81,8 @@ export const modsText = {
   modPathNotDefinedError: 'Mod path is not defined',
   openNonExistingDirectoryError: 'Trying to open non existing directory',
   undefinedRepoUrlError: 'Mod repository URL not defined',
+  patcherWarning: (modName: string) =>
+    `${modName} possibly modified game files. In order to disable it completely, use the "verify game files" option in Steam/Epic. Check the mod readme for more information.`,
   missingDependencyWarning: (dependencyNames: string) =>
     `This mod requires ${dependencyNames}. Install dependencies from the top of the mod list. If you can't find them there, contact the mod author.`,
   missingManifestAttributesError: (path: string, attributes: string[]) =>
