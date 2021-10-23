@@ -9,10 +9,9 @@ import { settingsState } from '../store';
 
 const useStyles = makeStyles((theme) => ({
   appAlert: {
-    background: theme.palette.warning.light,
-    color: theme.palette.getContrastText(theme.palette.warning.light),
-    padding: theme.spacing(2),
-    borderRadius: 0,
+    background: theme.palette.secondary.light,
+    color: theme.palette.common.black,
+    padding: theme.spacing(1),
   },
 }));
 
@@ -33,7 +32,7 @@ export const AppAlert = () => {
 
   return (
     <Box className={styles.appAlert}>
-      <Typography>{alert.message}</Typography>
+      <Typography variant="body2">{alert.message}</Typography>
     </Box>
   );
 };

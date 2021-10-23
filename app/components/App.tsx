@@ -30,9 +30,9 @@ const theme = createMuiStrictTheme({
       main: green[700],
     },
     secondary: {
-      main: '#bb7900',
-      dark: '#885b18',
-      light: '#ffd53c',
+      main: '#ca7300',
+      dark: '#975d2e',
+      light: '#ffc380',
     },
     error: {
       main: red[500],
