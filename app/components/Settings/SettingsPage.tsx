@@ -29,10 +29,6 @@ const settingsInputs: readonly SettingsInput[] = [
     type: SettingType.Switch,
   },
   {
-    key: 'openVRParameter',
-    type: SettingType.Switch,
-  },
-  {
     key: 'gamePath',
     type: SettingType.Path,
     isOwmlSetting: true,
@@ -44,26 +40,6 @@ const settingsInputs: readonly SettingsInput[] = [
   {
     key: 'showAdvancedSettings',
     type: SettingType.Switch,
-  },
-  {
-    key: 'modDatabaseUrl',
-    type: SettingType.Text,
-    isAdvanced: true,
-  },
-  {
-    key: 'alertSourceUrl',
-    type: SettingType.Text,
-    isAdvanced: true,
-  },
-  {
-    key: 'disableParameterWarning',
-    type: SettingType.Switch,
-    isAdvanced: true,
-  },
-  {
-    key: 'disableModWarnings',
-    type: SettingType.SwitchList,
-    isAdvanced: true,
   },
   {
     key: 'owmlPath',
@@ -80,6 +56,21 @@ const settingsInputs: readonly SettingsInput[] = [
     key: 'forceExe',
     type: SettingType.Switch,
     isOwmlSetting: true,
+    isAdvanced: true,
+  },
+  {
+    key: 'modDatabaseUrl',
+    type: SettingType.Text,
+    isAdvanced: true,
+  },
+  {
+    key: 'alertSourceUrl',
+    type: SettingType.Text,
+    isAdvanced: true,
+  },
+  {
+    key: 'disableModWarnings',
+    type: SettingType.SwitchList,
     isAdvanced: true,
   },
 ];

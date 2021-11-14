@@ -23,10 +23,6 @@ const StartGameButton: React.FunctionComponent = () => {
   const setSelectedTab = useSetRecoilState(selectedTabState);
   const enabledMods = useRecoilValue(enabledModList);
 
-  function setDisableParameterWarnings() {
-    writeSettings({ ...settings, disableParameterWarning: true });
-  }
-
   async function handleStartGameClick() {
     let newSettings = { ...settings };
 
@@ -67,7 +63,7 @@ const StartGameButton: React.FunctionComponent = () => {
 
     writeSettings(newSettings);
 
-    runOwml(settings, logServerPort, setDisableParameterWarnings);
+    runOwml(settings, logServerPort);
     if (settings.logToSocket) {
       setSelectedTab(1);
     }

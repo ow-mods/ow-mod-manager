@@ -110,11 +110,6 @@ export const settingsText = {
     tooltip:
       'If enabled, logs show in "Logs" tab. Otherwise, they will show in a separate console window. Disabling this might improve game performance.',
   },
-  openVRParameter: {
-    label: 'Force OpenVR mode',
-    tooltip:
-      'Runs game with -vrmode openvr flag. Required to make VR work in some rare cases',
-  },
   gamePath: {
     label: 'Game path',
     tooltip:
@@ -148,12 +143,6 @@ export const settingsText = {
     tooltip: 'URL used to get alerts to display in the Mod Manager.',
     isAdvanced: true,
   },
-  disableParameterWarning: {
-    label: 'Disable Steam parameter warning',
-    tooltip:
-      'Disables warning in the Mod Manager that warns you about the Steam warning. Yeah.',
-    isAdvanced: true,
-  },
   owmlPath: {
     label: 'OWML path',
     tooltip:
@@ -172,20 +161,6 @@ export const settingsText = {
     `Error while getting settings file in ${path}: `,
   setInvalidSettingsError: 'Trying to set invalid settings',
   setInvalidOwmlSettingsError: 'Trying to set invalid OWML settings',
-  steamParamsWarning: {
-    message: 'Steam might show a warning before starting the game',
-    detail: (paramNames: string[]) => `You enabled "${paramNames.join(
-      '" and "'
-    )}".
-
-If you own the Steam version of the game, Steam might show a warning about custom parameters.
-
-The warning might not be visible until you open a Steam window.
-
-If you have SteamVR running, the warning might only be visible while you're using your VR headset.
-
-If you want Steam to stop bothering you about this, you'll have to disable these options in the Mod Manager settings.`,
-  },
 };
 
 export const updateText = {
