@@ -110,12 +110,6 @@ export const settingsText = {
     tooltip:
       'If enabled, logs show in "Logs" tab. Otherwise, they will show in a separate console window. Disabling this might improve game performance.',
   },
-  combinationsBlockInput: {
-    label: 'Mod button combinations block game input',
-    tooltip:
-      'Some mods allow you to define custom button combinations for certain actions. Enabling this setting will block the default game input when one of these button combinations is detected.',
-    isOwmlSetting: true,
-  },
   openVRParameter: {
     label: 'Force OpenVR mode',
     tooltip:
@@ -125,7 +119,15 @@ export const settingsText = {
     label: 'Game path',
     tooltip:
       'Game path will be determined automatically when you launch the game. Leave empty for automatic detection on launch.',
-    isOwmlSetting: true,
+  },
+  debugMode: {
+    label: 'OWML debug mode',
+    tooltip: 'Makes OWML log more stuff',
+  },
+  forceExe: {
+    label: 'Launch game exe directly',
+    tooltip:
+      'If enabled, launches game exe instead of launching via Steam / Epic. Needs to be disabled for DLC to work via the Epic store.',
   },
   logLinesLimit: {
     label: 'Log lines per page',

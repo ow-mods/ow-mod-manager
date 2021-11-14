@@ -70,5 +70,6 @@ type Settings = {
 
 type OwmlSettings = {
   gamePath?: string;
-  combinationsBlockInput?: boolean;
+  debugMode?: boolean;
+  forceExe?: boolean;
 };

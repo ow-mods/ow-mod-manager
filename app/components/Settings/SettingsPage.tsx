@@ -29,11 +29,6 @@ const settingsInputs: readonly SettingsInput[] = [
     type: SettingType.Switch,
   },
   {
-    key: 'combinationsBlockInput',
-    type: SettingType.Switch,
-    isOwmlSetting: true,
-  },
-  {
     key: 'openVRParameter',
     type: SettingType.Switch,
   },
@@ -73,6 +68,18 @@ const settingsInputs: readonly SettingsInput[] = [
   {
     key: 'owmlPath',
     type: SettingType.Text,
+    isAdvanced: true,
+  },
+  {
+    key: 'debugMode',
+    type: SettingType.Switch,
+    isOwmlSetting: true,
+    isAdvanced: true,
+  },
+  {
+    key: 'forceExe',
+    type: SettingType.Switch,
+    isOwmlSetting: true,
     isAdvanced: true,
   },
 ];
