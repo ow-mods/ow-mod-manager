@@ -45,6 +45,9 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
   Fatal: {
     color: palette.error.light,
   },
+  Debug: {
+    color: palette.text.disabled,
+  },
   Message: {},
   wrapper: {
     padding: spacing(3),
