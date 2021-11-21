@@ -137,7 +137,6 @@ export const LogsSubscription: React.FunctionComponent = () => {
     }
 
     const netServer = net.createServer((socket) => {
-      socket.pipe(socket);
       socket.on('data', (data) => {
         const dataLines = data
           .toString()
