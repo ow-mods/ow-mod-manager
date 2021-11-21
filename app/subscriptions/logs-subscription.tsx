@@ -151,10 +151,7 @@ export const LogsSubscription: React.FunctionComponent = () => {
         );
         signalServerClosed();
       });
-      socket.on('end', () => {
-        signalServerClosed();
-        netServer.close();
-      });
+      socket.on('end', signalServerClosed);
     });
 
     netServer.on('connection', signalServerOpen);
