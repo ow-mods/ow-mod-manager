@@ -47,7 +47,8 @@ export const modsText = {
   },
   modSections: {
     required: 'Required mods',
-    installed: 'Installed mods',
+    enabled: 'Enabled mods',
+    installed: 'Installed mods (disabled)',
     notInstalled: 'Available mods',
   },
   modManager: {

@@ -5,12 +5,13 @@ import { requiredDependencyIdsState } from './mod-dependencies-state';
 
 export const installedModList = selector({
   key: 'InstalledMods',
-  get: ({ get }) => get(filteredModList).filter((mod) => mod.localVersion),
+  get: ({ get }) =>
+    get(filteredModList).filter((mod) => mod.localVersion && !mod.isEnabled),
 });
 
 export const enabledModList = selector({
   key: 'EnabledMods',
-  get: ({ get }) => get(installedModList).filter((mod) => mod.isEnabled),
+  get: ({ get }) => get(filteredModList).filter((mod) => mod.isEnabled),
 });
 
 export const notInstalledModList = selector({

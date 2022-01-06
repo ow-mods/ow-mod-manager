@@ -6,6 +6,7 @@ import { modsText } from '../../helpers/static-text';
 import ModRowSection from './ModRowSection';
 import PageContainer from '../PageContainer';
 import {
+  enabledModList,
   installedModList,
   requiredModList,
   notInstalledModList,
@@ -13,12 +14,17 @@ import {
 import ModsToolbar from './ModsToolbar';
 
 const ModsPage: React.FunctionComponent = () => {
+  const enabledMods = useRecoilValue(enabledModList);
   const installedMods = useRecoilValue(installedModList);
   const notInstalledMods = useRecoilValue(notInstalledModList);
   const requiredMods = useRecoilValue(requiredModList);
 
   const isEmpty =
-    requiredMods.length + installedMods.length + notInstalledMods.length === 0;
+    enabledMods.length +
+      requiredMods.length +
+      installedMods.length +
+      notInstalledMods.length ===
+    0;
 
   return (
     <PageContainer maxWidth={false}>
@@ -36,6 +42,10 @@ const ModsPage: React.FunctionComponent = () => {
             </Typography>
           </Card>
         )}
+        <ModRowSection
+          title={modsText.modSections.enabled}
+          mods={enabledMods}
+        />
         <ModRowSection
           title={modsText.modSections.installed}
           mods={installedMods}
