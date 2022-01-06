@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   makeStyles,
   TableCell,
@@ -6,9 +6,13 @@ import {
   Chip,
   Typography,
   Box,
+  useTheme,
+  Button,
+  IconButton,
 } from '@material-ui/core';
 
 import { useRecoilValue } from 'recoil';
+import { ExpandMore, ExpandLess } from '@material-ui/icons';
 import { modsText } from '../../helpers/static-text';
 import { isOutdated, isInstalled, isBroken } from '../../services';
 import ModActions from './ModActions';
@@ -44,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
       opacity: '#4b4b4b',
     },
   },
+  addonRow: {
+    backgroundColor: theme.palette.background.default,
+  },
   versionChip: {
     width: '100%',
     padding: 0,
@@ -76,10 +83,12 @@ const useStyles = makeStyles((theme) => ({
 
 const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const styles = useStyles();
+  const theme = useTheme();
   const missingDependencyNames = useRecoilValue(missingDependencyIdsState(mod));
   const isModBroken = isBroken(mod);
   const isModOutdated = isOutdated(mod);
   const addonMods = useRecoilValue(addonModList);
+  const [isAddonsExpanded, setIsAddonsExpanded] = useState(false);
 
   const addons = useMemo(
     () => addonMods.filter((addon) => addon.parent === mod.uniqueName),
@@ -116,6 +125,9 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     } else if (missingDependencyNames.length > 0) {
       className += ` ${styles.missingDependencyRow}`;
     }
+    if (mod.parent) {
+      className += ` ${styles.addonRow}`;
+    }
     return className;
   };
 
@@ -135,35 +147,56 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     <>
       <TableRow className={getClassName()} key={mod.uniqueName}>
         <TableCell className={styles.tableCell}>
-          <Typography variant="subtitle1">
-            <Box display="inline-block" mr={2}>
-              {mod.name}
-            </Box>
-            <Typography className={styles.modAuthor} variant="caption">
-              {' by '}
-              {mod.author}
-            </Typography>
-            <Typography variant="caption" />
-          </Typography>
-          <Typography
-            className={styles.modText}
-            color="textSecondary"
-            variant="caption"
-          >
-            {getModText()}
-          </Typography>
-          {addons.length > 0 && (
-            <Box marginTop={1}>
-              <Typography variant="caption">
-                Addons available:
-                {` ${addons
-                  .map((addon) => addon.name)
-                  .slice(0, 3)
-                  .join(', ')}`}
-                {addons.length > 3 && `, ${addons.length - 3} more.`}
+          <Box display="flex">
+            {mod.parent && (
+              <Box
+                bgcolor={theme.palette.background.paper}
+                width="10px"
+                minWidth="10px"
+                marginRight={2}
+                borderRadius={theme.shape.borderRadius}
+              />
+            )}
+            <Box>
+              <Typography variant="subtitle1">
+                <Box display="inline-block" mr={2}>
+                  {mod.name}
+                </Box>
+                <Typography className={styles.modAuthor} variant="caption">
+                  {' by '}
+                  {mod.author}
+                </Typography>
+                <Typography variant="caption" />
               </Typography>
+              <Typography
+                className={styles.modText}
+                color="textSecondary"
+                variant="caption"
+              >
+                {getModText()}
+              </Typography>
+              {addons.length > 0 && (
+                <Box marginTop={1}>
+                  <IconButton
+                    size="small"
+                    onClick={() =>
+                      setIsAddonsExpanded((isExpanded) => !isExpanded)
+                    }
+                  >
+                    {isAddonsExpanded ? <ExpandLess /> : <ExpandMore />}
+                  </IconButton>
+                  <Typography variant="caption">
+                    Addons available:
+                    {` ${addons
+                      .map((addon) => addon.name)
+                      .slice(0, 3)
+                      .join(', ')}`}
+                    {addons.length > 3 && `, ${addons.length - 3} more.`}
+                  </Typography>
+                </Box>
+              )}
             </Box>
-          )}
+          </Box>
         </TableCell>
         <TableCell className={styles.tableCell} align="right">
           {mod.downloadCount || '-'}
@@ -182,6 +215,10 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
           <ModActions mod={mod} />
         </TableCell>
       </TableRow>
+      {isAddonsExpanded &&
+        addons.map((addon) => (
+          <ModTableRow key={addon.uniqueName} mod={addon} />
+        ))}
     </>
   );
 };
