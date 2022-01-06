@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   makeStyles,
   TableCell,
@@ -12,7 +12,7 @@ import { useRecoilValue } from 'recoil';
 import { modsText } from '../../helpers/static-text';
 import { isOutdated, isInstalled, isBroken } from '../../services';
 import ModActions from './ModActions';
-import { missingDependencyIdsState } from '../../store';
+import { missingDependencyIdsState, addonModList } from '../../store';
 
 type Props = {
   mod: Mod;
@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
   tableCell: {
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
-    borderBottom: 0,
   },
   tableRow: {
     '&:nth-of-type(odd)': {
@@ -80,6 +79,12 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const missingDependencyNames = useRecoilValue(missingDependencyIdsState(mod));
   const isModBroken = isBroken(mod);
   const isModOutdated = isOutdated(mod);
+  const addonMods = useRecoilValue(addonModList);
+
+  const addons = useMemo(
+    () => addonMods.filter((addon) => addon.parent === mod.uniqueName),
+    [addonMods, mod.uniqueName]
+  );
 
   const getVersionColor = () => {
     if (isModBroken) {
@@ -127,43 +132,57 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   };
 
   return (
-    <TableRow className={getClassName()} key={mod.uniqueName}>
-      <TableCell className={styles.tableCell}>
-        <Typography variant="subtitle1">
-          <Box display="inline-block" mr={2}>
-            {mod.name}
-          </Box>
-          <Typography className={styles.modAuthor} variant="caption">
-            {' by '}
-            {mod.author}
+    <>
+      <TableRow className={getClassName()} key={mod.uniqueName}>
+        <TableCell className={styles.tableCell}>
+          <Typography variant="subtitle1">
+            <Box display="inline-block" mr={2}>
+              {mod.name}
+            </Box>
+            <Typography className={styles.modAuthor} variant="caption">
+              {' by '}
+              {mod.author}
+            </Typography>
+            <Typography variant="caption" />
           </Typography>
-          <Typography variant="caption" />
-        </Typography>
-        <Typography
-          className={styles.modText}
-          color="textSecondary"
-          variant="caption"
-        >
-          {getModText()}
-        </Typography>
-      </TableCell>
-      <TableCell className={styles.tableCell} align="right">
-        {mod.downloadCount || '-'}
-      </TableCell>
-      <TableCell className={styles.tableCell}>
-        <Chip
-          color={getVersionColor()}
-          label={getVersion()}
-          className={styles.versionChip}
-        />
-        {!isModBroken && isModOutdated && (
-          <div className={styles.outdatedChip}>{modsText.outdated}</div>
-        )}
-      </TableCell>
-      <TableCell className={styles.tableCell}>
-        <ModActions mod={mod} />
-      </TableCell>
-    </TableRow>
+          <Typography
+            className={styles.modText}
+            color="textSecondary"
+            variant="caption"
+          >
+            {getModText()}
+          </Typography>
+          {addons.length > 0 && (
+            <Box marginTop={1}>
+              <Typography variant="caption">
+                Addons available:
+                {` ${addons
+                  .map((addon) => addon.name)
+                  .slice(0, 3)
+                  .join(', ')}`}
+                {addons.length > 3 && `, ${addons.length - 3} more.`}
+              </Typography>
+            </Box>
+          )}
+        </TableCell>
+        <TableCell className={styles.tableCell} align="right">
+          {mod.downloadCount || '-'}
+        </TableCell>
+        <TableCell className={styles.tableCell}>
+          <Chip
+            color={getVersionColor()}
+            label={getVersion()}
+            className={styles.versionChip}
+          />
+          {!isModBroken && isModOutdated && (
+            <div className={styles.outdatedChip}>{modsText.outdated}</div>
+          )}
+        </TableCell>
+        <TableCell className={styles.tableCell}>
+          <ModActions mod={mod} />
+        </TableCell>
+      </TableRow>
+    </>
   );
 };
 
