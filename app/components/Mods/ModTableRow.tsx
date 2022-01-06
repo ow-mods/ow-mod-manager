@@ -95,6 +95,9 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     [addonMods, mod.uniqueName]
   );
 
+  const handleExpandClick = () =>
+    setIsAddonsExpanded((isExpanded) => !isExpanded);
+
   const getVersionColor = () => {
     if (isModBroken) {
       return 'default';
@@ -151,10 +154,11 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
             {mod.parent && (
               <Box
                 bgcolor={theme.palette.background.paper}
-                width="10px"
-                minWidth="10px"
+                width="8px"
+                minWidth="8px"
                 marginRight={2}
-                borderRadius={theme.shape.borderRadius}
+                marginLeft={1}
+                borderRadius="8px"
               />
             )}
             <Box>
@@ -176,23 +180,29 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
                 {getModText()}
               </Typography>
               {addons.length > 0 && (
-                <Box marginTop={1}>
+                <Box
+                  marginTop={1}
+                  display="flex"
+                  alignItems="center"
+                  height="15px"
+                >
                   <IconButton
+                    edge="start"
                     size="small"
-                    onClick={() =>
-                      setIsAddonsExpanded((isExpanded) => !isExpanded)
-                    }
+                    onClick={handleExpandClick}
                   >
                     {isAddonsExpanded ? <ExpandLess /> : <ExpandMore />}
                   </IconButton>
-                  <Typography variant="caption">
-                    Addons available:
-                    {` ${addons
-                      .map((addon) => addon.name)
-                      .slice(0, 3)
-                      .join(', ')}`}
-                    {addons.length > 3 && `, ${addons.length - 3} more.`}
-                  </Typography>
+                  <Box marginLeft={1} onClick={handleExpandClick}>
+                    <Typography variant="caption">
+                      Addons available:
+                      {` ${addons
+                        .map((addon) => addon.name)
+                        .slice(0, 3)
+                        .join(', ')}`}
+                      {addons.length > 3 && `, ${addons.length - 3} more.`}
+                    </Typography>
+                  </Box>
                 </Box>
               )}
             </Box>
