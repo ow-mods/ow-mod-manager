@@ -33,8 +33,6 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
 }));
 
-const FILE_NAME = 'OuterWilds.exe';
-
 const PathInput: FunctionComponent<Props> = ({
   value,
   onChange,
@@ -60,18 +58,12 @@ const PathInput: FunctionComponent<Props> = ({
 
   const handleFindClick = async () => {
     const openedValue = await remote.dialog.showOpenDialog({
-      properties: ['openFile'],
-      title: settingsText.pathFindTitle(FILE_NAME),
-      defaultPath: `${value}\\${FILE_NAME}`,
-      filters: [
-        {
-          name: FILE_NAME,
-          extensions: ['exe'],
-        },
-      ],
+      properties: ['openDirectory'],
+      title: settingsText.pathFindTitle,
+      defaultPath: value,
     });
 
-    const pathResult = openedValue.filePaths[0].replace(FILE_NAME, '');
+    const pathResult = openedValue.filePaths[0];
     onChange(pathResult);
     setPath(pathResult);
   };
