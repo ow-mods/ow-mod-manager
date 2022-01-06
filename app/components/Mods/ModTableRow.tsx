@@ -7,7 +7,6 @@ import {
   Typography,
   Box,
   useTheme,
-  Button,
   IconButton,
 } from '@material-ui/core';
 
@@ -49,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   addonRow: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.grey[900],
   },
   versionChip: {
     width: '100%',
@@ -127,8 +126,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
       className += ` ${styles.brokenRow}`;
     } else if (missingDependencyNames.length > 0) {
       className += ` ${styles.missingDependencyRow}`;
-    }
-    if (mod.parent) {
+    } else if (mod.parent) {
       className += ` ${styles.addonRow}`;
     }
     return className;
