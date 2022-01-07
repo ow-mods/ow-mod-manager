@@ -7,7 +7,7 @@ import {
   Typography,
   Box,
   useTheme,
-  IconButton,
+  ButtonBase,
 } from '@material-ui/core';
 
 import { useRecoilValue } from 'recoil';
@@ -77,6 +77,16 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 16,
     background: theme.palette.secondary.main,
     fontWeight: theme.typography.fontWeightBold,
+  },
+  addonExpander: {
+    width: '100%',
+    justifyContent: 'start',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: theme.palette.background.default,
+    transition: `${theme.transitions.duration.shortest}ms`,
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+    },
   },
 }));
 
@@ -159,7 +169,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
                 borderRadius="8px"
               />
             )}
-            <Box>
+            <Box width="100%">
               <Typography variant="subtitle1">
                 <Box display="inline-block" mr={2}>
                   {mod.name}
@@ -178,30 +188,25 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
                 {getModText()}
               </Typography>
               {addons.length > 0 && (
-                <Box
-                  marginTop={1}
-                  display="flex"
-                  alignItems="center"
-                  height="15px"
+                <ButtonBase
+                  className={styles.addonExpander}
+                  onClick={handleExpandClick}
                 >
-                  <IconButton
-                    edge="start"
-                    size="small"
-                    onClick={handleExpandClick}
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    borderRadius={theme.shape.borderRadius}
+                    maxWidth="100%"
                   >
                     {isAddonsExpanded ? <ExpandLess /> : <ExpandMore />}
-                  </IconButton>
-                  <Box marginLeft={1} onClick={handleExpandClick}>
-                    <Typography variant="caption">
-                      Addons available:
-                      {` ${addons
-                        .map((addon) => addon.name)
-                        .slice(0, 3)
-                        .join(', ')}`}
-                      {addons.length > 3 && `, ${addons.length - 3} more.`}
+
+                    <Typography variant="caption" noWrap>
+                      {addons.length}
+                      {' addons available: '}
+                      {addons.map((addon) => addon.name).join(', ')}
                     </Typography>
                   </Box>
-                </Box>
+                </ButtonBase>
               )}
             </Box>
           </Box>
