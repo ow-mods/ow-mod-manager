@@ -35,7 +35,7 @@ export const requiredModList = selector({
   get: ({ get }) =>
     get(nonAddonModList).filter(
       (mod) =>
-        !mod.localVersion &&
+        !mod.isEnabled &&
         (mod.isRequired ||
           get(requiredDependencyIdsState).includes(mod.uniqueName))
     ),
