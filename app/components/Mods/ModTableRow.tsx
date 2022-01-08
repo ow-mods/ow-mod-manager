@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import {
   makeStyles,
   TableCell,
@@ -15,7 +15,11 @@ import { ExpandMore, ExpandLess } from '@material-ui/icons';
 import { modsText } from '../../helpers/static-text';
 import { isOutdated, isInstalled, isBroken } from '../../services';
 import ModActions from './ModActions';
-import { missingDependencyIdsState, addonModList } from '../../store';
+import {
+  missingDependencyIdsState,
+  addonModList,
+  loadingModsTabState,
+} from '../../store';
 
 type Props = {
   mod: Mod;
@@ -45,6 +49,16 @@ const useStyles = makeStyles((theme) => ({
   tableRow: {
     '&:nth-of-type(odd)': {
       opacity: '#4b4b4b',
+    },
+  },
+  animate: {
+    animation: `$animate 1s ${theme.transitions.easing.easeInOut}`,
+    outline: '2px solid transparent',
+  },
+  '@keyframes animate': {
+    '30%': {
+      outlineColor: theme.palette.action.active,
+      backgroundColor: theme.palette.action.selected,
     },
   },
   addonRow: {
@@ -98,7 +112,20 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const isModOutdated = isOutdated(mod);
   const addonMods = useRecoilValue(addonModList);
   const [isAddonsExpanded, setIsAddonsExpanded] = useState(false);
+  const isLoadingModsTab = useRecoilValue(loadingModsTabState);
+  const isLoadingModsTabOnMount = useRef(isLoadingModsTab);
   const isAddon = mod.parent && !mod.localVersion;
+  const rowRef = useRef<HTMLTableRowElement>(null);
+
+  useEffect(() => {
+    if (!rowRef.current || !mod.isEnabled || isLoadingModsTabOnMount.current) {
+      return;
+    }
+    rowRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+    });
+  }, [mod.isEnabled]);
 
   const addons = useMemo(
     () => addonMods.filter((addon) => addon.parent === mod.uniqueName),
@@ -140,6 +167,10 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     } else if (isAddon) {
       className += ` ${styles.addonRow}`;
     }
+
+    if (!isLoadingModsTabOnMount.current && mod.isEnabled) {
+      className += ` ${styles.animate}`;
+    }
     return className;
   };
 
@@ -157,7 +188,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
 
   return (
     <>
-      <TableRow className={getClassName()} key={mod.uniqueName}>
+      <TableRow ref={rowRef} className={getClassName()} key={mod.uniqueName}>
         <TableCell className={styles.tableCell}>
           <Box display="flex">
             {isAddon && (

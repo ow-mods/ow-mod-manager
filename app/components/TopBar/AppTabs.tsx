@@ -1,5 +1,5 @@
-import React from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useEffect } from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { Tabs, Tab, makeStyles } from '@material-ui/core';
 import {
   Build as BuildIcon,
@@ -8,7 +8,7 @@ import {
 } from '@material-ui/icons';
 
 import { globalText } from '../../helpers/static-text';
-import { selectedTabState } from '../../store';
+import { selectedTabState, loadingModsTabState } from '../../store';
 import ModsPage from '../Mods';
 import SettingsPage from '../Settings';
 import LogsPage from '../Logs';
@@ -52,6 +52,12 @@ export const tabList: readonly Tab[] = [
 const AppTabs = () => {
   const tabStyles = useTabStyles();
   const [selectedTab, setSelectedTab] = useRecoilState(selectedTabState);
+  const setLoadingModsTab = useSetRecoilState(loadingModsTabState);
+
+  useEffect(() => {
+    if (selectedTab !== 0) return;
+    setLoadingModsTab(true);
+  }, [selectedTab, setLoadingModsTab]);
 
   return (
     <Tabs value={selectedTab}>

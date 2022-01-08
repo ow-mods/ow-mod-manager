@@ -7,11 +7,13 @@ import {
   remoteModList,
   settingsState,
   modManager as modManagerState,
+  loadingModsTabState,
 } from '../store';
 
 export const RemoteModsSubscription: React.FunctionComponent = () => {
   const setRemoteMods = useSetRecoilState(remoteModList);
   const setModManager = useSetRecoilState(modManagerState);
+  const setLoadingModsTab = useSetRecoilState(loadingModsTabState);
   const { modDatabaseUrl, owmlPath } = useRecoilValue(settingsState);
 
   useModsDirectoryWatcher(
@@ -24,9 +26,21 @@ export const RemoteModsSubscription: React.FunctionComponent = () => {
         );
         setRemoteMods(mods);
         setModManager(modManager);
+        // setLoadingModsTab(false);
+        const timeout = setTimeout(() => {
+          setLoadingModsTab(false);
+        }, 1000);
+
+        return () => clearTimeout(timeout);
       };
       updateMods();
-    }, [modDatabaseUrl, owmlPath, setRemoteMods, setModManager])
+    }, [
+      modDatabaseUrl,
+      owmlPath,
+      setRemoteMods,
+      setModManager,
+      setLoadingModsTab,
+    ])
   );
 
   return null;
