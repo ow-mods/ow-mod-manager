@@ -10,18 +10,19 @@ export const nonAddonModList = selector({
 
 export const addonModList = selector({
   key: 'AddonMods',
-  get: ({ get }) => get(filteredModList).filter((mod) => mod.parent),
+  get: ({ get }) =>
+    get(filteredModList).filter((mod) => mod.parent && !mod.localVersion),
 });
 
 export const installedModList = selector({
   key: 'InstalledMods',
   get: ({ get }) =>
-    get(nonAddonModList).filter((mod) => mod.localVersion && !mod.isEnabled),
+    get(filteredModList).filter((mod) => mod.localVersion && !mod.isEnabled),
 });
 
 export const enabledModList = selector({
   key: 'EnabledMods',
-  get: ({ get }) => get(nonAddonModList).filter((mod) => mod.isEnabled),
+  get: ({ get }) => get(filteredModList).filter((mod) => mod.isEnabled),
 });
 
 export const notInstalledModList = selector({

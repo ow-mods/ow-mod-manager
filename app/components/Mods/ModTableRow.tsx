@@ -98,6 +98,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const isModOutdated = isOutdated(mod);
   const addonMods = useRecoilValue(addonModList);
   const [isAddonsExpanded, setIsAddonsExpanded] = useState(false);
+  const isAddon = mod.parent && !mod.localVersion;
 
   const addons = useMemo(
     () => addonMods.filter((addon) => addon.parent === mod.uniqueName),
@@ -136,7 +137,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
       className += ` ${styles.brokenRow}`;
     } else if (missingDependencyNames.length > 0) {
       className += ` ${styles.missingDependencyRow}`;
-    } else if (mod.parent) {
+    } else if (isAddon) {
       className += ` ${styles.addonRow}`;
     }
     return className;
@@ -159,7 +160,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
       <TableRow className={getClassName()} key={mod.uniqueName}>
         <TableCell className={styles.tableCell}>
           <Box display="flex">
-            {mod.parent && (
+            {isAddon && (
               <Box
                 bgcolor={theme.palette.background.paper}
                 width="8px"
