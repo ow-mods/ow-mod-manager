@@ -26,7 +26,6 @@ export const RemoteModsSubscription: React.FunctionComponent = () => {
         );
         setRemoteMods(mods);
         setModManager(modManager);
-        // setLoadingModsTab(false);
         const timeout = setTimeout(() => {
           setLoadingModsTab(false);
         }, 1000);
