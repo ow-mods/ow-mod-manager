@@ -2,7 +2,12 @@ import { shell, remote } from 'electron';
 
 import { modsText, globalText } from '../helpers/static-text';
 import { getConfig, saveConfig } from './mod-config';
-import { unzipRemoteFile, deleteFolder, openDirectory } from './files';
+import {
+  unzipRemoteFile,
+  deleteFolder,
+  openDirectory,
+  deleteFolderExcept,
+} from './files';
 
 export function isInstalled(mod: Mod): boolean {
   if (!mod) {
@@ -23,9 +28,24 @@ export function isOutdated(mod: Mod): boolean {
   return mod.remoteVersion !== mod.localVersion;
 }
 
+export function cleanup(mod: Mod) {
+  if (!mod.modPath) return;
+
+  deleteFolderExcept(
+    mod.modPath,
+    mod.uniqueName === 'Alek.OWML'
+      ? ['Mods', 'OWML.Config.json', 'OWML.Manifest.json']
+      : ['config.json', 'save.json', 'manifest.json']
+  );
+}
+
 export async function install(mod: Mod, onProgress: ProgressHandler) {
   if (!mod.downloadUrl) {
     return;
+  }
+
+  if (mod.localVersion) {
+    cleanup(mod);
   }
 
   await unzipRemoteFile(mod.downloadUrl, mod.modPath, onProgress);

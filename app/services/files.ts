@@ -116,6 +116,22 @@ export function deleteFolder(folderPath: string) {
   }
 }
 
+export function deleteFolderExcept(folderPath: string, pathsToKeep: string[]) {
+  if (!fs.existsSync(folderPath)) {
+    throw new Error(`${modsText.deleteNonExistingError}: "${folderPath}"`);
+  }
+
+  const files = fs.readdirSync(folderPath);
+
+  files.forEach((file) => {
+    const fileDir = path.join(folderPath, file);
+
+    if (!pathsToKeep.includes(file)) {
+      fs.removeSync(fileDir);
+    }
+  });
+}
+
 export async function unzipRemoteFile(
   url: string,
   destinationPath: string,
