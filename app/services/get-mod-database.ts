@@ -8,6 +8,7 @@ type RemoteMod = {
   uniqueName: string;
   description?: string;
   repo: string;
+  parent?: string;
   required?: boolean;
   version: string;
   prerelease?: {
@@ -50,11 +51,13 @@ export async function getModDatabase(
       name,
       uniqueName,
       description,
+      parent,
     }: RemoteMod) => {
       const mod: Mod = {
         name,
         author,
         uniqueName,
+        parent,
         remoteVersion: coerce(version)?.version ?? version,
         // TODO doesnt make sense for this to be here in remote mods
         modPath: `${owmlPath}/Mods/${uniqueName}`,

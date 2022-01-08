@@ -10,6 +10,7 @@ type Mod = {
   name: string;
   author: string;
   uniqueName: string;
+  parent?: string;
   modPath: string;
   localVersion?: string;
   remoteVersion?: string;
