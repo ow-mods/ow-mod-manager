@@ -49,25 +49,25 @@ Please [open an issue](https://github.com/Raicuparta/ow-mod-manager/issues) desc
 
 ## I made a mod! How do I submit it?
 
-The mod database is stored in a separate repository. [Go here to find out how to add your mod to the list](https://github.com/Raicuparta/outer-wilds-mod-db#adding-your-mod-to-the-list).
+The mod database is stored in a separate repository. [Go here to find out how to add your mod to the list](https://github.com/Raicuparta/outer-wilds-mod-db#readme).
 
 ## I feel a deep emotional connection with you, can we chat?
 
-Sure! You can find us in the [Outer Wilds unofficial Discord server](https://discord.gg/RaSjRbm), over at the `#modding` channel.
+Sure! You can find us in the [Outer Wilds Modding Discord server](https://discord.gg/9vE5aHxcF9).
 
 ## Development setup
 
 * Make sure you have [Node](https://nodejs.org/) installed (for `npm`);
 * Clone the repo and `cd` to it;
 * Install dependencies with `npm install`;
-* Start development app `npm run start`;
+* Start development app `npm run dev`;
 * Wait a few seconds for the app to draw;
 * Changes to components should automatically update the app.
 
 ## Building for production
 
-* Run `npm make`;
-* Check the output in the `out` directory for the app's executable.
+* Run `npm run package`;
+* Check the output in the `release` directory for the app's executable.
 
 ## Authors
 
