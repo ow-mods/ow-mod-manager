@@ -86,6 +86,8 @@ export const modsText = {
     `${modName} possibly modified game files. In order to disable it completely, use the "verify game files" option in Steam / Epic. Check ${modName}'s readme for more information.`,
   missingDependencyWarning: (dependencyNames: string) =>
     `This mod requires ${dependencyNames}. Install dependencies from the top of the mod list. If you can't find them there, contact the mod author.`,
+  conflictingModWarning: (conflictNames: string) =>
+    `This mod is not compatible with ${conflictNames}. Disable or uninstall the conflicting mods to prevent your game from crashing.`,
   missingManifestAttributesError: (path: string, attributes: string[]) =>
     `Manifest ${path} missing attributes "${attributes.join('", "')}"`,
   modLoadError: (errors: string[]) =>

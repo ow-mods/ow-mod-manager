@@ -15,7 +15,11 @@ import { ExpandMore, ExpandLess } from '@material-ui/icons';
 import { modsText } from '../../helpers/static-text';
 import { isOutdated, isInstalled, isBroken } from '../../services';
 import ModActions from './ModActions';
-import { missingDependencyIdsState, addonModList } from '../../store';
+import {
+  missingDependencyIdsState,
+  addonModList,
+  enabledModList,
+} from '../../store';
 
 type Props = {
   mod: Mod;
@@ -99,10 +103,23 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const addonMods = useRecoilValue(addonModList);
   const [isAddonsExpanded, setIsAddonsExpanded] = useState(false);
   const isAddon = mod.parent && !mod.localVersion;
+  const enabledMods = useRecoilValue(enabledModList);
 
   const addons = useMemo(
     () => addonMods.filter((addon) => addon.parent === mod.uniqueName),
     [addonMods, mod.uniqueName]
+  );
+
+  const conflictingMods = useMemo(
+    () =>
+      mod.conflicts && mod.conflicts.length > 0
+        ? enabledMods
+            .filter((enabledMod) =>
+              mod.conflicts?.includes(enabledMod.uniqueName)
+            )
+            .map((mod) => mod.name)
+        : [],
+    [enabledMods, mod.conflicts]
   );
 
   const handleExpandClick = () =>
@@ -133,7 +150,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
 
   const getClassName = () => {
     let className = styles.tableRow;
-    if (isModBroken) {
+    if (isModBroken || conflictingMods.length > 0) {
       className += ` ${styles.brokenRow}`;
     } else if (missingDependencyNames.length > 0) {
       className += ` ${styles.missingDependencyRow}`;
@@ -151,6 +168,9 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
       return modsText.missingDependencyWarning(
         missingDependencyNames.join(', ')
       );
+    }
+    if (conflictingMods) {
+      return modsText.conflictingModWarning(conflictingMods.join(', '));
     }
     return mod.description;
   };

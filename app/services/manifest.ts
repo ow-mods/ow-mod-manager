@@ -20,6 +20,7 @@ export function manifestPartialToFull(partialManifest: Partial<Manifest>) {
     dependencies: partialManifest.dependencies ?? [],
     warning: partialManifest.warning,
     patcher: partialManifest.patcher,
+    conflicts: partialManifest.conflicts,
   };
 
   return {
