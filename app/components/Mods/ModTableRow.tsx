@@ -31,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.error.dark,
     },
     backgroundColor: theme.palette.error.dark,
+    modText: {
+      fontWeight: theme.typography.fontWeightBold,
+      color: theme.palette.secondary.light,
+    },
   },
   missingDependencyRow: {
     '&:nth-of-type(odd)': {
@@ -98,8 +102,8 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const styles = useStyles();
   const theme = useTheme();
   const missingDependencyNames = useRecoilValue(missingDependencyIdsState(mod));
-  const isModBroken = isBroken(mod);
   const isModOutdated = isOutdated(mod);
+  const isModBroken = isBroken(mod);
   const addonMods = useRecoilValue(addonModList);
   const [isAddonsExpanded, setIsAddonsExpanded] = useState(false);
   const isAddon = mod.parent && !mod.localVersion;
@@ -117,16 +121,18 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
             .filter((enabledMod) =>
               mod.conflicts?.includes(enabledMod.uniqueName)
             )
-            .map((mod) => mod.name)
+            .map((enabledMod) => enabledMod.name)
         : [],
     [enabledMods, mod.conflicts]
   );
+
+  const isModConflicting = mod.isEnabled && conflictingMods.length > 0;
 
   const handleExpandClick = () =>
     setIsAddonsExpanded((isExpanded) => !isExpanded);
 
   const getVersionColor = () => {
-    if (isModBroken) {
+    if (isModBroken || isModConflicting) {
       return 'default';
     }
     if (isModOutdated) {
@@ -150,7 +156,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
 
   const getClassName = () => {
     let className = styles.tableRow;
-    if (isModBroken || conflictingMods.length > 0) {
+    if (isModBroken || isModConflicting) {
       className += ` ${styles.brokenRow}`;
     } else if (missingDependencyNames.length > 0) {
       className += ` ${styles.missingDependencyRow}`;
@@ -201,13 +207,17 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
                 </Typography>
                 <Typography variant="caption" />
               </Typography>
-              <Typography
-                className={styles.modText}
-                color="textSecondary"
-                variant="caption"
+              <Box
+                color={
+                  isModBroken || isModConflicting
+                    ? theme.palette.secondary.light
+                    : theme.palette.text.secondary
+                }
               >
-                {getModText()}
-              </Typography>
+                <Typography className={styles.modText} variant="caption">
+                  {getModText()}
+                </Typography>
+              </Box>
               {addons.length > 0 && (
                 <ButtonBase
                   className={styles.addonExpander}
