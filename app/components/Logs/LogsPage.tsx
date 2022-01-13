@@ -228,7 +228,11 @@ const OwmlLog: React.FunctionComponent = () => {
             {paginatedLines.map((line: LogLine) => (
               <React.Fragment key={line.id}>
                 <TableRow>
-                  <LogCell className={styles[line.type]}>{line.text}</LogCell>
+                  <LogCell className={styles[line.type]}>
+                    {line.text.split('\n').map((text) => (
+                      <div>{text}</div>
+                    ))}
+                  </LogCell>
                   <LogCell className={styles.modNameCell}>
                     {line.modName}
                   </LogCell>
