@@ -175,7 +175,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
         missingDependencyNames.join(', ')
       );
     }
-    if (conflictingMods) {
+    if (isModConflicting) {
       return modsText.conflictingModWarning(conflictingMods.join(', '));
     }
     return mod.description;
