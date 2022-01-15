@@ -27,7 +27,7 @@ If you're trying to reinstall the Mod Manager, you might get an error saying "In
 
 * Open the Start menu;
 * Search for "Control Panel" and open it;
-* Under "Propgrams", click "Uninstall a program";
+* Under "Programs", click "Uninstall a program";
 * Search for "Outer Wilds Mod Manager" in the list;
 * Double click it;
 * Windows should show you an error message saying it failed to uninstall, and asking if you want to remove the program from the list. Say yes;
