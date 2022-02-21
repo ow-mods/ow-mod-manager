@@ -132,7 +132,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     setIsAddonsExpanded((isExpanded) => !isExpanded);
 
   const getVersionColor = () => {
-    if (isModBroken || isModConflicting) {
+    if (isModBroken) {
       return 'default';
     }
     if (isModOutdated) {
