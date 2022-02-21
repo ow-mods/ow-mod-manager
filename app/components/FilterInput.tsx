@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InputAdornment, IconButton, OutlinedInput } from '@material-ui/core';
 import { Close as CloseIcon, Search as SearchIcon } from '@material-ui/icons';
+import { useDebounce } from '../hooks/use-debounce';
 
 type Props = {
   value: string;
@@ -13,22 +14,20 @@ const FilterInput: React.FunctionComponent<Props> = ({
   onChange,
   label,
 }) => {
-  const handleChange = useCallback(
-    ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
-      onChange(currentTarget.value);
-    },
-    [onChange]
-  );
+  const [filterText, setFilterText] = useState(value);
+  const debouncedFilterText = useDebounce(filterText, 200);
 
-  const handleClearClick = useCallback(() => {
-    onChange('');
-  }, [onChange]);
+  useEffect(() => {
+    onChange(debouncedFilterText);
+  }, [debouncedFilterText, onChange]);
 
   return (
     <OutlinedInput
       margin="dense"
-      onChange={handleChange}
-      value={value}
+      onChange={({ currentTarget }) => {
+        setFilterText(currentTarget.value);
+      }}
+      value={filterText}
       placeholder={label}
       color="secondary"
       startAdornment={
@@ -37,9 +36,9 @@ const FilterInput: React.FunctionComponent<Props> = ({
         </InputAdornment>
       }
       endAdornment={
-        value !== '' && (
+        filterText !== '' && (
           <InputAdornment position="end">
-            <IconButton onClick={handleClearClick} size="small">
+            <IconButton onClick={() => setFilterText('')} size="small">
               <CloseIcon fontSize="small" />
             </IconButton>
           </InputAdornment>
