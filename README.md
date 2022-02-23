@@ -57,10 +57,8 @@ Sure! You can find us in the [Outer Wilds Modding Discord server](https://discor
 
 ## Development setup
 
-[Install Node](https://nodejs.org/en/download/).
-
-[Install Yarn](https://yarnpkg.com/getting-started/install).
-
+* [Install Node](https://nodejs.org/en/download/);
+* [Install Yarn](https://yarnpkg.com/getting-started/install);
 * Clone the repo and `cd` to it;
 * Install dependencies with `yarn install`;
 * Start development app `yarn run dev`;
