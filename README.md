@@ -57,9 +57,9 @@ Sure! You can find us in the [Outer Wilds Modding Discord server](https://discor
 
 ## Development setup
 
-This project requires Node 10.24.1. I recommend using [Volta](https://volta.sh/) for installing specific Node versions for each project. This project's `package.json` already has a `volta` entry, which will pick the correct Node version automatically.
+[Install Node 16](https://nodejs.org/en/download/).
 
-You'll also need to have [Yarn](https://yarnpkg.com/getting-started/install) installed.
+[Install Yarn](https://yarnpkg.com/getting-started/install).
 
 * Clone the repo and `cd` to it;
 * Install dependencies with `yarn install`;
