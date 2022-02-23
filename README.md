@@ -57,7 +57,7 @@ Sure! You can find us in the [Outer Wilds Modding Discord server](https://discor
 
 ## Development setup
 
-[Install Node 16](https://nodejs.org/en/download/).
+[Install Node](https://nodejs.org/en/download/).
 
 [Install Yarn](https://yarnpkg.com/getting-started/install).
 
