@@ -57,19 +57,17 @@ Sure! You can find us in the [Outer Wilds Modding Discord server](https://discor
 
 ## Development setup
 
-* Make sure you have [Node](https://nodejs.org/) installed (for `npm`);
+This project requires Node 10.24.1. I recommend using [Volta](https://volta.sh/) for installing specific Node versions for each project. This project's `package.json` already has a `volta` entry, which will pick the correct Node version automatically.
+
+You'll also need to have [Yarn](https://yarnpkg.com/getting-started/install) installed.
+
 * Clone the repo and `cd` to it;
-* Install dependencies with `npm install`;
-* Start development app `npm run dev`;
+* Install dependencies with `yarn install`;
+* Start development app `yarn run dev`;
 * Wait a few seconds for the app to draw;
 * Changes to components should automatically update the app.
 
 ## Building for production
 
-* Run `npm run package`;
+* Run `yarn run package`;
 * Check the output in the `release` directory for the app's executable.
-
-## Authors
-
-* [Raicuparta](https://github.com/Raicuparta)
-* [AmazingAlek](https://github.com/amazingalek)
