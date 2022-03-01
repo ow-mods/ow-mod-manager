@@ -1,7 +1,10 @@
 import React from 'react';
-import { createRoot } from 'react-dom';
-import App from './components/App';
+import { unstable_createRoot } from 'react-dom';
 
 document.addEventListener('DOMContentLoaded', () => {
-  createRoot(document.getElementById('root') as HTMLElement).render(<App />);
+  // eslint-disable-next-line global-require
+  const App = require('./components/App').default;
+  unstable_createRoot(document.getElementById('root') as HTMLElement).render(
+    <App />
+  );
 });
