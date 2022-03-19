@@ -6,7 +6,6 @@ import {
   unzipRemoteFile,
   deleteFolder,
   openDirectory,
-  deleteFolderExcept,
 } from './files';
 
 export function isInstalled(mod: Mod): boolean {
@@ -33,7 +32,7 @@ export async function install(mod: Mod, onProgress: ProgressHandler) {
     return;
   }
 
-  await unzipRemoteFile(mod, mod.downloadUrl, mod.modPath, onProgress);
+  await unzipRemoteFile(mod, mod.downloadUrl, onProgress);
 }
 
 async function upstallPrerelease(mod: Mod, onProgress: ProgressHandler) {
@@ -41,7 +40,7 @@ async function upstallPrerelease(mod: Mod, onProgress: ProgressHandler) {
     return;
   }
 
-  await unzipRemoteFile(mod, mod.prerelease.downloadUrl, mod.modPath, onProgress);
+  await unzipRemoteFile(mod, mod.prerelease.downloadUrl, onProgress);
 }
 
 export async function installPrerelease(mod: Mod, onProgress: ProgressHandler) {

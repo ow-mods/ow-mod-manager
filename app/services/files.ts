@@ -168,9 +168,10 @@ export function cleanup(mod: Mod, tempManifestPath: string) {
 export async function unzipRemoteFile(
   mod: Mod,
   url: string,
-  destinationPath: string,
   onProgress: ProgressHandler
 ) {
+  const destinationPath = mod.modPath;
+
   debugConsole.log('unzip remote file from', url, 'to', destinationPath);
 
   const onDownloadProgress: ProgressHandler = (progress) => {
