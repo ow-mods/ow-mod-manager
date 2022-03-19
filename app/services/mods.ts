@@ -28,27 +28,12 @@ export function isOutdated(mod: Mod): boolean {
   return mod.remoteVersion !== mod.localVersion;
 }
 
-export function cleanup(mod: Mod) {
-  if (!mod.modPath) return;
-
-  deleteFolderExcept(
-    mod.modPath,
-    mod.uniqueName === 'Alek.OWML'
-      ? ['Mods', 'OWML.Config.json', 'OWML.Manifest.json']
-      : ['config.json', 'save.json', 'manifest.json'].concat(mod.preserveFolders)
-  );
-}
-
 export async function install(mod: Mod, onProgress: ProgressHandler) {
   if (!mod.downloadUrl) {
     return;
   }
 
-  if (mod.localVersion) {
-    cleanup(mod);
-  }
-
-  await unzipRemoteFile(mod.downloadUrl, mod.modPath, onProgress);
+  await unzipRemoteFile(mod, mod.downloadUrl, mod.modPath, onProgress);
 }
 
 async function upstallPrerelease(mod: Mod, onProgress: ProgressHandler) {
@@ -56,7 +41,7 @@ async function upstallPrerelease(mod: Mod, onProgress: ProgressHandler) {
     return;
   }
 
-  await unzipRemoteFile(mod.prerelease.downloadUrl, mod.modPath, onProgress);
+  await unzipRemoteFile(mod, mod.prerelease.downloadUrl, mod.modPath, onProgress);
 }
 
 export async function installPrerelease(mod: Mod, onProgress: ProgressHandler) {

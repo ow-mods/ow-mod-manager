@@ -29,7 +29,7 @@ type Mod = {
   warning?: Warning;
   patcher?: string;
   conflicts?: string[];
-  preserveFolders?: string[];
+  pathsToPreserve?: string[];
 };
 
 type ModManager = {
@@ -47,7 +47,7 @@ type Manifest = {
   warning?: Warning;
   patcher?: string;
   conflicts?: string[];
-  preserveFolders?: string[];
+  pathsToPreserve?: string[];
 };
 
 type ModConfig = {

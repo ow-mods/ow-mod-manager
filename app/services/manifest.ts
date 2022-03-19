@@ -21,7 +21,7 @@ export function manifestPartialToFull(partialManifest: Partial<Manifest>) {
     warning: partialManifest.warning,
     patcher: partialManifest.patcher,
     conflicts: partialManifest.conflicts,
-    preserveFolders: partialManifest.preserveFolders,
+    pathsToPreserve: partialManifest.pathsToPreserve,
   };
 
   return {

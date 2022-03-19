@@ -8,6 +8,7 @@ import { exec } from 'child_process';
 import { Readable } from 'stream';
 import { modsText } from '../helpers/static-text';
 import { debugConsole } from '../helpers/console-log';
+import { manifestPartialToFull } from './manifest';
 
 // fetch.bind(window);
 
@@ -140,7 +141,32 @@ export function deleteFile(filePath : string) {
   }
 }
 
+export function cleanup(mod: Mod, tempManifestPath: string) {
+  if (!mod.modPath) return;
+
+  var pathsToPreserve = [];
+
+  // Get pathsToPreserve from the version being installed, not the local version
+  try{
+    const { manifest, missingAttributes } = manifestPartialToFull(
+      fs.readJsonSync(tempManifestPath)
+    );
+    pathsToPreserve = manifest.pathsToPreserve;
+  }
+  catch(error) {
+    pathsToPreserve = mod.pathsToPreserve;
+  }
+
+  deleteFolderExcept(
+    mod.modPath,
+    mod.uniqueName === 'Alek.OWML'
+      ? ['Mods', 'OWML.Config.json', 'OWML.Manifest.json']
+      : ['config.json', 'save.json', 'manifest.json'].concat(pathsToPreserve)
+  );
+}
+
 export async function unzipRemoteFile(
+  mod: Mod,
   url: string,
   destinationPath: string,
   onProgress: ProgressHandler
@@ -162,15 +188,23 @@ export async function unzipRemoteFile(
   const temporaryPath = `${userDataPath}/temp/${temporaryName}-${new Date().getTime()}`;
   const zipPath = `${temporaryPath}/${temporaryName}.zip`;
   const unzipPath = `${temporaryPath}/${temporaryName}`;
-  const configFile = `${unzipPath}/config.json`;
+  const tempConfigPath = `${unzipPath}/config.json`;
+  const tempManifestPath = `${unzipPath}/manifest.json`;
 
   await createFolders(unzipPath);
 
   await downloadFile(url, zipPath, onDownloadProgress);
   await unzipFile(zipPath, unzipPath, onUnzipProgress);
-  if(fs.existsSync(configFile)) {
-    await deleteFile(configFile);
+
+  if (mod.localVersion) {
+    cleanup(mod, tempManifestPath);
   }
+
+  // Prevent config.json in release from overwriting the existing one
+  if(fs.existsSync(tempConfigPath)) {
+    await deleteFile(tempConfigPath);
+  }
+
   await copyFolder(unzipPath, destinationPath);
   await deleteFolder(temporaryPath);
 }

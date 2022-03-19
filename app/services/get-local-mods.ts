@@ -69,7 +69,7 @@ export function getLocalMods(owmlPath: string) {
         warning: manifest.warning,
         patcher: manifest.patcher,
         conflicts: manifest.conflicts,
-        preserveFolders: manifest.preserveFolders ?? [],
+        pathsToPreserve: manifest.pathsToPreserve ?? [],
       };
 
       if (missingAttributes.length > 0) {
