@@ -35,7 +35,7 @@ export function cleanup(mod: Mod) {
     mod.modPath,
     mod.uniqueName === 'Alek.OWML'
       ? ['Mods', 'OWML.Config.json', 'OWML.Manifest.json']
-      : ['config.json', 'save.json', 'manifest.json']
+      : ['config.json', 'save.json', 'manifest.json'].concat(mod.preserveFolders)
   );
 }
 
