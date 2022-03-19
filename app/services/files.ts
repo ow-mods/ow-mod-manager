@@ -132,6 +132,14 @@ export function deleteFolderExcept(folderPath: string, pathsToKeep: string[]) {
   });
 }
 
+export function deleteFile(filePath : string) {
+  if(fs.existsSync(filePath)) {
+    fs.removeSync(filePath);
+  } else {
+    throw new Error(`${modsText.deleteNonExistingError}: "${filePath}"`);
+  }
+}
+
 export async function unzipRemoteFile(
   url: string,
   destinationPath: string,
@@ -154,11 +162,15 @@ export async function unzipRemoteFile(
   const temporaryPath = `${userDataPath}/temp/${temporaryName}-${new Date().getTime()}`;
   const zipPath = `${temporaryPath}/${temporaryName}.zip`;
   const unzipPath = `${temporaryPath}/${temporaryName}`;
+  const configFile = `${unzipPath}/config.json`;
 
   await createFolders(unzipPath);
 
   await downloadFile(url, zipPath, onDownloadProgress);
   await unzipFile(zipPath, unzipPath, onUnzipProgress);
+  if(fs.existsSync(configFile)) {
+    await deleteFile(configFile);
+  }
   await copyFolder(unzipPath, destinationPath);
   await deleteFolder(temporaryPath);
 }
