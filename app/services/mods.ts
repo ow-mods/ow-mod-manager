@@ -1,4 +1,5 @@
 import { shell, remote } from 'electron';
+import fs from 'fs-extra';
 
 import { modsText, globalText } from '../helpers/static-text';
 import { getConfig, saveConfig } from './mod-config';
@@ -7,7 +8,9 @@ import {
   deleteFolder,
   openDirectory,
   deleteFolderExcept,
+  copyFolder,
 } from './files';
+import { manifestPartialToFull } from './manifest';
 
 export function isInstalled(mod: Mod): boolean {
   if (!mod) {
@@ -28,14 +31,28 @@ export function isOutdated(mod: Mod): boolean {
   return mod.remoteVersion !== mod.localVersion;
 }
 
-export function cleanup(mod: Mod) {
+export function cleanup(mod: Mod, tempManifestPath: string) {
   if (!mod.modPath) return;
+
+  let pathsToPreserve: string[] | undefined = [];
+
+  // Get pathsToPreserve from the version being installed, not the local version
+  try {
+    const { manifest } = manifestPartialToFull(
+      fs.readJsonSync(tempManifestPath)
+    );
+    pathsToPreserve = manifest.pathsToPreserve;
+  } catch (error) {
+    pathsToPreserve = mod.pathsToPreserve;
+  }
 
   deleteFolderExcept(
     mod.modPath,
     mod.uniqueName === 'Alek.OWML'
       ? ['Mods', 'OWML.Config.json', 'OWML.Manifest.json']
-      : ['config.json', 'save.json', 'manifest.json']
+      : ['config.json', 'save.json', 'manifest.json'].concat(
+          pathsToPreserve ?? []
+        )
   );
 }
 
@@ -44,11 +61,18 @@ export async function install(mod: Mod, onProgress: ProgressHandler) {
     return;
   }
 
+  const [temporaryPath, unzipPath] = await unzipRemoteFile(
+    mod,
+    mod.downloadUrl,
+    onProgress
+  );
+
   if (mod.localVersion) {
-    cleanup(mod);
+    cleanup(mod, `${unzipPath}/manifest.json`);
   }
 
-  await unzipRemoteFile(mod.downloadUrl, mod.modPath, onProgress);
+  await copyFolder(unzipPath, mod.modPath);
+  deleteFolder(temporaryPath);
 }
 
 async function upstallPrerelease(mod: Mod, onProgress: ProgressHandler) {
@@ -56,7 +80,18 @@ async function upstallPrerelease(mod: Mod, onProgress: ProgressHandler) {
     return;
   }
 
-  await unzipRemoteFile(mod.prerelease.downloadUrl, mod.modPath, onProgress);
+  const [temporaryPath, unzipPath] = await unzipRemoteFile(
+    mod,
+    mod.prerelease.downloadUrl,
+    onProgress
+  );
+
+  if (mod.localVersion) {
+    cleanup(mod, `${unzipPath}/manifest.json`);
+  }
+
+  await copyFolder(unzipPath, mod.modPath);
+  deleteFolder(temporaryPath);
 }
 
 export async function installPrerelease(mod: Mod, onProgress: ProgressHandler) {

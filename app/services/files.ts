@@ -9,8 +9,6 @@ import { Readable } from 'stream';
 import { modsText } from '../helpers/static-text';
 import { debugConsole } from '../helpers/console-log';
 
-// fetch.bind(window);
-
 // Defines which portion of the loading bar is for download progress,
 // and the remaining is for unzipping progress.
 const progressDownloadPortion = 0.7;
@@ -132,12 +130,20 @@ export function deleteFolderExcept(folderPath: string, pathsToKeep: string[]) {
   });
 }
 
+export function deleteFile(filePath: string) {
+  if (fs.existsSync(filePath)) {
+    fs.removeSync(filePath);
+  } else {
+    throw new Error(`${modsText.deleteNonExistingError}: "${filePath}"`);
+  }
+}
+
 export async function unzipRemoteFile(
+  mod: Mod,
   url: string,
-  destinationPath: string,
   onProgress: ProgressHandler
 ) {
-  debugConsole.log('unzip remote file from', url, 'to', destinationPath);
+  const destinationPath = mod.modPath;
 
   const onDownloadProgress: ProgressHandler = (progress) => {
     debugConsole.log('onDownloadProgress', progress);
@@ -154,13 +160,21 @@ export async function unzipRemoteFile(
   const temporaryPath = `${userDataPath}/temp/${temporaryName}-${new Date().getTime()}`;
   const zipPath = `${temporaryPath}/${temporaryName}.zip`;
   const unzipPath = `${temporaryPath}/${temporaryName}`;
+  const temporaryConfigPath = `${unzipPath}/config.json`;
+
+  debugConsole.log('unzip remote file from', url, 'to', temporaryPath);
 
   await createFolders(unzipPath);
 
   await downloadFile(url, zipPath, onDownloadProgress);
   await unzipFile(zipPath, unzipPath, onUnzipProgress);
-  await copyFolder(unzipPath, destinationPath);
-  await deleteFolder(temporaryPath);
+
+  // Prevent config.json in release from overwriting the existing one
+  if (fs.existsSync(temporaryConfigPath)) {
+    deleteFile(temporaryConfigPath);
+  }
+
+  return [temporaryPath, unzipPath];
 }
 
 export function openDirectory(directoryPath: string) {
