@@ -2,11 +2,7 @@ import { shell, remote } from 'electron';
 
 import { modsText, globalText } from '../helpers/static-text';
 import { getConfig, saveConfig } from './mod-config';
-import {
-  unzipRemoteFile,
-  deleteFolder,
-  openDirectory,
-} from './files';
+import { unzipRemoteFile, deleteFolder, openDirectory } from './files';
 
 export function isInstalled(mod: Mod): boolean {
   if (!mod) {

@@ -10,8 +10,6 @@ import { modsText } from '../helpers/static-text';
 import { debugConsole } from '../helpers/console-log';
 import { manifestPartialToFull } from './manifest';
 
-// fetch.bind(window);
-
 // Defines which portion of the loading bar is for download progress,
 // and the remaining is for unzipping progress.
 const progressDownloadPortion = 0.7;
@@ -133,8 +131,8 @@ export function deleteFolderExcept(folderPath: string, pathsToKeep: string[]) {
   });
 }
 
-export function deleteFile(filePath : string) {
-  if(fs.existsSync(filePath)) {
+export function deleteFile(filePath: string) {
+  if (fs.existsSync(filePath)) {
     fs.removeSync(filePath);
   } else {
     throw new Error(`${modsText.deleteNonExistingError}: "${filePath}"`);
@@ -144,16 +142,15 @@ export function deleteFile(filePath : string) {
 export function cleanup(mod: Mod, tempManifestPath: string) {
   if (!mod.modPath) return;
 
-  var pathsToPreserve = [];
+  let pathsToPreserve: string[] | undefined = [];
 
   // Get pathsToPreserve from the version being installed, not the local version
-  try{
-    const { manifest, missingAttributes } = manifestPartialToFull(
+  try {
+    const { manifest } = manifestPartialToFull(
       fs.readJsonSync(tempManifestPath)
     );
     pathsToPreserve = manifest.pathsToPreserve;
-  }
-  catch(error) {
+  } catch (error) {
     pathsToPreserve = mod.pathsToPreserve;
   }
 
@@ -161,7 +158,9 @@ export function cleanup(mod: Mod, tempManifestPath: string) {
     mod.modPath,
     mod.uniqueName === 'Alek.OWML'
       ? ['Mods', 'OWML.Config.json', 'OWML.Manifest.json']
-      : ['config.json', 'save.json', 'manifest.json'].concat(pathsToPreserve)
+      : ['config.json', 'save.json', 'manifest.json'].concat(
+          pathsToPreserve ?? []
+        )
   );
 }
 
@@ -189,8 +188,7 @@ export async function unzipRemoteFile(
   const temporaryPath = `${userDataPath}/temp/${temporaryName}-${new Date().getTime()}`;
   const zipPath = `${temporaryPath}/${temporaryName}.zip`;
   const unzipPath = `${temporaryPath}/${temporaryName}`;
-  const tempConfigPath = `${unzipPath}/config.json`;
-  const tempManifestPath = `${unzipPath}/manifest.json`;
+  const temporaryConfigPath = `${unzipPath}/config.json`;
 
   await createFolders(unzipPath);
 
@@ -198,12 +196,12 @@ export async function unzipRemoteFile(
   await unzipFile(zipPath, unzipPath, onUnzipProgress);
 
   if (mod.localVersion) {
-    cleanup(mod, tempManifestPath);
+    cleanup(mod, `${unzipPath}/manifest.json`);
   }
 
   // Prevent config.json in release from overwriting the existing one
-  if(fs.existsSync(tempConfigPath)) {
-    await deleteFile(tempConfigPath);
+  if (fs.existsSync(temporaryConfigPath)) {
+    await deleteFile(temporaryConfigPath);
   }
 
   await copyFolder(unzipPath, destinationPath);
