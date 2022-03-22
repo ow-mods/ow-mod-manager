@@ -8,7 +8,6 @@ import { exec } from 'child_process';
 import { Readable } from 'stream';
 import { modsText } from '../helpers/static-text';
 import { debugConsole } from '../helpers/console-log';
-import { manifestPartialToFull } from './manifest';
 
 // Defines which portion of the loading bar is for download progress,
 // and the remaining is for unzipping progress.
@@ -139,39 +138,12 @@ export function deleteFile(filePath: string) {
   }
 }
 
-export function cleanup(mod: Mod, tempManifestPath: string) {
-  if (!mod.modPath) return;
-
-  let pathsToPreserve: string[] | undefined = [];
-
-  // Get pathsToPreserve from the version being installed, not the local version
-  try {
-    const { manifest } = manifestPartialToFull(
-      fs.readJsonSync(tempManifestPath)
-    );
-    pathsToPreserve = manifest.pathsToPreserve;
-  } catch (error) {
-    pathsToPreserve = mod.pathsToPreserve;
-  }
-
-  deleteFolderExcept(
-    mod.modPath,
-    mod.uniqueName === 'Alek.OWML'
-      ? ['Mods', 'OWML.Config.json', 'OWML.Manifest.json']
-      : ['config.json', 'save.json', 'manifest.json'].concat(
-          pathsToPreserve ?? []
-        )
-  );
-}
-
 export async function unzipRemoteFile(
   mod: Mod,
   url: string,
   onProgress: ProgressHandler
 ) {
   const destinationPath = mod.modPath;
-
-  debugConsole.log('unzip remote file from', url, 'to', destinationPath);
 
   const onDownloadProgress: ProgressHandler = (progress) => {
     debugConsole.log('onDownloadProgress', progress);
@@ -190,22 +162,19 @@ export async function unzipRemoteFile(
   const unzipPath = `${temporaryPath}/${temporaryName}`;
   const temporaryConfigPath = `${unzipPath}/config.json`;
 
+  debugConsole.log('unzip remote file from', url, 'to', temporaryPath);
+
   await createFolders(unzipPath);
 
   await downloadFile(url, zipPath, onDownloadProgress);
   await unzipFile(zipPath, unzipPath, onUnzipProgress);
 
-  if (mod.localVersion) {
-    cleanup(mod, `${unzipPath}/manifest.json`);
-  }
-
   // Prevent config.json in release from overwriting the existing one
   if (fs.existsSync(temporaryConfigPath)) {
-    await deleteFile(temporaryConfigPath);
+    deleteFile(temporaryConfigPath);
   }
 
-  await copyFolder(unzipPath, destinationPath);
-  await deleteFolder(temporaryPath);
+  return [temporaryPath, unzipPath];
 }
 
 export function openDirectory(directoryPath: string) {
