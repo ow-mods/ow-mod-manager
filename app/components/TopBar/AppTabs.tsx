@@ -54,7 +54,7 @@ const AppTabs = () => {
   const [selectedTab, setSelectedTab] = useRecoilState(selectedTabState);
 
   return (
-    <Tabs value={selectedTab}>
+    <Tabs value={selectedTab} variant={"scrollable"} scrollButtons={"on"}>
       {tabList.map((tab: Tab, index: number) => (
         <Tab
           key={tab.name}
