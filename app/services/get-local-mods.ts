@@ -25,6 +25,7 @@ function getOwml(owmlPath: string) {
     isRequired: true,
     errors: [],
     dependencies: [],
+    addons: [],
   };
   return owml;
 }
@@ -70,6 +71,7 @@ export function getLocalMods(owmlPath: string) {
         patcher: manifest.patcher,
         conflicts: manifest.conflicts,
         pathsToPreserve: manifest.pathsToPreserve,
+        addons: [],
       };
 
       if (missingAttributes.length > 0) {
@@ -94,11 +96,12 @@ export function getLocalMods(owmlPath: string) {
       localMods.push({
         author: modDirectoryName,
         dependencies: [],
-        errors: [modsText.brokenManifestError(modDirectoryName, error)],
+        errors: [modsText.brokenManifestError(modDirectoryName, `${error}`)],
         modPath,
         name: modDirectoryName,
         uniqueName: modDirectoryName,
         localVersion: '-',
+        addons: [],
       });
     }
   });

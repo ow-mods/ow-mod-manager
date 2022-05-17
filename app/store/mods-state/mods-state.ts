@@ -53,5 +53,6 @@ export const modList = selector({
       downloadCount: get(modManager).downloadCount,
       errors: [],
       dependencies: [],
+      addons: [],
     }),
 });

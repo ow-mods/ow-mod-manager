@@ -30,6 +30,7 @@ type Mod = {
   patcher?: string;
   conflicts?: string[];
   pathsToPreserve?: string[];
+  addons: string[];
 };
 
 type ModManager = {

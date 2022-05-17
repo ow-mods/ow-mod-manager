@@ -19,6 +19,7 @@ import {
   missingDependencyIdsState,
   addonModList,
   enabledModList,
+  isFiltering,
 } from '../../store';
 
 type Props = {
@@ -108,6 +109,8 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const [isAddonsExpanded, setIsAddonsExpanded] = useState(false);
   const isAddon = mod.parent && !mod.localVersion;
   const enabledMods = useRecoilValue(enabledModList);
+  const forceExpandAddons = useRecoilValue(isFiltering);
+  const shouldExpandAddons = forceExpandAddons || isAddonsExpanded;
 
   const addons = useMemo(
     () => addonMods.filter((addon) => addon.parent === mod.uniqueName),
@@ -218,7 +221,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
                   {getModText()}
                 </Typography>
               </Box>
-              {addons.length > 0 && (
+              {addons.length > 0 && !forceExpandAddons && (
                 <ButtonBase
                   className={styles.addonExpander}
                   onClick={handleExpandClick}
@@ -229,7 +232,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
                     borderRadius={theme.shape.borderRadius}
                     maxWidth="100%"
                   >
-                    {isAddonsExpanded ? <ExpandLess /> : <ExpandMore />}
+                    {shouldExpandAddons ? <ExpandLess /> : <ExpandMore />}
 
                     <Typography variant="caption" noWrap>
                       {addons.length}
@@ -259,7 +262,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
           <ModActions mod={mod} />
         </TableCell>
       </TableRow>
-      {isAddonsExpanded &&
+      {shouldExpandAddons &&
         addons.map((addon) => (
           <ModTableRow key={addon.uniqueName} mod={addon} />
         ))}

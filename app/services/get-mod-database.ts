@@ -69,6 +69,9 @@ export async function getModDatabase(
         isRequired: required,
         description,
         prerelease,
+        addons: releases
+          .filter((release) => release.parent === uniqueName)
+          .map((addon) => addon.uniqueName),
       };
 
       return mod;
