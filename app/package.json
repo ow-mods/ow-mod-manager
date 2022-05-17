@@ -1,7 +1,7 @@
 {
   "name": "ow-mod-manager",
   "productName": "OuterWildsModManager",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "description": "Outer Wilds Mod Manager",
   "main": "./main.prod.js",
   "author": {
