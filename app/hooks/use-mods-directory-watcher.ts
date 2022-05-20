@@ -5,7 +5,7 @@ import { debugConsole } from '../helpers/console-log';
 
 type Handler = () => void;
 
-export function useModsDirectoryWatcher(owmlPath: string, handler: Handler) {
+export function useModsDirectoryWatcher(owmlPath: string, alphaPath: string, handler: Handler) {
   const { isLoading } = useLoading();
 
   useEffect(() => {
@@ -15,9 +15,14 @@ export function useModsDirectoryWatcher(owmlPath: string, handler: Handler) {
 
     debugConsole.log('useEffect: useModsDirectoryWatcher');
     const path = `${owmlPath}/Mods`;
+    const patha = `${alphaPath}/BepInEx/plugins`;
 
     if (!fs.existsSync(path)) {
       fs.mkdirSync(path, { recursive: true });
+    }
+
+    if (!fs.existsSync(patha)) {
+      fs.mkdirSync(patha, { recursive: true });
     }
 
     const watcher = fs.watch(
@@ -34,9 +39,26 @@ export function useModsDirectoryWatcher(owmlPath: string, handler: Handler) {
       }
     );
 
+    const watchera = fs.watch(
+      patha,
+      { recursive: true },
+      (eventType, fileName) => {
+        debugConsole.log(
+          'useEffect: useModsDirectoryWatcher callback. eventType:',
+          eventType,
+          'fileName:',
+          fileName
+        );
+        handler();
+      }
+    );
+
     // Call the handler one first time.
     handler();
 
-    return () => watcher.close();
-  }, [handler, owmlPath, isLoading]);
+    return () => {
+      watcher.close();
+      watchera.close();
+    };
+  }, [handler, owmlPath, alphaPath, isLoading]);
 }

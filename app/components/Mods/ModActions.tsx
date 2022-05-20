@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const styles = useStyles();
   const setLocalMods = useSetRecoilState(localModList);
-  const { owmlPath } = useRecoilValue(settingsState);
+  const { owmlPath, alphaPath } = useRecoilValue(settingsState);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [progress, setProgress] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -100,7 +100,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
 
   const handleActionError = (actionName: string, error: string) => {
     debugConsole.error('error in action', actionName, error);
-    setLocalMods(getLocalMods(owmlPath));
+    setLocalMods(getLocalMods(owmlPath, alphaPath));
   };
 
   const modActionHandler = (
@@ -166,8 +166,11 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     return modsText.actions.install;
   };
 
-  return (
-    <Box display="flex" justifyContent="space-between">
+  const getEnabledCheckbox = () => {
+    if (mod.isAlpha) {
+      return '';
+    }
+    return (
       <Tooltip title={getEnableTooltip()}>
         <span>
           <IconButton
@@ -179,6 +182,12 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
           </IconButton>
         </span>
       </Tooltip>
+    );
+  };
+
+  return (
+    <Box display="flex" justifyContent="space-between">
+      {getEnabledCheckbox()}
       <Tooltip title={getInstallTooltip()}>
         <span>
           <IconButton

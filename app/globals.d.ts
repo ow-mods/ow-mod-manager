@@ -31,6 +31,9 @@ type Mod = {
   conflicts?: string[];
   pathsToPreserve?: string[];
   addons: string[];
+  isAlpha?: boolean;
+  minBepInExVersion?: string;
+  maxBepInExVersion?: string;
 };
 
 type ModManager = {
@@ -49,6 +52,8 @@ type Manifest = {
   patcher?: string;
   conflicts?: string[];
   pathsToPreserve?: string[];
+  minBepInExVersion?: string;
+  maxBepInExVersion?: string;
 };
 
 type ModConfig = {
@@ -70,6 +75,9 @@ type Settings = {
   alertSourceUrl: string;
   owmlPath: string;
   disableModWarnings: Record<string, boolean>;
+  showAlphaSettings: boolean;
+  alphaPath: string;
+  cmowaPath: string;
 };
 
 type OwmlSettings = {

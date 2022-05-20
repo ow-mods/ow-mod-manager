@@ -12,21 +12,24 @@ import {
 export const RemoteModsSubscription: React.FunctionComponent = () => {
   const setRemoteMods = useSetRecoilState(remoteModList);
   const setModManager = useSetRecoilState(modManagerState);
-  const { modDatabaseUrl, owmlPath } = useRecoilValue(settingsState);
+  const { modDatabaseUrl, owmlPath, alphaPath, cmowaPath } = useRecoilValue(settingsState);
 
   useModsDirectoryWatcher(
     owmlPath,
+    alphaPath,
     useCallback(() => {
       const updateMods = async () => {
         const { mods, modManager } = await getModDatabase(
           modDatabaseUrl,
-          owmlPath
+          owmlPath,
+          alphaPath,
+          cmowaPath
         );
         setRemoteMods(mods);
         setModManager(modManager);
       };
       updateMods();
-    }, [modDatabaseUrl, owmlPath, setRemoteMods, setModManager])
+    }, [modDatabaseUrl, owmlPath, alphaPath, cmowaPath, setRemoteMods, setModManager])
   );
 
   return null;

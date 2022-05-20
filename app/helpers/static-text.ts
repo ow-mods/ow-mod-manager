@@ -6,9 +6,11 @@ export const globalText = {
     update: 'Update',
   },
   startGame: 'Start Game',
+  startAlpha: 'Start Alpha',
   gameRunning: 'Already running',
   missingRequiredMod: (modNames: string[]) =>
     `Please install ${modNames.join(', ')} before starting the game`,
+  incompatibleBepInExVersion: 'One of your mods is incompatible with your current BepInEx version.',
   dialog: {
     ok: 'OK',
     cancel: 'Cancel',
@@ -58,6 +60,7 @@ export const modsText = {
   },
   versionNotAvailable: 'Not Available',
   outdated: 'Outdated',
+  incompatibleVersion: 'Incompatible Version',
   actions: {
     disableRequired: "Required, can't disable",
     disable: 'Disable',
@@ -100,6 +103,20 @@ export const modsText = {
     `Failed to read manifest.json in mod directory "${directoryName}". Reinstall the mod or contact the mod author to fix this issue. Error: ${error}`,
   brokenConfigError: (error: string) =>
     `Failed to read mod configuration files: "${error}"`,
+  wrongDependencyVersionWarning: (dependencyName: string, minVersion?: string, maxVersion?: string) => {
+    if (minVersion && maxVersion) {
+      return `This mod requires ${dependencyName} to have a version between ${minVersion} and ${maxVersion}.`;
+    }
+    else if (!minVersion && maxVersion) {
+      return `This mod requires ${dependencyName} to have a version less than ${maxVersion}.`;
+    }
+    else if (minVersion && !maxVersion) {
+      return `This mod requires ${dependencyName} to have a version greater than ${minVersion}.`;
+    }
+    else {
+      return `This mod requires ${dependencyName}.`;
+    }
+  },
 };
 
 export const settingsText = {
@@ -155,6 +172,20 @@ export const settingsText = {
     label: 'Disable warning for mod',
     tooltip:
       'Prevents this mod from showing warnings in the Mod Manager when starting the game',
+  },
+  showAlphaSettings: {
+    label: 'Show Alpha Settings',
+    tooltip: '',
+  },
+  alphaPath: {
+    label: 'Alpha game folder (contains alpha game exe)',
+    tooltip: 'Path to Outer Wilds Alpha',
+    isAlpha: true,
+  },
+  cmowaPath: {
+    label: 'CMOWA path',
+    tooltip: "Can be relative to Mod Manager or an absolute path.",
+    isAlpha: true,
   },
   textFieldSave: 'Save',
   pathFindButton: 'Find...',

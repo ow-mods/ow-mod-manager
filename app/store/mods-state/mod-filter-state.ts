@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 
-import { modList } from './mods-state';
+import { modList, alphaModList } from './mods-state';
 
 const filterByText = (filter: string, mod: Mod, mods: Mod[]): boolean => {
   const lowerCaseFilter = filter.toLowerCase();
@@ -52,6 +52,22 @@ export const filteredModList = selector({
       );
   },
 });
+
+export const filteredAlphaModList = selector({
+  key: 'FilteredAlphaModList',
+  get: ({ get }) => {
+    const filter = get(modFilterState);
+    const mods = get(alphaModList);
+    return mods
+      .filter((mod) => {
+        return filterByText(filter, mod, mods);
+      })
+      .sort(
+        (modA, modB) => (modB.downloadCount ?? 0) - (modA.downloadCount ?? 0)
+      );
+  },
+});
+
 
 export const isFiltering = selector({
   key: 'IsFiltering',

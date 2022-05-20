@@ -8,6 +8,7 @@ import { debugConsole } from '../helpers/console-log';
 export const defaultAppSettings = {
   ...config.defaultSettings,
   owmlPath: `${remote.app.getPath('userData')}\\OWML`,
+  cmowaPath: `${remote.app.getPath('userData')}\\CMOWA`,
 };
 
 export function getSettingsPath() {

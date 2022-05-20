@@ -3,6 +3,7 @@ import { Container, List, Paper } from '@material-ui/core';
 
 import { settingsText } from '../../helpers/static-text';
 import { useSettings } from '../../hooks';
+import AlphaDownload from './AlphaDownload';
 import ResetSettings from './ResetSettings';
 import ModManagerSettingControl from './ModManagerSettingControl';
 import OwmlSettingControl from './OwmlSettingControl';
@@ -15,6 +16,7 @@ type OwmlSettingKey = keyof OwmlSettings;
 type SettingsInput = {
   key: SettingKey | OwmlSettingKey;
   isAdvanced?: boolean;
+  isAlpha?: boolean;
   isOwmlSetting?: boolean;
   type: SettingType;
 };
@@ -43,7 +45,7 @@ const settingsInputs: readonly SettingsInput[] = [
   },
   {
     key: 'owmlPath',
-    type: SettingType.Text,
+    type: SettingType.Path,
     isAdvanced: true,
   },
   {
@@ -73,19 +75,33 @@ const settingsInputs: readonly SettingsInput[] = [
     type: SettingType.SwitchList,
     isAdvanced: true,
   },
+  {
+    key: 'showAlphaSettings',
+    type: SettingType.Switch,
+  },
+  {
+    key: 'alphaPath',
+    type: SettingType.Path,
+    isAlpha: true,
+  },
+  {
+    key: 'cmowaPath',
+    type: SettingType.Path,
+    isAlpha: true,
+  },
 ];
 
 const Settings = () => {
   const {
-    settings: { showAdvancedSettings },
+    settings: { showAdvancedSettings, showAlphaSettings },
   } = useSettings();
   return (
     <PageContainer maxWidth={false}>
       <Container maxWidth="md">
         <List component={Paper}>
           {settingsInputs.map(
-            ({ key, isAdvanced, isOwmlSetting, type }) =>
-              (!isAdvanced || showAdvancedSettings) && (
+            ({ key, isAdvanced, isAlpha, isOwmlSetting, type }) =>
+              ((!isAdvanced && !isAlpha) || (isAdvanced && showAdvancedSettings) || (isAlpha && showAlphaSettings)) && (
                 <React.Fragment key={key}>
                   {isOwmlSetting && (
                     <OwmlSettingControl
@@ -106,6 +122,7 @@ const Settings = () => {
                 </React.Fragment>
               )
           )}
+          <AlphaDownload />
           <ResetSettings />
         </List>
       </Container>

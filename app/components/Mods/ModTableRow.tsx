@@ -13,12 +13,15 @@ import {
 import { useRecoilValue } from 'recoil';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
 import { modsText } from '../../helpers/static-text';
-import { isOutdated, isInstalled, isBroken } from '../../services';
+import { isOutdated, isInstalled, isBroken, hasWrongBepInExVersion } from '../../services';
 import ModActions from './ModActions';
 import {
   missingDependencyIdsState,
+  missingAlphaDependencyIdsState,
   addonModList,
+  addonAlphaModList,
   enabledModList,
+  enabledAlphaModList,
   isFiltering,
 } from '../../store';
 
@@ -102,15 +105,18 @@ const useStyles = makeStyles((theme) => ({
 const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const styles = useStyles();
   const theme = useTheme();
-  const missingDependencyNames = useRecoilValue(missingDependencyIdsState(mod));
+  const missingDependencyNames = useRecoilValue(mod.isAlpha ? missingAlphaDependencyIdsState(mod) : missingDependencyIdsState(mod));
   const isModOutdated = isOutdated(mod);
   const isModBroken = isBroken(mod);
-  const addonMods = useRecoilValue(addonModList);
+  const addonMods = useRecoilValue(mod.isAlpha ? addonAlphaModList : addonModList);
   const [isAddonsExpanded, setIsAddonsExpanded] = useState(false);
   const isAddon = mod.parent && !mod.localVersion;
-  const enabledMods = useRecoilValue(enabledModList);
+  const enabledMods = useRecoilValue(mod.isAlpha ? enabledAlphaModList : enabledModList);
   const forceExpandAddons = useRecoilValue(isFiltering);
   const shouldExpandAddons = forceExpandAddons || isAddonsExpanded;
+  const bepInEx = enabledMods.find((mod : Mod) => mod.uniqueName == "bbepis.BepInEx");
+  const wrongBepinExVersion = (mod.isAlpha && isInstalled(mod) && bepInEx && isInstalled(bepInEx) && bepInEx.isEnabled) ? hasWrongBepInExVersion(mod, bepInEx) : false;
+
 
   const addons = useMemo(
     () => addonMods.filter((addon) => addon.parent === mod.uniqueName),
@@ -161,7 +167,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     let className = styles.tableRow;
     if (isModBroken || isModConflicting) {
       className += ` ${styles.brokenRow}`;
-    } else if (missingDependencyNames.length > 0) {
+    } else if (missingDependencyNames.length > 0 || wrongBepinExVersion) {
       className += ` ${styles.missingDependencyRow}`;
     } else if (isAddon) {
       className += ` ${styles.addonRow}`;
@@ -180,6 +186,14 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     }
     if (isModConflicting) {
       return modsText.conflictingModWarning(conflictingMods.join(', '));
+    }
+    if (isInstalled(mod) && wrongBepinExVersion){
+      if (!bepInEx || !isInstalled(bepInEx)) {
+        return modsText.missingDependencyWarning("bbepis.BepInEx");
+      }
+      else {
+        return modsText.wrongDependencyVersionWarning("bbepis.BepInEx", mod.minBepInExVersion, mod.maxBepInExVersion);
+      }
     }
     return mod.description;
   };

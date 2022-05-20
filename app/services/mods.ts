@@ -2,6 +2,8 @@ import { shell, remote } from 'electron';
 import fs from 'fs-extra';
 
 import { modsText, globalText } from '../helpers/static-text';
+import { versionComparer } from '../helpers/version-compare';
+import { debugConsole } from '../helpers/console-log';
 import { getConfig, saveConfig } from './mod-config';
 import {
   unzipRemoteFile,
@@ -50,9 +52,13 @@ export function cleanup(mod: Mod, tempManifestPath: string) {
     mod.modPath,
     mod.uniqueName === 'Alek.OWML'
       ? ['Mods', 'OWML.Config.json', 'OWML.Manifest.json']
-      : ['config.json', 'save.json', 'manifest.json'].concat(
+      : (mod.uniqueName === 'bbepis.BepInEx'
+      ? ['BepInEx', "OuterWilds_Alpha_1_2_Data", 'doorstop_config.ini', 'OuterWilds_Alpha_1_2.exe', 'winhttp.dll', 'BepInEx.Manifest.json']
+      : (mod.uniqueName === 'Locochoco.CMOWA'
+      ? ['CMOWA.Config.json', 'CMOWA.Manifest.json']
+      : (['config.json', 'save.json', 'manifest.json'].concat(
           pathsToPreserve ?? []
-        )
+        ))))
   );
 }
 
@@ -156,6 +162,28 @@ export function isEnabled(mod: Mod) {
 
 export function isBroken(mod: Mod) {
   return mod.errors.length > 0;
+}
+
+export function hasWrongBepInExVersion(mod: Mod, bepInEx?: Mod) {
+  if (!bepInEx ||
+    !isInstalled(bepInEx) ||
+    bepInEx.localVersion === undefined
+  ) {
+    return true;
+  }
+  if (bepInEx.localVersion && (mod.minBepInExVersion || mod.maxBepInExVersion)){
+    debugConsole.log(mod.name + ": " + mod.minBepInExVersion + " < " + bepInEx.localVersion + " > " + mod.maxBepInExVersion);
+    if (mod.minBepInExVersion && mod.maxBepInExVersion) {
+      return !versionComparer.isBetweenMinAndMax(bepInEx.localVersion, mod.minBepInExVersion, mod.maxBepInExVersion);
+    }
+    else if (mod.minBepInExVersion && !mod.maxBepInExVersion) {
+      return !versionComparer.isGreaterThanOrEqualTo(bepInEx.localVersion, mod.minBepInExVersion);
+    }
+    else if (!mod.minBepInExVersion && mod.maxBepInExVersion) {
+      return !versionComparer.isLessThanOrEqualTo(bepInEx.localVersion, mod.maxBepInExVersion);
+    }
+  }
+  return false;
 }
 
 export async function toggleEnabled(mod: Mod) {

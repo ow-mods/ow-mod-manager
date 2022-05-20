@@ -15,6 +15,7 @@ type RemoteMod = {
     downloadUrl: string;
     version: string;
   };
+  alpha?: boolean;
 };
 
 type RemoteModDatabase = {
@@ -29,7 +30,9 @@ export type ModDatabase = {
 
 export async function getModDatabase(
   url: string,
-  owmlPath: string
+  owmlPath: string,
+  alphaPath: string,
+  cmowaPath: string
 ): Promise<ModDatabase> {
   const response = await fetch(url);
 
@@ -52,7 +55,9 @@ export async function getModDatabase(
       uniqueName,
       description,
       parent,
+      alpha,
     }: RemoteMod) => {
+      var modPath = alpha ? `${alphaPath}/BepInEx/plugins/${uniqueName}` : `${owmlPath}/Mods/${uniqueName}`;
       const mod: Mod = {
         name,
         author,
@@ -60,7 +65,7 @@ export async function getModDatabase(
         parent,
         remoteVersion: coerce(version)?.version ?? version,
         // TODO doesnt make sense for this to be here in remote mods
-        modPath: `${owmlPath}/Mods/${uniqueName}`,
+        modPath: modPath,
         errors: [],
         downloadUrl,
         downloadCount,
@@ -72,6 +77,7 @@ export async function getModDatabase(
         addons: releases
           .filter((release) => release.parent === uniqueName)
           .map((addon) => addon.uniqueName),
+        isAlpha: alpha,
       };
 
       return mod;

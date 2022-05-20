@@ -1,9 +1,15 @@
 import React from 'react';
 import { Toolbar, Container, makeStyles } from '@material-ui/core';
+import { useRecoilValue } from 'recoil';
+
+import { alphaState } from '../../store';
 
 import StartGameButton from './StartGameButton';
+import StartAlphaButton from './StartAlphaButton';
 import AppTabs from './AppTabs';
+import { tabList } from './AppTabs';
 import LoadingSuspense from '../LoadingSuspense';
+import { globalText } from '../../helpers/static-text';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
 const TopBar: React.FunctionComponent = () => {
   const styles = useStyles();
+  const alpha = useRecoilValue(alphaState);
+  const button = alpha ? (<StartAlphaButton />) : (<StartGameButton />) ;
 
   return (
     <div className={styles.wrapper}>
@@ -34,7 +42,7 @@ const TopBar: React.FunctionComponent = () => {
         <Container maxWidth="md" className={styles.container}>
           <AppTabs />
           <LoadingSuspense>
-            <StartGameButton />
+            {button}
           </LoadingSuspense>
         </Container>
       </Toolbar>

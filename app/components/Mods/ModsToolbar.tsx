@@ -5,8 +5,9 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { modsText } from '../../helpers/static-text';
 import FilterInput from '../FilterInput';
-import { modFilterState, settingsState } from '../../store';
+import { modFilterState, settingsState, alphaState } from '../../store';
 import { openDirectory } from '../../services';
+import AlphaSwitch from './AlphaSwitch';
 
 const useStyles = makeStyles((theme) => ({
   toolBar: {
@@ -18,8 +19,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ModsToolbar: React.FunctionComponent = () => {
   const styles = useStyles();
+  const alpha = useRecoilValue(alphaState);
   const [filter, setFilter] = useRecoilState(modFilterState);
-  const { owmlPath } = useRecoilValue(settingsState);
+  const { owmlPath, alphaPath } = useRecoilValue(settingsState);
   return (
     <Paper>
       <Toolbar className={styles.toolBar}>
@@ -28,9 +30,10 @@ const ModsToolbar: React.FunctionComponent = () => {
           onChange={setFilter}
           label={modsText.toolbar.findModsLabel}
         />
+        <AlphaSwitch/>
         <Button
           startIcon={<FolderIcon />}
-          onClick={() => openDirectory(`${owmlPath}/Mods`)}
+          onClick={() => openDirectory(alpha ? `${alphaPath}/BepInEx/plugins` : `${owmlPath}/Mods`)}
           variant="outlined"
         >
           {modsText.toolbar.modsDirectory}
