@@ -162,7 +162,8 @@ export const settingsText = {
   },
   alphaMode: {
     label: 'View Mods for Outer Wilds Alpha',
-    tooltip: '',
+    tooltip:
+      'Expands Outer Wilds Alpha settings, and displays Outer Wilds Alpha mods on the mod tab.',
   },
   alphaPath: {
     label: 'Alpha game folder',
