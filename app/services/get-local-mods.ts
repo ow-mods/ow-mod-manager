@@ -71,7 +71,7 @@ function getCmowa(cmowaPath: string) {
     errors: [],
     dependencies: ['bbepis.BepInEx'],
     addons: [],
-    isAlpha: true
+    isAlpha: true,
   };
   return cmowa;
 }
@@ -202,7 +202,7 @@ export function getLocalMods(
           conflicts: manifest.conflicts,
           pathsToPreserve: manifest.pathsToPreserve,
           addons: [],
-          isAlpha: true
+          isAlpha: true,
         };
 
         if (missingAttributes.length > 0) {

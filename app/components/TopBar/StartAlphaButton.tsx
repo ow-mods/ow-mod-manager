@@ -5,10 +5,7 @@ import { PlayArrow as PlayIcon } from '@material-ui/icons';
 import { useRecoilValue } from 'recoil';
 import { remote } from 'electron';
 import { globalText } from '../../helpers/static-text';
-import {
-  runAlpha,
-  writeSettings,
-} from '../../services';
+import { runAlpha, writeSettings } from '../../services';
 import {
   settingsState,
   requiredAlphaModNamesState,
@@ -69,9 +66,7 @@ const StartAlphaButton: React.FunctionComponent = () => {
     settings.cmowaPath === null || settings.cmowaPath.match(/^ *$/) !== null;
   const isMissingRequiredMod = requiredModNames.length > 0;
   const isStartDisabled =
-    isMissingRequiredMod ||
-    isMissingAlphaPath ||
-    isMissingCmowaPath;
+    isMissingRequiredMod || isMissingAlphaPath || isMissingCmowaPath;
 
   function getStartGameTooltip() {
     if (isMissingAlphaPath) {

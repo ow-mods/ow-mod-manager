@@ -13,11 +13,7 @@ import {
 import { useRecoilValue } from 'recoil';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
 import { modsText } from '../../helpers/static-text';
-import {
-  isOutdated,
-  isInstalled,
-  isBroken,
-} from '../../services';
+import { isOutdated, isInstalled, isBroken } from '../../services';
 import ModActions from './ModActions';
 import {
   missingDependencyIdsState,
