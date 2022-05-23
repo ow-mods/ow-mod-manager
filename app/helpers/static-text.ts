@@ -157,8 +157,8 @@ export const settingsText = {
     tooltip:
       'Prevents this mod from showing warnings in the Mod Manager when starting the game',
   },
-  showAlphaSettings: {
-    label: 'Show Alpha Settings',
+  alphaMode: {
+    label: 'View Mods for Outer Wilds Alpha',
     tooltip: '',
   },
   alphaPath: {

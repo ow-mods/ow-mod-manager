@@ -14,12 +14,12 @@ import {
   installedAlphaModList,
   requiredAlphaModList,
   notInstalledAlphaModList,
-  alphaState,
+  settingsState,
 } from '../../store';
 import ModsToolbar from './ModsToolbar';
 
 const ModsPage: React.FunctionComponent = () => {
-  const inAlphaMode = useRecoilValue(alphaState);
+  const inAlphaMode = useRecoilValue(settingsState).alphaMode;
 
   const enabledMods = useRecoilValue(
     inAlphaMode ? enabledAlphaModList : enabledModList

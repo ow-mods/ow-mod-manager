@@ -71,7 +71,7 @@ type Settings = {
   alertSourceUrl: string;
   owmlPath: string;
   disableModWarnings: Record<string, boolean>;
-  showAlphaSettings: boolean;
+  alphaMode: boolean;
   alphaPath: string;
   cmowaPath: string;
 };

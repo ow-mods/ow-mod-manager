@@ -2,7 +2,7 @@ import React from 'react';
 import { Toolbar, Container, makeStyles } from '@material-ui/core';
 import { useRecoilValue } from 'recoil';
 
-import { alphaState } from '../../store';
+import { settingsState } from '../../store';
 
 import StartGameButton from './StartGameButton';
 import StartAlphaButton from './StartAlphaButton';
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TopBar: React.FunctionComponent = () => {
   const styles = useStyles();
-  const inAlphaMode = useRecoilValue(alphaState);
+  const inAlphaMode = useRecoilValue(settingsState).alphaMode;
   const button = inAlphaMode ? <StartAlphaButton /> : <StartGameButton />;
 
   return (

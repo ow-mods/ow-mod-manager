@@ -76,7 +76,7 @@ const settingsInputs: readonly SettingsInput[] = [
     isAdvanced: true,
   },
   {
-    key: 'showAlphaSettings',
+    key: 'alphaMode',
     type: SettingType.Switch,
   },
   {
@@ -93,7 +93,7 @@ const settingsInputs: readonly SettingsInput[] = [
 
 const Settings = () => {
   const {
-    settings: { showAdvancedSettings, showAlphaSettings },
+    settings: { showAdvancedSettings, alphaMode },
   } = useSettings();
   return (
     <PageContainer maxWidth={false}>
@@ -103,7 +103,7 @@ const Settings = () => {
             ({ key, isAdvanced, isAlpha, isOwmlSetting, type }) =>
               ((!isAdvanced && !isAlpha) ||
                 (isAdvanced && showAdvancedSettings) ||
-                (isAlpha && showAlphaSettings)) && (
+                (isAlpha && alphaMode)) && (
                 <React.Fragment key={key}>
                   {isOwmlSetting && (
                     <OwmlSettingControl
@@ -124,7 +124,7 @@ const Settings = () => {
                 </React.Fragment>
               )
           )}
-          {showAlphaSettings && <AlphaLink />}
+          {alphaMode && <AlphaLink />}
           <ResetSettings />
         </List>
       </Container>
