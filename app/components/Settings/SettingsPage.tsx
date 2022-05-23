@@ -124,7 +124,7 @@ const Settings = () => {
                 </React.Fragment>
               )
           )}
-          <AlphaDownload />
+          {showAlphaSettings && <AlphaDownload />}
           <ResetSettings />
         </List>
       </Container>
