@@ -3,7 +3,7 @@ import { Container, List, Paper } from '@material-ui/core';
 
 import { settingsText } from '../../helpers/static-text';
 import { useSettings } from '../../hooks';
-import AlphaDownload from './AlphaDownload';
+import AlphaLink from './AlphaLink';
 import ResetSettings from './ResetSettings';
 import ModManagerSettingControl from './ModManagerSettingControl';
 import OwmlSettingControl from './OwmlSettingControl';
@@ -124,7 +124,7 @@ const Settings = () => {
                 </React.Fragment>
               )
           )}
-          {showAlphaSettings && <AlphaDownload />}
+          {showAlphaSettings && <AlphaLink />}
           <ResetSettings />
         </List>
       </Container>

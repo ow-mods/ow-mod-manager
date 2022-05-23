@@ -8,7 +8,7 @@ const useStyles = makeStyles({
   },
 });
 
-const AlphaDownload = () => {
+const AlphaLink = () => {
   const styles = useStyles();
 
   const handleClick = useCallback(() => {
@@ -34,4 +34,4 @@ const AlphaDownload = () => {
   );
 };
 
-export default AlphaDownload;
+export default AlphaLink;
