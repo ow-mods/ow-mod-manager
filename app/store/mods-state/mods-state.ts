@@ -1,4 +1,4 @@
-import { atom, selector, useRecoilValue } from 'recoil';
+import { atom, selector } from 'recoil';
 import { merge, keyBy } from 'lodash';
 import { remote } from 'electron';
 
@@ -23,12 +23,20 @@ export const modManager = atom<ModManager>({
 
 const remoteModMap = selector({
   key: 'RemoteModMap',
-  get: ({ get }) => keyBy(get(remoteModList).filter(mod => !mod.isAlpha), 'uniqueName'),
+  get: ({ get }) =>
+    keyBy(
+      get(remoteModList).filter((mod) => !mod.isAlpha),
+      'uniqueName'
+    ),
 });
 
 export const localModMap = selector({
   key: 'LocalModMap',
-  get: ({ get }) => keyBy(get(localModList).filter(mod => !mod.isAlpha), 'uniqueName'),
+  get: ({ get }) =>
+    keyBy(
+      get(localModList).filter((mod) => !mod.isAlpha),
+      'uniqueName'
+    ),
 });
 
 const modMapState = selector({
@@ -39,18 +47,30 @@ const modMapState = selector({
 
 const remoteAlphaModMap = selector({
   key: 'RemoteAlphaModMap',
-  get: ({ get }) => keyBy(get(remoteModList).filter(mod => mod.isAlpha), 'uniqueName'),
+  get: ({ get }) =>
+    keyBy(
+      get(remoteModList).filter((mod) => mod.isAlpha),
+      'uniqueName'
+    ),
 });
 
 export const localAlphaModMap = selector({
   key: 'LocalAlphaModMap',
-  get: ({ get }) => keyBy(get(localModList).filter(mod => mod.isAlpha), 'uniqueName'),
+  get: ({ get }) =>
+    keyBy(
+      get(localModList).filter((mod) => mod.isAlpha),
+      'uniqueName'
+    ),
 });
 
 const alphaModMapState = selector({
   key: 'AlphaModMap',
   get: ({ get }) =>
-    merge<ModMap, ModMap, ModMap>({}, get(remoteAlphaModMap), get(localAlphaModMap)),
+    merge<ModMap, ModMap, ModMap>(
+      {},
+      get(remoteAlphaModMap),
+      get(localAlphaModMap)
+    ),
 });
 
 export const modList = selector({

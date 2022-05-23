@@ -7,9 +7,7 @@ import { alphaState } from '../../store';
 import StartGameButton from './StartGameButton';
 import StartAlphaButton from './StartAlphaButton';
 import AppTabs from './AppTabs';
-import { tabList } from './AppTabs';
 import LoadingSuspense from '../LoadingSuspense';
-import { globalText } from '../../helpers/static-text';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -34,16 +32,14 @@ const useStyles = makeStyles((theme) => ({
 const TopBar: React.FunctionComponent = () => {
   const styles = useStyles();
   const alpha = useRecoilValue(alphaState);
-  const button = alpha ? (<StartAlphaButton />) : (<StartGameButton />) ;
+  const button = alpha ? <StartAlphaButton /> : <StartGameButton />;
 
   return (
     <div className={styles.wrapper}>
       <Toolbar className={styles.toolbar}>
         <Container maxWidth="md" className={styles.container}>
           <AppTabs />
-          <LoadingSuspense>
-            {button}
-          </LoadingSuspense>
+          <LoadingSuspense>{button}</LoadingSuspense>
         </Container>
       </Toolbar>
     </div>

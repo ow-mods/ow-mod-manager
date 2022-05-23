@@ -5,18 +5,29 @@ import { PlayArrow as PlayIcon } from '@material-ui/icons';
 import { useRecoilValue } from 'recoil';
 import { remote } from 'electron';
 import { globalText } from '../../helpers/static-text';
-import { runAlpha, writeSettings, hasWrongBepInExVersion } from '../../services';
-import { settingsState, requiredAlphaModNamesState, enabledAlphaModList } from '../../store';
+import {
+  runAlpha,
+  writeSettings,
+  hasWrongBepInExVersion,
+} from '../../services';
+import {
+  settingsState,
+  requiredAlphaModNamesState,
+  enabledAlphaModList,
+} from '../../store';
 
 const StartAlphaButton: React.FunctionComponent = () => {
   const requiredModNames = useRecoilValue(requiredAlphaModNamesState);
   const settings = useRecoilValue(settingsState);
   const enabledMods = useRecoilValue(enabledAlphaModList);
-  const bepInEx = enabledMods.find((mod : Mod) => mod.uniqueName == "bbepis.BepInEx");
-  const wrongBepinExVersion = !enabledMods.every((mod: Mod) => !hasWrongBepInExVersion(mod, bepInEx));
+  const bepInEx = enabledMods.find(
+    (mod: Mod) => mod.uniqueName === 'bbepis.BepInEx'
+  );
+  const wrongBepinExVersion = !enabledMods.every(
+    (mod: Mod) => !hasWrongBepInExVersion(mod, bepInEx)
+  );
 
   async function handleStartGameClick() {
-    
     let newSettings = { ...settings };
 
     for (let i = 0; i < enabledMods.length; i += 1) {
@@ -55,28 +66,35 @@ const StartAlphaButton: React.FunctionComponent = () => {
     }
 
     writeSettings(newSettings);
-    
+
     runAlpha(settings);
   }
 
-  const isMissingAlphaPath = settings.alphaPath === null || settings.alphaPath.match(/^ *$/) !== null;
-  const isMissingCmowaPath = settings.cmowaPath === null || settings.cmowaPath.match(/^ *$/) !== null;
+  const isMissingAlphaPath =
+    settings.alphaPath === null || settings.alphaPath.match(/^ *$/) !== null;
+  const isMissingCmowaPath =
+    settings.cmowaPath === null || settings.cmowaPath.match(/^ *$/) !== null;
   const isMissingRequiredMod = requiredModNames.length > 0;
   const isMissingBepInEx = !bepInEx;
-  const isStartDisabled = isMissingRequiredMod || isMissingAlphaPath || isMissingCmowaPath || isMissingBepInEx || wrongBepinExVersion;
+  const isStartDisabled =
+    isMissingRequiredMod ||
+    isMissingAlphaPath ||
+    isMissingCmowaPath ||
+    isMissingBepInEx ||
+    wrongBepinExVersion;
 
   function getStartGameTooltip() {
-    if (isMissingAlphaPath){
+    if (isMissingAlphaPath) {
       return 'You need to set the path to the game folder in settings.';
     }
-    if (isMissingCmowaPath){
+    if (isMissingCmowaPath) {
       return 'You need to set the path to the CMOWA folder in settings.';
     }
     if (isMissingRequiredMod) {
       return globalText.missingRequiredMod(requiredModNames);
     }
     if (isMissingBepInEx) {
-      return globalText.missingRequiredMod(["bbepis.BepInEx"]);
+      return globalText.missingRequiredMod(['bbepis.BepInEx']);
     }
     if (wrongBepinExVersion) {
       return globalText.incompatibleBepInExVersion;

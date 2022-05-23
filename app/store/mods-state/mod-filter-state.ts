@@ -68,7 +68,6 @@ export const filteredAlphaModList = selector({
   },
 });
 
-
 export const isFiltering = selector({
   key: 'IsFiltering',
   get: ({ get }) => Boolean(get(modFilterState)),

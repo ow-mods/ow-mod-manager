@@ -12,9 +12,11 @@ function waitAndQuit() {
   quitTimeout = setTimeout(remote.app.quit, 1000);
 }
 
-export async function runAlpha(
-  { closeOnPlay, alphaPath, cmowaPath }: Settings
-) {
+export async function runAlpha({
+  closeOnPlay,
+  alphaPath,
+  cmowaPath,
+}: Settings) {
   const cmowaParams = [];
   if (alphaPath) {
     cmowaParams.push(`-gamePath ${alphaPath}`);

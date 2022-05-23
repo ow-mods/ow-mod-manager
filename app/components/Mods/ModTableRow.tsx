@@ -13,7 +13,12 @@ import {
 import { useRecoilValue } from 'recoil';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
 import { modsText } from '../../helpers/static-text';
-import { isOutdated, isInstalled, isBroken, hasWrongBepInExVersion } from '../../services';
+import {
+  isOutdated,
+  isInstalled,
+  isBroken,
+  hasWrongBepInExVersion,
+} from '../../services';
 import ModActions from './ModActions';
 import {
   missingDependencyIdsState,
@@ -105,18 +110,34 @@ const useStyles = makeStyles((theme) => ({
 const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const styles = useStyles();
   const theme = useTheme();
-  const missingDependencyNames = useRecoilValue(mod.isAlpha ? missingAlphaDependencyIdsState(mod) : missingDependencyIdsState(mod));
+  const missingDependencyNames = useRecoilValue(
+    mod.isAlpha
+      ? missingAlphaDependencyIdsState(mod)
+      : missingDependencyIdsState(mod)
+  );
   const isModOutdated = isOutdated(mod);
   const isModBroken = isBroken(mod);
-  const addonMods = useRecoilValue(mod.isAlpha ? addonAlphaModList : addonModList);
+  const addonMods = useRecoilValue(
+    mod.isAlpha ? addonAlphaModList : addonModList
+  );
   const [isAddonsExpanded, setIsAddonsExpanded] = useState(false);
   const isAddon = mod.parent && !mod.localVersion;
-  const enabledMods = useRecoilValue(mod.isAlpha ? enabledAlphaModList : enabledModList);
+  const enabledMods = useRecoilValue(
+    mod.isAlpha ? enabledAlphaModList : enabledModList
+  );
   const forceExpandAddons = useRecoilValue(isFiltering);
   const shouldExpandAddons = forceExpandAddons || isAddonsExpanded;
-  const bepInEx = enabledMods.find((mod : Mod) => mod.uniqueName == "bbepis.BepInEx");
-  const wrongBepinExVersion = (mod.isAlpha && isInstalled(mod) && bepInEx && isInstalled(bepInEx) && bepInEx.isEnabled) ? hasWrongBepInExVersion(mod, bepInEx) : false;
-
+  const bepInEx = enabledMods.find(
+    (enabledMod: Mod) => enabledMod.uniqueName === 'bbepis.BepInEx'
+  );
+  const wrongBepinExVersion =
+    mod.isAlpha &&
+    isInstalled(mod) &&
+    bepInEx &&
+    isInstalled(bepInEx) &&
+    bepInEx.isEnabled
+      ? hasWrongBepInExVersion(mod, bepInEx)
+      : false;
 
   const addons = useMemo(
     () => addonMods.filter((addon) => addon.parent === mod.uniqueName),
@@ -187,13 +208,16 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     if (isModConflicting) {
       return modsText.conflictingModWarning(conflictingMods.join(', '));
     }
-    if (isInstalled(mod) && wrongBepinExVersion){
+    if (isInstalled(mod) && wrongBepinExVersion) {
       if (!bepInEx || !isInstalled(bepInEx)) {
-        return modsText.missingDependencyWarning("bbepis.BepInEx");
+        return modsText.missingDependencyWarning('bbepis.BepInEx');
       }
-      else {
-        return modsText.wrongDependencyVersionWarning("bbepis.BepInEx", mod.minBepInExVersion, mod.maxBepInExVersion);
-      }
+
+      return modsText.wrongDependencyVersionWarning(
+        'bbepis.BepInEx',
+        mod.minBepInExVersion,
+        mod.maxBepInExVersion
+      );
     }
     return mod.description;
   };

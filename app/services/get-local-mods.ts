@@ -78,28 +78,32 @@ function getCmowa(cmowaPath: string) {
   return cmowa;
 }
 
-export function getLocalMods(owmlPath: string, alphaPath: string, cmowaPath: string) {
+export function getLocalMods(
+  owmlPath: string,
+  alphaPath: string,
+  cmowaPath: string
+) {
   if (!owmlPath && !alphaPath && !cmowaPath) {
     return [];
   }
 
-  var localMods: Mod[] = [];
+  const localMods: Mod[] = [];
 
-  if (owmlPath){
+  if (owmlPath) {
     const manifestPaths = globby.sync(`**/manifest.json`, {
       cwd: `${owmlPath}/Mods`,
       absolute: true,
     });
-  
+
     localMods.push(getOwml(owmlPath));
-    
+
     manifestPaths.forEach((manifestPath) => {
       const modPath = path.dirname(manifestPath);
       try {
         const { manifest, missingAttributes } = manifestPartialToFull(
           fs.readJsonSync(manifestPath)
         );
-  
+
         const modWithSameId = localMods.find(
           (localMod) => localMod.uniqueName === manifest.uniqueName
         );
@@ -109,7 +113,7 @@ export function getLocalMods(owmlPath: string, alphaPath: string, cmowaPath: str
           );
           return;
         }
-  
+
         const mod: Mod = {
           name: manifest.name,
           author: manifest.author,
@@ -124,7 +128,7 @@ export function getLocalMods(owmlPath: string, alphaPath: string, cmowaPath: str
           pathsToPreserve: manifest.pathsToPreserve,
           addons: [],
         };
-  
+
         if (missingAttributes.length > 0) {
           mod.errors.push(
             modsText.missingManifestAttributesError(
@@ -133,14 +137,14 @@ export function getLocalMods(owmlPath: string, alphaPath: string, cmowaPath: str
             )
           );
         }
-  
+
         try {
           mod.isEnabled = isEnabled(mod);
         } catch (error) {
           mod.isEnabled = true;
           debugConsole.error(error);
         }
-  
+
         localMods.push(mod);
       } catch (error) {
         const modDirectoryName = path.basename(modPath);
@@ -158,11 +162,11 @@ export function getLocalMods(owmlPath: string, alphaPath: string, cmowaPath: str
     });
   }
 
-  if (cmowaPath){
+  if (cmowaPath) {
     localMods.push(getCmowa(cmowaPath));
   }
 
-  if (alphaPath){
+  if (alphaPath) {
     const manifestAlphaPaths = globby.sync(`**/manifest.json`, {
       cwd: `${alphaPath}/BepInEx/plugins`,
       absolute: true,

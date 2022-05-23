@@ -31,8 +31,7 @@ export type ModDatabase = {
 export async function getModDatabase(
   url: string,
   owmlPath: string,
-  alphaPath: string,
-  cmowaPath: string
+  alphaPath: string
 ): Promise<ModDatabase> {
   const response = await fetch(url);
 
@@ -57,7 +56,9 @@ export async function getModDatabase(
       parent,
       alpha,
     }: RemoteMod) => {
-      var modPath = alpha ? `${alphaPath}/BepInEx/plugins/${uniqueName}` : `${owmlPath}/Mods/${uniqueName}`;
+      const modPath = alpha
+        ? `${alphaPath}/BepInEx/plugins/${uniqueName}`
+        : `${owmlPath}/Mods/${uniqueName}`;
       const mod: Mod = {
         name,
         author,
@@ -65,7 +66,7 @@ export async function getModDatabase(
         parent,
         remoteVersion: coerce(version)?.version ?? version,
         // TODO doesnt make sense for this to be here in remote mods
-        modPath: modPath,
+        modPath,
         errors: [],
         downloadUrl,
         downloadCount,

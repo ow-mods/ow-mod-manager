@@ -14,17 +14,25 @@ import {
   installedAlphaModList,
   requiredAlphaModList,
   notInstalledAlphaModList,
+  alphaState,
 } from '../../store';
 import ModsToolbar from './ModsToolbar';
-import { alphaState } from '../../store';
 
 const ModsPage: React.FunctionComponent = () => {
   const alpha = useRecoilValue(alphaState);
-  
-  const enabledMods = useRecoilValue(alpha ? enabledAlphaModList : enabledModList);
-  const installedMods = useRecoilValue(alpha ? installedAlphaModList : installedModList);
-  const notInstalledMods = useRecoilValue(alpha ? notInstalledAlphaModList : notInstalledModList);
-  const requiredMods = useRecoilValue(alpha ? requiredAlphaModList : requiredModList);
+
+  const enabledMods = useRecoilValue(
+    alpha ? enabledAlphaModList : enabledModList
+  );
+  const installedMods = useRecoilValue(
+    alpha ? installedAlphaModList : installedModList
+  );
+  const notInstalledMods = useRecoilValue(
+    alpha ? notInstalledAlphaModList : notInstalledModList
+  );
+  const requiredMods = useRecoilValue(
+    alpha ? requiredAlphaModList : requiredModList
+  );
 
   const isEmpty =
     enabledMods.length +
@@ -44,7 +52,7 @@ const ModsPage: React.FunctionComponent = () => {
         />
         {isEmpty && (
           <div>
-            <br/>
+            <br />
             <Card>
               <Typography variant="h6" align="center">
                 {modsText.emptyModList}

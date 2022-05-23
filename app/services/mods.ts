@@ -48,18 +48,28 @@ export function cleanup(mod: Mod, tempManifestPath: string) {
     pathsToPreserve = mod.pathsToPreserve;
   }
 
-  deleteFolderExcept(
-    mod.modPath,
-    mod.uniqueName === 'Alek.OWML'
-      ? ['Mods', 'OWML.Config.json', 'OWML.Manifest.json']
-      : (mod.uniqueName === 'bbepis.BepInEx'
-      ? ['BepInEx', "OuterWilds_Alpha_1_2_Data", 'doorstop_config.ini', 'OuterWilds_Alpha_1_2.exe', 'winhttp.dll', 'BepInEx.Manifest.json']
-      : (mod.uniqueName === 'Locochoco.CMOWA'
-      ? ['CMOWA.Config.json', 'CMOWA.Manifest.json']
-      : (['config.json', 'save.json', 'manifest.json'].concat(
-          pathsToPreserve ?? []
-        ))))
-  );
+  let pathsToKeep;
+
+  if (mod.uniqueName === 'Alek.OWML') {
+    pathsToKeep = ['Mods', 'OWML.Config.json', 'OWML.Manifest.json'];
+  } else if (mod.uniqueName === 'bbepis.BepInEx') {
+    pathsToKeep = [
+      'BepInEx',
+      'OuterWilds_Alpha_1_2_Data',
+      'doorstop_config.ini',
+      'OuterWilds_Alpha_1_2.exe',
+      'winhttp.dll',
+      'BepInEx.Manifest.json',
+    ];
+  } else if (mod.uniqueName === 'Locochoco.CMOWA') {
+    pathsToKeep = ['CMOWA.Config.json', 'CMOWA.Manifest.json'];
+  } else {
+    pathsToKeep = ['config.json', 'save.json', 'manifest.json'].concat(
+      pathsToPreserve ?? []
+    );
+  }
+
+  deleteFolderExcept(mod.modPath, pathsToKeep);
 }
 
 export async function install(mod: Mod, onProgress: ProgressHandler) {
@@ -165,22 +175,34 @@ export function isBroken(mod: Mod) {
 }
 
 export function hasWrongBepInExVersion(mod: Mod, bepInEx?: Mod) {
-  if (!bepInEx ||
-    !isInstalled(bepInEx) ||
-    bepInEx.localVersion === undefined
-  ) {
+  if (!bepInEx || !isInstalled(bepInEx) || bepInEx.localVersion === undefined) {
     return true;
   }
-  if (bepInEx.localVersion && (mod.minBepInExVersion || mod.maxBepInExVersion)){
-    debugConsole.log(mod.name + ": " + mod.minBepInExVersion + " < " + bepInEx.localVersion + " > " + mod.maxBepInExVersion);
+  if (
+    bepInEx.localVersion &&
+    (mod.minBepInExVersion || mod.maxBepInExVersion)
+  ) {
+    debugConsole.log(
+      `${mod.name}: ${mod.minBepInExVersion} < ${bepInEx.localVersion} > ${mod.maxBepInExVersion}`
+    );
     if (mod.minBepInExVersion && mod.maxBepInExVersion) {
-      return !versionComparer.isBetweenMinAndMax(bepInEx.localVersion, mod.minBepInExVersion, mod.maxBepInExVersion);
+      return !versionComparer.isBetweenMinAndMax(
+        bepInEx.localVersion,
+        mod.minBepInExVersion,
+        mod.maxBepInExVersion
+      );
     }
-    else if (mod.minBepInExVersion && !mod.maxBepInExVersion) {
-      return !versionComparer.isGreaterThanOrEqualTo(bepInEx.localVersion, mod.minBepInExVersion);
+    if (mod.minBepInExVersion && !mod.maxBepInExVersion) {
+      return !versionComparer.isGreaterThanOrEqualTo(
+        bepInEx.localVersion,
+        mod.minBepInExVersion
+      );
     }
-    else if (!mod.minBepInExVersion && mod.maxBepInExVersion) {
-      return !versionComparer.isLessThanOrEqualTo(bepInEx.localVersion, mod.maxBepInExVersion);
+    if (!mod.minBepInExVersion && mod.maxBepInExVersion) {
+      return !versionComparer.isLessThanOrEqualTo(
+        bepInEx.localVersion,
+        mod.maxBepInExVersion
+      );
     }
   }
   return false;

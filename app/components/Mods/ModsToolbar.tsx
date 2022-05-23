@@ -30,10 +30,14 @@ const ModsToolbar: React.FunctionComponent = () => {
           onChange={setFilter}
           label={modsText.toolbar.findModsLabel}
         />
-        <AlphaSwitch/>
+        <AlphaSwitch />
         <Button
           startIcon={<FolderIcon />}
-          onClick={() => openDirectory(alpha ? `${alphaPath}/BepInEx/plugins` : `${owmlPath}/Mods`)}
+          onClick={() =>
+            openDirectory(
+              alpha ? `${alphaPath}/BepInEx/plugins` : `${owmlPath}/Mods`
+            )
+          }
           variant="outlined"
         >
           {modsText.toolbar.modsDirectory}

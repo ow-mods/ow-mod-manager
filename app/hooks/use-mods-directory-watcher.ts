@@ -5,7 +5,11 @@ import { debugConsole } from '../helpers/console-log';
 
 type Handler = () => void;
 
-export function useModsDirectoryWatcher(owmlPath: string, alphaPath: string, handler: Handler) {
+export function useModsDirectoryWatcher(
+  owmlPath: string,
+  alphaPath: string,
+  handler: Handler
+) {
   const { isLoading } = useLoading();
 
   useEffect(() => {

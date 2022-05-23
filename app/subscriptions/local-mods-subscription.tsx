@@ -16,7 +16,7 @@ export const LocalModsSubscription: React.FunctionComponent = () => {
     alphaPath,
     useCallback(() => {
       setLocalMods(getLocalMods(owmlPath, alphaPath, cmowaPath));
-    }, [owmlPath, alphaPath, setLocalMods])
+    }, [owmlPath, alphaPath, cmowaPath, setLocalMods])
   );
 
   return null;

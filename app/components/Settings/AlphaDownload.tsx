@@ -12,7 +12,10 @@ const AlphaDownload = () => {
   const styles = useStyles();
 
   const handleClick = useCallback(() => {
-    const win = window.open("https://web.archive.org/web/20150726160905if_/http://alexbeachum.com/outerwildsDownloads/OuterWilds_Alpha_1_2_PC.zip", 'Wayback Machine');
+    const win = window.open(
+      'https://web.archive.org/web/20150726160905if_/http://alexbeachum.com/outerwildsDownloads/OuterWilds_Alpha_1_2_PC.zip',
+      'Wayback Machine'
+    );
     if (win != null) {
       win.focus();
     }
@@ -25,7 +28,7 @@ const AlphaDownload = () => {
         onClick={handleClick}
         startIcon={<DownloadIcon />}
       >
-        {'Download Outer Wilds Alpha'}
+        Download Outer Wilds Alpha
       </Button>
     </ListItem>
   );

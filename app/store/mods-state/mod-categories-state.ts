@@ -34,17 +34,23 @@ export const installedModList = selector({
 export const installedAlphaModList = selector({
   key: 'InstalledAlphaMods',
   get: ({ get }) =>
-    get(filteredAlphaModList).filter((mod) => mod.localVersion && !mod.isEnabled),
+    get(filteredAlphaModList).filter(
+      (mod) => mod.localVersion && !mod.isEnabled
+    ),
 });
 
 export const enabledModList = selector({
   key: 'EnabledMods',
-  get: ({ get }) => get(filteredModList).filter((mod) => mod.localVersion && mod.isEnabled),
+  get: ({ get }) =>
+    get(filteredModList).filter((mod) => mod.localVersion && mod.isEnabled),
 });
 
 export const enabledAlphaModList = selector({
   key: 'EnabledAlphaMods',
-  get: ({ get }) => get(filteredAlphaModList).filter((mod) => mod.localVersion && mod.isEnabled),
+  get: ({ get }) =>
+    get(filteredAlphaModList).filter(
+      (mod) => mod.localVersion && mod.isEnabled
+    ),
 });
 
 export const notInstalledModList = selector({
@@ -56,7 +62,9 @@ export const notInstalledModList = selector({
 export const notInstalledAlphaModList = selector({
   key: 'NotInstalledAlphaMods',
   get: ({ get }) =>
-    get(nonAddonAlphaModList).filter((mod) => !mod.localVersion && !mod.isRequired),
+    get(nonAddonAlphaModList).filter(
+      (mod) => !mod.localVersion && !mod.isRequired
+    ),
 });
 
 export const requiredModList = selector({
