@@ -31,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
 
 const TopBar: React.FunctionComponent = () => {
   const styles = useStyles();
-  const alpha = useRecoilValue(alphaState);
-  const button = alpha ? <StartAlphaButton /> : <StartGameButton />;
+  const inAlphaMode = useRecoilValue(alphaState);
+  const button = inAlphaMode ? <StartAlphaButton /> : <StartGameButton />;
 
   return (
     <div className={styles.wrapper}>

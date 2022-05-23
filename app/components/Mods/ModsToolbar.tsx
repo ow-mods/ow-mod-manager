@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ModsToolbar: React.FunctionComponent = () => {
   const styles = useStyles();
-  const alpha = useRecoilValue(alphaState);
+  const inAlphaMode = useRecoilValue(alphaState);
   const [filter, setFilter] = useRecoilState(modFilterState);
   const { owmlPath, alphaPath } = useRecoilValue(settingsState);
   return (
@@ -35,7 +35,7 @@ const ModsToolbar: React.FunctionComponent = () => {
           startIcon={<FolderIcon />}
           onClick={() =>
             openDirectory(
-              alpha ? `${alphaPath}/BepInEx/plugins` : `${owmlPath}/Mods`
+              inAlphaMode ? `${alphaPath}/BepInEx/plugins` : `${owmlPath}/Mods`
             )
           }
           variant="outlined"

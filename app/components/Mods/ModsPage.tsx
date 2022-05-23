@@ -19,19 +19,19 @@ import {
 import ModsToolbar from './ModsToolbar';
 
 const ModsPage: React.FunctionComponent = () => {
-  const alpha = useRecoilValue(alphaState);
+  const inAlphaMode = useRecoilValue(alphaState);
 
   const enabledMods = useRecoilValue(
-    alpha ? enabledAlphaModList : enabledModList
+    inAlphaMode ? enabledAlphaModList : enabledModList
   );
   const installedMods = useRecoilValue(
-    alpha ? installedAlphaModList : installedModList
+    inAlphaMode ? installedAlphaModList : installedModList
   );
   const notInstalledMods = useRecoilValue(
-    alpha ? notInstalledAlphaModList : notInstalledModList
+    inAlphaMode ? notInstalledAlphaModList : notInstalledModList
   );
   const requiredMods = useRecoilValue(
-    alpha ? requiredAlphaModList : requiredModList
+    inAlphaMode ? requiredAlphaModList : requiredModList
   );
 
   const isEmpty =
