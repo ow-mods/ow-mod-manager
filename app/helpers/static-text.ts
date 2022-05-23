@@ -162,8 +162,8 @@ export const settingsText = {
     tooltip: '',
   },
   alphaPath: {
-    label: 'Alpha game folder (contains alpha game exe)',
-    tooltip: 'Path to Outer Wilds Alpha',
+    label: 'Alpha game folder',
+    tooltip: 'Path to Outer Wilds Alpha (contains alpha game exe)',
     isAlpha: true,
   },
   cmowaPath: {
