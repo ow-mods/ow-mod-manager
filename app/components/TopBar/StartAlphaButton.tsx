@@ -70,15 +70,15 @@ const StartAlphaButton: React.FunctionComponent = () => {
 
   function getStartGameTooltip() {
     if (isMissingAlphaPath) {
-      return 'You need to set the path to the game folder in settings.';
+      return globalText.alphaPathMissing;
     }
     if (isMissingCmowaPath) {
-      return 'You need to set the path to the CMOWA folder in settings.';
+      return globalText.cmowaPathMissing;
     }
     if (isMissingRequiredMod) {
       return globalText.missingRequiredMod(requiredModNames);
     }
-    return 'Play Outer Wilds Alpha';
+    return '';
   }
 
   return (

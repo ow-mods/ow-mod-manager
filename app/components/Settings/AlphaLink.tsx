@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { Button, ListItem, makeStyles } from '@material-ui/core';
 import { GetApp as DownloadIcon } from '@material-ui/icons';
+import { globalText } from '../../helpers/static-text';
 
 const useStyles = makeStyles({
   root: {
@@ -13,8 +14,8 @@ const AlphaLink = () => {
 
   const handleClick = useCallback(() => {
     const win = window.open(
-      'https://web.archive.org/web/20150726160905if_/http://alexbeachum.com/outerwildsDownloads/OuterWilds_Alpha_1_2_PC.zip',
-      'Wayback Machine'
+      'https://outerwildsmods.com/outer-wilds-alpha/',
+      ''
     );
     if (win != null) {
       win.focus();
@@ -28,7 +29,7 @@ const AlphaLink = () => {
         onClick={handleClick}
         startIcon={<DownloadIcon />}
       >
-        Download Outer Wilds Alpha
+        {globalText.alphaWebsite}
       </Button>
     </ListItem>
   );

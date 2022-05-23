@@ -10,6 +10,9 @@ export const globalText = {
   gameRunning: 'Already running',
   missingRequiredMod: (modNames: string[]) =>
     `Please install ${modNames.join(', ')} before starting the game`,
+  alphaWebsite: 'Download at Outer Wilds Alpha Website',
+  alphaPathMissing: 'You need to set the path to the game folder in settings.',
+  cmowaPathMissing: 'You need to set the path to the CMOWA folder in settings.',
   dialog: {
     ok: 'OK',
     cancel: 'Cancel',
