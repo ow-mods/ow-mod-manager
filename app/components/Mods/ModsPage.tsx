@@ -10,29 +10,14 @@ import {
   installedModList,
   requiredModList,
   notInstalledModList,
-  enabledAlphaModList,
-  installedAlphaModList,
-  requiredAlphaModList,
-  notInstalledAlphaModList,
-  settingsState,
 } from '../../store';
 import ModsToolbar from './ModsToolbar';
 
 const ModsPage: React.FunctionComponent = () => {
-  const inAlphaMode = useRecoilValue(settingsState).alphaMode;
-
-  const enabledMods = useRecoilValue(
-    inAlphaMode ? enabledAlphaModList : enabledModList
-  );
-  const installedMods = useRecoilValue(
-    inAlphaMode ? installedAlphaModList : installedModList
-  );
-  const notInstalledMods = useRecoilValue(
-    inAlphaMode ? notInstalledAlphaModList : notInstalledModList
-  );
-  const requiredMods = useRecoilValue(
-    inAlphaMode ? requiredAlphaModList : requiredModList
-  );
+  const enabledMods = useRecoilValue(enabledModList);
+  const installedMods = useRecoilValue(installedModList);
+  const notInstalledMods = useRecoilValue(notInstalledModList);
+  const requiredMods = useRecoilValue(requiredModList);
 
   const isEmpty =
     enabledMods.length +

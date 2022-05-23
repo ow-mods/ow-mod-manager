@@ -17,11 +17,8 @@ import { isOutdated, isInstalled, isBroken } from '../../services';
 import ModActions from './ModActions';
 import {
   missingDependencyIdsState,
-  missingAlphaDependencyIdsState,
   addonModList,
-  addonAlphaModList,
   enabledModList,
-  enabledAlphaModList,
   isFiltering,
 } from '../../store';
 
@@ -105,21 +102,13 @@ const useStyles = makeStyles((theme) => ({
 const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const styles = useStyles();
   const theme = useTheme();
-  const missingDependencyNames = useRecoilValue(
-    mod.isAlpha
-      ? missingAlphaDependencyIdsState(mod)
-      : missingDependencyIdsState(mod)
-  );
+  const missingDependencyNames = useRecoilValue(missingDependencyIdsState(mod));
   const isModOutdated = isOutdated(mod);
   const isModBroken = isBroken(mod);
-  const addonMods = useRecoilValue(
-    mod.isAlpha ? addonAlphaModList : addonModList
-  );
+  const addonMods = useRecoilValue(addonModList);
   const [isAddonsExpanded, setIsAddonsExpanded] = useState(false);
   const isAddon = mod.parent && !mod.localVersion;
-  const enabledMods = useRecoilValue(
-    mod.isAlpha ? enabledAlphaModList : enabledModList
-  );
+  const enabledMods = useRecoilValue(enabledModList);
   const forceExpandAddons = useRecoilValue(isFiltering);
   const shouldExpandAddons = forceExpandAddons || isAddonsExpanded;
 

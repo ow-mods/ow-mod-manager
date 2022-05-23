@@ -8,14 +8,14 @@ import { globalText } from '../../helpers/static-text';
 import { runAlpha, writeSettings } from '../../services';
 import {
   settingsState,
-  requiredAlphaModNamesState,
-  enabledAlphaModList,
+  requiredModNamesState,
+  enabledModList,
 } from '../../store';
 
 const StartAlphaButton: React.FunctionComponent = () => {
-  const requiredModNames = useRecoilValue(requiredAlphaModNamesState);
+  const requiredModNames = useRecoilValue(requiredModNamesState);
   const settings = useRecoilValue(settingsState);
-  const enabledMods = useRecoilValue(enabledAlphaModList);
+  const enabledMods = useRecoilValue(enabledModList);
 
   async function handleStartGameClick() {
     let newSettings = { ...settings };
