@@ -57,15 +57,20 @@ const PathInput: FunctionComponent<Props> = ({
   }, [value]);
 
   const handleFindClick = async () => {
-    const openedValue = await remote.dialog.showOpenDialog({
-      properties: ['openDirectory'],
-      title: settingsText.pathFindTitle,
-      defaultPath: value,
-    });
-
-    const pathResult = openedValue.filePaths[0];
-    onChange(pathResult);
-    setPath(pathResult);
+    try {
+      const openedValue = await remote.dialog.showOpenDialog({
+        properties: ['openDirectory'],
+        title: settingsText.pathFindTitle,
+        defaultPath: value,
+      });
+      if (openedValue && openedValue.canceled === false) {
+        const pathResult = openedValue.filePaths[0];
+        onChange(pathResult);
+        setPath(pathResult);
+      }
+    } catch (err) {
+      debugConsole.error(err);
+    }
   };
 
   return (
