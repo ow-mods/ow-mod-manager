@@ -11,7 +11,7 @@
     "disableModWarnings": {},
     "modDatabaseUrl": "https://raw.githubusercontent.com/Raicuparta/ow-mod-db/master/database.json",
     "alertSourceUrl": "https://raw.githubusercontent.com/Raicuparta/ow-mod-db/source/alert.json",
-    "showAlphaSettings": true,
+    "showAlphaSettings": false,
     "alphaPath": "",
     "cmowaPath": ""
   },
