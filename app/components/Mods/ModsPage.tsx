@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Card, Container } from '@material-ui/core';
+import { Box, Typography, Card, Container } from '@material-ui/core';
 import { useRecoilValue } from 'recoil';
 
 import { modsText } from '../../helpers/static-text';
@@ -51,14 +51,13 @@ const ModsPage: React.FunctionComponent = () => {
           highlighted
         />
         {isEmpty && (
-          <div>
-            <br />
+          <Box mt={2}>
             <Card>
               <Typography variant="h6" align="center">
                 {modsText.emptyModList}
               </Typography>
             </Card>
-          </div>
+          </Box>
         )}
         <ModRowSection
           title={modsText.modSections.enabled}
