@@ -17,7 +17,6 @@ import {
   isOutdated,
   isInstalled,
   isBroken,
-  hasWrongBepInExVersion,
 } from '../../services';
 import ModActions from './ModActions';
 import {
@@ -127,17 +126,6 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   );
   const forceExpandAddons = useRecoilValue(isFiltering);
   const shouldExpandAddons = forceExpandAddons || isAddonsExpanded;
-  const bepInEx = enabledMods.find(
-    (enabledMod: Mod) => enabledMod.uniqueName === 'bbepis.BepInEx'
-  );
-  const wrongBepinExVersion =
-    mod.isAlpha &&
-    isInstalled(mod) &&
-    bepInEx &&
-    isInstalled(bepInEx) &&
-    bepInEx.isEnabled
-      ? hasWrongBepInExVersion(mod, bepInEx)
-      : false;
 
   const addons = useMemo(
     () => addonMods.filter((addon) => addon.parent === mod.uniqueName),
@@ -188,7 +176,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     let className = styles.tableRow;
     if (isModBroken || isModConflicting) {
       className += ` ${styles.brokenRow}`;
-    } else if (missingDependencyNames.length > 0 || wrongBepinExVersion) {
+    } else if (missingDependencyNames.length > 0) {
       className += ` ${styles.missingDependencyRow}`;
     } else if (isAddon) {
       className += ` ${styles.addonRow}`;
@@ -207,17 +195,6 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     }
     if (isModConflicting) {
       return modsText.conflictingModWarning(conflictingMods.join(', '));
-    }
-    if (isInstalled(mod) && wrongBepinExVersion) {
-      if (!bepInEx || !isInstalled(bepInEx)) {
-        return modsText.missingDependencyWarning('bbepis.BepInEx');
-      }
-
-      return modsText.wrongDependencyVersionWarning(
-        'bbepis.BepInEx',
-        mod.minBepInExVersion,
-        mod.maxBepInExVersion
-      );
     }
     return mod.description;
   };

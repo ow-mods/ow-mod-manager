@@ -29,8 +29,6 @@ export function manifestPartialToFull(partialManifest: Partial<Manifest>) {
     patcher: partialManifest.patcher,
     conflicts: partialManifest.conflicts,
     pathsToPreserve: partialManifest.pathsToPreserve,
-    minBepInExVersion: getAttribute('minBepInExVersion', false, true),
-    maxBepInExVersion: getAttribute('maxBepInExVersion', false, true),
   };
 
   return {

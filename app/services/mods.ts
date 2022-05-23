@@ -2,8 +2,6 @@ import { shell, remote } from 'electron';
 import fs from 'fs-extra';
 
 import { modsText, globalText } from '../helpers/static-text';
-import { versionComparer } from '../helpers/version-compare';
-import { debugConsole } from '../helpers/console-log';
 import { getConfig, saveConfig } from './mod-config';
 import {
   unzipRemoteFile,
@@ -172,40 +170,6 @@ export function isEnabled(mod: Mod) {
 
 export function isBroken(mod: Mod) {
   return mod.errors.length > 0;
-}
-
-export function hasWrongBepInExVersion(mod: Mod, bepInEx?: Mod) {
-  if (!bepInEx || !isInstalled(bepInEx) || bepInEx.localVersion === undefined) {
-    return true;
-  }
-  if (
-    bepInEx.localVersion &&
-    (mod.minBepInExVersion || mod.maxBepInExVersion)
-  ) {
-    debugConsole.log(
-      `${mod.name}: ${mod.minBepInExVersion} < ${bepInEx.localVersion} > ${mod.maxBepInExVersion}`
-    );
-    if (mod.minBepInExVersion && mod.maxBepInExVersion) {
-      return !versionComparer.isBetweenMinAndMax(
-        bepInEx.localVersion,
-        mod.minBepInExVersion,
-        mod.maxBepInExVersion
-      );
-    }
-    if (mod.minBepInExVersion && !mod.maxBepInExVersion) {
-      return !versionComparer.isGreaterThanOrEqualTo(
-        bepInEx.localVersion,
-        mod.minBepInExVersion
-      );
-    }
-    if (!mod.minBepInExVersion && mod.maxBepInExVersion) {
-      return !versionComparer.isLessThanOrEqualTo(
-        bepInEx.localVersion,
-        mod.maxBepInExVersion
-      );
-    }
-  }
-  return false;
 }
 
 export async function toggleEnabled(mod: Mod) {

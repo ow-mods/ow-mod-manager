@@ -10,8 +10,6 @@ export const globalText = {
   gameRunning: 'Already running',
   missingRequiredMod: (modNames: string[]) =>
     `Please install ${modNames.join(', ')} before starting the game`,
-  incompatibleBepInExVersion:
-    'One of your mods is incompatible with your current BepInEx version.',
   dialog: {
     ok: 'OK',
     cancel: 'Cancel',
@@ -61,7 +59,6 @@ export const modsText = {
   },
   versionNotAvailable: 'Not Available',
   outdated: 'Outdated',
-  incompatibleVersion: 'Incompatible Version',
   actions: {
     disableRequired: "Required, can't disable",
     disable: 'Disable',
@@ -104,23 +101,6 @@ export const modsText = {
     `Failed to read manifest.json in mod directory "${directoryName}". Reinstall the mod or contact the mod author to fix this issue. Error: ${error}`,
   brokenConfigError: (error: string) =>
     `Failed to read mod configuration files: "${error}"`,
-  wrongDependencyVersionWarning: (
-    dependencyName: string,
-    minVersion?: string,
-    maxVersion?: string
-  ) => {
-    if (minVersion && maxVersion) {
-      return `This mod requires ${dependencyName} to have a version between ${minVersion} and ${maxVersion}.`;
-    }
-    if (!minVersion && maxVersion) {
-      return `This mod requires ${dependencyName} to have a version less than ${maxVersion}.`;
-    }
-    if (minVersion && !maxVersion) {
-      return `This mod requires ${dependencyName} to have a version greater than ${minVersion}.`;
-    }
-
-    return `This mod requires ${dependencyName}.`;
-  },
 };
 
 export const settingsText = {

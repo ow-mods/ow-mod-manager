@@ -8,7 +8,6 @@ import { globalText } from '../../helpers/static-text';
 import {
   runAlpha,
   writeSettings,
-  hasWrongBepInExVersion,
 } from '../../services';
 import {
   settingsState,
@@ -20,12 +19,6 @@ const StartAlphaButton: React.FunctionComponent = () => {
   const requiredModNames = useRecoilValue(requiredAlphaModNamesState);
   const settings = useRecoilValue(settingsState);
   const enabledMods = useRecoilValue(enabledAlphaModList);
-  const bepInEx = enabledMods.find(
-    (mod: Mod) => mod.uniqueName === 'bbepis.BepInEx'
-  );
-  const wrongBepinExVersion = !enabledMods.every(
-    (mod: Mod) => !hasWrongBepInExVersion(mod, bepInEx)
-  );
 
   async function handleStartGameClick() {
     let newSettings = { ...settings };
@@ -75,13 +68,10 @@ const StartAlphaButton: React.FunctionComponent = () => {
   const isMissingCmowaPath =
     settings.cmowaPath === null || settings.cmowaPath.match(/^ *$/) !== null;
   const isMissingRequiredMod = requiredModNames.length > 0;
-  const isMissingBepInEx = !bepInEx;
   const isStartDisabled =
     isMissingRequiredMod ||
     isMissingAlphaPath ||
-    isMissingCmowaPath ||
-    isMissingBepInEx ||
-    wrongBepinExVersion;
+    isMissingCmowaPath;
 
   function getStartGameTooltip() {
     if (isMissingAlphaPath) {
@@ -92,12 +82,6 @@ const StartAlphaButton: React.FunctionComponent = () => {
     }
     if (isMissingRequiredMod) {
       return globalText.missingRequiredMod(requiredModNames);
-    }
-    if (isMissingBepInEx) {
-      return globalText.missingRequiredMod(['bbepis.BepInEx']);
-    }
-    if (wrongBepinExVersion) {
-      return globalText.incompatibleBepInExVersion;
     }
     return 'Play Outer Wilds Alpha';
   }

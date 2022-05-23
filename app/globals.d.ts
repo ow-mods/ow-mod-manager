@@ -32,8 +32,6 @@ type Mod = {
   pathsToPreserve?: string[];
   addons: string[];
   isAlpha?: boolean;
-  minBepInExVersion?: string;
-  maxBepInExVersion?: string;
 };
 
 type ModManager = {
@@ -52,8 +50,6 @@ type Manifest = {
   patcher?: string;
   conflicts?: string[];
   pathsToPreserve?: string[];
-  minBepInExVersion?: string;
-  maxBepInExVersion?: string;
 };
 
 type ModConfig = {

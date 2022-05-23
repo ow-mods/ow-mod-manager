@@ -71,9 +71,7 @@ function getCmowa(cmowaPath: string) {
     errors: [],
     dependencies: ['bbepis.BepInEx'],
     addons: [],
-    isAlpha: true,
-    minBepInExVersion: cmowaManifest?.minBepInExVersion,
-    maxBepInExVersion: cmowaManifest?.maxBepInExVersion,
+    isAlpha: true
   };
   return cmowa;
 }
@@ -204,9 +202,7 @@ export function getLocalMods(
           conflicts: manifest.conflicts,
           pathsToPreserve: manifest.pathsToPreserve,
           addons: [],
-          isAlpha: true,
-          minBepInExVersion: manifest.minBepInExVersion,
-          maxBepInExVersion: manifest.maxBepInExVersion,
+          isAlpha: true
         };
 
         if (missingAttributes.length > 0) {
