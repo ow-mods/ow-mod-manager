@@ -6,9 +6,6 @@ import { localModMap } from './mods-state';
 export const missingDependencyIdsState = selectorFamily({
   key: 'MissingDependencyIds',
   get: (mod: Mod) => ({ get }) => {
-    if (mod.isAlpha) {
-      return [];
-    }
     // TODO isEnabled as family too?
     if (!mod.isEnabled) {
       return [];
