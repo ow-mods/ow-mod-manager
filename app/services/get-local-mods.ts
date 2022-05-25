@@ -76,6 +76,83 @@ function getCmowa(cmowaPath: string) {
   return cmowa;
 }
 
+function pushModsFromDirectory(
+  localMods: Mod[],
+  directory: string,
+  isAlpha?: boolean
+) {
+  const manifestPaths = globby.sync(`**/manifest.json`, {
+    cwd: directory,
+    absolute: true,
+  });
+
+  manifestPaths.forEach((manifestPath) => {
+    const modPath = path.dirname(manifestPath);
+    try {
+      const { manifest, missingAttributes } = manifestPartialToFull(
+        fs.readJsonSync(manifestPath)
+      );
+
+      const modWithSameId = localMods.find(
+        (localMod) => localMod.uniqueName === manifest.uniqueName
+      );
+      if (modWithSameId) {
+        modWithSameId.errors.push(
+          modsText.duplicateModError(manifest.uniqueName)
+        );
+        return;
+      }
+
+      const mod: Mod = {
+        name: manifest.name,
+        author: manifest.author,
+        uniqueName: manifest.uniqueName,
+        localVersion: coerce(manifest.version)?.version ?? manifest.version,
+        modPath,
+        errors: [],
+        dependencies: manifest.dependencies ?? [],
+        warning: manifest.warning,
+        patcher: manifest.patcher,
+        conflicts: manifest.conflicts,
+        pathsToPreserve: manifest.pathsToPreserve,
+        addons: [],
+        isAlpha,
+      };
+
+      if (missingAttributes.length > 0) {
+        mod.errors.push(
+          modsText.missingManifestAttributesError(
+            manifestPath,
+            missingAttributes
+          )
+        );
+      }
+
+      try {
+        mod.isEnabled = isEnabled(mod);
+      } catch (error) {
+        mod.isEnabled = true;
+        debugConsole.error(error);
+      }
+
+      localMods.push(mod);
+    } catch (error) {
+      const modDirectoryName = path.basename(modPath);
+      localMods.push({
+        author: modDirectoryName,
+        dependencies: [],
+        errors: [modsText.brokenManifestError(modDirectoryName, `${error}`)],
+        modPath,
+        name: modDirectoryName,
+        uniqueName: modDirectoryName,
+        localVersion: '-',
+        addons: [],
+        isAlpha,
+      });
+    }
+  });
+}
+
 export function getLocalMods(
   owmlPath: string,
   alphaPath: string,
@@ -88,76 +165,8 @@ export function getLocalMods(
   const localMods: Mod[] = [];
 
   if (owmlPath) {
-    const manifestPaths = globby.sync(`**/manifest.json`, {
-      cwd: `${owmlPath}/Mods`,
-      absolute: true,
-    });
-
     localMods.push(getOwml(owmlPath));
-
-    manifestPaths.forEach((manifestPath) => {
-      const modPath = path.dirname(manifestPath);
-      try {
-        const { manifest, missingAttributes } = manifestPartialToFull(
-          fs.readJsonSync(manifestPath)
-        );
-
-        const modWithSameId = localMods.find(
-          (localMod) => localMod.uniqueName === manifest.uniqueName
-        );
-        if (modWithSameId) {
-          modWithSameId.errors.push(
-            modsText.duplicateModError(manifest.uniqueName)
-          );
-          return;
-        }
-
-        const mod: Mod = {
-          name: manifest.name,
-          author: manifest.author,
-          uniqueName: manifest.uniqueName,
-          localVersion: coerce(manifest.version)?.version ?? manifest.version,
-          modPath,
-          errors: [],
-          dependencies: manifest.dependencies ?? [],
-          warning: manifest.warning,
-          patcher: manifest.patcher,
-          conflicts: manifest.conflicts,
-          pathsToPreserve: manifest.pathsToPreserve,
-          addons: [],
-        };
-
-        if (missingAttributes.length > 0) {
-          mod.errors.push(
-            modsText.missingManifestAttributesError(
-              manifestPath,
-              missingAttributes
-            )
-          );
-        }
-
-        try {
-          mod.isEnabled = isEnabled(mod);
-        } catch (error) {
-          mod.isEnabled = true;
-          debugConsole.error(error);
-        }
-
-        localMods.push(mod);
-      } catch (error) {
-        const modDirectoryName = path.basename(modPath);
-        localMods.push({
-          author: modDirectoryName,
-          dependencies: [],
-          errors: [modsText.brokenManifestError(modDirectoryName, `${error}`)],
-          modPath,
-          name: modDirectoryName,
-          uniqueName: modDirectoryName,
-          localVersion: '-',
-          addons: [],
-        });
-      }
-    });
+    pushModsFromDirectory(localMods, `${owmlPath}/Mods`);
   }
 
   if (cmowaPath) {
@@ -165,78 +174,8 @@ export function getLocalMods(
   }
 
   if (alphaPath) {
-    const manifestAlphaPaths = globby.sync(`**/manifest.json`, {
-      cwd: `${alphaPath}/BepInEx/plugins`,
-      absolute: true,
-    });
-
     localMods.push(getBepInEx(alphaPath));
-
-    manifestAlphaPaths.forEach((manifestPath) => {
-      const modPath = path.dirname(manifestPath);
-      try {
-        const { manifest, missingAttributes } = manifestPartialToFull(
-          fs.readJsonSync(manifestPath)
-        );
-
-        const modWithSameId = localMods.find(
-          (localMod) => localMod.uniqueName === manifest.uniqueName
-        );
-        if (modWithSameId) {
-          modWithSameId.errors.push(
-            modsText.duplicateModError(manifest.uniqueName)
-          );
-          return;
-        }
-
-        const mod: Mod = {
-          name: manifest.name,
-          author: manifest.author,
-          uniqueName: manifest.uniqueName,
-          localVersion: coerce(manifest.version)?.version ?? manifest.version,
-          modPath,
-          errors: [],
-          dependencies: manifest.dependencies ?? [],
-          warning: manifest.warning,
-          patcher: manifest.patcher,
-          conflicts: manifest.conflicts,
-          pathsToPreserve: manifest.pathsToPreserve,
-          addons: [],
-          isAlpha: true,
-        };
-
-        if (missingAttributes.length > 0) {
-          mod.errors.push(
-            modsText.missingManifestAttributesError(
-              manifestPath,
-              missingAttributes
-            )
-          );
-        }
-
-        try {
-          mod.isEnabled = isEnabled(mod);
-        } catch (error) {
-          mod.isEnabled = true;
-          debugConsole.error(error);
-        }
-
-        localMods.push(mod);
-      } catch (error) {
-        const modDirectoryName = path.basename(modPath);
-        localMods.push({
-          author: modDirectoryName,
-          dependencies: [],
-          errors: [modsText.brokenManifestError(modDirectoryName, `${error}`)],
-          modPath,
-          name: modDirectoryName,
-          uniqueName: modDirectoryName,
-          localVersion: '-',
-          addons: [],
-          isAlpha: true,
-        });
-      }
-    });
+    pushModsFromDirectory(localMods, `${alphaPath}/BepInEx/plugins`, true);
   }
 
   return [...localMods].filter((mod) => mod);
