@@ -4,10 +4,10 @@ import { modList } from './mods-state';
 
 const filterByText = (filter: string, mod: Mod, mods: Mod[]): boolean => {
   const lowerCaseFilter = filter.toLowerCase();
-  const nameMatch = mod.name.toLowerCase().includes(lowerCaseFilter);
-  const authorNatch = mod.author.toLowerCase().includes(lowerCaseFilter);
+  const nameMatch = mod.name?.toLowerCase().includes(lowerCaseFilter);
+  const authorNatch = mod.author?.toLowerCase().includes(lowerCaseFilter);
   const uniqueNameMatch = mod.uniqueName
-    .toLowerCase()
+    ?.toLowerCase()
     .includes(lowerCaseFilter);
   const descriptionMatch = mod.description
     ?.toLowerCase()
