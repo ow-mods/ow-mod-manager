@@ -58,7 +58,7 @@ export function cleanup(mod: Mod, tempManifestPath: string) {
       'BepInEx.Manifest.json',
     ];
   } else if (mod.uniqueName === 'Locochoco.CMOWA') {
-    pathsToKeep = ['CMOWA.Config.json', 'CMOWA.Manifest.json'];
+    pathsToKeep = ['CMOWA.Manifest.json'];
   } else {
     pathsToKeep = ['config.json', 'save.json', 'manifest.json'].concat(
       pathsToPreserve ?? []
