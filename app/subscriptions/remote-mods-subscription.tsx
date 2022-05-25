@@ -15,8 +15,6 @@ export const RemoteModsSubscription: React.FunctionComponent = () => {
   const { modDatabaseUrl, owmlPath, alphaPath } = useRecoilValue(settingsState);
 
   useModsDirectoryWatcher(
-    owmlPath,
-    alphaPath,
     useCallback(() => {
       const updateMods = async () => {
         const { mods, modManager } = await getModDatabase(

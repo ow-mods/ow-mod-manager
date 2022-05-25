@@ -12,8 +12,6 @@ export const LocalModsSubscription: React.FunctionComponent = () => {
   } = useSettings();
 
   useModsDirectoryWatcher(
-    owmlPath,
-    alphaPath,
     useCallback(() => {
       setLocalMods(getLocalMods(owmlPath, alphaPath, cmowaPath));
     }, [owmlPath, alphaPath, cmowaPath, setLocalMods])

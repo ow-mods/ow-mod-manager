@@ -2,15 +2,15 @@ import { useEffect } from 'react';
 import fs from 'fs-extra';
 import { useLoading } from '../store/loading-state';
 import { debugConsole } from '../helpers/console-log';
+import { useSettings } from './use-settings';
 
 type Handler = () => void;
 
-export function useModsDirectoryWatcher(
-  owmlPath: string,
-  alphaPath: string,
-  handler: Handler
-) {
+export function useModsDirectoryWatcher(handler: Handler) {
   const { isLoading } = useLoading();
+  const {
+    settings: { owmlPath, alphaPath, alphaMode },
+  } = useSettings();
 
   useEffect(() => {
     if (isLoading) {
@@ -18,33 +18,16 @@ export function useModsDirectoryWatcher(
     }
 
     debugConsole.log('useEffect: useModsDirectoryWatcher');
-    const path = `${owmlPath}/Mods`;
-    const patha = `${alphaPath}/BepInEx/plugins`;
+    const path = alphaMode
+      ? `${alphaPath}/BepInEx/plugins`
+      : `${owmlPath}/Mods`;
 
     if (!fs.existsSync(path)) {
       fs.mkdirSync(path, { recursive: true });
     }
 
-    if (!fs.existsSync(patha)) {
-      fs.mkdirSync(patha, { recursive: true });
-    }
-
     const watcher = fs.watch(
       path,
-      { recursive: true },
-      (eventType, fileName) => {
-        debugConsole.log(
-          'useEffect: useModsDirectoryWatcher callback. eventType:',
-          eventType,
-          'fileName:',
-          fileName
-        );
-        handler();
-      }
-    );
-
-    const watchera = fs.watch(
-      patha,
       { recursive: true },
       (eventType, fileName) => {
         debugConsole.log(
@@ -62,7 +45,6 @@ export function useModsDirectoryWatcher(
 
     return () => {
       watcher.close();
-      watchera.close();
     };
-  }, [handler, owmlPath, alphaPath, isLoading]);
+  }, [handler, owmlPath, alphaPath, alphaMode, isLoading]);
 }
