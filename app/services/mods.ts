@@ -54,9 +54,7 @@ export function cleanup(mod: Mod, tempManifestPath: string) {
     pathsToKeep = [
       'BepInEx',
       'OuterWilds_Alpha_1_2_Data',
-      'doorstop_config.ini',
       'OuterWilds_Alpha_1_2.exe',
-      'winhttp.dll',
       'BepInEx.Manifest.json',
     ];
   } else if (mod.uniqueName === 'Locochoco.CMOWA') {
