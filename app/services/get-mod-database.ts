@@ -56,6 +56,7 @@ export async function getModDatabase(
       parent,
       alpha,
     }: RemoteMod) => {
+      // TODO doesnt make sense for this to be here in remote mods
       const modPath = alpha
         ? `${alphaPath}/BepInEx/plugins/${uniqueName}`
         : `${owmlPath}/Mods/${uniqueName}`;
@@ -65,7 +66,6 @@ export async function getModDatabase(
         uniqueName,
         parent,
         remoteVersion: coerce(version)?.version ?? version,
-        // TODO doesnt make sense for this to be here in remote mods
         modPath,
         errors: [],
         downloadUrl,
