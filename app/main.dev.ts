@@ -7,7 +7,12 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { updateText } from './helpers/static-text';
 
+const protocolSchema = 'outer-wilds-mod';
+
 app.commandLine.appendSwitch('disable-http-cache');
+
+let mainWindow: BrowserWindow | undefined;
+let protocolModUniqueName = '';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -18,8 +23,28 @@ const checkForUpdates = () => {
   autoUpdater.checkForUpdates();
 };
 
+const sendProtocolMessage = (args: string[]) => {
+  if (!mainWindow) {
+    throw new Error(
+      'tried to send protocol message but main window is not defined'
+    );
+  }
+
+  const lastArg = args[args.length - 1];
+  const schemaUrlPrefix = `${protocolSchema}://`;
+
+  if (!lastArg || !lastArg.startsWith(schemaUrlPrefix)) return;
+
+  protocolModUniqueName = args[args.length - 1].slice(
+    schemaUrlPrefix.length,
+    -1
+  );
+
+  mainWindow.webContents.send('mod-protocol', protocolModUniqueName);
+};
+
 const createWindow = async () => {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1000,
     height: 850,
     minWidth: 750,
@@ -46,14 +71,48 @@ const createWindow = async () => {
     mainWindow.setTitle(`Outer Wilds Mod Manager ${app.getVersion()}`);
   });
 
+  sendProtocolMessage(process.argv);
+
   checkForUpdates();
 };
+
+if (process.defaultApp) {
+  if (process.argv.length >= 2) {
+    app.setAsDefaultProtocolClient(protocolSchema, process.execPath, [
+      process.argv[1],
+      path.resolve(process.argv[2]),
+      path.resolve(process.argv[3]),
+    ]);
+  }
+} else {
+  app.setAsDefaultProtocolClient(protocolSchema);
+}
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      sendProtocolMessage(commandLine);
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+
+  // Create mainWindow, load the rest of the app, etc...
+  app
+    .whenReady()
+    .then(() => createWindow())
+    .catch((error) =>
+      console.error(`app.whenReady failed with error ${error}`)
+    );
+}
 
 app.on('window-all-closed', () => {
   app.quit();
 });
-
-app.on('ready', createWindow);
 
 autoUpdater.signals.updateDownloaded(({ version }) => {
   log.info('CALLED update-available');
