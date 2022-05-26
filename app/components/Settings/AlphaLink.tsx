@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Button, ListItem, makeStyles } from '@material-ui/core';
-import { GetApp as DownloadIcon } from '@material-ui/icons';
+import { Launch as DownloadIcon } from '@material-ui/icons';
 import { shell } from 'electron';
 import { globalText } from '../../helpers/static-text';
 
@@ -22,7 +22,8 @@ const AlphaLink = () => {
   return (
     <ListItem className={styles.root}>
       <Button
-        variant="contained"
+        variant="outlined"
+        color="secondary"
         onClick={handleClick}
         startIcon={<DownloadIcon />}
       >

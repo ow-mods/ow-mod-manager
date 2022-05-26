@@ -34,6 +34,7 @@ const DropdownInput: FunctionComponent<Props> = ({
         <Select
           variant="outlined"
           margin="dense"
+          color="secondary"
           value={value ? 'true' : 'false'}
           onChange={(event) => {
             event.preventDefault();
