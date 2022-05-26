@@ -43,6 +43,8 @@ export const modsText = {
     modsDirectory: 'Mods directory',
   },
   emptyModList: 'No mods here! 😱',
+  missingAlphaPath:
+    'Before installing mods, you need to set the path to the Outer Wilds Alpha folder in the manager settings.',
   tableHead: {
     author: 'Author',
     downloadCount: 'Downloads',
