@@ -10,6 +10,7 @@ import {
   installedModList,
   requiredModList,
   notInstalledModList,
+  settingsState,
 } from '../../store';
 import ModsToolbar from './ModsToolbar';
 
@@ -18,6 +19,7 @@ const ModsPage: React.FunctionComponent = () => {
   const installedMods = useRecoilValue(installedModList);
   const notInstalledMods = useRecoilValue(notInstalledModList);
   const requiredMods = useRecoilValue(requiredModList);
+  const settings = useRecoilValue(settingsState);
 
   const isEmpty =
     enabledMods.length +
@@ -26,15 +28,19 @@ const ModsPage: React.FunctionComponent = () => {
       notInstalledMods.length ===
     0;
 
+  const isAlphaMissingPath = settings.alphaMode && !settings.alphaPath;
+
   return (
     <PageContainer maxWidth={false}>
       <Container maxWidth="md">
         <ModsToolbar />
-        <ModRowSection
-          title={modsText.modSections.required}
-          mods={requiredMods}
-          highlighted
-        />
+        {!isAlphaMissingPath && (
+          <ModRowSection
+            title={modsText.modSections.required}
+            mods={requiredMods}
+            highlighted
+          />
+        )}
         {isEmpty && (
           <Box mt={2}>
             <Card>
@@ -44,18 +50,31 @@ const ModsPage: React.FunctionComponent = () => {
             </Card>
           </Box>
         )}
-        <ModRowSection
-          title={modsText.modSections.enabled}
-          mods={enabledMods}
-        />
-        <ModRowSection
-          title={modsText.modSections.installed}
-          mods={installedMods}
-        />
-        <ModRowSection
-          title={modsText.modSections.notInstalled}
-          mods={notInstalledMods}
-        />
+        {isAlphaMissingPath && (
+          <Box mt={2}>
+            <Card>
+              <Typography variant="h6" align="center">
+                {modsText.missingAlphaPath}
+              </Typography>
+            </Card>
+          </Box>
+        )}
+        {!isAlphaMissingPath && (
+          <>
+            <ModRowSection
+              title={modsText.modSections.enabled}
+              mods={enabledMods}
+            />
+            <ModRowSection
+              title={modsText.modSections.installed}
+              mods={installedMods}
+            />
+            <ModRowSection
+              title={modsText.modSections.notInstalled}
+              mods={notInstalledMods}
+            />
+          </>
+        )}
       </Container>
     </PageContainer>
   );
