@@ -17,10 +17,15 @@ type SettingsInput = {
   key: SettingKey | OwmlSettingKey;
   isAlpha?: boolean;
   isOwmlSetting?: boolean;
+  isCurrentGameSetting?: boolean;
   type: SettingType;
 };
 
 const settingsInputs: readonly SettingsInput[] = [
+  {
+    key: 'alphaMode',
+    type: SettingType.Dropdown,
+  },
   {
     key: 'closeOnPlay',
     type: SettingType.Switch,
@@ -35,12 +40,31 @@ const settingsInputs: readonly SettingsInput[] = [
     isOwmlSetting: true,
   },
   {
-    key: 'logLinesLimit',
-    type: SettingType.Slider,
+    key: 'alphaPath',
+    type: SettingType.Path,
+    isAlpha: true,
   },
   {
     key: 'owmlPath',
     type: SettingType.Path,
+    isCurrentGameSetting: true,
+  },
+  {
+    key: 'owamlPath',
+    type: SettingType.Path,
+    isAlpha: true,
+  },
+  {
+    key: 'logLinesLimit',
+    type: SettingType.Slider,
+  },
+  {
+    key: 'modDatabaseUrl',
+    type: SettingType.Text,
+  },
+  {
+    key: 'alertSourceUrl',
+    type: SettingType.Text,
   },
   {
     key: 'debugMode',
@@ -53,30 +77,8 @@ const settingsInputs: readonly SettingsInput[] = [
     isOwmlSetting: true,
   },
   {
-    key: 'modDatabaseUrl',
-    type: SettingType.Text,
-  },
-  {
-    key: 'alertSourceUrl',
-    type: SettingType.Text,
-  },
-  {
     key: 'disableModWarnings',
     type: SettingType.SwitchList,
-  },
-  {
-    key: 'alphaMode',
-    type: SettingType.Dropdown,
-  },
-  {
-    key: 'alphaPath',
-    type: SettingType.Path,
-    isAlpha: true,
-  },
-  {
-    key: 'owamlPath',
-    type: SettingType.Path,
-    isAlpha: true,
   },
 ];
 
@@ -89,8 +91,10 @@ const Settings = () => {
       <Container maxWidth="md">
         <List component={Paper}>
           {settingsInputs.map(
-            ({ key, isAlpha, isOwmlSetting, type }) =>
-              (!isAlpha || (isAlpha && alphaMode)) && (
+            ({ key, isAlpha, isCurrentGameSetting, isOwmlSetting, type }) =>
+              (alphaMode
+                ? (!isCurrentGameSetting && !isOwmlSetting) || isAlpha
+                : !isAlpha) && (
                 <React.Fragment key={key}>
                   {isOwmlSetting && (
                     <OwmlSettingControl

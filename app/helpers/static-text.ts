@@ -120,9 +120,9 @@ export const settingsText = {
       'If enabled, logs show in "Logs" tab. Otherwise, they will show in a separate console window. Disabling this might improve game performance.',
   },
   gamePath: {
-    label: 'Game folder (contains game exe)',
+    label: 'Game folder',
     tooltip:
-      'Game path will be determined automatically when you launch the game. Leave empty for automatic detection on launch.',
+      'Directory that contains the game exe. Leave empty for automatic detection on launch.',
   },
   debugMode: {
     label: 'OWML debug mode',
