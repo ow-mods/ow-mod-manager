@@ -136,10 +136,6 @@ export const settingsText = {
     tooltip:
       'Lower log line count might help with performance. Only has an effect if "Send game logs to Mod Manager" is enabled',
   },
-  showAdvancedSettings: {
-    label: 'Show Advanced Settings',
-    tooltip: '',
-  },
   modDatabaseUrl: {
     label: 'Mod database URL',
     tooltip: 'URL used to check for updates for mods and OWML',
@@ -161,9 +157,9 @@ export const settingsText = {
       'Prevents this mod from showing warnings in the Mod Manager when starting the game',
   },
   alphaMode: {
-    label: 'View Mods for Outer Wilds Alpha',
+    label: 'Game version to use|Current Outer Wilds|Outer Wilds Alpha',
     tooltip:
-      'Expands Outer Wilds Alpha settings, and displays Outer Wilds Alpha mods on the mod tab.',
+      '"Current Outer Wilds" is the one you can buy on Steam, Epic, Game Pass, etc. "Outer Wilds Alpha" is an old version they used to have on their website.',
   },
   alphaPath: {
     label: 'Alpha game folder',

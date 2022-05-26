@@ -15,7 +15,6 @@ type OwmlSettingKey = keyof OwmlSettings;
 
 type SettingsInput = {
   key: SettingKey | OwmlSettingKey;
-  isAdvanced?: boolean;
   isAlpha?: boolean;
   isOwmlSetting?: boolean;
   type: SettingType;
@@ -40,44 +39,34 @@ const settingsInputs: readonly SettingsInput[] = [
     type: SettingType.Slider,
   },
   {
-    key: 'showAdvancedSettings',
-    type: SettingType.Switch,
-  },
-  {
     key: 'owmlPath',
     type: SettingType.Path,
-    isAdvanced: true,
   },
   {
     key: 'debugMode',
     type: SettingType.Switch,
     isOwmlSetting: true,
-    isAdvanced: true,
   },
   {
     key: 'forceExe',
     type: SettingType.Switch,
     isOwmlSetting: true,
-    isAdvanced: true,
   },
   {
     key: 'modDatabaseUrl',
     type: SettingType.Text,
-    isAdvanced: true,
   },
   {
     key: 'alertSourceUrl',
     type: SettingType.Text,
-    isAdvanced: true,
   },
   {
     key: 'disableModWarnings',
     type: SettingType.SwitchList,
-    isAdvanced: true,
   },
   {
     key: 'alphaMode',
-    type: SettingType.Switch,
+    type: SettingType.Dropdown,
   },
   {
     key: 'alphaPath',
@@ -93,17 +82,15 @@ const settingsInputs: readonly SettingsInput[] = [
 
 const Settings = () => {
   const {
-    settings: { showAdvancedSettings, alphaMode },
+    settings: { alphaMode },
   } = useSettings();
   return (
     <PageContainer maxWidth={false}>
       <Container maxWidth="md">
         <List component={Paper}>
           {settingsInputs.map(
-            ({ key, isAdvanced, isAlpha, isOwmlSetting, type }) =>
-              ((!isAdvanced && !isAlpha) ||
-                (isAdvanced && showAdvancedSettings) ||
-                (isAlpha && alphaMode)) && (
+            ({ key, isAlpha, isOwmlSetting, type }) =>
+              (!isAlpha || (isAlpha && alphaMode)) && (
                 <React.Fragment key={key}>
                   {isOwmlSetting && (
                     <OwmlSettingControl

@@ -66,7 +66,6 @@ type Settings = {
   closeOnPlay: boolean;
   logToSocket: boolean;
   logLinesLimit: number;
-  showAdvancedSettings: boolean;
   modDatabaseUrl: string;
   alertSourceUrl: string;
   owmlPath: string;
