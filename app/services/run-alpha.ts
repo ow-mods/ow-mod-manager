@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import { remote } from 'electron';
 
-const EXE_FILE = 'CMOWA.exe';
+const EXE_FILE = 'OWAML.exe';
 
 let quitTimeout: NodeJS.Timeout;
 
@@ -15,16 +15,16 @@ function waitAndQuit() {
 export async function runAlpha({
   closeOnPlay,
   alphaPath,
-  cmowaPath,
+  owamlPath,
 }: Settings) {
-  const cmowaParams = [];
+  const owamlParams = [];
   if (alphaPath) {
-    cmowaParams.push(`-gamePath ${alphaPath}`);
+    owamlParams.push(`-gamePath ${alphaPath}`);
   }
 
-  spawn(EXE_FILE, cmowaParams, {
+  spawn(EXE_FILE, owamlParams, {
     shell: true,
-    cwd: cmowaPath,
+    cwd: owamlPath,
     detached: true,
   });
 

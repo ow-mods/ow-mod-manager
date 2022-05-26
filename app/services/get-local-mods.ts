@@ -53,18 +53,18 @@ function getBepInEx(alphaPath: string) {
   return bepInEx;
 }
 
-function getCmowa(cmowaPath: string) {
-  const cmowaManifestPath = `${cmowaPath}/CMOWA.Manifest.json`;
-  const cmowaManifest: Manifest = fs.existsSync(cmowaManifestPath)
-    ? fs.readJSONSync(cmowaManifestPath)
+function getOwaml(owamlPath: string) {
+  const owamlManifestPath = `${owamlPath}/OWAML.Manifest.json`;
+  const owamlManifest: Manifest = fs.existsSync(owamlManifestPath)
+    ? fs.readJSONSync(owamlManifestPath)
     : null;
-  const cmowa: Mod = {
-    name: cmowaManifest?.name ?? 'CMOWA',
-    author: cmowaManifest?.author ?? 'Locochoco',
-    uniqueName: cmowaManifest?.uniqueName ?? 'Locochoco.CMOWA',
-    modPath: cmowaPath,
-    localVersion: cmowaManifest
-      ? cmowaManifest?.version ?? 'v1.0.1'
+  const owaml: Mod = {
+    name: owamlManifest?.name ?? 'OWAML',
+    author: owamlManifest?.author ?? 'Locochoco',
+    uniqueName: owamlManifest?.uniqueName ?? 'Locochoco.OWAML',
+    modPath: owamlPath,
+    localVersion: owamlManifest
+      ? owamlManifest?.version ?? 'v1.0.1'
       : undefined,
     isEnabled: true,
     isRequired: true,
@@ -73,7 +73,7 @@ function getCmowa(cmowaPath: string) {
     addons: [],
     isAlpha: true,
   };
-  return cmowa;
+  return owaml;
 }
 
 function pushModsFromDirectory(
@@ -156,9 +156,9 @@ function pushModsFromDirectory(
 export function getLocalMods(
   owmlPath: string,
   alphaPath: string,
-  cmowaPath: string
+  owamlPath: string
 ) {
-  if (!owmlPath && !alphaPath && !cmowaPath) {
+  if (!owmlPath && !alphaPath && !owamlPath) {
     return [];
   }
 
@@ -169,8 +169,8 @@ export function getLocalMods(
     pushModsFromDirectory(localMods, `${owmlPath}/Mods`);
   }
 
-  if (cmowaPath) {
-    localMods.push(getCmowa(cmowaPath));
+  if (owamlPath) {
+    localMods.push(getOwaml(owamlPath));
   }
 
   if (alphaPath) {

@@ -13,7 +13,7 @@
     "alertSourceUrl": "https://raw.githubusercontent.com/Raicuparta/ow-mod-db/source/alert.json",
     "alphaMode": false,
     "alphaPath": "",
-    "cmowaPath": ""
+    "owamlPath": ""
   },
   "ignoredErrors": [
     "ECONNRESET"

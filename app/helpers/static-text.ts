@@ -12,7 +12,7 @@ export const globalText = {
     `Please install ${modNames.join(', ')} before starting the game`,
   alphaWebsite: 'Download at Outer Wilds Alpha Website',
   alphaPathMissing: 'You need to set the path to the game folder in settings.',
-  cmowaPathMissing: 'You need to set the path to the CMOWA folder in settings.',
+  owamlPathMissing: 'You need to set the path to the OWAML folder in settings.',
   dialog: {
     ok: 'OK',
     cancel: 'Cancel',
@@ -170,8 +170,8 @@ export const settingsText = {
     tooltip: 'Path to Outer Wilds Alpha (contains alpha game exe)',
     isAlpha: true,
   },
-  cmowaPath: {
-    label: 'CMOWA path',
+  owamlPath: {
+    label: 'OWAML path',
     tooltip: 'Can be relative to Mod Manager or an absolute path.',
     isAlpha: true,
   },

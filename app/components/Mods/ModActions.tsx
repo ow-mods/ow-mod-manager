@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const styles = useStyles();
   const setLocalMods = useSetRecoilState(localModList);
-  const { owmlPath, alphaPath, cmowaPath } = useRecoilValue(settingsState);
+  const { owmlPath, alphaPath, owamlPath } = useRecoilValue(settingsState);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [progress, setProgress] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -100,7 +100,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
 
   const handleActionError = (actionName: string, error: string) => {
     debugConsole.error('error in action', actionName, error);
-    setLocalMods(getLocalMods(owmlPath, alphaPath, cmowaPath));
+    setLocalMods(getLocalMods(owmlPath, alphaPath, owamlPath));
   };
 
   const modActionHandler = (

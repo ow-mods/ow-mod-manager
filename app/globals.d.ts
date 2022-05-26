@@ -73,7 +73,7 @@ type Settings = {
   disableModWarnings: Record<string, boolean>;
   alphaMode: boolean;
   alphaPath: string;
-  cmowaPath: string;
+  owamlPath: string;
 };
 
 type OwmlSettings = {

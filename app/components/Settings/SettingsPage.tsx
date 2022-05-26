@@ -85,7 +85,7 @@ const settingsInputs: readonly SettingsInput[] = [
     isAlpha: true,
   },
   {
-    key: 'cmowaPath',
+    key: 'owamlPath',
     type: SettingType.Path,
     isAlpha: true,
   },

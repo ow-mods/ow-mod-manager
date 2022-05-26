@@ -57,8 +57,8 @@ export function cleanup(mod: Mod, tempManifestPath: string) {
       'OuterWilds_Alpha_1_2.exe',
       'BepInEx.Manifest.json',
     ];
-  } else if (mod.uniqueName === 'Locochoco.CMOWA') {
-    pathsToKeep = ['CMOWA.Manifest.json'];
+  } else if (mod.uniqueName === 'Locochoco.OWAML') {
+    pathsToKeep = ['OWAML.Manifest.json'];
   } else {
     pathsToKeep = ['config.json', 'save.json', 'manifest.json'].concat(
       pathsToPreserve ?? []
