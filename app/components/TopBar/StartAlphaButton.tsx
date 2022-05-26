@@ -62,18 +62,18 @@ const StartAlphaButton: React.FunctionComponent = () => {
 
   const isMissingAlphaPath =
     settings.alphaPath === null || settings.alphaPath.match(/^ *$/) !== null;
-  const isMissingCmowaPath =
-    settings.cmowaPath === null || settings.cmowaPath.match(/^ *$/) !== null;
+  const isMissingOawmlPath =
+    settings.owamlPath === null || settings.owamlPath.match(/^ *$/) !== null;
   const isMissingRequiredMod = requiredModNames.length > 0;
   const isStartDisabled =
-    isMissingRequiredMod || isMissingAlphaPath || isMissingCmowaPath;
+    isMissingRequiredMod || isMissingAlphaPath || isMissingOawmlPath;
 
   function getStartGameTooltip() {
     if (isMissingAlphaPath) {
       return globalText.alphaPathMissing;
     }
-    if (isMissingCmowaPath) {
-      return globalText.cmowaPathMissing;
+    if (isMissingOawmlPath) {
+      return globalText.owamlPathMissing;
     }
     if (isMissingRequiredMod) {
       return globalText.missingRequiredMod(requiredModNames);

@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from 'react';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import {
   ListItem,
   Select,
@@ -24,13 +23,6 @@ const DropdownInput: FunctionComponent<Props> = ({
   disabled,
   tooltip = '',
 }) => {
-  const handleSwitchClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    event.preventDefault();
-    onChange(!value);
-  };
-
   const [mainLabel, falseLabel, trueLabel] = label.split('|');
 
   return (
