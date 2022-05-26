@@ -1,7 +1,10 @@
 import React, { useCallback } from 'react';
 import { Button, ListItem, makeStyles } from '@material-ui/core';
 import { GetApp as DownloadIcon } from '@material-ui/icons';
+import { shell } from 'electron';
 import { globalText } from '../../helpers/static-text';
+
+const outerWildsAlphaUrl = 'https://outerwildsmods.com/outer-wilds-alpha/';
 
 const useStyles = makeStyles({
   root: {
@@ -13,13 +16,7 @@ const AlphaLink = () => {
   const styles = useStyles();
 
   const handleClick = useCallback(() => {
-    const win = window.open(
-      'https://outerwildsmods.com/outer-wilds-alpha/',
-      ''
-    );
-    if (win != null) {
-      win.focus();
-    }
+    shell.openExternal(outerWildsAlphaUrl);
   }, []);
 
   return (
