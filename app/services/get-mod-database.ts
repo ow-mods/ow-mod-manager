@@ -20,6 +20,7 @@ type RemoteMod = {
 
 type RemoteModDatabase = {
   releases: RemoteMod[];
+  alphaReleases: RemoteMod[];
   modManager: ModManager;
 };
 
@@ -39,9 +40,15 @@ export async function getModDatabase(
     throw new Error(`${response.statusText} (${response.status})`);
   }
 
-  const { releases, modManager } = (await response.json()) as RemoteModDatabase;
+  const {
+    releases,
+    alphaReleases,
+    modManager,
+  } = (await response.json()) as RemoteModDatabase;
 
-  const mods = releases.map(
+  const allReleases = [...releases, ...alphaReleases];
+
+  const mods = allReleases.map(
     ({
       downloadCount,
       downloadUrl,
@@ -75,7 +82,7 @@ export async function getModDatabase(
         isRequired: required,
         description,
         prerelease,
-        addons: releases
+        addons: allReleases
           .filter((release) => release.parent === uniqueName)
           .map((addon) => addon.uniqueName),
         isAlpha: alpha,
