@@ -21,11 +21,20 @@ jobs:
 
     - run: yarn run package
 
+    - name: get-npm-version
+      id: package-version
+      uses: martinbeentjes/npm-get-version-action@main
+      with:
+        path: app/package.json
+
     - uses: ncipollo/release-action@v1
       with:
         artifacts: "release/*.exe,release/*.zip,release/latest.yml,release/*.blockmap"
         token: ${{ secrets.GITHUB_TOKEN }}
         commit: master
-        tag: test-release-0
+        tag: v${{ steps.package-version.outputs.current-version}}
+        name: ${{ steps.package-version.outputs.current-version}}
         prerelease: true
         allowUpdates: true
+
+    
