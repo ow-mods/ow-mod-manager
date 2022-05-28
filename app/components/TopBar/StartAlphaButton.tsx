@@ -2,19 +2,25 @@ import React from 'react';
 import { Button, Tooltip } from '@material-ui/core';
 import { PlayArrow as PlayIcon } from '@material-ui/icons';
 
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { remote } from 'electron';
 import { globalText } from '../../helpers/static-text';
 import { runAlpha, writeSettings } from '../../services';
 import {
-  settingsState,
   requiredModNamesState,
+  isLogServerRunningState,
+  logServerPortState,
+  settingsState,
+  selectedTabState,
   enabledModList,
 } from '../../store';
 
 const StartAlphaButton: React.FunctionComponent = () => {
   const requiredModNames = useRecoilValue(requiredModNamesState);
+  const isLogServerRunning = useRecoilValue(isLogServerRunningState);
+  const logServerPort = useRecoilValue(logServerPortState);
   const settings = useRecoilValue(settingsState);
+  const setSelectedTab = useSetRecoilState(selectedTabState);
   const enabledMods = useRecoilValue(enabledModList);
 
   async function handleStartGameClick() {
@@ -57,7 +63,10 @@ const StartAlphaButton: React.FunctionComponent = () => {
 
     writeSettings(newSettings);
 
-    runAlpha(settings);
+    runAlpha(settings, logServerPort);
+    if (settings.logToSocket) {
+      setSelectedTab(1);
+    }
   }
 
   const isMissingAlphaPath =
@@ -66,7 +75,10 @@ const StartAlphaButton: React.FunctionComponent = () => {
     settings.owamlPath === null || settings.owamlPath.match(/^ *$/) !== null;
   const isMissingRequiredMod = requiredModNames.length > 0;
   const isStartDisabled =
-    isMissingRequiredMod || isMissingAlphaPath || isMissingOawmlPath;
+    isMissingRequiredMod ||
+    isMissingAlphaPath ||
+    isMissingOawmlPath ||
+    isLogServerRunning;
 
   function getStartGameTooltip() {
     if (isMissingAlphaPath) {
@@ -77,6 +89,9 @@ const StartAlphaButton: React.FunctionComponent = () => {
     }
     if (isMissingRequiredMod) {
       return globalText.missingRequiredMod(requiredModNames);
+    }
+    if (isLogServerRunning) {
+      return globalText.gameRunning;
     }
     return '';
   }

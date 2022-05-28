@@ -12,12 +12,14 @@ function waitAndQuit() {
   quitTimeout = setTimeout(remote.app.quit, 1000);
 }
 
-export async function runAlpha({
-  closeOnPlay,
-  alphaPath,
-  owamlPath,
-}: Settings) {
+export async function runAlpha(
+  { closeOnPlay, logToSocket, alphaPath, owamlPath }: Settings,
+  port: number
+) {
   const owamlParams = [];
+  if (!closeOnPlay && logToSocket) {
+    owamlParams.push(`-consolePort ${port}`);
+  }
   if (alphaPath) {
     owamlParams.push(`-gamePath "${alphaPath}"`);
   }

@@ -41,7 +41,7 @@ function getBepInEx(alphaPath: string) {
     uniqueName: bepInExManifest?.uniqueName ?? 'bbepis.BepInEx',
     modPath: alphaPath,
     localVersion: bepInExManifest
-      ? bepInExManifest?.version ?? 'v5.4.19'
+      ? bepInExManifest?.version ?? '5.4.19'
       : undefined,
     isEnabled: true,
     isRequired: true,
