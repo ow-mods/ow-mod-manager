@@ -21,19 +21,20 @@ jobs:
 
     - run: yarn run package
 
-    - name: get-npm-version
-      id: package-version
-      uses: martinbeentjes/npm-get-version-action@main
-      with:
+    - name: get version
+      id: version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
         path: app/package.json
+        prop_path: version
 
     - uses: ncipollo/release-action@v1
       with:
         artifacts: "release/*.exe,release/*.zip,release/latest.yml,release/*.blockmap"
         token: ${{ secrets.GITHUB_TOKEN }}
         commit: master
-        tag: v${{ steps.package-version.outputs.current-version}}
-        name: ${{ steps.package-version.outputs.current-version}}
+        tag: v${{steps.version.outputs.prop}}
+        name: ${{steps.version.outputs.prop}}
         prerelease: true
         allowUpdates: true
 
