@@ -5,6 +5,7 @@ import React, {
   useEffect,
 } from 'react';
 import { remote } from 'electron';
+import fs from 'fs-extra';
 import {
   ListItem,
   TextField,
@@ -47,8 +48,24 @@ const PathInput: FunctionComponent<Props> = ({
       setPath(event.target.value),
     []
   );
+  const savePath = useCallback(
+    (newPath: string) => {
+      try {
+        if (!fs.existsSync(newPath)) {
+          fs.mkdirSync(newPath, { recursive: true });
+        }
+        onChange(newPath);
+        setPath(newPath);
+      } catch (error) {
+        debugConsole.error(`Error setting path in PathInput`, error);
+        onChange('');
+        setPath('');
+      }
+    },
+    [onChange]
+  );
   const handleSaveClick = () => {
-    onChange(path);
+    savePath(path);
   };
 
   useEffect(() => {
@@ -65,8 +82,7 @@ const PathInput: FunctionComponent<Props> = ({
       });
       if (openedValue && openedValue.canceled === false) {
         const pathResult = openedValue.filePaths[0];
-        onChange(pathResult);
-        setPath(pathResult);
+        savePath(pathResult);
       }
     } catch (err) {
       debugConsole.error(err);

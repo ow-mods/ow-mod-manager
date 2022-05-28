@@ -13,36 +13,41 @@ export function useModsDirectoryWatcher(handler: Handler) {
   } = useSettings();
 
   useEffect(() => {
-    if (isLoading) {
+    try {
+      if (isLoading) {
+        return undefined;
+      }
+
+      debugConsole.log('useEffect: useModsDirectoryWatcher');
+      const path = alphaMode
+        ? `${alphaPath}/BepInEx/plugins`
+        : `${owmlPath}/Mods`;
+
+      if (!fs.existsSync(path)) {
+        fs.mkdirSync(path, { recursive: true });
+      }
+
+      const watcher = fs.watch(
+        path,
+        { recursive: true },
+        (eventType, fileName) => {
+          debugConsole.log(
+            'useEffect: useModsDirectoryWatcher callback. eventType:',
+            eventType,
+            'fileName:',
+            fileName
+          );
+          handler();
+        }
+      );
+
+      // Call the handler one first time.
+      handler();
+
+      return () => watcher.close();
+    } catch (error) {
+      debugConsole.error('Error in mods directory watcher for', error);
       return undefined;
     }
-
-    debugConsole.log('useEffect: useModsDirectoryWatcher');
-    const path = alphaMode
-      ? `${alphaPath}/BepInEx/plugins`
-      : `${owmlPath}/Mods`;
-
-    if (!fs.existsSync(path)) {
-      fs.mkdirSync(path, { recursive: true });
-    }
-
-    const watcher = fs.watch(
-      path,
-      { recursive: true },
-      (eventType, fileName) => {
-        debugConsole.log(
-          'useEffect: useModsDirectoryWatcher callback. eventType:',
-          eventType,
-          'fileName:',
-          fileName
-        );
-        handler();
-      }
-    );
-
-    // Call the handler one first time.
-    handler();
-
-    return () => watcher.close();
   }, [handler, owmlPath, alphaPath, alphaMode, isLoading]);
 }
