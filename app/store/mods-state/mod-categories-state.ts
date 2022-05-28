@@ -22,7 +22,8 @@ export const installedModList = selector({
 
 export const enabledModList = selector({
   key: 'EnabledMods',
-  get: ({ get }) => get(filteredModList).filter((mod) => mod.isEnabled),
+  get: ({ get }) =>
+    get(filteredModList).filter((mod) => mod.localVersion && mod.isEnabled),
 });
 
 export const notInstalledModList = selector({

@@ -31,6 +31,7 @@ type Mod = {
   conflicts?: string[];
   pathsToPreserve?: string[];
   addons: string[];
+  isAlpha?: boolean;
 };
 
 type ModManager = {
@@ -65,11 +66,13 @@ type Settings = {
   closeOnPlay: boolean;
   logToSocket: boolean;
   logLinesLimit: number;
-  showAdvancedSettings: boolean;
   modDatabaseUrl: string;
   alertSourceUrl: string;
   owmlPath: string;
   disableModWarnings: Record<string, boolean>;
+  alphaMode: boolean;
+  alphaPath: string;
+  owamlPath: string;
 };
 
 type OwmlSettings = {

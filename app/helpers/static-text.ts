@@ -6,9 +6,13 @@ export const globalText = {
     update: 'Update',
   },
   startGame: 'Start Game',
+  startAlpha: 'Start Alpha',
   gameRunning: 'Already running',
   missingRequiredMod: (modNames: string[]) =>
     `Please install ${modNames.join(', ')} before starting the game`,
+  alphaWebsite: 'More about the Outer Wilds Alpha',
+  alphaPathMissing: 'You need to set the path to the game folder in settings.',
+  owamlPathMissing: 'You need to set the path to the OWAML folder in settings.',
   dialog: {
     ok: 'OK',
     cancel: 'Cancel',
@@ -39,6 +43,8 @@ export const modsText = {
     modsDirectory: 'Mods directory',
   },
   emptyModList: 'No mods here! 😱',
+  missingAlphaPath:
+    'Before installing mods, you need to set the path to the Outer Wilds Alpha folder in the manager settings.',
   tableHead: {
     author: 'Author',
     downloadCount: 'Downloads',
@@ -114,9 +120,9 @@ export const settingsText = {
       'If enabled, logs show in "Logs" tab. Otherwise, they will show in a separate console window. Disabling this might improve game performance.',
   },
   gamePath: {
-    label: 'Game folder (contains game exe)',
+    label: 'Game folder',
     tooltip:
-      'Game path will be determined automatically when you launch the game. Leave empty for automatic detection on launch.',
+      'Directory that contains the game exe. Leave empty for automatic detection on launch.',
   },
   debugMode: {
     label: 'OWML debug mode',
@@ -131,10 +137,6 @@ export const settingsText = {
     label: 'Log lines per page',
     tooltip:
       'Lower log line count might help with performance. Only has an effect if "Send game logs to Mod Manager" is enabled',
-  },
-  showAdvancedSettings: {
-    label: 'Show Advanced Settings',
-    tooltip: '',
   },
   modDatabaseUrl: {
     label: 'Mod database URL',
@@ -155,6 +157,21 @@ export const settingsText = {
     label: 'Disable warning for mod',
     tooltip:
       'Prevents this mod from showing warnings in the Mod Manager when starting the game',
+  },
+  alphaMode: {
+    label: 'Game version to use|Current Outer Wilds|Outer Wilds Alpha',
+    tooltip:
+      '"Current Outer Wilds" is the one you can buy on Steam, Epic, Game Pass, etc. "Outer Wilds Alpha" is an old version they used to have on their website.',
+  },
+  alphaPath: {
+    label: 'Alpha game folder',
+    tooltip: 'Path to Outer Wilds Alpha (contains alpha game exe)',
+    isAlpha: true,
+  },
+  owamlPath: {
+    label: 'OWAML path',
+    tooltip: 'Can be relative to Mod Manager or an absolute path.',
+    isAlpha: true,
   },
   textFieldSave: 'Save',
   pathFindButton: 'Find...',

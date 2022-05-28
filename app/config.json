@@ -7,10 +7,12 @@
     "closeOnPlay": false,
     "logToSocket": true,
     "logLinesLimit": 50,
-    "showAdvancedSettings": false,
     "disableModWarnings": {},
     "modDatabaseUrl": "https://raw.githubusercontent.com/Raicuparta/ow-mod-db/master/database.json",
-    "alertSourceUrl": "https://raw.githubusercontent.com/Raicuparta/ow-mod-db/source/alert.json"
+    "alertSourceUrl": "https://raw.githubusercontent.com/Raicuparta/ow-mod-db/source/alert.json",
+    "alphaMode": false,
+    "alphaPath": "",
+    "owamlPath": ""
   },
   "ignoredErrors": [
     "ECONNRESET"
