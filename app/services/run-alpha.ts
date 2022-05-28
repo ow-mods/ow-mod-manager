@@ -19,7 +19,7 @@ export async function runAlpha({
 }: Settings) {
   const owamlParams = [];
   if (alphaPath) {
-    owamlParams.push(`-gamePath ${alphaPath}`);
+    owamlParams.push(`-gamePath "${alphaPath}"`);
   }
 
   spawn(EXE_FILE, owamlParams, {
