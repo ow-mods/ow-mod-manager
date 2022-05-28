@@ -58,8 +58,10 @@ const PathInput: FunctionComponent<Props> = ({
         setPath(newPath);
       } catch (error) {
         debugConsole.error(`Error setting path in PathInput`, error);
-        onChange('');
-        setPath('');
+        remote.dialog.showErrorBox(
+          `Failed to set path "${newPath}". Try a different one.`,
+          `${(error as Error).stack || error}`
+        );
       }
     },
     [onChange]
