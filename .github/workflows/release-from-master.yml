@@ -27,3 +27,5 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit: master
         tag: test-release-0
+        prerelease: true
+        allowUpdates: true
