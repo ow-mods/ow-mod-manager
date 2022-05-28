@@ -19,6 +19,7 @@ import {
   LogsSubscription,
   RemoteModsSubscription,
 } from '../subscriptions';
+import { ErrorBoundary } from './ErrorBoundary';
 
 // Compatibility with React concurrent mode.
 const createMuiStrictTheme = unstableCreateMuiStrictModeTheme as typeof createMuiTheme;
@@ -72,15 +73,27 @@ const theme = createMuiStrictTheme({
 });
 
 const App = () => (
-  <RecoilRoot>
-    <SettingsSubscription />
-    <LocalModsSubscription />
-    <RemoteModsSubscription />
-    <LogsSubscription />
-    <ThemeProvider theme={theme}>
-      <MainView />
-    </ThemeProvider>
-  </RecoilRoot>
+  <ErrorBoundary>
+    <RecoilRoot>
+      <ThemeProvider theme={theme}>
+        <ErrorBoundary>
+          <SettingsSubscription />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <LocalModsSubscription />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <RemoteModsSubscription />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <LogsSubscription />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <MainView />
+        </ErrorBoundary>
+      </ThemeProvider>
+    </RecoilRoot>
+  </ErrorBoundary>
 );
 
 export default App;
