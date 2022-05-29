@@ -21,7 +21,7 @@ import {
   Description as DescriptionIcon,
 } from '@material-ui/icons';
 
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import { modsText } from '../../helpers/static-text';
 import {
   isInstalled,
@@ -37,9 +37,15 @@ import {
   reinstall,
   openReadme,
 } from '../../services';
-import { localModList, settingsState } from '../../store';
+import {
+  localModList,
+  modIsLoadingState,
+  modProgressState,
+  settingsState,
+} from '../../store';
 import { useLoading } from '../../store/loading-state';
 import { debugConsole } from '../../helpers/console-log';
+import { ModActionProgress } from './ModActionProgress';
 
 interface Props {
   mod: Mod;
@@ -53,15 +59,6 @@ type ModActionHandler<Return> = (
 type ModActionHandlerSync<Return> = (mod: Mod) => Return;
 
 const useStyles = makeStyles((theme) => ({
-  circularProgress: {
-    background: theme.palette.background.default,
-    color: theme.palette.primary.main,
-    borderRadius: '100%',
-    borderWidth: 3,
-    borderStyle: 'solid',
-    borderColor: theme.palette.background.default,
-    boxShadow: `0 0 5px 0 ${theme.palette.grey[300]}`,
-  },
   highlightedButton: {
     color: theme.palette.secondary.light,
     boxShadow: `0 0 10px ${theme.palette.common.white}`,
@@ -73,9 +70,11 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
   const setLocalMods = useSetRecoilState(localModList);
   const { owmlPath, alphaPath, owamlPath } = useRecoilValue(settingsState);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [progress, setProgress] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useRecoilState(
+    modIsLoadingState(mod.uniqueName)
+  );
   const { startLoading, endLoading } = useLoading();
+  const setProgress = useSetRecoilState(modProgressState(mod.uniqueName));
 
   const handleMoreClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -114,7 +113,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
       try {
         await handler(mod, setProgress);
       } catch (error) {
-        handleActionError(actionName, error);
+        handleActionError(actionName, `${error}`);
       } finally {
         setProgress(0);
         setIsLoading(false);
@@ -131,7 +130,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     try {
       handler(mod);
     } catch (error) {
-      handleActionError(actionName, error);
+      handleActionError(actionName, `${error}`);
     }
   };
 
@@ -199,16 +198,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
             size="small"
             className={isInstallHighlighted ? styles.highlightedButton : ''}
           >
-            {isLoading && (
-              <CircularProgress
-                variant="determinate"
-                value={progress * 100}
-                color="primary"
-                size={24}
-                thickness={23}
-                className={styles.circularProgress}
-              />
-            )}
+            {isLoading && <ModActionProgress modUniqueName={mod.uniqueName} />}
             {!isLoading && (isModOutdated ? <UpdateIcon /> : <SaveIcon />)}
           </IconButton>
         </span>
