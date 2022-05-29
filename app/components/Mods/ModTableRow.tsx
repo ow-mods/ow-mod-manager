@@ -56,6 +56,10 @@ const useStyles = makeStyles((theme) => ({
     '&:nth-of-type(odd)': {
       opacity: '#4b4b4b',
     },
+    transition: 'background-color 0.2s',
+  },
+  loading: {
+    backgroundColor: theme.palette.grey[600],
   },
   addonRow: {
     backgroundColor: theme.palette.grey[900],
@@ -174,6 +178,8 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
     let className = styles.tableRow;
     if (isModBroken || isModConflicting) {
       className += ` ${styles.brokenRow}`;
+    } else if (isLoading) {
+      className += ` ${styles.loading}`;
     } else if (missingDependencyNames.length > 0) {
       className += ` ${styles.missingDependencyRow}`;
     } else if (isAddon) {
