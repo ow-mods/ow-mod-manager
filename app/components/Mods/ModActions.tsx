@@ -4,7 +4,6 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
-  CircularProgress,
   makeStyles,
   IconButton,
   Box,
