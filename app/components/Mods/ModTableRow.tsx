@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   makeStyles,
   TableCell,
@@ -20,6 +20,7 @@ import {
   addonModList,
   enabledModList,
   isFiltering,
+  modIsLoadingState,
 } from '../../store';
 
 type Props = {
@@ -111,6 +112,18 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
   const enabledMods = useRecoilValue(enabledModList);
   const forceExpandAddons = useRecoilValue(isFiltering);
   const shouldExpandAddons = forceExpandAddons || isAddonsExpanded;
+  const rowRef = useRef<HTMLTableRowElement>(null);
+  const isLoading = useRecoilValue(modIsLoadingState(mod.uniqueName));
+
+  useEffect(() => {
+    if (!isLoading || !rowRef.current) return;
+
+    rowRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'nearest',
+    });
+  }, [isLoading]);
 
   const addons = useMemo(
     () => addonMods.filter((addon) => addon.parent === mod.uniqueName),
@@ -186,7 +199,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
 
   return (
     <>
-      <TableRow className={getClassName()} key={mod.uniqueName}>
+      <TableRow className={getClassName()} key={mod.uniqueName} ref={rowRef}>
         <TableCell className={styles.tableCell}>
           <Box display="flex">
             {isAddon && (
