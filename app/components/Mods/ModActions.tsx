@@ -166,11 +166,8 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     return modsText.actions.install;
   };
 
-  const getEnabledCheckbox = () => {
-    if (mod.isAlpha) {
-      return '';
-    }
-    return (
+  return (
+    <Box display="flex" justifyContent="space-between">
       <Tooltip title={getEnableTooltip()}>
         <span>
           <IconButton
@@ -182,12 +179,6 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
           </IconButton>
         </span>
       </Tooltip>
-    );
-  };
-
-  return (
-    <Box display="flex" justifyContent="space-between">
-      {getEnabledCheckbox()}
       <Tooltip title={getInstallTooltip()}>
         <span>
           <IconButton
