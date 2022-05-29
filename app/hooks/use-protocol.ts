@@ -17,10 +17,14 @@ export function useProtocol(): void {
 
   useEffect(() => {
     if (protocolMod) {
+      // TODO try not to duplicate code between here and ModActions.
       setIsLoading(true);
       install(protocolMod, setModProgress)
         .finally(() => {
-          setIsLoading(false);
+          // TODO try something better than a timeout here.
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 1000);
         })
         .catch((error) => {
           debugConsole.error('Error installing mod from protocol', error);

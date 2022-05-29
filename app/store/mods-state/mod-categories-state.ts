@@ -2,6 +2,7 @@ import { selector } from 'recoil';
 
 import { filteredModList } from './mod-filter-state';
 import { requiredDependencyIdsState } from './mod-dependencies-state';
+import { modIsLoadingState } from './mod-progress-state';
 
 export const nonAddonModList = selector({
   key: 'NonAddonMods',
@@ -23,13 +24,22 @@ export const installedModList = selector({
 export const enabledModList = selector({
   key: 'EnabledMods',
   get: ({ get }) =>
-    get(filteredModList).filter((mod) => mod.localVersion && mod.isEnabled),
+    get(filteredModList).filter(
+      (mod) =>
+        (mod.localVersion && mod.isEnabled) ||
+        get(modIsLoadingState(mod.uniqueName))
+    ),
 });
 
 export const notInstalledModList = selector({
   key: 'NotInstalledMods',
   get: ({ get }) =>
-    get(nonAddonModList).filter((mod) => !mod.localVersion && !mod.isRequired),
+    get(nonAddonModList).filter(
+      (mod) =>
+        !mod.localVersion &&
+        !mod.isRequired &&
+        !get(modIsLoadingState(mod.uniqueName))
+    ),
 });
 
 export const requiredModList = selector({
@@ -38,6 +48,7 @@ export const requiredModList = selector({
     get(nonAddonModList).filter(
       (mod) =>
         (!mod.localVersion || !mod.isEnabled) &&
+        !get(modIsLoadingState(mod.uniqueName)) &&
         (mod.isRequired ||
           get(requiredDependencyIdsState).includes(mod.uniqueName))
     ),

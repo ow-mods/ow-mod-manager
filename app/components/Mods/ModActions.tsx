@@ -115,7 +115,10 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
         handleActionError(actionName, `${error}`);
       } finally {
         setProgress(0);
-        setIsLoading(false);
+        // TODO try something other than a SetTimeout here.
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000);
         endLoading();
       }
     }
