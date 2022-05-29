@@ -8,14 +8,13 @@ import { localModList } from '../store';
 export const LocalModsSubscription: React.FunctionComponent = () => {
   const setLocalMods = useSetRecoilState(localModList);
   const {
-    settings: { owmlPath },
+    settings: { owmlPath, alphaPath, owamlPath },
   } = useSettings();
 
   useModsDirectoryWatcher(
-    owmlPath,
     useCallback(() => {
-      setLocalMods(getLocalMods(owmlPath));
-    }, [owmlPath, setLocalMods])
+      setLocalMods(getLocalMods(owmlPath, alphaPath, owamlPath));
+    }, [owmlPath, alphaPath, owamlPath, setLocalMods])
   );
 
   return null;

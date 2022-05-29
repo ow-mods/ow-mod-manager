@@ -9,12 +9,14 @@ import { selectedTabState } from '../store';
 import LoadingSuspense from './LoadingSuspense';
 import { AppAlert } from './AppAlert';
 import { useProtocol } from '../hooks';
+import { ErrorBoundary } from './ErrorBoundary';
 
 const useStyles = makeStyles({
   wrapper: {
     display: 'flex',
     height: '100vh',
     flexDirection: 'column',
+    overflow: 'hidden',
   },
 });
 
@@ -32,9 +34,11 @@ const MainView = () => {
         {tabList.map(
           (tab) =>
             tabList[selectedTab].name === tab.name && (
-              <LoadingSuspense key={tab.name}>
-                <tab.component />
-              </LoadingSuspense>
+              <ErrorBoundary>
+                <LoadingSuspense key={tab.name}>
+                  <tab.component />
+                </LoadingSuspense>
+              </ErrorBoundary>
             )
         )}
       </div>

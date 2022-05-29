@@ -1,0 +1,41 @@
+name: Create release from master
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: windows-latest
+    continue-on-error: true
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Setup Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+        cache: 'yarn'
+
+    - run: yarn install --frozen-lockfile
+
+    - run: yarn run package
+
+    - name: get version
+      id: version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+        path: app/package.json
+        prop_path: version
+
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: "release/*.exe,release/*.zip,release/latest.yml,release/*.blockmap"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit: master
+        tag: v${{steps.version.outputs.prop}}
+        name: ${{steps.version.outputs.prop}}
+        prerelease: true
+        allowUpdates: true
+
+    

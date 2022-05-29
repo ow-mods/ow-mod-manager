@@ -3,6 +3,7 @@ import { merge, keyBy } from 'lodash';
 import { remote } from 'electron';
 
 import { modsText } from '../../helpers/static-text';
+import { settingsState } from '../settings-state';
 
 export const remoteModList = atom<Mod[]>({
   key: 'RemoteModList',
@@ -21,14 +22,28 @@ export const modManager = atom<ModManager>({
   },
 });
 
+function regularFilter(mod: Mod) {
+  return Boolean(!mod.isAlpha);
+}
+
+function alphaFilter(mod: Mod) {
+  return Boolean(mod.isAlpha);
+}
+
 const remoteModMap = selector({
   key: 'RemoteModMap',
-  get: ({ get }) => keyBy(get(remoteModList), 'uniqueName'),
+  get: ({ get }) => {
+    const filter = get(settingsState).alphaMode ? alphaFilter : regularFilter;
+    return keyBy(get(remoteModList).filter(filter), 'uniqueName');
+  },
 });
 
 export const localModMap = selector({
   key: 'LocalModMap',
-  get: ({ get }) => keyBy(get(localModList), 'uniqueName'),
+  get: ({ get }) => {
+    const filter = get(settingsState).alphaMode ? alphaFilter : regularFilter;
+    return keyBy(get(localModList).filter(filter), 'uniqueName');
+  },
 });
 
 const modMapState = selector({
@@ -39,8 +54,8 @@ const modMapState = selector({
 
 export const modList = selector({
   key: 'ModList',
-  get: ({ get }) =>
-    Object.values(get(modMapState)).concat({
+  get: ({ get }) => {
+    return Object.values(get(modMapState)).concat({
       ...modsText.modManager,
       uniqueName: 'ow-mod-manager',
       isRequired: true,
@@ -54,5 +69,7 @@ export const modList = selector({
       errors: [],
       dependencies: [],
       addons: [],
-    }),
+      isAlpha: get(settingsState).alphaMode,
+    });
+  },
 });

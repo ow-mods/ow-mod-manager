@@ -14,7 +14,7 @@ import {
   Button,
   withStyles,
 } from '@material-ui/core';
-import { ClearAll as ClearAllIcon } from '@material-ui/icons';
+import { DeleteSweep as ClearLogsIcon } from '@material-ui/icons';
 
 import { logsText } from '../../helpers/static-text';
 import { LogLine } from '../../types';
@@ -197,7 +197,7 @@ const OwmlLog: React.FunctionComponent = () => {
                 )}
                 <Tooltip title={logsText.clearLogs}>
                   <IconButton size="small" onClick={handleClearClick}>
-                    <ClearAllIcon />
+                    <ClearLogsIcon />
                   </IconButton>
                 </Tooltip>
               </LogCell>

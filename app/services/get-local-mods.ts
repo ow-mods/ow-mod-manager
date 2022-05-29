@@ -30,17 +30,61 @@ function getOwml(owmlPath: string) {
   return owml;
 }
 
-export function getLocalMods(owmlPath: string) {
-  if (!owmlPath) {
-    return [];
-  }
+function getBepInEx(alphaPath: string) {
+  const bepInExManifestPath = `${alphaPath}/BepInEx.Manifest.json`;
+  const bepInExManifest: Manifest = fs.existsSync(bepInExManifestPath)
+    ? fs.readJSONSync(bepInExManifestPath)
+    : null;
+  const bepInEx: Mod = {
+    name: bepInExManifest?.name ?? 'BepInEx',
+    author: bepInExManifest?.author ?? 'bbepis',
+    uniqueName: bepInExManifest?.uniqueName ?? 'bbepis.BepInEx',
+    modPath: alphaPath,
+    localVersion: bepInExManifest
+      ? bepInExManifest?.version ?? '5.4.19'
+      : undefined,
+    isEnabled: true,
+    isRequired: true,
+    errors: [],
+    dependencies: [],
+    addons: [],
+    isAlpha: true,
+  };
+  return bepInEx;
+}
 
+function getOwaml(owamlPath: string) {
+  const owamlManifestPath = `${owamlPath}/OWAML.Manifest.json`;
+  const owamlManifest: Manifest = fs.existsSync(owamlManifestPath)
+    ? fs.readJSONSync(owamlManifestPath)
+    : null;
+  const owaml: Mod = {
+    name: owamlManifest?.name ?? 'OWAML',
+    author: owamlManifest?.author ?? 'Locochoco',
+    uniqueName: owamlManifest?.uniqueName ?? 'Locochoco.OWAML',
+    modPath: owamlPath,
+    localVersion: owamlManifest
+      ? owamlManifest?.version ?? 'v1.0.1'
+      : undefined,
+    isEnabled: true,
+    isRequired: true,
+    errors: [],
+    dependencies: ['bbepis.BepInEx'],
+    addons: [],
+    isAlpha: true,
+  };
+  return owaml;
+}
+
+function pushModsFromDirectory(
+  localMods: Mod[],
+  directory: string,
+  isAlpha?: boolean
+) {
   const manifestPaths = globby.sync(`**/manifest.json`, {
-    cwd: `${owmlPath}/Mods`,
+    cwd: directory,
     absolute: true,
   });
-
-  const localMods: Mod[] = [getOwml(owmlPath)];
 
   manifestPaths.forEach((manifestPath) => {
     const modPath = path.dirname(manifestPath);
@@ -72,6 +116,7 @@ export function getLocalMods(owmlPath: string) {
         conflicts: manifest.conflicts,
         pathsToPreserve: manifest.pathsToPreserve,
         addons: [],
+        isAlpha,
       };
 
       if (missingAttributes.length > 0) {
@@ -102,9 +147,36 @@ export function getLocalMods(owmlPath: string) {
         uniqueName: modDirectoryName,
         localVersion: '-',
         addons: [],
+        isAlpha,
       });
     }
   });
+}
+
+export function getLocalMods(
+  owmlPath: string,
+  alphaPath: string,
+  owamlPath: string
+) {
+  if (!owmlPath && !alphaPath && !owamlPath) {
+    return [];
+  }
+
+  const localMods: Mod[] = [];
+
+  if (owmlPath) {
+    localMods.push(getOwml(owmlPath));
+    pushModsFromDirectory(localMods, `${owmlPath}/Mods`);
+  }
+
+  if (owamlPath) {
+    localMods.push(getOwaml(owamlPath));
+  }
+
+  if (alphaPath) {
+    localMods.push(getBepInEx(alphaPath));
+    pushModsFromDirectory(localMods, `${alphaPath}/BepInEx/plugins`, true);
+  }
 
   return [...localMods].filter((mod) => mod);
 }

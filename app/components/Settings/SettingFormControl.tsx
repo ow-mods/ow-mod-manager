@@ -5,10 +5,12 @@ import SliderInput from './SliderInput';
 import TextInput from './TextInput';
 import PathInput from './PathInput';
 import SwitchListInput from './SwitchListInput';
+import DropdownInput from './DropdownInput';
 
 export enum SettingType {
   Text,
   Switch,
+  Dropdown,
   Path,
   Slider,
   SwitchList,
@@ -32,6 +34,10 @@ const SettingFormControl: React.FunctionComponent<Props> = ({
 }) => {
   if (type === SettingType.Switch && typeof value === 'boolean') {
     return <SwitchInput value={value} {...props} />;
+  }
+
+  if (type === SettingType.Dropdown && typeof value === 'boolean') {
+    return <DropdownInput value={value} {...props} />;
   }
 
   if (type === SettingType.Text && typeof value === 'string') {

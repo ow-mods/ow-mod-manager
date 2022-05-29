@@ -3,6 +3,7 @@ import { Container, List, Paper } from '@material-ui/core';
 
 import { settingsText } from '../../helpers/static-text';
 import { useSettings } from '../../hooks';
+import AlphaLink from './AlphaLink';
 import ResetSettings from './ResetSettings';
 import ModManagerSettingControl from './ModManagerSettingControl';
 import OwmlSettingControl from './OwmlSettingControl';
@@ -14,12 +15,17 @@ type OwmlSettingKey = keyof OwmlSettings;
 
 type SettingsInput = {
   key: SettingKey | OwmlSettingKey;
-  isAdvanced?: boolean;
+  isAlpha?: boolean;
   isOwmlSetting?: boolean;
+  isCurrentGameSetting?: boolean;
   type: SettingType;
 };
 
 const settingsInputs: readonly SettingsInput[] = [
+  {
+    key: 'alphaMode',
+    type: SettingType.Dropdown,
+  },
   {
     key: 'closeOnPlay',
     type: SettingType.Switch,
@@ -34,58 +40,61 @@ const settingsInputs: readonly SettingsInput[] = [
     isOwmlSetting: true,
   },
   {
+    key: 'alphaPath',
+    type: SettingType.Path,
+    isAlpha: true,
+  },
+  {
+    key: 'owmlPath',
+    type: SettingType.Path,
+    isCurrentGameSetting: true,
+  },
+  {
+    key: 'owamlPath',
+    type: SettingType.Path,
+    isAlpha: true,
+  },
+  {
     key: 'logLinesLimit',
     type: SettingType.Slider,
   },
   {
-    key: 'showAdvancedSettings',
-    type: SettingType.Switch,
+    key: 'modDatabaseUrl',
+    type: SettingType.Text,
   },
   {
-    key: 'owmlPath',
+    key: 'alertSourceUrl',
     type: SettingType.Text,
-    isAdvanced: true,
   },
   {
     key: 'debugMode',
     type: SettingType.Switch,
     isOwmlSetting: true,
-    isAdvanced: true,
   },
   {
     key: 'forceExe',
     type: SettingType.Switch,
     isOwmlSetting: true,
-    isAdvanced: true,
-  },
-  {
-    key: 'modDatabaseUrl',
-    type: SettingType.Text,
-    isAdvanced: true,
-  },
-  {
-    key: 'alertSourceUrl',
-    type: SettingType.Text,
-    isAdvanced: true,
   },
   {
     key: 'disableModWarnings',
     type: SettingType.SwitchList,
-    isAdvanced: true,
   },
 ];
 
 const Settings = () => {
   const {
-    settings: { showAdvancedSettings },
+    settings: { alphaMode },
   } = useSettings();
   return (
     <PageContainer maxWidth={false}>
       <Container maxWidth="md">
         <List component={Paper}>
           {settingsInputs.map(
-            ({ key, isAdvanced, isOwmlSetting, type }) =>
-              (!isAdvanced || showAdvancedSettings) && (
+            ({ key, isAlpha, isCurrentGameSetting, isOwmlSetting, type }) =>
+              (alphaMode
+                ? (!isCurrentGameSetting && !isOwmlSetting) || isAlpha
+                : !isAlpha) && (
                 <React.Fragment key={key}>
                   {isOwmlSetting && (
                     <OwmlSettingControl
@@ -106,6 +115,7 @@ const Settings = () => {
                 </React.Fragment>
               )
           )}
+          {alphaMode && <AlphaLink />}
           <ResetSettings />
         </List>
       </Container>

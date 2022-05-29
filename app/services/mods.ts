@@ -46,14 +46,26 @@ export function cleanup(mod: Mod, tempManifestPath: string) {
     pathsToPreserve = mod.pathsToPreserve;
   }
 
-  deleteFolderExcept(
-    mod.modPath,
-    mod.uniqueName === 'Alek.OWML'
-      ? ['Mods', 'OWML.Config.json', 'OWML.Manifest.json']
-      : ['config.json', 'save.json', 'manifest.json'].concat(
-          pathsToPreserve ?? []
-        )
-  );
+  let pathsToKeep;
+
+  if (mod.uniqueName === 'Alek.OWML') {
+    pathsToKeep = ['Mods', 'OWML.Config.json', 'OWML.Manifest.json'];
+  } else if (mod.uniqueName === 'bbepis.BepInEx') {
+    pathsToKeep = [
+      'BepInEx',
+      'OuterWilds_Alpha_1_2_Data',
+      'OuterWilds_Alpha_1_2.exe',
+      'BepInEx.Manifest.json',
+    ];
+  } else if (mod.uniqueName === 'Locochoco.OWAML') {
+    pathsToKeep = ['OWAML.Manifest.json'];
+  } else {
+    pathsToKeep = ['config.json', 'save.json', 'manifest.json'].concat(
+      pathsToPreserve ?? []
+    );
+  }
+
+  deleteFolderExcept(mod.modPath, pathsToKeep);
 }
 
 export async function install(mod: Mod, onProgress: ProgressHandler) {

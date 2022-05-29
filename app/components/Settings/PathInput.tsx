@@ -5,6 +5,7 @@ import React, {
   useEffect,
 } from 'react';
 import { remote } from 'electron';
+import fs from 'fs-extra';
 import {
   ListItem,
   TextField,
@@ -47,8 +48,26 @@ const PathInput: FunctionComponent<Props> = ({
       setPath(event.target.value),
     []
   );
+  const savePath = useCallback(
+    (newPath: string) => {
+      try {
+        if (!fs.existsSync(newPath)) {
+          fs.mkdirSync(newPath, { recursive: true });
+        }
+        onChange(newPath);
+        setPath(newPath);
+      } catch (error) {
+        debugConsole.error(`Error setting path in PathInput`, error);
+        remote.dialog.showErrorBox(
+          `Failed to set path "${newPath}". Try a different one.`,
+          `${(error as Error).stack || error}`
+        );
+      }
+    },
+    [onChange]
+  );
   const handleSaveClick = () => {
-    onChange(path);
+    savePath(path);
   };
 
   useEffect(() => {
@@ -57,15 +76,19 @@ const PathInput: FunctionComponent<Props> = ({
   }, [value]);
 
   const handleFindClick = async () => {
-    const openedValue = await remote.dialog.showOpenDialog({
-      properties: ['openDirectory'],
-      title: settingsText.pathFindTitle,
-      defaultPath: value,
-    });
-
-    const pathResult = openedValue.filePaths[0];
-    onChange(pathResult);
-    setPath(pathResult);
+    try {
+      const openedValue = await remote.dialog.showOpenDialog({
+        properties: ['openDirectory'],
+        title: settingsText.pathFindTitle,
+        defaultPath: value,
+      });
+      if (openedValue && openedValue.canceled === false) {
+        const pathResult = openedValue.filePaths[0];
+        savePath(pathResult);
+      }
+    } catch (err) {
+      debugConsole.error(err);
+    }
   };
 
   return (

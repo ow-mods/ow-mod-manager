@@ -8,6 +8,7 @@ import { debugConsole } from '../helpers/console-log';
 export const defaultAppSettings = {
   ...config.defaultSettings,
   owmlPath: `${remote.app.getPath('userData')}\\OWML`,
+  owamlPath: `${remote.app.getPath('userData')}\\OWAML`,
 };
 
 export function getSettingsPath() {

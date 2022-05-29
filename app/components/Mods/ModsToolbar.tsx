@@ -18,8 +18,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ModsToolbar: React.FunctionComponent = () => {
   const styles = useStyles();
+  const inAlphaMode = useRecoilValue(settingsState).alphaMode;
   const [filter, setFilter] = useRecoilState(modFilterState);
-  const { owmlPath } = useRecoilValue(settingsState);
+  const { owmlPath, alphaPath } = useRecoilValue(settingsState);
   return (
     <Paper>
       <Toolbar className={styles.toolBar}>
@@ -30,7 +31,11 @@ const ModsToolbar: React.FunctionComponent = () => {
         />
         <Button
           startIcon={<FolderIcon />}
-          onClick={() => openDirectory(`${owmlPath}/Mods`)}
+          onClick={() =>
+            openDirectory(
+              inAlphaMode ? `${alphaPath}/BepInEx/plugins` : `${owmlPath}/Mods`
+            )
+          }
           variant="outlined"
         >
           {modsText.toolbar.modsDirectory}
