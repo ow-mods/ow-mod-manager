@@ -7,49 +7,64 @@ import { modIsLoadingState, modList, modProgressState } from '../store';
 
 export function useProtocol(): void {
   const mods = useRecoilValue(modList);
-  const [protocolMod, setProtocolMod] = useState<Mod | undefined>(undefined);
+  const [protocolModUniqueName, setProtocolModUniqueName] = useState<
+    string | undefined
+  >(undefined);
   const setModProgress = useSetRecoilState(
-    modProgressState(protocolMod?.uniqueName)
+    modProgressState(protocolModUniqueName)
   );
   const setIsLoading = useSetRecoilState(
-    modIsLoadingState(protocolMod?.uniqueName)
+    modIsLoadingState(protocolModUniqueName)
   );
 
   useEffect(() => {
-    if (protocolMod) {
-      // TODO try not to duplicate code between here and ModActions.
-      setIsLoading(true);
-      install(protocolMod, setModProgress)
-        .finally(() => {
-          // TODO try something better than a timeout here.
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 1000);
-        })
-        .catch((error) => {
-          debugConsole.error('Error installing mod from protocol', error);
-        });
+    if (!protocolModUniqueName) return;
+
+    // TODO try not to duplicate code between here and ModActions.
+    setIsLoading(true);
+
+    debugConsole.log('Installing mod from protocol', protocolModUniqueName);
+
+    const mod = mods.find(
+      ({ uniqueName }) => uniqueName === protocolModUniqueName
+    );
+
+    if (!mod) {
+      return;
     }
-  }, [protocolMod, setIsLoading, setModProgress]);
+
+    install(mod, setModProgress)
+      .finally(() => {
+        // TODO try something better than a timeout here.
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000);
+      })
+      .catch((error) => {
+        debugConsole.error('Error installing mod from protocol', error);
+      });
+
+    setProtocolModUniqueName(undefined);
+  }, [protocolModUniqueName, setIsLoading, setModProgress, mods]);
 
   const handleProtocol = useCallback(
-    (_event: Electron.IpcRendererEvent, protocolModUniqueName: string) => {
-      const mod = mods.find(
-        ({ uniqueName }) => uniqueName === protocolModUniqueName
-      );
-      if (!mod) {
-        remote.dialog.showErrorBox('TODO Mod not found', 'TODO translate');
-        return;
-      }
-      setProtocolMod(mod);
+    (_event: Electron.IpcRendererEvent, uniqueName: string) => {
+      debugConsole.log('received protocol mod message', uniqueName);
+      setProtocolModUniqueName(uniqueName);
     },
-    [mods]
+    []
   );
 
   useEffect(() => {
+    // TODO try to avoid magic strings.
     ipcRenderer.on('mod-protocol', handleProtocol);
     return () => {
       ipcRenderer.off('mod-protocol', handleProtocol);
     };
   }, [handleProtocol]);
+
+  useEffect(() => {
+    debugConsole.log('Sending protocol ready signal');
+    ipcRenderer.send('mod-protocol-ready', true);
+  }, []);
 }

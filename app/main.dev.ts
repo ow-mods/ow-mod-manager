@@ -2,10 +2,11 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, dialog } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { updateText } from './helpers/static-text';
+import { debugConsole } from './helpers/console-log';
 
 const protocolSchema = 'outer-wilds-mod';
 
@@ -23,13 +24,21 @@ const checkForUpdates = () => {
   autoUpdater.checkForUpdates();
 };
 
-const sendProtocolMessage = (args: string[]) => {
+const sendProtocolMessage = () => {
+  debugConsole.log('sending mod protocol message...');
   if (!mainWindow) {
     throw new Error(
       'tried to send protocol message but main window is not defined'
     );
   }
 
+  if (!protocolModUniqueName) return;
+
+  mainWindow.webContents.send('mod-protocol', protocolModUniqueName);
+  debugConsole.log('sent mod protocol message', protocolModUniqueName);
+};
+
+const setUpProtocolMessage = (args: string[]) => {
   const lastArg = args[args.length - 1];
   const schemaUrlPrefix = `${protocolSchema}://`;
 
@@ -40,8 +49,12 @@ const sendProtocolMessage = (args: string[]) => {
     -1
   );
 
-  mainWindow.webContents.send('mod-protocol', protocolModUniqueName);
+  debugConsole.log('setUpProtocolMessage', protocolModUniqueName);
+
+  sendProtocolMessage();
 };
+
+ipcMain.on('mod-protocol-ready', sendProtocolMessage);
 
 const createWindow = async () => {
   mainWindow = new BrowserWindow({
@@ -71,7 +84,7 @@ const createWindow = async () => {
     mainWindow.setTitle(`Outer Wilds Mod Manager ${app.getVersion()}`);
   });
 
-  sendProtocolMessage(process.argv);
+  setUpProtocolMessage(process.argv);
 
   checkForUpdates();
 };
@@ -95,7 +108,7 @@ if (!gotTheLock) {
   app.on('second-instance', (event, commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
     if (mainWindow) {
-      sendProtocolMessage(commandLine);
+      setUpProtocolMessage(commandLine);
       if (mainWindow.isMinimized()) mainWindow.restore();
       mainWindow.focus();
     }
