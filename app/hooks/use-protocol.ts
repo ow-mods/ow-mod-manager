@@ -1,35 +1,59 @@
-import { ipcRenderer, remote } from 'electron';
+import { ipcRenderer } from 'electron';
 import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSettings } from './use-settings';
 import { debugConsole } from '../helpers/console-log';
 import { install } from '../services';
-import { modIsLoadingState, modList, modProgressState } from '../store';
+import {
+  modIsLoadingState,
+  modList,
+  modProgressState,
+  selectedTabState,
+} from '../store';
+
+const alphaProtocolSuffix = 'alpha::';
 
 export function useProtocol(): void {
   const mods = useRecoilValue(modList);
-  const [protocolModUniqueName, setProtocolModUniqueName] = useState<
-    string | undefined
-  >(undefined);
-  const setModProgress = useSetRecoilState(
-    modProgressState(protocolModUniqueName)
+  const [protocolText, setProtocolText] = useState<string | undefined>(
+    undefined
   );
-  const setIsLoading = useSetRecoilState(
-    modIsLoadingState(protocolModUniqueName)
-  );
+  const setModProgress = useSetRecoilState(modProgressState(protocolText));
+  const setIsLoading = useSetRecoilState(modIsLoadingState(protocolText));
+  const setSelectedTab = useSetRecoilState(selectedTabState);
+  const { setSettings, settings } = useSettings();
 
   useEffect(() => {
-    if (!protocolModUniqueName) return;
+    if (!protocolText) return;
 
     // TODO try not to duplicate code between here and ModActions.
     setIsLoading(true);
+    setSelectedTab(0);
 
-    debugConsole.log('Installing mod from protocol', protocolModUniqueName);
+    const isAlphaMod = protocolText.startsWith(alphaProtocolSuffix);
+
+    if (settings.alphaMode !== isAlphaMod) {
+      setSettings({
+        alphaMode: isAlphaMod,
+      });
+      return;
+    }
+
+    const protocolUniqueName = isAlphaMod
+      ? protocolText.slice(alphaProtocolSuffix.length)
+      : protocolText;
+
+    debugConsole.log('Installing mod from protocol', protocolUniqueName);
 
     const mod = mods.find(
-      ({ uniqueName }) => uniqueName === protocolModUniqueName
+      ({ uniqueName }) => uniqueName === protocolUniqueName
     );
 
     if (!mod) {
+      debugConsole.warn(
+        'Failed to find protocol mod in list',
+        protocolUniqueName
+      );
       return;
     }
 
@@ -44,13 +68,21 @@ export function useProtocol(): void {
         debugConsole.error('Error installing mod from protocol', error);
       });
 
-    setProtocolModUniqueName(undefined);
-  }, [protocolModUniqueName, setIsLoading, setModProgress, mods]);
+    setProtocolText(undefined);
+  }, [
+    protocolText,
+    setIsLoading,
+    setModProgress,
+    mods,
+    setSettings,
+    settings.alphaMode,
+    setSelectedTab,
+  ]);
 
   const handleProtocol = useCallback(
-    (_event: Electron.IpcRendererEvent, uniqueName: string) => {
-      debugConsole.log('received protocol mod message', uniqueName);
-      setProtocolModUniqueName(uniqueName);
+    (_event: Electron.IpcRendererEvent, protocolEventText: string) => {
+      debugConsole.log('received protocol mod message', protocolEventText);
+      setProtocolText(protocolEventText);
     },
     []
   );
