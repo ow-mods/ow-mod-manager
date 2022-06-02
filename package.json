@@ -46,6 +46,12 @@
       "main.prod.js.map",
       "package.json"
     ],
+    "protocols": {
+      "name": "Outer Wilds Mod",
+      "schemes": [
+        "outer-wilds-mod"
+      ]
+    },
     "nsis": {
       "artifactName": "${productName}-Installer.${ext}",
       "oneClick": false,

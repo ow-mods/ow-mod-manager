@@ -8,6 +8,7 @@ import { tabList } from './TopBar/AppTabs';
 import { selectedTabState } from '../store';
 import LoadingSuspense from './LoadingSuspense';
 import { AppAlert } from './AppAlert';
+import { useProtocol } from '../hooks';
 import { ErrorBoundary } from './ErrorBoundary';
 
 const useStyles = makeStyles({
@@ -22,6 +23,7 @@ const useStyles = makeStyles({
 const MainView = () => {
   const styles = useStyles();
   const selectedTab = useRecoilValue(selectedTabState);
+  useProtocol();
 
   return (
     <CssBaseline>
