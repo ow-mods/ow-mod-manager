@@ -73,14 +73,14 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "Raicuparta",
+      "owner": "ow-mods",
       "repo": "ow-mod-manager",
       "private": false
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Raicuparta/ow-mod-manager.git"
+    "url": "git+https://github.com/ow-mods/ow-mod-manager.git"
   },
   "author": {
     "name": "Raicuparta",
@@ -89,7 +89,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Raicuparta/ow-mod-manager/issues"
+    "url": "https://github.com/ow-mods/ow-mod-manager/issues"
   },
   "keywords": [
     "outer-wilds",

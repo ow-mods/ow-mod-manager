@@ -62,7 +62,7 @@ export const modList = selector({
       isEnabled: true,
       localVersion: remote.app.getVersion(),
       remoteVersion: remote.app.getVersion(),
-      repo: 'https://github.com/Raicuparta/ow-mod-manager',
+      repo: 'https://github.com/ow-mods/ow-mod-manager',
       modPath: '.',
       downloadUrl: '',
       downloadCount: get(modManager).downloadCount,

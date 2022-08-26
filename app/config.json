@@ -8,8 +8,8 @@
     "logToSocket": true,
     "logLinesLimit": 50,
     "disableModWarnings": {},
-    "modDatabaseUrl": "https://raw.githubusercontent.com/Raicuparta/ow-mod-db/master/database.json",
-    "alertSourceUrl": "https://raw.githubusercontent.com/Raicuparta/ow-mod-db/source/alert.json",
+    "modDatabaseUrl": "https://raw.githubusercontent.com/ow-mods/ow-mod-db/master/database.json",
+    "alertSourceUrl": "https://raw.githubusercontent.com/ow-mods/ow-mod-db/source/alert.json",
     "alphaMode": false,
     "alphaPath": "",
     "owamlPath": ""
