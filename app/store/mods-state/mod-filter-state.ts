@@ -6,6 +6,9 @@ const filterByText = (filter: string, mod: Mod, mods: Mod[]): boolean => {
   const lowerCaseFilter = filter.toLowerCase();
   const nameMatch = mod.name?.toLowerCase().includes(lowerCaseFilter);
   const authorNatch = mod.author?.toLowerCase().includes(lowerCaseFilter);
+  const authorDisplayMatch = mod.authorDisplay
+    ?.toLowerCase()
+    .includes(lowerCaseFilter);
   const uniqueNameMatch = mod.uniqueName
     ?.toLowerCase()
     .includes(lowerCaseFilter);
@@ -27,6 +30,7 @@ const filterByText = (filter: string, mod: Mod, mods: Mod[]): boolean => {
   return (
     nameMatch ||
     authorNatch ||
+    authorDisplayMatch ||
     uniqueNameMatch ||
     descriptionMatch ||
     addonMatch
