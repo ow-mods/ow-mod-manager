@@ -225,7 +225,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
                 </Box>
                 <Typography className={styles.modAuthor} variant="caption">
                   {' by '}
-                  {mod.author}
+                  {mod.authorDisplay ?? mod.author}
                 </Typography>
                 <Typography variant="caption" />
               </Typography>

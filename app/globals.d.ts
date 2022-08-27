@@ -32,6 +32,7 @@ type Mod = {
   pathsToPreserve?: string[];
   addons: string[];
   isAlpha?: boolean;
+  authorDisplay?: string;
 };
 
 type ModManager = {
