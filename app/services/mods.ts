@@ -11,6 +11,7 @@ import {
   copyFolder,
 } from './files';
 import { manifestPartialToFull } from './manifest';
+import { sendInstallEvent } from './analytics';
 
 export function isInstalled(mod: Mod): boolean {
   if (!mod) {
@@ -68,7 +69,11 @@ export function cleanup(mod: Mod, tempManifestPath: string) {
   deleteFolderExcept(mod.modPath, pathsToKeep);
 }
 
-export async function install(mod: Mod, onProgress: ProgressHandler) {
+export async function install(
+  mod: Mod,
+  onProgress: ProgressHandler,
+  skipEvent = false
+) {
   if (!mod.downloadUrl) {
     return;
   }
@@ -85,6 +90,10 @@ export async function install(mod: Mod, onProgress: ProgressHandler) {
 
   await copyFolder(unzipPath, mod.modPath);
   deleteFolder(temporaryPath);
+
+  if (!skipEvent) {
+    sendInstallEvent(mod.uniqueName);
+  }
 }
 
 async function upstallPrerelease(mod: Mod, onProgress: ProgressHandler) {
@@ -137,7 +146,7 @@ export async function uninstall(mod: Mod, isReinstall = false) {
 
 export async function reinstall(mod: Mod, onProgress: ProgressHandler) {
   uninstall(mod, true);
-  install(mod, onProgress);
+  install(mod, onProgress, true);
 }
 
 export function openModDirectory(mod: Mod) {
