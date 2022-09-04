@@ -1,6 +1,5 @@
 import { uniqueId } from 'lodash';
-
-const measurementProtocolSecret = 'TODO';
+import { analyticsApiSecret } from './analytics-token';
 
 const measurementId = `G-2QQN7V5WE1`;
 
@@ -8,7 +7,7 @@ const sessionId = uniqueId();
 
 export const sendInstallEvent = (modUniqueName: string) => {
   fetch(
-    `https://www.google-analytics.com/mp/collect?measurement_id=${measurementId}&api_secret=${process.env.MEASUREMENT_PROTOCOL_SECRET}`,
+    `https://www.google-analytics.com/mp/collect?measurement_id=${measurementId}&api_secret=${analyticsApiSecret}`,
     {
       method: 'POST',
       body: JSON.stringify({
