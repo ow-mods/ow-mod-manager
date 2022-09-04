@@ -91,7 +91,7 @@ export async function install(
   await copyFolder(unzipPath, mod.modPath);
   deleteFolder(temporaryPath);
 
-  if (!skipEvent) {
+  if (!skipEvent && !isOutdated(mod)) {
     sendInstallEvent(mod.uniqueName);
   }
 }
