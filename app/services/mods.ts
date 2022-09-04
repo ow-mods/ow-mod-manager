@@ -69,11 +69,7 @@ export function cleanup(mod: Mod, tempManifestPath: string) {
   deleteFolderExcept(mod.modPath, pathsToKeep);
 }
 
-export async function install(
-  mod: Mod,
-  onProgress: ProgressHandler,
-  skipEvent = false
-) {
+export async function install(mod: Mod, onProgress: ProgressHandler) {
   if (!mod.downloadUrl) {
     return;
   }
@@ -90,10 +86,12 @@ export async function install(
 
   await copyFolder(unzipPath, mod.modPath);
   deleteFolder(temporaryPath);
+}
 
-  if (!skipEvent && !isOutdated(mod)) {
-    sendInstallEvent(mod.uniqueName);
-  }
+export async function installTracked(mod: Mod, onProgress: ProgressHandler) {
+  await install(mod, onProgress);
+
+  sendInstallEvent(mod.uniqueName);
 }
 
 async function upstallPrerelease(mod: Mod, onProgress: ProgressHandler) {
@@ -146,7 +144,7 @@ export async function uninstall(mod: Mod, isReinstall = false) {
 
 export async function reinstall(mod: Mod, onProgress: ProgressHandler) {
   uninstall(mod, true);
-  install(mod, onProgress, true);
+  install(mod, onProgress);
 }
 
 export function openModDirectory(mod: Mod) {

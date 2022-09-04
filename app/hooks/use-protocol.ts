@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useSettings } from './use-settings';
 import { debugConsole } from '../helpers/console-log';
-import { install } from '../services';
+import { installTracked } from '../services';
 import {
   modIsLoadingState,
   modList,
@@ -57,7 +57,7 @@ export function useProtocol(): void {
       return;
     }
 
-    install(mod, setModProgress)
+    installTracked(mod, setModProgress)
       .finally(() => {
         // TODO try something better than a timeout here.
         setTimeout(() => {

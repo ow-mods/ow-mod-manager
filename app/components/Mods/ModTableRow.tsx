@@ -25,6 +25,7 @@ import {
 
 type Props = {
   mod: Mod;
+  highlightedSection?: boolean;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -104,7 +105,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
+const ModTableRow: React.FunctionComponent<Props> = ({
+  mod,
+  highlightedSection = false,
+}) => {
   const styles = useStyles();
   const theme = useTheme();
   const missingDependencyNames = useRecoilValue(missingDependencyIdsState(mod));
@@ -278,7 +282,7 @@ const ModTableRow: React.FunctionComponent<Props> = ({ mod }) => {
           )}
         </TableCell>
         <TableCell className={styles.tableCell}>
-          <ModActions mod={mod} />
+          <ModActions mod={mod} highlightedSection={highlightedSection} />
         </TableCell>
       </TableRow>
       {shouldExpandAddons &&

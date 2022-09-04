@@ -46,7 +46,11 @@ const ModRowSection: React.FunctionComponent<Props> = ({
           <ModTableHead title={title} />
           <TableBody>
             {mods.map((mod: Mod) => (
-              <ModTableRow mod={mod} key={mod.uniqueName} />
+              <ModTableRow
+                mod={mod}
+                key={mod.uniqueName}
+                highlightedSection={highlighted}
+              />
             ))}
           </TableBody>
         </Table>

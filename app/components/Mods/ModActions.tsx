@@ -35,6 +35,7 @@ import {
   isBroken,
   reinstall,
   openReadme,
+  installTracked,
 } from '../../services';
 import {
   localModList,
@@ -48,6 +49,7 @@ import { ModActionProgress } from './ModActionProgress';
 
 interface Props {
   mod: Mod;
+  highlightedSection?: boolean;
 }
 
 type ModActionHandler<Return> = (
@@ -64,7 +66,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
+const ModActions: React.FunctionComponent<Props> = ({
+  mod,
+  highlightedSection = false,
+}) => {
   const styles = useStyles();
   const setLocalMods = useSetRecoilState(localModList);
   const { owmlPath, alphaPath, owamlPath } = useRecoilValue(settingsState);
@@ -92,6 +97,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     isModInstallable &&
     (!isModInstalled || isModBroken || isModOutdated);
   const isInstallHighlighted =
+    false &&
     !isLoading &&
     !isModBroken &&
     (isModOutdated || (mod.isRequired && !isModInstalled));
@@ -167,6 +173,16 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
     return modsText.actions.install;
   };
 
+  const getInstallHandler = () => {
+    if (isModBroken) return reinstall;
+
+    if (isModOutdated || highlightedSection) {
+      return install;
+    }
+
+    return installTracked;
+  };
+
   return (
     <Box display="flex" justifyContent="space-between">
       <Tooltip title={getEnableTooltip()}>
@@ -183,10 +199,7 @@ const ModActions: React.FunctionComponent<Props> = ({ mod }) => {
       <Tooltip title={getInstallTooltip()}>
         <span>
           <IconButton
-            onClick={modActionHandler(
-              isModBroken ? reinstall : install,
-              'install'
-            )}
+            onClick={modActionHandler(getInstallHandler(), 'install')}
             disabled={!isModDownloadable}
             size="small"
             className={isInstallHighlighted ? styles.highlightedButton : ''}
