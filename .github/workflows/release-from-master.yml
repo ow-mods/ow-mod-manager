@@ -19,7 +19,7 @@ jobs:
 
     - run: yarn install --frozen-lockfile
 
-    - run: yarn run package
+      - run: yarn run cross-env ANALYTICS_API_SECRET=${{ secrets.ANALYTICS_API_SECRET }} yarn run package
 
     - name: get version
       id: version

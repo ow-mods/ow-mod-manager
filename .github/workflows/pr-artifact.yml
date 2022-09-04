@@ -16,7 +16,7 @@ jobs:
           node-version: 16.x
           cache: 'yarn'
       - run: yarn install --frozen-lockfile
-      - run: yarn run cross-env ANALYTICS_API_SECRET=${{ secrets.ANALYTICS_API_SECRET }} yarn run prebuild
+      - run: yarn run cross-env ANALYTICS_API_SECRET=${{ secrets.ANALYTICS_API_SECRET }} yarn run package
       - run: 7z a release.zip release
 
       - uses: actions/upload-artifact@v2
