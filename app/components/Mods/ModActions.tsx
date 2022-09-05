@@ -97,7 +97,6 @@ const ModActions: React.FunctionComponent<Props> = ({
     isModInstallable &&
     (!isModInstalled || isModBroken || isModOutdated);
   const isInstallHighlighted =
-    false &&
     !isLoading &&
     !isModBroken &&
     (isModOutdated || (mod.isRequired && !isModInstalled));
