@@ -24,7 +24,6 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import { modsText } from '../../helpers/static-text';
 import {
   isInstalled,
-  install,
   uninstall,
   isOutdated,
   openModDirectory,
@@ -35,7 +34,9 @@ import {
   isBroken,
   reinstall,
   openReadme,
-  installTracked,
+  installNew,
+  installRequired,
+  installUpdate,
 } from '../../services';
 import {
   localModList,
@@ -175,11 +176,15 @@ const ModActions: React.FunctionComponent<Props> = ({
   const getInstallHandler = () => {
     if (isModBroken) return reinstall;
 
-    if (isModOutdated || highlightedSection) {
-      return install;
+    if (isModOutdated) {
+      return installUpdate;
     }
 
-    return installTracked;
+    if (highlightedSection) {
+      return installRequired;
+    }
+
+    return installNew;
   };
 
   return (

@@ -11,7 +11,7 @@ import {
   copyFolder,
 } from './files';
 import { manifestPartialToFull } from './manifest';
-import { sendInstallEvent } from './analytics';
+import { sendEvent } from './analytics';
 
 export function isInstalled(mod: Mod): boolean {
   if (!mod) {
@@ -69,7 +69,7 @@ export function cleanup(mod: Mod, tempManifestPath: string) {
   deleteFolderExcept(mod.modPath, pathsToKeep);
 }
 
-export async function install(mod: Mod, onProgress: ProgressHandler) {
+async function install(mod: Mod, onProgress: ProgressHandler) {
   if (!mod.downloadUrl) {
     return;
   }
@@ -88,10 +88,22 @@ export async function install(mod: Mod, onProgress: ProgressHandler) {
   deleteFolder(temporaryPath);
 }
 
-export async function installTracked(mod: Mod, onProgress: ProgressHandler) {
+export async function installNew(mod: Mod, onProgress: ProgressHandler) {
   await install(mod, onProgress);
 
-  sendInstallEvent(mod.uniqueName);
+  sendEvent('mod_install', { mod_unique_name: mod.uniqueName });
+}
+
+export async function installUpdate(mod: Mod, onProgress: ProgressHandler) {
+  await install(mod, onProgress);
+
+  sendEvent('mod_update', { mod_unique_name: mod.uniqueName });
+}
+
+export async function installRequired(mod: Mod, onProgress: ProgressHandler) {
+  await install(mod, onProgress);
+
+  sendEvent('mod_required_install', { mod_unique_name: mod.uniqueName });
 }
 
 async function upstallPrerelease(mod: Mod, onProgress: ProgressHandler) {
@@ -143,8 +155,10 @@ export async function uninstall(mod: Mod, isReinstall = false) {
 }
 
 export async function reinstall(mod: Mod, onProgress: ProgressHandler) {
-  uninstall(mod, true);
-  install(mod, onProgress);
+  await uninstall(mod, true);
+  await install(mod, onProgress);
+
+  sendEvent('mod_reinstall', { mod_unique_name: mod.uniqueName });
 }
 
 export function openModDirectory(mod: Mod) {
