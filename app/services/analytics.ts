@@ -15,6 +15,7 @@ type AnalyticsEvent = {
   mod_install: InstallEvent;
   mod_update: InstallEvent;
   mod_required_install: InstallEvent;
+  mod_prerelease_install: InstallEvent;
   mod_reinstall: InstallEvent;
 };
 

@@ -127,6 +127,7 @@ async function upstallPrerelease(mod: Mod, onProgress: ProgressHandler) {
 
 export async function installPrerelease(mod: Mod, onProgress: ProgressHandler) {
   await upstallPrerelease(mod, onProgress);
+  sendEvent('mod_prerelease_install', { mod_unique_name: mod.uniqueName });
 }
 
 async function showPatcherWarning(mod: Mod): Promise<boolean> {
