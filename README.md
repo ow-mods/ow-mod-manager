@@ -50,7 +50,7 @@ Please [open an issue](https://github.com/ow-mods/ow-mod-manager/issues) describ
 
 ## I made a mod! How do I submit it?
 
-The mod database is stored in a separate repository. [Go here to find out how to add your mod to the list](https://github.com/ow-mods/outer-wilds-mod-db#readme).
+The mod database is stored in a separate repository. [Go here to find out how to add your mod to the list](https://github.com/ow-mods/ow-mod-db#readme).
 
 ## I feel a deep emotional connection with you, can we chat?
 
