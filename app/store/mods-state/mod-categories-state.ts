@@ -1,5 +1,6 @@
 import { selector } from 'recoil';
 
+import { modList } from './mods-state';
 import { filteredModList } from './mod-filter-state';
 import { requiredDependencyIdsState } from './mod-dependencies-state';
 import { modIsLoadingState } from './mod-progress-state';
@@ -45,7 +46,7 @@ export const notInstalledModList = selector({
 export const requiredModList = selector({
   key: 'RequiredMods',
   get: ({ get }) =>
-    get(nonAddonModList).filter(
+    get(modList).filter(
       (mod) =>
         (!mod.localVersion || !mod.isEnabled) &&
         !get(modIsLoadingState(mod.uniqueName)) &&
