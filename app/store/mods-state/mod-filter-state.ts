@@ -1,7 +1,7 @@
 import { atom, selector } from 'recoil';
 
 import { modList } from './mods-state';
-import { missingDependenciesIdsState } from './mod-dependencies-state';
+import { missingDependencyIdsState } from './mod-dependencies-state';
 
 const filterByText = (filter: string, mod: Mod, mods: Mod[]): boolean => {
   const lowerCaseFilter = filter.toLowerCase();
@@ -48,7 +48,7 @@ export const filteredModList = selector({
   get: ({ get }) => {
     const filter = get(modFilterState);
     const mods = get(modList);
-    const dependencyErrors = get(missingDependenciesIdsState);
+    const dependencyErrors = get(missingDependencyIdsState);
     return mods
       .filter((mod) => {
         return dependencyErrors.includes(mod.uniqueName) || filterByText(filter, mod, mods);
