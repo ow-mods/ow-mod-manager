@@ -1,7 +1,7 @@
 import { atom, selector } from 'recoil';
 
 import { modList } from './mods-state';
-import { missingDependenciesIdsState } from './mod-dependencies-state.ts';
+import { missingDependenciesIdsState } from './mod-dependencies-state';
 
 const filterByText = (filter: string, mod: Mod, mods: Mod[]): boolean => {
   const lowerCaseFilter = filter.toLowerCase();
