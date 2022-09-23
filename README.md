@@ -71,3 +71,4 @@ Sure! You can find us in the [Outer Wilds Modding Discord server](https://discor
 - Bump the version number in `app/package.json`, following [semver](https://semver.org/).
 - Push to the default branch.
 - Go to the [Release from master action](https://github.com/ow-mods/ow-mod-manager/actions/workflows/release-from-master.yml) and start the workflow via the "Run workflow" button.
+- After the release is done, it will be uploaded as a pre-release in the [releases page](https://github.com/ow-mods/ow-mod-manager/releases). You should probably test it first, but we both know you won't. Add a changelog to the release description, and change it to a proper release.
