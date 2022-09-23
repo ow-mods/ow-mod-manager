@@ -74,17 +74,17 @@ async function install(mod: Mod, onProgress: ProgressHandler) {
     return;
   }
 
-  const [temporaryPath, unzipPath] = await unzipRemoteFile(
+  const [temporaryPath, unzipInnerPath] = await unzipRemoteFile(
     mod,
     mod.downloadUrl,
     onProgress
   );
 
   if (mod.localVersion) {
-    cleanup(mod, `${unzipPath}/manifest.json`);
+    cleanup(mod, `${unzipInnerPath}/manifest.json`);
   }
 
-  await copyFolder(unzipPath, mod.modPath);
+  await copyFolder(unzipInnerPath, mod.modPath);
   deleteFolder(temporaryPath);
 }
 
@@ -111,17 +111,17 @@ async function upstallPrerelease(mod: Mod, onProgress: ProgressHandler) {
     return;
   }
 
-  const [temporaryPath, unzipPath] = await unzipRemoteFile(
+  const [temporaryPath, unzipInnerPath] = await unzipRemoteFile(
     mod,
     mod.prerelease.downloadUrl,
     onProgress
   );
 
   if (mod.localVersion) {
-    cleanup(mod, `${unzipPath}/manifest.json`);
+    cleanup(mod, `${unzipInnerPath}/manifest.json`);
   }
 
-  await copyFolder(unzipPath, mod.modPath);
+  await copyFolder(unzipInnerPath, mod.modPath);
   deleteFolder(temporaryPath);
 }
 

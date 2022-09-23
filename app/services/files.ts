@@ -92,13 +92,7 @@ export async function createFolders(dir: string) {
 
 export async function copyFolder(sourcePath: string, targetPath: string) {
   debugConsole.log('copy folder from', sourcePath, 'to', targetPath);
-  const sourceContents = fs.readdirSync(sourcePath);
-  const innerPath =
-    sourceContents.length === 1 &&
-    fs.lstatSync(`${sourcePath}/${sourceContents[0]}`).isDirectory()
-      ? `${sourcePath}/${sourceContents[0]}`
-      : sourcePath;
-  await fs.copy(innerPath, targetPath, {
+  await fs.copy(sourcePath, targetPath, {
     errorOnExist: false,
     overwrite: true,
     recursive: true,
@@ -160,7 +154,6 @@ export async function unzipRemoteFile(
   const temporaryPath = `${userDataPath}/temp/${temporaryName}-${new Date().getTime()}`;
   const zipPath = `${temporaryPath}/${temporaryName}.zip`;
   const unzipPath = `${temporaryPath}/${temporaryName}`;
-  const temporaryConfigPath = `${unzipPath}/config.json`;
 
   debugConsole.log('unzip remote file from', url, 'to', temporaryPath);
 
@@ -169,12 +162,20 @@ export async function unzipRemoteFile(
   await downloadFile(url, zipPath, onDownloadProgress);
   await unzipFile(zipPath, unzipPath, onUnzipProgress);
 
+  const sourceContents = fs.readdirSync(unzipPath);
+  const unzipInnerPath =
+    sourceContents.length === 1 &&
+    fs.lstatSync(`${unzipPath}/${sourceContents[0]}`).isDirectory()
+      ? `${unzipPath}/${sourceContents[0]}`
+      : unzipPath;
+
   // Prevent config.json in release from overwriting the existing one
+  const temporaryConfigPath = `${unzipInnerPath}/config.json`;
   if (fs.existsSync(temporaryConfigPath)) {
     deleteFile(temporaryConfigPath);
   }
 
-  return [temporaryPath, unzipPath];
+  return [temporaryPath, unzipInnerPath];
 }
 
 export function openDirectory(directoryPath: string) {
