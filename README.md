@@ -66,7 +66,8 @@ Sure! You can find us in the [Outer Wilds Modding Discord server](https://discor
 - Wait a few seconds for the app to draw;
 - Changes to components should automatically update the app.
 
-## Building for production
+## Publishing a release
 
-- Run `yarn run package`;
-- Check the output in the `release` directory for the app's executable.
+- Bump the version number in `app/package.json`, following [semver](https://semver.org/).
+- Push to the default branch.
+- Go to the [Release from master action](https://github.com/ow-mods/ow-mod-manager/actions/workflows/release-from-master.yml) and start the workflow via the "Run workflow" button.
