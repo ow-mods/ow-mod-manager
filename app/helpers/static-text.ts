@@ -133,6 +133,11 @@ export const settingsText = {
     tooltip:
       'If enabled, launches game exe instead of launching via Steam / Epic. Needs to be disabled for DLC to work via the Epic store.',
   },
+  incrementalGC: {
+    label: 'Use Incremental GC',
+    tooltip:
+        'If enabled, forces the game to use Unity\'s incremental garbage collector. Can reduce lag spikes in some situations.',
+  },
   logLinesLimit: {
     label: 'Log lines per page',
     tooltip:

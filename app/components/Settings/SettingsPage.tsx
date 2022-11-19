@@ -77,6 +77,11 @@ const settingsInputs: readonly SettingsInput[] = [
     isOwmlSetting: true,
   },
   {
+    key: 'incrementalGC',
+    type: SettingType.Switch,
+    isOwmlSetting: true,
+  },
+  {
     key: 'disableModWarnings',
     type: SettingType.SwitchList,
   },
