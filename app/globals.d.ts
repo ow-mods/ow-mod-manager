@@ -80,4 +80,5 @@ type OwmlSettings = {
   gamePath?: string;
   debugMode?: boolean;
   forceExe?: boolean;
+  incrementalGC?: boolean;
 };
