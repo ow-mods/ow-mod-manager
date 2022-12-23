@@ -3,11 +3,11 @@ import { modTagsSelectionState } from './mod-tags-state';
 
 import { modList } from './mods-state';
 
-const filterByTags = (mod: Mod, tags: string[]) => {
-  if (tags.length === 0) return true;
+const filterByTags = (mod: Mod, tags: Set<string>) => {
+  if (tags.size === 0) return true;
 
-  for (let i = 0; i < tags.length; i += 1) {
-    if (mod.tags.includes(tags[i])) {
+  for (let i = 0; i < mod.tags.length; i += 1) {
+    if (tags.has(mod.tags[i])) {
       return true;
     }
   }

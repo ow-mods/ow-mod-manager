@@ -26,6 +26,7 @@ function getOwml(owmlPath: string) {
     errors: [],
     dependencies: [],
     addons: [],
+    tags: [],
   };
   return owml;
 }
@@ -49,6 +50,7 @@ function getBepInEx(alphaPath: string) {
     dependencies: [],
     addons: [],
     isAlpha: true,
+    tags: [],
   };
   return bepInEx;
 }
@@ -72,6 +74,7 @@ function getOwaml(owamlPath: string) {
     dependencies: ['bbepis.BepInEx'],
     addons: [],
     isAlpha: true,
+    tags: [],
   };
   return owaml;
 }
@@ -117,6 +120,7 @@ function pushModsFromDirectory(
         pathsToPreserve: manifest.pathsToPreserve,
         addons: [],
         isAlpha,
+        tags: [],
       };
 
       if (missingAttributes.length > 0) {
@@ -148,6 +152,7 @@ function pushModsFromDirectory(
         localVersion: '-',
         addons: [],
         isAlpha,
+        tags: [],
       });
     }
   });

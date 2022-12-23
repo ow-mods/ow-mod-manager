@@ -67,14 +67,16 @@ const ModsToolbar: React.FunctionComponent = () => {
             key={tag}
             size="small"
             className={styles.tag}
-            onClick={() =>
-              setTagsSelection((selection) => {
-                return selection.includes(tag)
-                  ? selection.filter((selectionTag) => selectionTag !== tag)
-                  : selection.concat(tag);
-              })
-            }
-            variant={tagsSelection.includes(tag) ? 'contained' : 'outlined'}
+            onClick={() => {
+              const selection = new Set(tagsSelection);
+              if (tagsSelection.has(tag)) {
+                selection.delete(tag);
+              } else {
+                selection.add(tag);
+              }
+              setTagsSelection(selection);
+            }}
+            variant={tagsSelection.has(tag) ? 'contained' : 'outlined'}
           >
             {tag}
           </Button>

@@ -1,17 +1,17 @@
 import { selector, atom } from 'recoil';
 
-import { modList } from './mods-state';
+import { remoteModList } from './mods-state';
 
-export const modTagsSelectionState = atom<string[]>({
+export const modTagsSelectionState = atom<Set<string>>({
   key: 'ModTagsSelection',
-  default: [],
+  default: new Set(),
 });
 
 export const modTagsListState = selector({
   key: 'ModTags',
   get: ({ get }) => {
-    const mods = get(modList);
-    const tags: Set<string> = new Set(['untagged']);
+    const mods = get(remoteModList);
+    const tags: Set<string> = new Set<string>();
     const counts: Record<string, number> = {};
 
     if (!mods) {
