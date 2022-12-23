@@ -70,6 +70,7 @@ export const modList = selector({
       dependencies: [],
       addons: [],
       isAlpha: get(settingsState).alphaMode,
+      tags: [],
     });
   },
 });

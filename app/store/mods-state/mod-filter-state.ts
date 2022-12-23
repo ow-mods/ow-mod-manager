@@ -1,6 +1,18 @@
 import { atom, selector } from 'recoil';
+import { modTagsSelectionState } from './mod-tags-state';
 
 import { modList } from './mods-state';
+
+const filterByTags = (mod: Mod, tags: Set<string>) => {
+  if (tags.size === 0) return true;
+
+  for (let i = 0; i < mod.tags.length; i += 1) {
+    if (tags.has(mod.tags[i])) {
+      return true;
+    }
+  }
+  return false;
+};
 
 const filterByText = (filter: string, mod: Mod, mods: Mod[]): boolean => {
   const lowerCaseFilter = filter.toLowerCase();
@@ -47,9 +59,12 @@ export const filteredModList = selector({
   get: ({ get }) => {
     const filter = get(modFilterState);
     const mods = get(modList);
+    const tagsSelection = get(modTagsSelectionState);
     return mods
       .filter((mod) => {
-        return filterByText(filter, mod, mods);
+        return (
+          filterByText(filter, mod, mods) && filterByTags(mod, tagsSelection)
+        );
       })
       .sort(
         (modA, modB) => (modB.downloadCount ?? 0) - (modA.downloadCount ?? 0)
