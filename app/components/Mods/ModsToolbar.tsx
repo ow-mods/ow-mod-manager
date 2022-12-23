@@ -14,20 +14,25 @@ import {
 import { openDirectory } from '../../services';
 
 const useStyles = makeStyles((theme) => ({
+  wrapper: {
+    padding: `${theme.spacing(1)}px`,
+  },
   toolBar: {
     justifyContent: 'space-between',
     minHeight: 0,
-    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
+    padding: 0,
+    marginBottom: `${theme.spacing(1)}px`,
+    // padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
   },
   tagsWrapper: {
     display: 'flex',
     flexWrap: 'wrap',
-    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
-    margin: '-10px 0 0 -10px',
+    margin: `-${theme.spacing(0.5)}px 0 0 -${theme.spacing(0.5)}px`,
   },
   tag: {
-    margin: '10px 0 0 10px',
+    margin: `${theme.spacing(0.5)}px 0 0 ${theme.spacing(0.5)}px`,
     fontSize: '10px',
+    lineHeight: '100%',
   },
 }));
 
@@ -42,7 +47,7 @@ const ModsToolbar: React.FunctionComponent = () => {
   );
 
   return (
-    <Paper>
+    <Paper className={styles.wrapper}>
       <Toolbar className={styles.toolBar}>
         <FilterInput
           value={filter}
