@@ -33,6 +33,7 @@ type Mod = {
   addons: string[];
   isAlpha?: boolean;
   authorDisplay?: string;
+  tags: string[];
 };
 
 type ModManager = {

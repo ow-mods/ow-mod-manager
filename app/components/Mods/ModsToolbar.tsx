@@ -5,7 +5,12 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { modsText } from '../../helpers/static-text';
 import FilterInput from '../FilterInput';
-import { modFilterState, settingsState } from '../../store';
+import {
+  modFilterState,
+  modTagsListState,
+  modTagsSelectionState,
+  settingsState,
+} from '../../store';
 import { openDirectory } from '../../services';
 
 const useStyles = makeStyles((theme) => ({
@@ -14,6 +19,16 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 0,
     padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
   },
+  tagsWrapper: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
+    margin: '-10px 0 0 -10px',
+  },
+  tag: {
+    margin: '10px 0 0 10px',
+    fontSize: '10px',
+  },
 }));
 
 const ModsToolbar: React.FunctionComponent = () => {
@@ -21,6 +36,11 @@ const ModsToolbar: React.FunctionComponent = () => {
   const inAlphaMode = useRecoilValue(settingsState).alphaMode;
   const [filter, setFilter] = useRecoilState(modFilterState);
   const { owmlPath, alphaPath } = useRecoilValue(settingsState);
+  const tags = useRecoilValue(modTagsListState);
+  const [tagsSelection, setTagsSelection] = useRecoilState(
+    modTagsSelectionState
+  );
+
   return (
     <Paper>
       <Toolbar className={styles.toolBar}>
@@ -41,6 +61,25 @@ const ModsToolbar: React.FunctionComponent = () => {
           {modsText.toolbar.modsDirectory}
         </Button>
       </Toolbar>
+      <div className={styles.tagsWrapper}>
+        {tags.map((tag) => (
+          <Button
+            key={tag}
+            size="small"
+            className={styles.tag}
+            onClick={() =>
+              setTagsSelection((selection) => {
+                return selection.includes(tag)
+                  ? selection.filter((selectionTag) => selectionTag !== tag)
+                  : selection.concat(tag);
+              })
+            }
+            variant={tagsSelection.includes(tag) ? 'contained' : 'outlined'}
+          >
+            {tag}
+          </Button>
+        ))}
+      </div>
     </Paper>
   );
 };
