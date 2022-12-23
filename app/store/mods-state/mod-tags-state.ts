@@ -14,6 +14,10 @@ export const modTagsListState = selector({
     const tags: Set<string> = new Set(['untagged']);
     const counts: Record<string, number> = {};
 
+    if (!mods) {
+      return [];
+    }
+
     mods.forEach((mod) => {
       mod.tags.forEach((tag) => {
         tags.add(tag);
