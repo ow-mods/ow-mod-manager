@@ -87,5 +87,6 @@ export const filteredModList = selector({
 
 export const isFiltering = selector({
   key: 'IsFiltering',
-  get: ({ get }) => Boolean(get(modFilterState)),
+  get: ({ get }) =>
+    Boolean(get(modFilterState)) || get(modTagsSelectionState).size > 0,
 });
