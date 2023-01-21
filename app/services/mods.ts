@@ -200,3 +200,12 @@ export async function toggleEnabled(mod: Mod) {
   config.enabled = !config.enabled;
   saveConfig(mod, config);
 }
+
+export async function setEnabled(mod: Mod, enabled: boolean) {
+  const config = getConfig(mod);
+  if (!config || (config.enabled && !(await showPatcherWarning(mod)))) {
+    return;
+  }
+  config.enabled = enabled;
+  saveConfig(mod, config);
+}

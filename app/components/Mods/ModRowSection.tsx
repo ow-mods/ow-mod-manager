@@ -43,7 +43,7 @@ const ModRowSection: React.FunctionComponent<Props> = ({
         className={highlighted ? styles.required : ''}
       >
         <Table className={styles.modsTable} size="small">
-          <ModTableHead title={title} />
+          <ModTableHead title={title} mods={mods} />
           <TableBody>
             {mods.map((mod: Mod) => (
               <ModTableRow
