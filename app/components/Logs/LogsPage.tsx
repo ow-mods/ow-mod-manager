@@ -21,6 +21,7 @@ import { LogLine } from '../../types';
 import { useSettings } from '../../hooks';
 import FilterInput from '../FilterInput';
 import ModNameSelect from './ModNameSelect';
+import LogTypeSelect from './LogTypeSelect';
 import PageContainer from '../PageContainer';
 import { useRecoilState } from 'recoil';
 import { logLinesState } from '../../store';
@@ -63,6 +64,9 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
   header: {
     backgroundColor: 'white',
   },
+  typeSelectHeader: {
+    width: 150,
+  },
   modSelectHeader: {
     width: 150,
   },
@@ -100,6 +104,7 @@ const OwmlLog: React.FunctionComponent = () => {
 
   const [paginatedLines, setPaginatedLines] = useState<LogLine[]>([]);
   const [selectedModName, setSelectedModName] = useState<string>('');
+  const [selectedLogType, setSelectedLogType] = useState<string>('');
   const [filter, setFilter] = useState('');
   const [page, setPage] = useState<number>(0);
 
@@ -122,16 +127,19 @@ const OwmlLog: React.FunctionComponent = () => {
     const lowerCaseFilter = filter.toLowerCase();
     const isFilteringByName = filter !== '';
     const isFilteringByMod = selectedModName !== '';
+    const isFilteringByType = selectedLogType !== '';
 
     let filteredLines: LogLine[] = [];
-    if (isFilteringByName || isFilteringByMod) {
+    if (isFilteringByName || isFilteringByMod || isFilteringByType) {
       filteredLines = logLines.filter((line) => {
         const isFromSelectedMod =
           !isFilteringByMod || line.modName === selectedModName;
+        const isFromSelectedType =
+          !isFilteringByType || line.type === selectedLogType;
         const isMatchWithFilter =
           !isFilteringByName ||
           line.text.toLowerCase().includes(lowerCaseFilter);
-        return isMatchWithFilter && isFromSelectedMod;
+        return isMatchWithFilter && isFromSelectedMod && isFromSelectedType;
       });
     } else {
       filteredLines = logLines;
@@ -152,12 +160,12 @@ const OwmlLog: React.FunctionComponent = () => {
     hasHiddenLines.current = logLines.length !== lines.length;
 
     setPaginatedLines(lines);
-  }, [filter, logLines, selectedModName, page, logLinesLimit]);
+  }, [filter, logLines, selectedModName, selectedLogType, page, logLinesLimit]);
 
   useEffect(() => {
     debugConsole.log('useEffect: LogsPage pagination reset');
     setPage(0);
-  }, [filter, selectedModName]);
+  }, [filter, selectedModName, selectedLogType]);
 
   function handlePreviousPageClick() {
     setPage((prevPage) => prevPage + 1);
@@ -200,6 +208,13 @@ const OwmlLog: React.FunctionComponent = () => {
                     <ClearLogsIcon />
                   </IconButton>
                 </Tooltip>
+              </LogCell>
+              <LogCell className={styles.typeSelectHeader}>
+                <LogTypeSelect
+                  value={selectedLogType}
+                  onChange={setSelectedLogType}
+                  logLines={logLines}
+                />
               </LogCell>
               <LogCell className={styles.modSelectHeader}>
                 <ModNameSelect

@@ -29,7 +29,8 @@ export const logsText = {
   filterLogsLabel: 'Filter logs',
   clearLogs: 'Clear log entries',
   connectedToConsole: 'Client connected to console',
-  allMods: 'All logs',
+  allTypes: 'All types',
+  allMods: 'All mods',
   disconnectedFromConsole: 'Client disconnected from console',
   consoleServerStart: (port: number) =>
     `Started console server on port ${port}`,
