@@ -3,14 +3,26 @@ import { modTagsSelectionState } from './mod-tags-state';
 
 import { modList } from './mods-state';
 
-const filterByTags = (mod: Mod, tags: Set<string>) => {
+const filterByTags = (tags: Set<string>, mod: Mod, mods: Mod[]) => {
   if (tags.size === 0) return true;
 
   for (let i = 0; i < mod.tags.length; i += 1) {
     if (tags.has(mod.tags[i])) {
       return true;
     }
+    if (
+      mod.addons.find((addonUniqueName) => {
+        const addon = mods.find(
+          (modFromList) => modFromList.uniqueName === addonUniqueName
+        );
+
+        return addon && tags.has(addon.tags[i]);
+      })
+    ) {
+      return true;
+    }
   }
+
   return false;
 };
 
@@ -63,7 +75,8 @@ export const filteredModList = selector({
     return mods
       .filter((mod) => {
         return (
-          filterByText(filter, mod, mods) && filterByTags(mod, tagsSelection)
+          filterByText(filter, mod, mods) &&
+          filterByTags(tagsSelection, mod, mods)
         );
       })
       .sort(
@@ -74,5 +87,6 @@ export const filteredModList = selector({
 
 export const isFiltering = selector({
   key: 'IsFiltering',
-  get: ({ get }) => Boolean(get(modFilterState)),
+  get: ({ get }) =>
+    Boolean(get(modFilterState)) || get(modTagsSelectionState).size > 0,
 });
