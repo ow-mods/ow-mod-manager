@@ -15,6 +15,7 @@ import {
   CheckBox as CheckBoxIcon,
   CheckBoxOutlineBlank as CheckboxBlankIcon,
   GitHub as GitHubIcon,
+  OpenInBrowser as WebsiteIcon,
   FolderOpen as FolderIcon,
   Update as UpdateIcon,
   Description as DescriptionIcon,
@@ -27,6 +28,7 @@ import {
   uninstall,
   isOutdated,
   openModDirectory,
+  openWebsitePage,
   openRepo,
   toggleEnabled,
   getLocalMods,
@@ -262,6 +264,15 @@ const ModActions: React.FunctionComponent<Props> = ({
             {modsText.actions.openDirectory}
           </MenuItem>
         )}
+        <MenuItem
+          disabled={!mod.slug}
+          onClick={modActionHandlerSync(openWebsitePage, 'website page open')}
+        >
+          <ListItemIcon>
+            <WebsiteIcon />
+          </ListItemIcon>
+          {modsText.actions.openWebsitePage}
+        </MenuItem>
         <MenuItem
           disabled={!mod.repo}
           onClick={modActionHandlerSync(openRepo, 'repo open')}

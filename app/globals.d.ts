@@ -34,6 +34,14 @@ type Mod = {
   isAlpha?: boolean;
   authorDisplay?: string;
   tags: string[];
+  slug: string;
+  thumbnail: {
+    main?: string;
+    openGraph?: string;
+  };
+  latestReleaseDescription?: string;
+  latestPrereleaseDescription?: string;
+  repoVariations?: string[];
 };
 
 type ModManager = {

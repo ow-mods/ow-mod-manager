@@ -78,6 +78,7 @@ export const modsText = {
     more: 'More...',
     readme: 'Readme',
     openDirectory: 'Show in explorer',
+    openWebsitePage: 'Open page on mods website',
     openRepo: 'More info on GitHub',
     uninstall: 'Uninstall',
     installPrerelease: (version: string) => `Install Prerelease (${version})`,
@@ -88,6 +89,7 @@ export const modsText = {
   uninstallNotInstalledError: "Can't uninstall mod because it's not installed",
   modPathNotDefinedError: 'Mod path is not defined',
   openNonExistingDirectoryError: 'Trying to open non existing directory',
+  undefinedSlugError: 'Mod slug not defined',
   undefinedRepoUrlError: 'Mod repository URL not defined',
   patcherWarning: (modName: string) =>
     `${modName} possibly modified game files. In order to disable it completely, use the "verify game files" option in Steam / Epic. Check ${modName}'s readme for more information.`,

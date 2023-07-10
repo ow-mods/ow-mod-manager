@@ -166,6 +166,13 @@ export function openModDirectory(mod: Mod) {
   openDirectory(mod.modPath);
 }
 
+export function openWebsitePage(mod: Mod) {
+  if (!mod.slug) {
+    throw new Error(modsText.undefinedSlugError);
+  }
+  shell.openExternal(`https://outerwildsmods.com/mods/${mod.slug}?linked-from-manager=true`);
+}
+
 export function openRepo(mod: Mod) {
   if (!mod.repo) {
     throw new Error(modsText.undefinedRepoUrlError);
