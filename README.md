@@ -1,4 +1,10 @@
-# Outer Wilds Mod Manager
+# Outer Wilds Mod Manager (Legacy)
+
+> **Warning**
+> This version is not maintained anymore. [Use the new version of the Outer Wilds Mod Manager](https://outerwildsmods.com/mod-manager).
+
+<details>
+  <summary>Original readme</summary>
 
 For all your modding needs! With access to features such as:
 
@@ -72,3 +78,4 @@ Sure! You can find us in the [Outer Wilds Modding Discord server](https://discor
 - Push to the default branch.
 - Go to the [Release from master action](https://github.com/ow-mods/ow-mod-manager/actions/workflows/release-from-master.yml) and start the workflow via the "Run workflow" button.
 - After the release is done, it will be uploaded as a pre-release in the [releases page](https://github.com/ow-mods/ow-mod-manager/releases). You should probably test it first, but we both know you won't. Add a changelog to the release description, and change it to a proper release.
+</details>
