@@ -2,7 +2,7 @@
   "name": "ow-mod-manager",
   "productName": "OuterWildsModManager",
   "version": "1.0.0",
-  "description": "Outer Wilds Mod Manager",
+  "description": "Outer Wilds Mod Manager LEGACY",
   "scripts": {
     "dev": "cross-env START_HOT=1 node -r @babel/register ./internals/scripts/CheckPortInUse.js && cross-env START_HOT=1 yarn start-renderer-dev",
     "package": "yarn build && electron-builder build --publish never",
@@ -58,8 +58,8 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "perMachine": true,
-      "shortcutName": "Outer Wilds Mod Manager",
-      "uninstallDisplayName": "Outer Wilds Mod Manager"
+      "shortcutName": "Outer Wilds Mod Manager LEGACY",
+      "uninstallDisplayName": "Outer Wilds Mod Manager LEGACY"
     },
     "win": {
       "artifactName": "${productName}-Portable.${ext}",

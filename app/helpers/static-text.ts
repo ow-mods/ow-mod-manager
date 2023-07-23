@@ -8,8 +8,7 @@ export const globalText = {
   startGame: 'Start Game',
   startAlpha: 'Start Alpha',
   gameRunning: 'Already running',
-  missingRequiredMod: (modNames: string[]) =>
-    `Please install ${modNames.join(', ')} before starting the game`,
+  missingRequiredMod: (modNames: string[]) => `Please install ${modNames.join(', ')} before starting the game`,
   alphaWebsite: 'More about the Outer Wilds Alpha',
   alphaPathMissing: 'You need to set the path to the game folder in settings.',
   owamlPathMissing: 'You need to set the path to the OWAML folder in settings.',
@@ -32,8 +31,7 @@ export const logsText = {
   allTypes: 'All types',
   allMods: 'All mods',
   disconnectedFromConsole: 'Client disconnected from console',
-  consoleServerStart: (port: number) =>
-    `Started console server on port ${port}`,
+  consoleServerStart: (port: number) => `Started console server on port ${port}`,
   socketError: 'SOCKET ERROR',
   messageParseError: 'Error parsing OWML log message',
 };
@@ -59,9 +57,9 @@ export const modsText = {
     notInstalled: 'Available mods',
   },
   modManager: {
-    name: 'Outer Wilds Mod Manager',
-    description: `The app you're currently looking at.`,
-    author: 'Raicuparta & Alek',
+    name: 'Outer Wilds Mod Manager LEGACY',
+    description: 'The (LEGACY!!) app you\'re currently looking at.',
+    author: 'Raicuparta, Alek, etc',
   },
   versionNotAvailable: 'Not Available',
   outdated: 'Outdated',
@@ -89,24 +87,15 @@ export const modsText = {
   modPathNotDefinedError: 'Mod path is not defined',
   openNonExistingDirectoryError: 'Trying to open non existing directory',
   undefinedRepoUrlError: 'Mod repository URL not defined',
-  patcherWarning: (modName: string) =>
-    `${modName} possibly modified game files. In order to disable it completely, use the "verify game files" option in Steam / Epic. Check ${modName}'s readme for more information.`,
-  missingDependencyWarning: (dependencyNames: string) =>
-    `This mod requires ${dependencyNames}. Install dependencies from the top of the mod list. If you can't find them there, contact the mod author.`,
-  conflictingModWarning: (conflictNames: string) =>
-    `This mod is not compatible with ${conflictNames}. Disable or uninstall the conflicting mods to prevent your game from crashing.`,
-  missingManifestAttributesError: (path: string, attributes: string[]) =>
-    `Manifest ${path} missing attributes "${attributes.join('", "')}"`,
-  modLoadError: (errors: string[]) =>
-    `Encountered problems loading the mod: ${errors.join(' || ')}`,
-  actionError: (action: string, error: string) =>
-    `Error executing mod ${action}: ${error}`,
-  duplicateModError: (modUniqueName: string) =>
-    `Found multiple mods with the same uniqueName (${modUniqueName}). Open the mods directory and make sure you only have one copy of each mod.`,
-  brokenManifestError: (directoryName: string, error: string) =>
-    `Failed to read manifest.json in mod directory "${directoryName}". Reinstall the mod or contact the mod author to fix this issue. Error: ${error}`,
-  brokenConfigError: (error: string) =>
-    `Failed to read mod configuration files: "${error}"`,
+  patcherWarning: (modName: string) => `${modName} possibly modified game files. In order to disable it completely, use the "verify game files" option in Steam / Epic. Check ${modName}'s readme for more information.`,
+  missingDependencyWarning: (dependencyNames: string) => `This mod requires ${dependencyNames}. Install dependencies from the top of the mod list. If you can't find them there, contact the mod author.`,
+  conflictingModWarning: (conflictNames: string) => `This mod is not compatible with ${conflictNames}. Disable or uninstall the conflicting mods to prevent your game from crashing.`,
+  missingManifestAttributesError: (path: string, attributes: string[]) => `Manifest ${path} missing attributes "${attributes.join('", "')}"`,
+  modLoadError: (errors: string[]) => `Encountered problems loading the mod: ${errors.join(' || ')}`,
+  actionError: (action: string, error: string) => `Error executing mod ${action}: ${error}`,
+  duplicateModError: (modUniqueName: string) => `Found multiple mods with the same uniqueName (${modUniqueName}). Open the mods directory and make sure you only have one copy of each mod.`,
+  brokenManifestError: (directoryName: string, error: string) => `Failed to read manifest.json in mod directory "${directoryName}". Reinstall the mod or contact the mod author to fix this issue. Error: ${error}`,
+  brokenConfigError: (error: string) => `Failed to read mod configuration files: "${error}"`,
 };
 
 export const settingsText = {
@@ -181,10 +170,9 @@ export const settingsText = {
   },
   textFieldSave: 'Save',
   pathFindButton: 'Find...',
-  pathFindTitle: `Find folder that contains game exe...`,
+  pathFindTitle: 'Find folder that contains game exe...',
   resetToDefault: 'Reset all settings to default',
-  getSettingsError: (path: string) =>
-    `Error while getting settings file in ${path}: `,
+  getSettingsError: (path: string) => `Error while getting settings file in ${path}: `,
   setInvalidSettingsError: 'Trying to set invalid settings',
   setInvalidOwmlSettingsError: 'Trying to set invalid OWML settings',
 };
@@ -192,8 +180,7 @@ export const settingsText = {
 export const updateText = {
   dialogYes: 'Restart app and update',
   dialogNo: 'Not now, update later',
-  dialogTitle: 'Outer Wilds Mod Manager',
+  dialogTitle: 'Outer Wilds Mod Manager LEGACY',
   dialogMessage: 'Update available',
-  dialogDetail: (version: string) =>
-    `An update is available for version ${version} of the Mod Manager.`,
+  dialogDetail: (version: string) => `An update is available for version ${version} of the Mod Manager.`,
 };

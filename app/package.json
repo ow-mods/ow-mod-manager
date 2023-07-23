@@ -2,7 +2,7 @@
   "name": "ow-mod-manager",
   "productName": "OuterWildsModManager",
   "version": "1.17.2",
-  "description": "Outer Wilds Mod Manager",
+  "description": "Outer Wilds Mod Manager LEGACY",
   "main": "./main.prod.js",
   "author": {
     "name": "Raicuparta",

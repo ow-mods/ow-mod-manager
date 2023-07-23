@@ -2,7 +2,9 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, dialog, ipcMain } from 'electron';
+import {
+  app, BrowserWindow, dialog, ipcMain,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { updateText } from './helpers/static-text';
@@ -28,7 +30,7 @@ const sendProtocolMessage = () => {
   debugConsole.log('sending mod protocol message...');
   if (!mainWindow) {
     throw new Error(
-      'tried to send protocol message but main window is not defined'
+      'tried to send protocol message but main window is not defined',
     );
   }
 
@@ -46,7 +48,7 @@ const setUpProtocolMessage = (args: string[]) => {
 
   protocolModUniqueName = args[args.length - 1].slice(
     schemaUrlPrefix.length,
-    -1
+    -1,
   );
 
   debugConsole.log('setUpProtocolMessage', protocolModUniqueName);
@@ -81,7 +83,7 @@ const createWindow = async () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
-    mainWindow.setTitle(`Outer Wilds Mod Manager ${app.getVersion()}`);
+    mainWindow.setTitle(`Outer Wilds Mod Manager LEGACY ${app.getVersion()}`);
   });
 
   setUpProtocolMessage(process.argv);
@@ -118,9 +120,7 @@ if (!gotTheLock) {
   app
     .whenReady()
     .then(() => createWindow())
-    .catch((error) =>
-      console.error(`app.whenReady failed with error ${error}`)
-    );
+    .catch((error) => console.error(`app.whenReady failed with error ${error}`));
 }
 
 app.on('window-all-closed', () => {
