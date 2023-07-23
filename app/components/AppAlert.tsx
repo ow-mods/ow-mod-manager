@@ -37,7 +37,7 @@ export const AppAlert = () => {
     updateAlert();
   }, [alertSourceUrl]);
 
-  if (!alert || !alert.enabled) {
+  if (!alertSourceUrl || !alert || !alert.enabled) {
     return null;
   }
 
