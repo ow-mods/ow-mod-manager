@@ -1,7 +1,7 @@
 # Outer Wilds Mod Manager (Legacy)
 
-> **Warning**
-> This version is not maintained anymore. [Use the new version of the Outer Wilds Mod Manager](https://outerwildsmods.com/mod-manager).
+### ⚠️ This version is not maintained anymore ⚠️
+[Use the new version of the Outer Wilds Mod Manager](https://outerwildsmods.com/mod-manager)
 
 <details>
   <summary>Original readme</summary>
