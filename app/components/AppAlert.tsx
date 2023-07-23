@@ -1,6 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Typography, makeStyles, Box } from '@material-ui/core';
+import React, { Fragment, useEffect, useState } from 'react';
+import {
+  Typography,
+  makeStyles,
+  Box,
+  Link,
+  Container,
+} from '@material-ui/core';
 import { useRecoilValue } from 'recoil';
+import { shell } from 'electron';
 import {
   ModManagerAlert,
   getModManagerAlert,
@@ -15,14 +22,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+type MessagePart = {
+  id: number;
+  type: 'url' | 'text';
+  content: string[];
+};
+
 export const AppAlert = () => {
   const [alert, setAlert] = useState<ModManagerAlert>();
+
   const { alertSourceUrl } = useRecoilValue(settingsState);
   const styles = useStyles();
 
   useEffect(() => {
-    const updateAlert = async () =>
-      setAlert(await getModManagerAlert(alertSourceUrl));
+    const updateAlert = async () => setAlert(await getModManagerAlert(alertSourceUrl));
     updateAlert();
   }, [alertSourceUrl]);
 
@@ -30,9 +43,51 @@ export const AppAlert = () => {
     return null;
   }
 
+  const messageWords = alert.message.split(' ');
+  const parsedMessage: MessagePart[] = [];
+  let textPartIndex = 0;
+
+  for (let index = 0; index < messageWords.length; index += 1) {
+    const word = messageWords[index];
+
+    if (word.startsWith('http')) {
+      parsedMessage.push({
+        id: textPartIndex,
+        type: 'url',
+        content: [word],
+      });
+      textPartIndex = parsedMessage.length;
+    } else {
+      if (!parsedMessage[textPartIndex]) {
+        parsedMessage[textPartIndex] = {
+          id: textPartIndex,
+          type: 'text',
+          content: [],
+        };
+      }
+      parsedMessage[textPartIndex].content.push(word);
+    }
+  }
+
+  const getTextPart = (messagePart: MessagePart) => {
+    const content = messagePart.content.join(' ');
+    if (messagePart.type === 'url') {
+      // eslint-disable-next-line jsx-a11y/anchor-is-valid
+      return <a href="#" onClick={() => shell.openExternal(content)}>{content}</a>;
+    }
+    return <span>{content}</span>;
+  };
+
   return (
     <Box className={styles.appAlert}>
-      <Typography variant="body2">{alert.message}</Typography>
+      <Container maxWidth="md">
+        {parsedMessage.map((messagePart) => (
+          <Fragment key={messagePart.id}>
+            {getTextPart(messagePart)}
+            {' '}
+          </Fragment>
+        ))}
+      </Container>
     </Box>
   );
 };
